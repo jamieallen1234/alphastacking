@@ -1,0 +1,54 @@
+.chartWrap {
+  position: relative;
+  width: 100%;
+  cursor: crosshair;
+}
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  min-width: 10rem;
+  max-width: 18rem;
+  padding: 0.45rem 0.55rem;
+  border: 0.5px solid var(--color-border);
+  background: rgba(14, 14, 16, 0.96);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+}
+
+.tooltipDate {
+  color: var(--color-text);
+  font-size: 11px;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+.tooltipRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tooltipLabel {
+  color: rgba(232, 228, 220, 0.45);
+}
+
+.tooltipVal {
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.reticleLine {
+  stroke: rgba(232, 228, 220, 0.2);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.reticleDot {
+  stroke: var(--color-bg);
+  stroke-width: 1;
+}

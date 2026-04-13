@@ -1,0 +1,192 @@
+.builder {
+  border: 0.5px solid var(--color-border);
+  padding: 1.5rem 1.8rem;
+  margin-bottom: 2.5rem;
+  background: rgba(232, 228, 220, 0.02);
+}
+
+.builderLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  margin-bottom: 0.6rem;
+}
+
+.builderTitle {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+}
+
+.builderHint {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(232, 228, 220, 0.45);
+  margin: 0 0 1.25rem;
+  line-height: 1.55;
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.fieldLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 220, 0.4);
+}
+
+.input,
+.select {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 0.55rem 0.65rem;
+  border: 0.5px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-width: 0;
+}
+
+.inputSymbols {
+  width: min(100%, 28rem);
+}
+
+.select {
+  cursor: pointer;
+}
+
+.btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.1rem;
+  border: 0.5px solid var(--color-gold-border);
+  background: var(--color-gold-dim);
+  color: var(--color-gold);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn:hover:not(:disabled) {
+  background: rgba(201, 168, 76, 0.12);
+  border-color: rgba(201, 168, 76, 0.45);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.error {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-red);
+  margin-bottom: 0.75rem;
+}
+
+.chartBlock {
+  border-top: 0.5px solid var(--color-border-faint);
+  padding-top: 1rem;
+  margin-top: 0.25rem;
+}
+
+.metricsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 2rem;
+  margin-bottom: 0.5rem;
+  align-items: baseline;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 220, 0.45);
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legendSwatch {
+  width: 14px;
+  height: 3px;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.chartMeta {
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(232, 228, 220, 0.42);
+  line-height: 1.55;
+  margin: 0 0 0.6rem;
+  max-width: 42rem;
+}
+
+.chartMeta strong {
+  font-weight: 500;
+  color: rgba(232, 228, 220, 0.72);
+}
+
+.metricBig {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.metricBigPos {
+  color: var(--color-green);
+}
+
+.metricBigNeg {
+  color: var(--color-red);
+}
+
+.metricSub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(232, 228, 220, 0.38);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.asOf {
+  font-size: 11px;
+  color: rgba(232, 228, 220, 0.4);
+  margin-top: 0.5rem;
+}
+
+.weightsNote {
+  font-size: 11px;
+  color: rgba(232, 228, 220, 0.35);
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}

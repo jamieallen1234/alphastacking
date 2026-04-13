@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Sparkline from './Sparkline'
+import PortfolioBuilder from './PortfolioBuilder'
 import { portfolios, type Region } from '@/lib/portfolios'
 import styles from './Portfolios.module.css'
 
@@ -31,6 +32,8 @@ export default function Portfolios() {
           to buy or sell any security.
         </p>
       </div>
+
+      <PortfolioBuilder />
 
       <div className={styles.tabs}>
         {tabs.map((tab) => (

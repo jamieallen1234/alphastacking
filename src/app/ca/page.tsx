@@ -16,12 +16,13 @@ export default function CaHomePage() {
         <div className={styles.sectionLabel}>Canadian edition</div>
         <h1 className={styles.heading}>Alpha stacking, CA-listed sleeves</h1>
         <p className={styles.lede}>
-          Same educational mission as our US site — TSX-listed ETFs and Canada-aware examples where
-          it matters. Nothing here is investment advice.
+          Same educational mission as our US site — plus TSX-listed ETFs and Canada-aware examples where
+          it matters. Browse both US- and Canadian-listed model portfolios in one place. Nothing here is
+          investment advice.
         </p>
         <p className={styles.lede}>
-          <Link href="/ca/portfolios" style={{ color: 'var(--color-gold)' }}>
-            Browse model portfolios →
+          <Link href="/ca/portfolios#us-models" style={{ color: 'var(--color-gold)' }}>
+            Browse US &amp; Canadian model portfolios →
           </Link>
         </p>
       </section>

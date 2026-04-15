@@ -30,8 +30,14 @@ export default function Nav() {
           <li>
             <Link href={portfolios}>Portfolios</Link>
           </li>
-          <li><a href="/us-etfs">US ETFs</a></li>
-          <li><a href="/ca-etfs">CA ETFs</a></li>
+          <li>
+            <a href="/us-etfs">{isCa ? 'US ETFs' : 'ETFs'}</a>
+          </li>
+          {isCa ? (
+            <li>
+              <a href="/ca-etfs">CA ETFs</a>
+            </li>
+          ) : null}
           <li><a href="/tools">Tools</a></li>
         </ul>
 

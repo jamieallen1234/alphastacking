@@ -1,21 +1,15 @@
 'use client'
 
-import { useState } from 'react'
 import Sparkline from './Sparkline'
 import PortfolioBuilder from './PortfolioBuilder'
-import { portfolios, type Region } from '@/lib/portfolios'
+import { portfolios } from '@/lib/portfolios'
 import styles from './Portfolios.module.css'
 
-const tabs: { label: string; value: Region }[] = [
-  { label: 'US portfolios', value: 'us' },
-  { label: 'CA portfolios', value: 'ca' },
-  { label: 'Mixed', value: 'mixed' },
-]
+/** US home: illustrative cards only; Canadian models live on the CA edition. */
+const US_HOME_PORTFOLIOS = portfolios.filter((p) => p.region.includes('us'))
 
 export default function Portfolios() {
-  const [activeTab, setActiveTab] = useState<Region>('us')
-
-  const filtered = portfolios.filter((p) => p.region.includes(activeTab))
+  const filtered = US_HOME_PORTFOLIOS
 
   return (
     <section className={styles.section}>
@@ -34,18 +28,6 @@ export default function Portfolios() {
       </div>
 
       <PortfolioBuilder />
-
-      <div className={styles.tabs}>
-        {tabs.map((tab) => (
-          <button
-            key={tab.value}
-            className={`${styles.tab} ${activeTab === tab.value ? styles.tabActive : ''}`}
-            onClick={() => setActiveTab(tab.value)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
 
       <div className={styles.cards}>
         {filtered.map((portfolio) => (

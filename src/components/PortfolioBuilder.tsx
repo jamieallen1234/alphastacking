@@ -1,8 +1,9 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import ReturnLineChart from './ReturnLineChart'
+import PresetPortfolioChart from './PresetPortfolioChart'
 import styles from './PortfolioBuilder.module.css'
+import type { PortfolioChartPayload } from '@/lib/computePortfolioChart'
 
 type Range = '1mo' | '3mo' | '6mo' | '1y' | '2y' | '5y' | 'ytd' | 'max'
 
@@ -21,20 +22,6 @@ const RANGES: { label: string; value: Range }[] = [
 const DEFAULT_SYMBOLS = 'SSO MATE ORR RSSY FLSP'
 const DEFAULT_WEIGHTS = '20,20,20,20,20'
 
-function formatCalendarDate(isoYmd: string): string {
-  const parts = isoYmd.split('-')
-  if (parts.length !== 3) return isoYmd
-  const y = Number(parts[0])
-  const m = Number(parts[1])
-  const d = Number(parts[2])
-  if (!y || !m || !d) return isoYmd
-  return new Date(y, m - 1, d).toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  })
-}
-
 export default function PortfolioBuilder() {
   const [symbolsInput, setSymbolsInput] = useState(DEFAULT_SYMBOLS)
   const [weightsInput, setWeightsInput] = useState(DEFAULT_WEIGHTS)
@@ -45,11 +32,20 @@ export default function PortfolioBuilder() {
   const [benchmarkValues, setBenchmarkValues] = useState<number[] | null>(null)
   const [totalReturn, setTotalReturn] = useState<number | null>(null)
   const [benchmarkReturn, setBenchmarkReturn] = useState<number | null>(null)
+  const [maxDdPortfolio, setMaxDdPortfolio] = useState<number | null>(null)
+  const [maxDdBenchmark, setMaxDdBenchmark] = useState<number | null>(null)
   const [asOf, setAsOf] = useState<string | null>(null)
   const [chartTimestamps, setChartTimestamps] = useState<number[] | null>(null)
   const [chartStartDate, setChartStartDate] = useState<string | null>(null)
   const [limitingSymbol, setLimitingSymbol] = useState<string | null>(null)
   const [limitingFirstTradeDate, setLimitingFirstTradeDate] = useState<string | null>(null)
+  const [benchmarkSymbol, setBenchmarkSymbol] = useState<string>('SPY')
+  const [syntheticModeling, setSyntheticModeling] = useState<
+    PortfolioChartPayload['syntheticModeling']
+  >([])
+  const [chartCurrency, setChartCurrency] = useState<NonNullable<PortfolioChartPayload['chartCurrency']>>(
+    'USD'
+  )
   const [resolved, setResolved] = useState<{ symbols: string[]; weights: number[] } | null>(
     null
   )
@@ -78,35 +74,51 @@ export default function PortfolioBuilder() {
         timestamps?: number[]
         totalReturnPercent?: number | null
         benchmarkTotalReturnPercent?: number | null
+        maxDrawdownPortfolioPercent?: number | null
+        maxDrawdownBenchmarkPercent?: number | null
+        benchmarkSymbol?: string
         chartStartDate?: string | null
         limitingSymbol?: string | null
         limitingFirstTradeDate?: string | null
         asOf?: string | null
         symbols?: string[]
         weights?: number[]
+        range?: string
+        syntheticModeling?: PortfolioChartPayload['syntheticModeling']
+        chartCurrency?: PortfolioChartPayload['chartCurrency']
       }
       if (!res.ok) {
         setValues(null)
         setBenchmarkValues(null)
         setTotalReturn(null)
         setBenchmarkReturn(null)
+        setMaxDdPortfolio(null)
+        setMaxDdBenchmark(null)
         setAsOf(null)
         setChartTimestamps(null)
         setChartStartDate(null)
         setLimitingSymbol(null)
         setLimitingFirstTradeDate(null)
+        setBenchmarkSymbol('SPY')
+        setSyntheticModeling([])
+        setChartCurrency('USD')
         setResolved(null)
         setError(data.error || 'Request failed')
         return
       }
+      setBenchmarkSymbol(data.benchmarkSymbol ?? 'SPY')
       setValues(data.values ?? null)
       setBenchmarkValues(data.benchmarkValues ?? null)
       setChartTimestamps(data.timestamps ?? null)
       setChartStartDate(data.chartStartDate ?? null)
       setLimitingSymbol(data.limitingSymbol ?? null)
       setLimitingFirstTradeDate(data.limitingFirstTradeDate ?? null)
+      setSyntheticModeling(data.syntheticModeling ?? [])
+      setChartCurrency(data.chartCurrency ?? 'USD')
       setTotalReturn(data.totalReturnPercent ?? null)
       setBenchmarkReturn(data.benchmarkTotalReturnPercent ?? null)
+      setMaxDdPortfolio(data.maxDrawdownPortfolioPercent ?? null)
+      setMaxDdBenchmark(data.maxDrawdownBenchmarkPercent ?? null)
       setAsOf(data.asOf ?? null)
       if (data.symbols && data.weights) {
         setResolved({ symbols: data.symbols, weights: data.weights })
@@ -119,11 +131,16 @@ export default function PortfolioBuilder() {
       setBenchmarkValues(null)
       setTotalReturn(null)
       setBenchmarkReturn(null)
+      setMaxDdPortfolio(null)
+      setMaxDdBenchmark(null)
       setAsOf(null)
       setChartTimestamps(null)
       setChartStartDate(null)
       setLimitingSymbol(null)
       setLimitingFirstTradeDate(null)
+      setBenchmarkSymbol('SPY')
+      setSyntheticModeling([])
+      setChartCurrency('USD')
       setResolved(null)
     } finally {
       setLoading(false)
@@ -135,31 +152,36 @@ export default function PortfolioBuilder() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- initial fetch only
   }, [])
 
-  const trClass =
-    totalReturn == null
-      ? ''
-      : totalReturn >= 0
-        ? styles.metricBigPos
-        : styles.metricBigNeg
-
-  const benchClass =
-    benchmarkReturn == null
-      ? ''
-      : benchmarkReturn >= 0
-        ? styles.metricBigPos
-        : styles.metricBigNeg
-
-  const chartSeries =
+  const chartPayload: PortfolioChartPayload | null =
     values &&
     benchmarkValues &&
     chartTimestamps &&
+    resolved &&
+    chartStartDate &&
+    limitingSymbol &&
+    limitingFirstTradeDate &&
     values.length === benchmarkValues.length &&
     values.length === chartTimestamps.length &&
     values.length >= 2
-      ? [
-          { values, color: 'var(--color-gold)', label: 'Portfolio' },
-          { values: benchmarkValues, color: 'var(--color-blue)', label: 'SPY' },
-        ]
+      ? {
+          symbols: resolved.symbols,
+          weights: resolved.weights,
+          range: range as PortfolioChartPayload['range'],
+          timestamps: chartTimestamps,
+          values,
+          totalReturnPercent: totalReturn,
+          benchmarkSymbol,
+          benchmarkValues,
+          benchmarkTotalReturnPercent: benchmarkReturn,
+          maxDrawdownPortfolioPercent: maxDdPortfolio,
+          maxDrawdownBenchmarkPercent: maxDdBenchmark,
+          limitingSymbol,
+          limitingFirstTradeDate,
+          chartStartDate,
+          asOf,
+          syntheticModeling,
+          chartCurrency,
+        }
       : null
 
   return (
@@ -228,61 +250,7 @@ export default function PortfolioBuilder() {
 
       {error ? <div className={styles.error}>{error}</div> : null}
 
-      {chartSeries && chartTimestamps ? (
-        <div className={styles.chartBlock}>
-          <div className={styles.metricsRow}>
-            <div>
-              <div className={`${styles.metricBig} ${trClass}`}>
-                {totalReturn != null
-                  ? `${totalReturn >= 0 ? '+' : ''}${totalReturn.toFixed(2)}%`
-                  : '—'}
-              </div>
-              <div className={styles.metricSub}>Portfolio</div>
-            </div>
-            <div>
-              <div className={`${styles.metricBig} ${benchClass}`}>
-                {benchmarkReturn != null
-                  ? `${benchmarkReturn >= 0 ? '+' : ''}${benchmarkReturn.toFixed(2)}%`
-                  : '—'}
-              </div>
-              <div className={styles.metricSub}>SPY (benchmark)</div>
-            </div>
-          </div>
-          <div className={styles.legend}>
-            <span className={styles.legendItem}>
-              <span className={styles.legendSwatch} style={{ background: 'var(--color-gold)' }} />
-              Portfolio
-            </span>
-            <span className={styles.legendItem}>
-              <span className={styles.legendSwatch} style={{ background: 'var(--color-blue)' }} />
-              SPY
-            </span>
-          </div>
-          {chartStartDate && limitingSymbol && limitingFirstTradeDate ? (
-            <p className={styles.chartMeta}>
-              <strong>From {formatCalendarDate(chartStartDate)}</strong>
-              {' — '}
-              history begins once all holdings overlap; the newest listing is{' '}
-              <strong>{limitingSymbol}</strong> (inception {formatCalendarDate(limitingFirstTradeDate)}
-              ).
-            </p>
-          ) : null}
-          <ReturnLineChart series={chartSeries} timestampsSec={chartTimestamps} height={140} />
-          {asOf ? (
-            <p className={styles.asOf}>Last daily point: {asOf} (exchange date)</p>
-          ) : null}
-          {resolved ? (
-            <p className={styles.weightsNote}>
-              {resolved.symbols.map((s, i) => (
-                <span key={s + i}>
-                  {s} {(resolved.weights[i]! * 100).toFixed(1)}%
-                  {i < resolved.symbols.length - 1 ? ' · ' : ''}
-                </span>
-              ))}
-            </p>
-          ) : null}
-        </div>
-      ) : null}
+      {chartPayload ? <PresetPortfolioChart payload={chartPayload} showWeightsSummary /> : null}
     </div>
   )
 }

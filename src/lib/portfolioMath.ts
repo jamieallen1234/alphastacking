@@ -1,14 +1,40 @@
 import type { PriceSeries } from './yahooFinance'
 
+/** Normalized series start at 1; chart payloads multiply by this for a $10k-style axis. */
+export const CHART_NOTIONAL_START_USD = 10_000
+
 export interface PortfolioSeriesPoint {
   t: number
   /** Portfolio value with initial allocation = 1 */
   value: number
+  /** NY trading date YYYY-MM-DD (for benchmark alignment) */
+  nyDay?: string
+}
+
+/** NY trading calendar date YYYY-MM-DD (for aligning Yahoo bars that use different unix seconds). */
+export function nyTradingDayKey(tsSec: number): string {
+  return new Date(tsSec * 1000).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+}
+
+/** Last bar per NY day wins (Yahoo sometimes has multiple entries per calendar day). */
+export function seriesToNyDayPriceMap(series: PriceSeries): Map<string, number> {
+  const m = new Map<string, number>()
+  for (let i = 0; i < series.timestamps.length; i++) {
+    const day = nyTradingDayKey(series.timestamps[i]!)
+    m.set(day, series.prices[i]!)
+  }
+  return m
+}
+
+export function dayKeyToUtcNoonUnix(dayKey: string): number {
+  const [y, mo, d] = dayKey.split('-').map(Number)
+  return Math.floor(Date.UTC(y, mo - 1, d, 12, 0, 0) / 1000)
 }
 
 /**
- * Buy-and-hold from the first aligned session: V(t) = Σ w_i × (P_i(t) / P_i(t₀)).
- * Weights should sum to 1.
+ * Buy-and-hold from the first aligned **NY trading day** where every symbol has a close.
+ * Yahoo daily bars often use slightly different unix timestamps across tickers; intersecting on
+ * calendar day fixes empty intersections.
  */
 export function buildBuyAndHoldSeries(
   series: PriceSeries[],
@@ -19,21 +45,15 @@ export function buildBuyAndHoldSeries(
   }
   if (series.length === 0) return []
 
-  const maps = series.map((s) => {
-    const m = new Map<number, number>()
-    for (let i = 0; i < s.timestamps.length; i++) {
-      m.set(s.timestamps[i]!, s.prices[i]!)
-    }
-    return m
-  })
+  const dayMaps = series.map((s) => seriesToNyDayPriceMap(s))
 
-  let common: Set<number> | null = null
-  for (const m of maps) {
-    const keys = new Set<number>(m.keys())
+  let common: Set<string> | null = null
+  for (const dm of dayMaps) {
+    const keys = new Set(dm.keys())
     if (common === null) {
       common = keys
     } else {
-      const next = new Set<number>()
+      const next = new Set<string>()
       for (const k of common) {
         if (keys.has(k)) next.add(k)
       }
@@ -42,16 +62,16 @@ export function buildBuyAndHoldSeries(
   }
   if (!common || common.size === 0) return []
 
-  const sorted = [...common].sort((a, b) => a - b)
-  const t0 = sorted[0]!
-  const basePrices = maps.map((m) => m.get(t0))
+  const sortedDays = [...common].sort()
+  const day0 = sortedDays[0]!
+  const basePrices = dayMaps.map((dm) => dm.get(day0))
   if (basePrices.some((p) => p == null || p <= 0)) return []
 
   const out: PortfolioSeriesPoint[] = []
-  for (const t of sorted) {
+  for (const day of sortedDays) {
     let v = 0
-    for (let i = 0; i < maps.length; i++) {
-      const p = maps[i]!.get(t)
+    for (let i = 0; i < dayMaps.length; i++) {
+      const p = dayMaps[i]!.get(day)
       const p0 = basePrices[i]!
       if (p == null || p <= 0) {
         v = NaN
@@ -59,7 +79,9 @@ export function buildBuyAndHoldSeries(
       }
       v += weights[i]! * (p / p0)
     }
-    if (!Number.isNaN(v)) out.push({ t, value: v })
+    if (!Number.isNaN(v)) {
+      out.push({ t: dayKeyToUtcNoonUnix(day), value: v, nyDay: day })
+    }
   }
   return out
 }
@@ -73,8 +95,26 @@ export function totalReturnPercent(points: PortfolioSeriesPoint[]): number | nul
 }
 
 /**
- * 100% allocation to `bench`, normalized to 1 at the first timestamp in `alignToTimestamps`.
- * Returns null if any timestamp is missing from the benchmark series.
+ * Align benchmark to portfolio **NY calendar days** (same order as portfolio series points).
+ */
+export function normalizedBenchmarkByNyDays(
+  bench: PriceSeries,
+  sortedNyDayKeys: string[]
+): number[] | null {
+  if (sortedNyDayKeys.length < 2) return null
+  const dm = seriesToNyDayPriceMap(bench)
+  const raw: number[] = []
+  for (const day of sortedNyDayKeys) {
+    const p = dm.get(day)
+    if (p == null || p <= 0) return null
+    raw.push(p)
+  }
+  const p0 = raw[0]!
+  return raw.map((p) => p / p0)
+}
+
+/**
+ * @deprecated Prefer normalizedBenchmarkByNyDays — kept for callers that still align on exact unix timestamps.
  */
 export function normalizedBenchmarkSeries(
   bench: PriceSeries,
@@ -101,4 +141,22 @@ export function totalReturnPercentFromValues(values: number[]): number | null {
   const b = values[values.length - 1]!
   if (a <= 0) return null
   return ((b - a) / a) * 100
+}
+
+/**
+ * Peak-to-trough drawdown on a positive equity curve (constant scale-invariant).
+ * Returns the worst `(v / runningPeak - 1) * 100`, always ≤ 0 when defined.
+ */
+export function maxDrawdownPercentFromLevels(levels: number[]): number | null {
+  if (levels.length < 2) return null
+  let peak = levels[0]!
+  if (peak <= 0) return null
+  let worst = 0
+  for (const v of levels) {
+    if (v > peak) peak = v
+    if (peak <= 0) return null
+    const r = v / peak - 1
+    if (r < worst) worst = r
+  }
+  return worst * 100
 }

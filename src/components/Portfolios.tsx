@@ -25,8 +25,8 @@ export default function Portfolios() {
       <div className={styles.disclaimer}>
         <span className={styles.disclaimerIcon}>⚠</span>
         <p>
-          Sample portfolios are shown for educational purposes only. Returns are
-          hypothetical or historical and do not represent actual investment results.
+          Sample portfolios are shown for educational purposes only. Illustrated
+          or historical returns do not represent actual investment results.
           Leveraged ETFs are complex instruments subject to volatility decay. Past
           performance does not guarantee future results. This is not a recommendation
           to buy or sell any security.

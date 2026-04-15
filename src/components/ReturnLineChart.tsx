@@ -15,11 +15,24 @@ interface ReturnLineChartProps {
   /** Unix seconds, same length as each series values */
   timestampsSec: number[]
   height?: number
+  /** Tooltip / display currency for large notionals (default USD). */
+  chartCurrency?: 'USD' | 'CAD'
 }
 
 const W = 400
 const H = 60
 const PAD = 2
+
+function formatTooltipValue(v: number, chartCurrency: 'USD' | 'CAD'): string {
+  if (Math.abs(v) >= 100) {
+    return new Intl.NumberFormat('en-CA', {
+      style: 'currency',
+      currency: chartCurrency,
+      maximumFractionDigits: 0,
+    }).format(v)
+  }
+  return v.toFixed(4)
+}
 
 function formatPointDate(tsSec: number): string {
   return new Date(tsSec * 1000).toLocaleDateString('en-US', {
@@ -36,6 +49,7 @@ export default function ReturnLineChart({
   series,
   timestampsSec,
   height = 120,
+  chartCurrency = 'USD',
 }: ReturnLineChartProps) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const [hover, setHover] = useState<{
@@ -197,7 +211,9 @@ export default function ReturnLineChart({
           {valid.map((s) => (
             <div key={s.label} className={styles.tooltipRow}>
               <span className={styles.tooltipLabel}>{s.label}</span>
-              <span className={styles.tooltipVal}>{s.values[hi]!.toFixed(4)}</span>
+              <span className={styles.tooltipVal}>
+                {formatTooltipValue(s.values[hi]!, chartCurrency)}
+              </span>
             </div>
           ))}
         </div>

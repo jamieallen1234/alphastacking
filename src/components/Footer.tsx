@@ -1,8 +1,19 @@
 'use client'
 
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { REGION_COOKIE, type SiteRegion } from '@/lib/siteRegion'
 import styles from './Footer.module.css'
 
+function setRegionCookie(region: SiteRegion) {
+  if (typeof document === 'undefined') return
+  document.cookie = `${REGION_COOKIE}=${region};path=/;max-age=31536000;SameSite=Lax`
+}
+
 export default function Footer() {
+  const pathname = usePathname()
+  const isCa = pathname === '/ca' || pathname.startsWith('/ca/')
+
   return (
     <footer>
       <div className={styles.legalBlock}>
@@ -10,7 +21,7 @@ export default function Footer() {
           alphastacking.co is an independent educational website. Nothing on this
           site constitutes financial, investment, legal, or tax advice. All content
           is provided for informational purposes only. Sample portfolios are
-          hypothetical and do not represent actual investment results. Past
+          for educational purposes and do not represent actual investment results. Past
           performance is not indicative of future results.
         </p>
         <p>
@@ -34,12 +45,20 @@ export default function Footer() {
 
         <div className={styles.regionToggle}>
           Viewing:
-          <button className={`${styles.regionBtn} ${styles.regionBtnActive}`}>
+          <Link
+            href="/"
+            className={`${styles.regionBtn} ${!isCa ? styles.regionBtnActive : ''}`}
+            onClick={() => setRegionCookie('us')}
+          >
             🇺🇸 US
-          </button>
-          <a href="/ca" className={styles.regionBtn}>
+          </Link>
+          <Link
+            href="/ca"
+            className={`${styles.regionBtn} ${isCa ? styles.regionBtnActive : ''}`}
+            onClick={() => setRegionCookie('ca')}
+          >
             🇨🇦 CA
-          </a>
+          </Link>
         </div>
 
         <ul className={styles.links}>

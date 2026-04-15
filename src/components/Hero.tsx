@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styles from './Hero.module.css'
 
 export default function Hero() {
@@ -20,12 +21,12 @@ export default function Hero() {
       </p>
 
       <div className={`${styles.actions} animate animate-4`}>
-        <a href="/portfolios" className={styles.btnPrimary}>
+        <Link href="/portfolios" className={styles.btnPrimary}>
           Explore sample portfolios
-        </a>
-        <a href="/learn" className={styles.btnGhost}>
+        </Link>
+        <Link href="/learn" className={styles.btnGhost}>
           What is alpha stacking? →
-        </a>
+        </Link>
       </div>
 
       <p className={`${styles.legal} animate animate-5`}>

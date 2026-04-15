@@ -1,0 +1,56 @@
+.rangeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.rangeLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 220, 0.35);
+  margin-right: 0.35rem;
+}
+
+.rangeBtn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.65rem;
+  border: 0.5px solid var(--color-border);
+  background: transparent;
+  color: rgba(232, 228, 220, 0.55);
+  border-radius: 2px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s;
+}
+
+.rangeBtn:hover:not(:disabled) {
+  border-color: rgba(201, 168, 76, 0.35);
+  color: rgba(232, 228, 220, 0.85);
+}
+
+.rangeBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.rangeBtnActive {
+  border-color: rgba(201, 168, 76, 0.5);
+  color: var(--color-gold);
+  background: rgba(201, 168, 76, 0.06);
+}
+
+.rangeError {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-red);
+  margin-bottom: 0.5rem;
+}

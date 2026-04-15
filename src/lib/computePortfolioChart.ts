@@ -1,5 +1,6 @@
 import {
   buildBuyAndHoldSeries,
+  buildQuarterlyRebalancedSeries,
   CHART_NOTIONAL_START_USD,
   maxDrawdownPercentFromLevels,
   normalizedBenchmarkByNyDays,
@@ -15,11 +16,15 @@ import {
   HEQL_FIRST_REAL_NY_DAY,
   HEQL_SYNTHETIC_ANNUAL_DRAG,
   HEQL_SYNTHETIC_LEVERAGE,
+  QQQL_FIRST_REAL_NY_DAY,
+  USSL_FIRST_REAL_NY_DAY,
 } from '@/lib/syntheticChartConstants'
 import {
   buildLeveredUnderlyingMergeSeries,
   heqlSyntheticOverlapFirstTradeSec,
   mateSyntheticOverlapFirstTradeSec,
+  qqqlSyntheticOverlapFirstTradeSec,
+  usslSyntheticOverlapFirstTradeSec,
 } from '@/lib/syntheticProxyMerge'
 import {
   CAD_SPY_PROXY_SYMBOL,
@@ -31,16 +36,19 @@ import {
   clipSeriesFromTime,
   fetchDailySeries,
   fetchFirstTradeDateSec,
+  type PriceSeries,
   type YahooRange,
 } from '@/lib/yahooFinance'
 
-export type SyntheticModelingKind = 'ntsd' | 'heql_heqt' | 'mate_rsst'
+export type SyntheticModelingKind = 'ntsd' | 'cad_levered_125' | 'mate_rsst'
 
 export interface SyntheticModelingNote {
   /** Ticker as in the basket (e.g. HEQL.TO, MATE). */
   slotSymbol: string
   firstRealNyDay: string
   kind: SyntheticModelingKind
+  /** 1.25× CAD levered sleeve: which index TR is scaled (QQQ is converted to CAD in the pipeline). */
+  cadLeveredUnderlying?: 'HEQT.TO' | 'QQQ'
 }
 
 export interface PortfolioChartPayload {
@@ -53,6 +61,8 @@ export interface PortfolioChartPayload {
   benchmarkSymbol: string
   benchmarkValues: number[]
   benchmarkTotalReturnPercent: number | null
+  /** Portfolio total return minus benchmark over the charted window (same dates). */
+  excessAlphaPercent: number | null
   /** Max peak-to-trough drawdown on the charted window (same Yahoo `range` as the series). */
   maxDrawdownPortfolioPercent: number | null
   maxDrawdownBenchmarkPercent: number | null
@@ -60,13 +70,15 @@ export interface PortfolioChartPayload {
   limitingFirstTradeDate: string
   chartStartDate: string | null
   asOf: string | null
-  /** Hypothetical pre-inception sleeves still visible in the chart window. */
+  /** Simulated pre-inception sleeves still visible in the chart window. */
   syntheticModeling: SyntheticModelingNote[]
   /**
    * When CAD, US-listed legs are converted with USDCAD; benchmark **data** is VFV.TO
    * (`benchmarkSymbol` in the payload is still labeled `SPY` for readability).
    */
   chartCurrency?: 'USD' | 'CAD'
+  /** `quarterly`: weights reset to targets on the first session of each calendar quarter (after that day’s returns). */
+  rebalanceSchedule: 'none' | 'quarterly'
 }
 
 const DEFAULT_BENCHMARK = 'SPY'
@@ -82,8 +94,10 @@ export async function computePortfolioChart(params: {
   benchmarkSymbol?: string
   /** US-listed legs → CAD via NY-aligned USDCAD; benchmark fetch defaults to VFV.TO; payload still labels it SPY. */
   cadDenominated?: boolean
+  rebalanceSchedule?: 'none' | 'quarterly'
 }): Promise<PortfolioChartPayload> {
   const { symbols, weights, range } = params
+  const rebalanceSchedule = params.rebalanceSchedule ?? 'none'
   const cadDenominated = params.cadDenominated ?? false
   const benchmarkFetchSymbol =
     params.benchmarkSymbol ?? (cadDenominated ? CAD_SPY_PROXY_SYMBOL : DEFAULT_BENCHMARK)
@@ -101,12 +115,16 @@ export async function computePortfolioChart(params: {
   const ntsdIdx = upper.indexOf('NTSD')
   const mateIdx = upper.indexOf('MATE')
   const heqlIdx = symbols.findIndex((s) => s.toUpperCase() === 'HEQL.TO')
+  const usslIdx = symbols.findIndex((s) => s.toUpperCase() === 'USSL.TO')
+  const qqqlIdx = symbols.findIndex((s) => s.toUpperCase() === 'QQQL.TO')
 
   const firstTradeSecs = await Promise.all(
     symbols.map(async (s, i) => {
       if (ntsdIdx >= 0 && i === ntsdIdx) return ntsdSyntheticOverlapFirstTradeSec()
       if (mateIdx >= 0 && i === mateIdx) return mateSyntheticOverlapFirstTradeSec()
       if (heqlIdx >= 0 && i === heqlIdx) return heqlSyntheticOverlapFirstTradeSec()
+      if (usslIdx >= 0 && i === usslIdx) return usslSyntheticOverlapFirstTradeSec()
+      if (qqqlIdx >= 0 && i === qqqlIdx) return qqqlSyntheticOverlapFirstTradeSec()
       return fetchFirstTradeDateSec(s)
     })
   )
@@ -116,21 +134,29 @@ export async function computePortfolioChart(params: {
 
   const needExtraSpy = ntsdIdx >= 0 && benchmarkFetchSymbol.toUpperCase() !== 'SPY'
 
-  const [series, benchSeries, efaExtra, spyExtra, heqtExtra, rsstExtra, usdCadSeries] =
+  const needHeqt = heqlIdx >= 0 || usslIdx >= 0
+  const needQqq = qqqlIdx >= 0
+
+  const nowSec = Math.floor(Date.now() / 1000)
+  const maxWindow = range === 'max' ? { fromSec: effectiveStartSec, toSec: nowSec } : undefined
+
+  const [series, benchSeries, efaExtra, spyExtra, heqtExtra, qqqExtra, rsstExtra, usdCadSeries] =
     await Promise.all([
-      Promise.all(symbols.map((s) => fetchDailySeries(s, range))),
-      fetchDailySeries(benchmarkFetchSymbol, range),
-      ntsdIdx >= 0 ? fetchDailySeries('EFA', range) : Promise.resolve(null),
-      needExtraSpy ? fetchDailySeries('SPY', range) : Promise.resolve(null),
-      heqlIdx >= 0 ? fetchDailySeries('HEQT.TO', range) : Promise.resolve(null),
-      mateIdx >= 0 ? fetchDailySeries('RSST', range) : Promise.resolve(null),
-      cadDenominated ? fetchDailySeries(USDCAD_YAHOO_SYMBOL, range) : Promise.resolve(null),
+      Promise.all(symbols.map((s) => fetchDailySeries(s, range, maxWindow))),
+      fetchDailySeries(benchmarkFetchSymbol, range, maxWindow),
+      ntsdIdx >= 0 ? fetchDailySeries('EFA', range, maxWindow) : Promise.resolve(null),
+      needExtraSpy ? fetchDailySeries('SPY', range, maxWindow) : Promise.resolve(null),
+      needHeqt ? fetchDailySeries('HEQT.TO', range, maxWindow) : Promise.resolve(null),
+      needQqq ? fetchDailySeries('QQQ', range, maxWindow) : Promise.resolve(null),
+      mateIdx >= 0 ? fetchDailySeries('RSST', range, maxWindow) : Promise.resolve(null),
+      cadDenominated ? fetchDailySeries(USDCAD_YAHOO_SYMBOL, range, maxWindow) : Promise.resolve(null),
     ])
 
   let seriesMut = series
   let efaMut = efaExtra
   let spyMut = spyExtra
   let rsstMut = rsstExtra
+  let qqqMut = qqqExtra
 
   if (cadDenominated) {
     if (usdCadSeries == null || usdCadSeries.timestamps.length < 2) {
@@ -142,6 +168,7 @@ export async function computePortfolioChart(params: {
     if (efaMut != null) efaMut = convertUsdPricesToCad(efaMut, usdCadSeries)
     if (spyMut != null) spyMut = convertUsdPricesToCad(spyMut, usdCadSeries)
     if (rsstMut != null) rsstMut = convertUsdPricesToCad(rsstMut, usdCadSeries)
+    if (qqqMut != null) qqqMut = convertUsdPricesToCad(qqqMut, usdCadSeries)
   }
 
   const syntheticModeling: SyntheticModelingNote[] = []
@@ -181,22 +208,43 @@ export async function computePortfolioChart(params: {
     }
   }
 
-  if (heqlIdx >= 0 && heqtExtra != null) {
-    const { series: mergedHeql, modeling } = buildLeveredUnderlyingMergeSeries(
-      seriesMut[heqlIdx]!,
-      heqtExtra,
+  const pushCad125 = (
+    idx: number,
+    underlying: PriceSeries,
+    firstRealFloor: string,
+    cadLeveredUnderlying: 'HEQT.TO' | 'QQQ'
+  ) => {
+    const { series: merged, modeling } = buildLeveredUnderlyingMergeSeries(
+      seriesMut[idx]!,
+      underlying,
       HEQL_SYNTHETIC_LEVERAGE,
       HEQL_SYNTHETIC_ANNUAL_DRAG,
-      HEQL_FIRST_REAL_NY_DAY
+      firstRealFloor
     )
-    seriesMut[heqlIdx] = mergedHeql
+    seriesMut[idx] = merged
     if (modeling != null) {
       syntheticModeling.push({
-        slotSymbol: symbols[heqlIdx]!,
+        slotSymbol: symbols[idx]!,
         firstRealNyDay: modeling.firstRealNyDay,
-        kind: 'heql_heqt',
+        kind: 'cad_levered_125',
+        cadLeveredUnderlying,
       })
     }
+  }
+
+  if (usslIdx >= 0 && heqtExtra != null) {
+    pushCad125(usslIdx, heqtExtra, USSL_FIRST_REAL_NY_DAY, 'HEQT.TO')
+  }
+
+  if (qqqlIdx >= 0) {
+    if (!cadDenominated || qqqMut == null) {
+      throw new Error('QQQL.TO requires a CAD-denominated chart (underlying QQQ is converted with USDCAD).')
+    }
+    pushCad125(qqqlIdx, qqqMut, QQQL_FIRST_REAL_NY_DAY, 'QQQ')
+  }
+
+  if (heqlIdx >= 0 && heqtExtra != null) {
+    pushCad125(heqlIdx, heqtExtra, HEQL_FIRST_REAL_NY_DAY, 'HEQT.TO')
   }
 
   const clipped = seriesMut.map((s) => clipSeriesFromTime(s, effectiveStartSec))
@@ -206,7 +254,10 @@ export async function computePortfolioChart(params: {
     throw new Error('Not enough history after the newest holding’s listing date for this range.')
   }
 
-  const points = buildBuyAndHoldSeries(clipped, weights)
+  const points =
+    rebalanceSchedule === 'quarterly'
+      ? buildQuarterlyRebalancedSeries(clipped, weights)
+      : buildBuyAndHoldSeries(clipped, weights)
   if (points.length < 2) {
     throw new Error('Not enough overlapping sessions for this basket and range after inception.')
   }
@@ -225,12 +276,17 @@ export async function computePortfolioChart(params: {
   }
   const benchmarkTotalReturnPercent = totalReturnPercentFromValues(benchmarkValues)
 
+  const excessAlphaPercent =
+    tr != null && benchmarkTotalReturnPercent != null
+      ? tr - benchmarkTotalReturnPercent
+      : null
+
   const valueLine = points.map((p) => p.value * CHART_NOTIONAL_START_USD)
   const benchLine = benchmarkValues.map((v) => v * CHART_NOTIONAL_START_USD)
   const maxDrawdownPortfolioPercent = maxDrawdownPercentFromLevels(valueLine)
   const maxDrawdownBenchmarkPercent = maxDrawdownPercentFromLevels(benchLine)
 
-  /** YYYY-MM-DD (NY); matches `availablePresetChartRanges` / overlap logic — not a locale display string. */
+  /** First **plotted** session in this Yahoo `range` window (NY day) — not the basket overlap date (see `limitingFirstTradeDate`). */
   const chartStartDate = points[0]?.nyDay ?? null
   const limitingFirstTradeDate = nyTradingDayKey(effectiveStartSec)
 
@@ -244,6 +300,7 @@ export async function computePortfolioChart(params: {
     benchmarkSymbol,
     benchmarkValues: benchLine,
     benchmarkTotalReturnPercent,
+    excessAlphaPercent,
     maxDrawdownPortfolioPercent,
     maxDrawdownBenchmarkPercent,
     limitingSymbol,
@@ -251,6 +308,7 @@ export async function computePortfolioChart(params: {
     chartStartDate,
     syntheticModeling: syntheticModelingVisible,
     chartCurrency: cadDenominated ? 'CAD' : 'USD',
+    rebalanceSchedule,
     asOf:
       points.length > 0
         ? new Date(points[points.length - 1]!.t * 1000).toISOString().slice(0, 10)

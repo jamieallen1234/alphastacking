@@ -1,5 +1,5 @@
 /**
- * Model parameters for hypothetical pre-inception series. Must stay in sync with merge libs.
+ * Model parameters for simulated pre-inception series. Must stay in sync with merge libs.
  */
 
 /** NTSD: expense + financing / implementation (annualized). */
@@ -13,6 +13,12 @@ export const HEQL_SYNTHETIC_LEVERAGE = 1.25
 
 /** First session we treat as actual HEQL.TO (NYSE Arca / TSX listing), NY calendar. */
 export const HEQL_FIRST_REAL_NY_DAY = '2023-10-12'
+
+/** First session we treat as actual USSL.TO (Yahoo meta). */
+export const USSL_FIRST_REAL_NY_DAY = '2024-05-22'
+
+/** First session we treat as actual QQQL.TO (Yahoo meta). */
+export const QQQL_FIRST_REAL_NY_DAY = '2024-05-22'
 
 /** Incremental notional beyond 1× HEQT (1.25× − 1×). */
 export const HEQL_EXTRA_NOTIONAL = 0.25

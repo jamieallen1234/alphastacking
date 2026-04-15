@@ -74,6 +74,7 @@ export default function PortfolioBuilder() {
         timestamps?: number[]
         totalReturnPercent?: number | null
         benchmarkTotalReturnPercent?: number | null
+        excessAlphaPercent?: number | null
         maxDrawdownPortfolioPercent?: number | null
         maxDrawdownBenchmarkPercent?: number | null
         benchmarkSymbol?: string
@@ -173,6 +174,10 @@ export default function PortfolioBuilder() {
           benchmarkSymbol,
           benchmarkValues,
           benchmarkTotalReturnPercent: benchmarkReturn,
+          excessAlphaPercent:
+            totalReturn != null && benchmarkReturn != null
+              ? totalReturn - benchmarkReturn
+              : null,
           maxDrawdownPortfolioPercent: maxDdPortfolio,
           maxDrawdownBenchmarkPercent: maxDdBenchmark,
           limitingSymbol,
@@ -181,6 +186,7 @@ export default function PortfolioBuilder() {
           asOf,
           syntheticModeling,
           chartCurrency,
+          rebalanceSchedule: 'none',
         }
       : null
 
@@ -188,15 +194,6 @@ export default function PortfolioBuilder() {
     <div className={styles.builder}>
       <div className={styles.builderLabel}>Portfolio chart</div>
       <h3 className={styles.builderTitle}>Weighted total return (daily EOD)</h3>
-      <p className={styles.builderHint}>
-        Enter tickers and optional weights. Values use Yahoo Finance{' '}
-        <strong style={{ fontWeight: 500 }}>adjusted</strong> daily closes (total return), aligned
-        on common trading days. The series starts when <em>every</em> holding has begun trading
-        (set by the <strong style={{ fontWeight: 500 }}>most recently listed</strong> name in your
-        basket). A second line shows <strong style={{ fontWeight: 500 }}>SPY</strong> on the same
-        dates. Hover the chart to see each session&apos;s date and level. When markets are open, the
-        latest point is usually the prior session&apos;s close.
-      </p>
 
       <div className={styles.formRow}>
         <div className={styles.field}>
@@ -250,7 +247,7 @@ export default function PortfolioBuilder() {
 
       {error ? <div className={styles.error}>{error}</div> : null}
 
-      {chartPayload ? <PresetPortfolioChart payload={chartPayload} showWeightsSummary /> : null}
+      {chartPayload ? <PresetPortfolioChart payload={chartPayload} /> : null}
     </div>
   )
 }

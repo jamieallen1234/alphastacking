@@ -65,13 +65,25 @@ export async function fetchFirstTradeDateSec(symbol: string): Promise<number> {
   return ft
 }
 
+/**
+ * Daily bars. For `range=max`, pass `maxWindow` so Yahoo returns full `interval=1d` history from
+ * basket overlap through now (`range=max` alone is often sparse or truncated vs period bounds).
+ */
 export async function fetchDailySeries(
   symbol: string,
-  range: YahooRange
+  range: YahooRange,
+  maxWindow?: { fromSec: number; toSec: number }
 ): Promise<PriceSeries> {
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
-    symbol.trim()
-  )}?interval=1d&range=${range}`
+  const sym = symbol.trim()
+  const usePeriod =
+    range === 'max' && maxWindow != null && maxWindow.toSec > maxWindow.fromSec
+  const url = usePeriod
+    ? `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+        sym
+      )}?interval=1d&period1=${Math.floor(maxWindow.fromSec)}&period2=${Math.floor(maxWindow.toSec)}`
+    : `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+        sym
+      )}?interval=1d&range=${range}`
 
   const res = await fetch(url, {
     headers: { 'User-Agent': YAHOO_UA, Accept: 'application/json' },

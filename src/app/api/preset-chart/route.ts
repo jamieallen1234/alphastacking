@@ -1,10 +1,20 @@
 import { NextResponse } from 'next/server'
 import { computePortfolioChart } from '@/lib/computePortfolioChart'
 import {
+  CA_CORE_BH_PRESET_ID,
+  caCoreBuyHoldSymbols,
+  caCoreBuyHoldWeights,
+} from '@/lib/presets/caBuyHold'
+import {
   CA_INTL_PRESET_ID,
   caInternationalSymbols,
   caInternationalWeights,
 } from '@/lib/presets/caInternational'
+import {
+  US_CORE_BH_PRESET_ID,
+  usCoreBuyHoldSymbols,
+  usCoreBuyHoldWeights,
+} from '@/lib/presets/usBuyHold'
 import {
   US_INTL_PRESET_ID,
   usInternationalSymbols,
@@ -12,23 +22,44 @@ import {
 } from '@/lib/presets/usInternational'
 import type { YahooRange } from '@/lib/yahooFinance'
 
-const ALLOWED: YahooRange[] = ['1mo', 'ytd', '1y', '5y']
+const ALLOWED: YahooRange[] = ['1mo', 'ytd', '1y', '2y', '5y', 'max']
 
 const PRESETS: Record<
   string,
-  { symbols: () => string[]; weights: () => number[]; cadDenominated: boolean }
+  {
+    symbols: () => string[]
+    weights: () => number[]
+    cadDenominated: boolean
+    rebalanceSchedule: 'none' | 'quarterly'
+  }
 > = {
   [US_INTL_PRESET_ID]: {
     symbols: usInternationalSymbols,
     weights: usInternationalWeights,
     cadDenominated: false,
+    rebalanceSchedule: 'quarterly',
   },
   [CA_INTL_PRESET_ID]: {
     symbols: caInternationalSymbols,
     weights: caInternationalWeights,
     cadDenominated: true,
+    rebalanceSchedule: 'quarterly',
+  },
+  [US_CORE_BH_PRESET_ID]: {
+    symbols: usCoreBuyHoldSymbols,
+    weights: usCoreBuyHoldWeights,
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+  },
+  [CA_CORE_BH_PRESET_ID]: {
+    symbols: caCoreBuyHoldSymbols,
+    weights: caCoreBuyHoldWeights,
+    cadDenominated: true,
+    rebalanceSchedule: 'none',
   },
 }
+
+const PRESET_HINT = `${US_INTL_PRESET_ID}, ${CA_INTL_PRESET_ID}, ${US_CORE_BH_PRESET_ID}, ${CA_CORE_BH_PRESET_ID}`
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
@@ -36,7 +67,7 @@ export async function GET(req: Request) {
   const def = PRESETS[preset]
   if (!def) {
     return NextResponse.json(
-      { error: `Unknown preset (use ${US_INTL_PRESET_ID} or ${CA_INTL_PRESET_ID}).` },
+      { error: `Unknown preset (use one of: ${PRESET_HINT}).` },
       { status: 400 }
     )
   }
@@ -50,6 +81,7 @@ export async function GET(req: Request) {
       weights: def.weights(),
       range,
       cadDenominated: def.cadDenominated,
+      rebalanceSchedule: def.rebalanceSchedule,
     })
     return NextResponse.json(payload, {
       headers: {

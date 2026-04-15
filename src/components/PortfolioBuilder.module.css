@@ -23,14 +23,6 @@
   margin: 0 0 0.5rem;
 }
 
-.builderHint {
-  font-size: 12px;
-  font-weight: 300;
-  color: rgba(232, 228, 220, 0.45);
-  margin: 0 0 1.25rem;
-  line-height: 1.55;
-}
-
 .formRow {
   display: flex;
   flex-wrap: wrap;

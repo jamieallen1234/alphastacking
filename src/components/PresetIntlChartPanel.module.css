@@ -42,6 +42,12 @@
   cursor: not-allowed;
 }
 
+.rangeBtnUnavailable:disabled {
+  opacity: 0.32;
+  color: rgba(232, 228, 220, 0.28);
+  border-color: rgba(232, 228, 220, 0.12);
+}
+
 .rangeBtnActive {
   border-color: rgba(201, 168, 76, 0.5);
   color: var(--color-gold);

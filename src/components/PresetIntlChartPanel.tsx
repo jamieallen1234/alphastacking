@@ -3,14 +3,18 @@
 import { useCallback, useMemo, useState } from 'react'
 import PresetPortfolioChart from '@/components/PresetPortfolioChart'
 import type { PortfolioChartPayload } from '@/lib/computePortfolioChart'
-import { availablePresetChartRanges } from '@/lib/presetChartRanges'
+import {
+  availablePresetChartRanges,
+  overlapCalendarDaysForPresetUi,
+  PRESET_RANGE_MIN_DAYS,
+} from '@/lib/presetChartRanges'
 import type { YahooRange } from '@/lib/yahooFinance'
 import styles from './PresetIntlChartPanel.module.css'
 
 interface PresetIntlChartPanelProps {
   presetId: string
   initialPayload: PortfolioChartPayload
-  /** First overlap session (YYYY-MM-DD); used only to decide which shorter ranges to show. */
+  /** First session where every holding overlaps (youngest listing), YYYY-MM-DD — not the first day of the current chart window. */
   overlapInceptionYmd: string
 }
 
@@ -19,15 +23,17 @@ export default function PresetIntlChartPanel({
   initialPayload,
   overlapInceptionYmd,
 }: PresetIntlChartPanelProps) {
-  const rangeOptions = useMemo(
-    () => availablePresetChartRanges(overlapInceptionYmd),
-    [overlapInceptionYmd]
-  )
-
   const [payload, setPayload] = useState(initialPayload)
   const [activeRange, setActiveRange] = useState<YahooRange>(initialPayload.range)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const overlapDays = useMemo(
+    () => overlapCalendarDaysForPresetUi(overlapInceptionYmd),
+    [overlapInceptionYmd]
+  )
+
+  const rangeOptions = useMemo(() => availablePresetChartRanges(overlapDays), [overlapDays])
 
   const loadRange = useCallback(
     async (range: YahooRange) => {
@@ -59,17 +65,30 @@ export default function PresetIntlChartPanel({
     <div>
       <div className={styles.rangeRow}>
         <span className={styles.rangeLabel}>Range</span>
-        {rangeOptions.map(({ range, label }) => (
-          <button
-            key={range}
-            type="button"
-            className={`${styles.rangeBtn} ${activeRange === range ? styles.rangeBtnActive : ''}`}
-            disabled={loading}
-            onClick={() => void loadRange(range)}
-          >
-            {label}
-          </button>
-        ))}
+        {rangeOptions.map(({ range, label, disabled }) => {
+          const inactive = loading || disabled
+          const showActive = activeRange === range && !disabled
+          const minDays = PRESET_RANGE_MIN_DAYS[range as keyof typeof PRESET_RANGE_MIN_DAYS]
+          return (
+            <button
+              key={range}
+              type="button"
+              className={`${styles.rangeBtn} ${showActive ? styles.rangeBtnActive : ''} ${disabled ? styles.rangeBtnUnavailable : ''}`}
+              disabled={inactive}
+              title={
+                disabled && minDays > 0
+                  ? `Needs at least ${minDays} calendar days of joint history (youngest listing)`
+                  : undefined
+              }
+              onClick={() => {
+                if (disabled || loading) return
+                void loadRange(range)
+              }}
+            >
+              {label}
+            </button>
+          )
+        })}
       </div>
       {error ? <p className={styles.rangeError}>{error}</p> : null}
       <PresetPortfolioChart payload={payload} />

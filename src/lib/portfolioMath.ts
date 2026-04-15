@@ -86,6 +86,87 @@ export function buildBuyAndHoldSeries(
   return out
 }
 
+function yearQuarterKey(nyDay: string): string {
+  const [y, m] = nyDay.split('-').map(Number)
+  if (!y || !m) return nyDay
+  const q = Math.floor((m - 1) / 3) + 1
+  return `${y}-Q${q}`
+}
+
+/**
+ * Same calendar alignment as {@link buildBuyAndHoldSeries}; after each session’s close, apply
+ * daily returns, then on the first session of a new calendar quarter rescale holdings to `weights`.
+ */
+export function buildQuarterlyRebalancedSeries(
+  series: PriceSeries[],
+  weights: number[]
+): PortfolioSeriesPoint[] {
+  if (series.length !== weights.length) {
+    throw new Error('Series count must match weight count')
+  }
+  if (series.length === 0) return []
+
+  const dayMaps = series.map((s) => seriesToNyDayPriceMap(s))
+
+  let common: Set<string> | null = null
+  for (const dm of dayMaps) {
+    const keys = new Set(dm.keys())
+    if (common === null) {
+      common = keys
+    } else {
+      const next = new Set<string>()
+      for (const k of common) {
+        if (keys.has(k)) next.add(k)
+      }
+      common = next
+    }
+  }
+  if (!common || common.size === 0) return []
+
+  const sortedDays = [...common].sort()
+  const day0 = sortedDays[0]!
+  if (dayMaps.some((dm) => {
+    const p = dm.get(day0)
+    return p == null || p <= 0
+  })) {
+    return []
+  }
+
+  const wSum = weights.reduce((a, b) => a + b, 0)
+  if (Math.abs(wSum - 1) > 1e-6) {
+    throw new Error('Quarterly rebalance weights must sum to 1')
+  }
+
+  let h = weights.map((w) => w)
+  const out: PortfolioSeriesPoint[] = []
+
+  for (let k = 0; k < sortedDays.length; k++) {
+    const day = sortedDays[k]!
+    if (k > 0) {
+      const prev = sortedDays[k - 1]!
+      for (let i = 0; i < dayMaps.length; i++) {
+        const p0 = dayMaps[i]!.get(prev)
+        const p1 = dayMaps[i]!.get(day)
+        if (p0 == null || p1 == null || p0 <= 0 || p1 <= 0) {
+          return []
+        }
+        h[i]! *= p1 / p0
+      }
+      if (yearQuarterKey(day) !== yearQuarterKey(prev)) {
+        const tot = h.reduce((a, b) => a + b, 0)
+        if (tot <= 0) return []
+        h = weights.map((w) => w * tot)
+      }
+    }
+
+    const value = h.reduce((a, b) => a + b, 0)
+    if (!Number.isFinite(value) || value <= 0) return []
+    out.push({ t: dayKeyToUtcNoonUnix(day), value, nyDay: day })
+  }
+
+  return out
+}
+
 export function totalReturnPercent(points: PortfolioSeriesPoint[]): number | null {
   if (points.length < 2) return null
   const a = points[0]!.value

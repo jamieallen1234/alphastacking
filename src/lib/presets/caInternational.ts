@@ -1,13 +1,13 @@
 import type { PresetHolding } from './usInternational'
 
-export const CA_INTL_PRESET_ID = 'ca-intl-v4'
+export const CA_INTL_PRESET_ID = 'ca-intl-v6'
 
 export const caInternationalHoldings: PresetHolding[] = [
   {
     ticker: 'HEQL.TO',
     weightPct: 20,
     beta: 1.25,
-    blurb: 'TSX-listed ~1.25× HEQT.TO–style core; listed Oct 12, 2023 (charts proxy pre-history vs HEQT.TO).',
+    blurb: 'Global equity (~1.25× HEQT.TO–style; charts proxy pre-history vs HEQT.TO).',
   },
   {
     ticker: 'SSO',
@@ -19,13 +19,13 @@ export const caInternationalHoldings: PresetHolding[] = [
     ticker: 'PFLS.TO',
     weightPct: 20,
     beta: 0.48,
-    blurb: 'TSX-listed alternative sleeve.',
+    blurb: 'Long/short equity.',
   },
   {
     ticker: 'HDGE.TO',
     weightPct: 30,
     beta: 0.18,
-    blurb: 'Global macro / hedge sleeve.',
+    blurb: 'Long/short equity, beta neutral.',
   },
 ]
 

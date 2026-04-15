@@ -1,10 +1,7 @@
 'use client'
 
 import ReturnLineChart from '@/components/ReturnLineChart'
-import type {
-  PortfolioChartPayload,
-  SyntheticModelingKind,
-} from '@/lib/computePortfolioChart'
+import type { PortfolioChartPayload, SyntheticModelingNote } from '@/lib/computePortfolioChart'
 import {
   HEQL_CAD_FINANCING_RATE_ON_EXCESS_NOTIONAL_ANNUAL,
   HEQL_SYNTHETIC_ANNUAL_DRAG,
@@ -27,22 +24,29 @@ function formatCalendarDate(isoYmd: string): string {
   })
 }
 
-function syntheticModelingCopy(
-  kind: SyntheticModelingKind,
-  firstRealNyDay: string
-): { title: string; body: string } {
-  const when = formatCalendarDate(firstRealNyDay)
-  switch (kind) {
+function cad125Body(slotSymbol: string, when: string, underlying: 'HEQT.TO' | 'QQQ'): string {
+  const tr =
+    underlying === 'QQQ'
+      ? `${underlying} daily total returns (Yahoo adjusted), converted to CAD with NY-aligned USDCAD`
+      : `${underlying} daily total returns (Yahoo adjusted, CAD-listed)`
+  return `before ${when}, ${slotSymbol} is modeled as ${HEQL_SYNTHETIC_LEVERAGE}× ${tr}, reinvesting at ${HEQL_SYNTHETIC_LEVERAGE}× notional; financing ~${(HEQL_CAD_FINANCING_RATE_ON_EXCESS_NOTIONAL_ANNUAL * 100).toFixed(1)}%/yr on the extra 0.25× notional (Canadian-style wholesale carry), i.e. ~${(HEQL_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(2)}%/yr drag on NAV; then actual ${slotSymbol} closes. Simulated.`
+}
+
+function syntheticModelingCopy(m: SyntheticModelingNote): { title: string; body: string } {
+  const when = formatCalendarDate(m.firstRealNyDay)
+  switch (m.kind) {
     case 'ntsd':
       return {
         title: 'NTSD (modeled segment)',
-        body: `before ${when}, NTSD is shown as a hypothetical daily blend (90% SPY + 60% EFA returns, minus ~${(NTSD_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(1)}% annual drag), then actual NTSD closes. Not published NAV history.`,
+        body: `before ${when}, NTSD is shown as a simulated daily blend (90% SPY + 60% EFA returns, minus ~${(NTSD_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(1)}% annual drag), then actual NTSD closes. Not published NAV history.`,
       }
-    case 'heql_heqt':
+    case 'cad_levered_125': {
+      const u = m.cadLeveredUnderlying ?? 'HEQT.TO'
       return {
-        title: 'HEQL.TO (modeled segment)',
-        body: `before ${when}, HEQL.TO is ${HEQL_SYNTHETIC_LEVERAGE}× HEQT.TO daily total returns (Yahoo adjusted), minus ~${(HEQL_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(2)}%/yr on NAV (~${(HEQL_CAD_FINANCING_RATE_ON_EXCESS_NOTIONAL_ANNUAL * 100).toFixed(1)}%/yr on the extra 0.25× notional — Canadian-style wholesale carry), then actual HEQL.TO closes. Hypothetical only.`,
+        title: `${m.slotSymbol} (modeled segment)`,
+        body: cad125Body(m.slotSymbol, when, u),
       }
+    }
     case 'mate_rsst':
       return {
         title: 'MATE (modeled segment)',
@@ -53,29 +57,22 @@ function syntheticModelingCopy(
 
 interface PresetPortfolioChartProps {
   payload: PortfolioChartPayload
-  /** Show resolved weight % line (e.g. from interactive builder) */
-  showWeightsSummary?: boolean
 }
 
-export default function PresetPortfolioChart({
-  payload,
-  showWeightsSummary = false,
-}: PresetPortfolioChartProps) {
+export default function PresetPortfolioChart({ payload }: PresetPortfolioChartProps) {
   const {
     values,
     benchmarkValues,
     timestamps,
     totalReturnPercent,
     benchmarkTotalReturnPercent,
+    excessAlphaPercent: excessAlphaFromPayload = null,
     maxDrawdownPortfolioPercent = null,
     maxDrawdownBenchmarkPercent = null,
     benchmarkSymbol,
     chartStartDate,
     limitingSymbol,
     limitingFirstTradeDate,
-    asOf,
-    symbols,
-    weights,
     syntheticModeling = [],
     chartCurrency = 'USD',
   } = payload
@@ -106,6 +103,19 @@ export default function PresetPortfolioChart({
       : maxDrawdownBenchmarkPercent < 0
         ? styles.metricBigNeg
         : ''
+
+  const excessAlphaPercent =
+    excessAlphaFromPayload ??
+    (totalReturnPercent != null && benchmarkTotalReturnPercent != null
+      ? totalReturnPercent - benchmarkTotalReturnPercent
+      : null)
+
+  const alphaClass =
+    excessAlphaPercent == null
+      ? ''
+      : excessAlphaPercent >= 0
+        ? styles.metricBigPos
+        : styles.metricBigNeg
 
   const chartSeries =
     values &&
@@ -148,6 +158,14 @@ export default function PresetPortfolioChart({
           <div className={styles.metricSub}>{benchmarkSymbol} (benchmark)</div>
         </div>
         <div>
+          <div className={`${styles.metricBig} ${alphaClass}`}>
+            {excessAlphaPercent != null
+              ? `${excessAlphaPercent >= 0 ? '+' : ''}${excessAlphaPercent.toFixed(2)}%`
+              : '—'}
+          </div>
+          <div className={styles.metricSub}>Excess α vs {benchmarkSymbol}</div>
+        </div>
+        <div>
           <div className={`${styles.metricBig} ${ddPortClass}`}>
             {maxDrawdownPortfolioPercent != null
               ? `${maxDrawdownPortfolioPercent.toFixed(2)}%`
@@ -174,38 +192,35 @@ export default function PresetPortfolioChart({
           {benchmarkSymbol}
         </span>
       </div>
-      <p className={styles.chartMeta}>
-        <strong>From {formatCalendarDate(chartStartDate)}</strong>
-        {' — '}
-        history begins once all holdings overlap; the newest listing is{' '}
-        <strong>{limitingSymbol}</strong> (inception {formatCalendarDate(limitingFirstTradeDate)}).
-      </p>
-      {syntheticModeling.map((m) => {
-        const { title, body } = syntheticModelingCopy(m.kind, m.firstRealNyDay)
-        if (!body) return null
-        return (
-          <p key={`${m.kind}-${m.slotSymbol}`} className={styles.chartMeta}>
-            <strong>{title}:</strong> {body}
-          </p>
-        )
-      })}
       <ReturnLineChart
         series={chartSeries}
         timestampsSec={timestamps}
         height={140}
         chartCurrency={chartCurrency}
       />
-      {asOf ? <p className={styles.asOf}>Last daily point: {asOf} (exchange date)</p> : null}
-      {showWeightsSummary ? (
-        <p className={styles.weightsNote}>
-          {symbols.map((s, i) => (
-            <span key={s + i}>
-              {s} {(weights[i]! * 100).toFixed(1)}%
-              {i < symbols.length - 1 ? ' · ' : ''}
-            </span>
-          ))}
-        </p>
-      ) : null}
+      <div className={styles.chartFootnotes}>
+        <div className={styles.chartDisclaimerRow}>
+          <span className={styles.footnoteMark} aria-hidden="true">
+            *
+          </span>
+          <div className={styles.footnoteBody}>
+            <p className={styles.disclaimerLead}>
+              Educational model only — not investment advice. Portfolio betas in the holdings table
+              are weighted to the listed names and weights; they are intended to be accurate to that
+              model and may be updated if holdings, listings, or methodology change.
+            </p>
+            {syntheticModeling.map((m) => {
+              const { title, body } = syntheticModelingCopy(m)
+              if (!body) return null
+              return (
+                <p key={`${m.kind}-${m.slotSymbol}`} className={styles.disclaimerDetail}>
+                  <strong>{title}:</strong> {body}
+                </p>
+              )
+            })}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

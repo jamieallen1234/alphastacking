@@ -4,13 +4,34 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import PresetIntlChartPanel from '@/components/PresetIntlChartPanel'
 import PresetHoldingsTable from '@/components/PresetHoldingsTable'
-import { getCachedCaInternationalChart } from '@/lib/getCachedPresetChart'
+import { getCachedCaCoreBuyHoldChart, getCachedCaInternationalChart } from '@/lib/getCachedPresetChart'
 import { caPortfolioRoutes } from '@/lib/portfolioRoutes'
+import { CA_CORE_BH_PRESET_ID, caCoreBuyHoldHoldings } from '@/lib/presets/caBuyHold'
 import { CA_INTL_PRESET_ID, caInternationalHoldings } from '@/lib/presets/caInternational'
-import { weightedBeta } from '@/lib/presets/usInternational'
+import { type PresetHolding, weightedBeta } from '@/lib/presets/usInternational'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
 
 export const dynamic = 'force-dynamic'
+
+const CA_LIVE: Record<
+  string,
+  {
+    presetId: string
+    holdings: PresetHolding[]
+    load: () => ReturnType<typeof getCachedCaInternationalChart>
+  }
+> = {
+  'ca-international': {
+    presetId: CA_INTL_PRESET_ID,
+    holdings: caInternationalHoldings,
+    load: getCachedCaInternationalChart,
+  },
+  'ca-core-buy-hold': {
+    presetId: CA_CORE_BH_PRESET_ID,
+    holdings: caCoreBuyHoldHoldings,
+    load: getCachedCaCoreBuyHoldChart,
+  },
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -49,17 +70,18 @@ export default async function CaPortfolioDetailPage({
     )
   }
 
-  if (slug !== 'ca-international') notFound()
+  const live = CA_LIVE[slug]
+  if (!live) notFound()
 
   let chart = null
   let errorMessage: string | null = null
   try {
-    chart = await getCachedCaInternationalChart()
+    chart = await live.load()
   } catch (e) {
     errorMessage = e instanceof Error ? e.message : 'Failed to load chart data'
   }
 
-  const wb = weightedBeta(caInternationalHoldings)
+  const wb = weightedBeta(live.holdings)
 
   return (
     <main className={styles.main}>
@@ -72,33 +94,24 @@ export default async function CaPortfolioDetailPage({
         <h1 className={styles.detailTitle}>{def.title}</h1>
         <p className={styles.detailLede}>{def.description}</p>
 
-        <div className={styles.disclaimer}>
-          <span className={styles.disclaimerIcon}>⚠</span>
-          <p>
-            Model mix for educational purposes only. Includes both TSX (.TO) and US-listed tickers; aligned
-            trading days may be sparser than a single-market portfolio. Not investment advice.
-          </p>
-        </div>
-
-        <PresetHoldingsTable holdings={caInternationalHoldings} weightedBeta={wb} />
+        <PresetHoldingsTable holdings={live.holdings} weightedBeta={wb} />
 
         <h2 className={styles.chartHeading}>Total return (CAD vs SPY)</h2>
-        <p className={styles.detailLede} style={{ fontSize: 12, marginBottom: '1rem' }}>
-          US-listed legs are converted with NY-aligned <strong>USDCAD</strong>; benchmark is{' '}
-          <strong>SPY</strong> (S&amp;P 500 total return in CAD via <strong>VFV.TO</strong>). Chart starts at CA$10k on the first session where
-          all holdings overlap. Default view is <strong>1Y</strong>; shorter ranges (1M, YTD) appear
-          after enough calendar history since that overlap. <strong>All</strong> uses a Yahoo 5Y
-          pull (inception-clipped).
-        </p>
 
         {errorMessage ? <div className={styles.errorBox}>{errorMessage}</div> : null}
         {chart && chart.chartStartDate ? (
           <PresetIntlChartPanel
-            presetId={CA_INTL_PRESET_ID}
+            presetId={live.presetId}
             initialPayload={chart}
-            overlapInceptionYmd={chart.chartStartDate}
+            overlapInceptionYmd={chart.limitingFirstTradeDate}
           />
-        ) : null}
+        ) : (
+          <p className={styles.pageChartDisclaimer}>
+            Educational model only — not investment advice. Betas in the holdings table are
+            weighted to the listed names and weights; they may be updated if holdings or methodology
+            change.
+          </p>
+        )}
       </section>
       <Footer />
     </main>

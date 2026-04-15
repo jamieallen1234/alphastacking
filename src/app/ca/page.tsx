@@ -21,7 +21,7 @@ export default function CaHomePage() {
           investment advice.
         </p>
         <p className={styles.lede}>
-          <Link href="/ca/portfolios#us-models" style={{ color: 'var(--color-gold)' }}>
+          <Link href="/ca/portfolios#ca-block" style={{ color: 'var(--color-gold)' }}>
             Browse US &amp; Canadian model portfolios →
           </Link>
         </p>

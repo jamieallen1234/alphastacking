@@ -125,3 +125,13 @@ export async function mateSyntheticOverlapFirstTradeSec(): Promise<number> {
 export async function heqlSyntheticOverlapFirstTradeSec(): Promise<number> {
   return fetchFirstTradeDateSec('HEQT.TO')
 }
+
+/** Same S&P CAD anchor as HEQL for pre-listing 1.25× simulation. */
+export async function usslSyntheticOverlapFirstTradeSec(): Promise<number> {
+  return fetchFirstTradeDateSec('HEQT.TO')
+}
+
+/** Nasdaq-100 anchor for pre-listing 1.25× simulation (QQQ adj. TR, then CAD in chart pipeline). */
+export async function qqqlSyntheticOverlapFirstTradeSec(): Promise<number> {
+  return fetchFirstTradeDateSec('QQQ')
+}

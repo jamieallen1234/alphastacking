@@ -37,16 +37,50 @@
   flex-shrink: 0;
 }
 
-.chartMeta {
-  font-size: 11px;
-  font-weight: 300;
-  color: rgba(232, 228, 220, 0.42);
-  line-height: 1.55;
-  margin: 0 0 0.6rem;
-  max-width: 42rem;
+.chartFootnotes {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 0.5px solid var(--color-border-faint);
+  max-width: 46rem;
 }
 
-.chartMeta strong {
+.chartDisclaimerRow {
+  display: flex;
+  gap: 0.45rem;
+  align-items: flex-start;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.disclaimerLead,
+.disclaimerDetail {
+  margin: 0 0 0.65rem;
+  font-weight: 300;
+  color: rgba(232, 228, 220, 0.42);
+}
+
+.disclaimerDetail:last-child {
+  margin-bottom: 0;
+}
+
+.footnoteMark {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.55;
+  color: rgba(232, 228, 220, 0.32);
+  user-select: none;
+  padding-top: 0.05em;
+}
+
+.footnoteBody {
+  flex: 1;
+  min-width: 0;
+  font-weight: 300;
+  color: rgba(232, 228, 220, 0.42);
+}
+
+.footnoteBody strong {
   font-weight: 500;
   color: rgba(232, 228, 220, 0.72);
 }
@@ -73,15 +107,3 @@
   text-transform: uppercase;
 }
 
-.asOf {
-  font-size: 11px;
-  color: rgba(232, 228, 220, 0.4);
-  margin-top: 0.5rem;
-}
-
-.weightsNote {
-  font-size: 11px;
-  color: rgba(232, 228, 220, 0.35);
-  margin-top: 0.75rem;
-  line-height: 1.5;
-}

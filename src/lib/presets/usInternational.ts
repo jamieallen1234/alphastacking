@@ -7,7 +7,7 @@ export interface PresetHolding {
   blurb: string
 }
 
-export const US_INTL_PRESET_ID = 'us-intl-v1'
+export const US_INTL_PRESET_ID = 'us-intl-v2'
 
 export const usInternationalHoldings: PresetHolding[] = [
   {
@@ -26,13 +26,13 @@ export const usInternationalHoldings: PresetHolding[] = [
     ticker: 'MATE',
     weightPct: 10,
     beta: 1,
-    blurb: '~SPY core with managed futures / futures yield layered on top (charts may proxy pre-history with RSST).',
+    blurb: 'Managed futures sleeve (charts may proxy pre-history with RSST).',
   },
   {
     ticker: 'RSSY',
     weightPct: 10,
     beta: 1,
-    blurb: '~SPY core with managed futures and futures-yield sleeves stacked on top.',
+    blurb: 'Futures yield sleeve.',
   },
   {
     ticker: 'ORR',
@@ -44,13 +44,13 @@ export const usInternationalHoldings: PresetHolding[] = [
     ticker: 'CLSE',
     weightPct: 10,
     beta: 0.6,
-    blurb: 'Capital-efficient / alt sleeve.',
+    blurb: 'US long/short equity.',
   },
   {
     ticker: 'FLSP',
     weightPct: 15,
     beta: 0,
-    blurb: 'Low / market-neutral style sleeve.',
+    blurb: 'Risk premia sleeve.',
   },
 ]
 

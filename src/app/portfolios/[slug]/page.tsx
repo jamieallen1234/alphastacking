@@ -5,9 +5,11 @@ import Footer from '@/components/Footer'
 import PresetIntlChartPanel from '@/components/PresetIntlChartPanel'
 import PresetHoldingsTable from '@/components/PresetHoldingsTable'
 import Sparkline from '@/components/Sparkline'
-import { getCachedUsInternationalChart } from '@/lib/getCachedPresetChart'
+import { getCachedUsCoreBuyHoldChart, getCachedUsInternationalChart } from '@/lib/getCachedPresetChart'
 import { getPortfolioCardById, usPortfolioRoutes } from '@/lib/portfolioRoutes'
+import { US_CORE_BH_PRESET_ID, usCoreBuyHoldHoldings } from '@/lib/presets/usBuyHold'
 import {
+  type PresetHolding,
   US_INTL_PRESET_ID,
   usInternationalHoldings,
   weightedBeta,
@@ -15,6 +17,26 @@ import {
 import styles from '../PortfoliosPage.module.css'
 
 export const dynamic = 'force-dynamic'
+
+const US_LIVE: Record<
+  string,
+  {
+    presetId: string
+    holdings: PresetHolding[]
+    load: () => ReturnType<typeof getCachedUsInternationalChart>
+  }
+> = {
+  'us-international': {
+    presetId: US_INTL_PRESET_ID,
+    holdings: usInternationalHoldings,
+    load: getCachedUsInternationalChart,
+  },
+  'us-core-buy-hold': {
+    presetId: US_CORE_BH_PRESET_ID,
+    holdings: usCoreBuyHoldHoldings,
+    load: getCachedUsCoreBuyHoldChart,
+  },
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -100,17 +122,18 @@ export default async function UsPortfolioDetailPage({
     )
   }
 
-  if (slug !== 'us-international') notFound()
+  const live = US_LIVE[slug]
+  if (!live) notFound()
 
   let chart = null
   let errorMessage: string | null = null
   try {
-    chart = await getCachedUsInternationalChart()
+    chart = await live.load()
   } catch (e) {
     errorMessage = e instanceof Error ? e.message : 'Failed to load chart data'
   }
 
-  const wb = weightedBeta(usInternationalHoldings)
+  const wb = weightedBeta(live.holdings)
 
   return (
     <main className={styles.main}>
@@ -123,31 +146,24 @@ export default async function UsPortfolioDetailPage({
         <h1 className={styles.detailTitle}>{def.title}</h1>
         <p className={styles.detailLede}>{def.description}</p>
 
-        <div className={styles.disclaimer}>
-          <span className={styles.disclaimerIcon}>⚠</span>
-          <p>
-            Model mix for educational purposes only. Betas are approximate. Not a recommendation to buy
-            or sell any security.
-          </p>
-        </div>
-
-        <PresetHoldingsTable holdings={usInternationalHoldings} weightedBeta={wb} />
+        <PresetHoldingsTable holdings={live.holdings} weightedBeta={wb} />
 
         <h2 className={styles.chartHeading}>Total return (vs SPY)</h2>
-        <p className={styles.detailLede} style={{ fontSize: 12, marginBottom: '1rem' }}>
-          Chart starts at $10,000 at the first session where all holdings trade; benchmark is SPY
-          on the same dates. Default view is <strong>1Y</strong>; shorter ranges (1M, YTD) appear
-          once the basket has enough overlapping history since the youngest listing.
-        </p>
 
         {errorMessage ? <div className={styles.errorBox}>{errorMessage}</div> : null}
         {chart && chart.chartStartDate ? (
           <PresetIntlChartPanel
-            presetId={US_INTL_PRESET_ID}
+            presetId={live.presetId}
             initialPayload={chart}
-            overlapInceptionYmd={chart.chartStartDate}
+            overlapInceptionYmd={chart.limitingFirstTradeDate}
           />
-        ) : null}
+        ) : (
+          <p className={styles.pageChartDisclaimer}>
+            Educational model only — not investment advice. Betas in the holdings table are
+            weighted to the listed names and weights; they may be updated if holdings or methodology
+            change.
+          </p>
+        )}
       </section>
       <Footer />
     </main>

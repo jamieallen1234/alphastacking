@@ -4,8 +4,9 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import PresetIntlChartPanel from '@/components/PresetIntlChartPanel'
 import PresetHoldingsTable from '@/components/PresetHoldingsTable'
+import UsPortfolioDetailMain from '@/components/UsPortfolioDetailMain'
 import { getCachedCaCoreBuyHoldChart, getCachedCaInternationalChart } from '@/lib/getCachedPresetChart'
-import { caPortfolioRoutes } from '@/lib/portfolioRoutes'
+import { caPortfolioRoutes, usPortfolioRoutes } from '@/lib/portfolioRoutes'
 import { CA_CORE_BH_PRESET_ID, caCoreBuyHoldHoldings } from '@/lib/presets/caBuyHold'
 import { CA_INTL_PRESET_ID, caInternationalHoldings } from '@/lib/presets/caInternational'
 import { type PresetHolding, weightedBeta } from '@/lib/presets/usInternational'
@@ -35,10 +36,10 @@ const CA_LIVE: Record<
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const def = caPortfolioRoutes.find((r) => r.slug === slug)
-  return {
-    title: def ? `${def.title} — Alpha Stacking` : 'Portfolio',
-  }
+  const caDef = caPortfolioRoutes.find((r) => r.slug === slug)
+  if (caDef) return { title: `${caDef.title} — Alpha Stacking` }
+  const usDef = usPortfolioRoutes.find((r) => r.slug === slug)
+  return { title: usDef ? `${usDef.title} — Alpha Stacking` : 'Portfolio' }
 }
 
 export default async function CaPortfolioDetailPage({
@@ -48,7 +49,12 @@ export default async function CaPortfolioDetailPage({
 }) {
   const { slug } = await params
   const def = caPortfolioRoutes.find((r) => r.slug === slug)
-  if (!def) notFound()
+  if (!def) {
+    if (usPortfolioRoutes.some((r) => r.slug === slug)) {
+      return <UsPortfolioDetailMain slug={slug} backHref="/ca/portfolios" />
+    }
+    notFound()
+  }
 
   if (def.kind === 'stub') {
     return (

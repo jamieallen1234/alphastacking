@@ -132,8 +132,8 @@ export default function CaPortfoliosHubPage() {
         {sectionBlocks(
           'us',
           usBy,
-          (slug) => `/portfolios/${slug}`,
-          'Same detail pages as /portfolios.',
+          (slug) => `/ca/portfolios/${slug}`,
+          'Same models as /portfolios; links stay in the Canadian edition.',
           '0.5rem'
         )}
       </section>

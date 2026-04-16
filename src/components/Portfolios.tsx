@@ -13,6 +13,7 @@ export default function Portfolios() {
 
   return (
     <section className={styles.section}>
+      <div className={styles.sectionInner}>
       <div className={styles.sectionLabel}>Model portfolios</div>
       <h2 className={styles.heading}>Real returns. Real ETFs.</h2>
 
@@ -61,6 +62,7 @@ export default function Portfolios() {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </section>
   )

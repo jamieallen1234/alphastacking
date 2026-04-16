@@ -1,8 +1,15 @@
 .section {
   background: var(--color-bg-elevated);
-  padding: 5rem 3rem;
   border-top: 0.5px solid var(--color-border-faint);
   border-bottom: 0.5px solid var(--color-border-faint);
+}
+
+.sectionInner {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: 5rem 3rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .sectionLabel {
@@ -166,7 +173,7 @@
     grid-template-columns: 1fr;
   }
 
-  .section {
+  .sectionInner {
     padding: 3rem 1.5rem;
   }
 }

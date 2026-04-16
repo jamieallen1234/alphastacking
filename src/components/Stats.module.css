@@ -3,6 +3,10 @@
   grid-template-columns: repeat(3, 1fr);
   padding: 3rem;
   gap: 0;
+  max-width: 72rem;
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .stat {

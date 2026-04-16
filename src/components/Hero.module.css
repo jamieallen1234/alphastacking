@@ -1,6 +1,9 @@
 .hero {
   padding: 6rem 3rem 4.5rem;
-  max-width: 900px;
+  max-width: var(--home-content-max);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .label {

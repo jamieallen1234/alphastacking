@@ -18,6 +18,8 @@
   --font-serif: var(--font-playfair), Georgia, serif;
   --font-mono: var(--font-dm-mono), 'Courier New', monospace;
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  /** Single column width for home sections so CTAs and copy share one left edge when centered. */
+  --home-content-max: 900px;
 }
 
 * {

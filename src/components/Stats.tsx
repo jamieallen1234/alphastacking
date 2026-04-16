@@ -34,11 +34,7 @@ const STATS: StatItem[] = [
   },
 ]
 
-export interface StatsProps {
-  variant?: 'us' | 'ca'
-}
-
-export default function Stats({ variant: _variant = 'us' }: StatsProps) {
+export default function Stats() {
   return (
     <div className={styles.stats}>
       {STATS.map((s) => (

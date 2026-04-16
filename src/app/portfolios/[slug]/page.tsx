@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import UsPortfolioDetailMain from '@/components/UsPortfolioDetailMain'
+import PortfolioDetailMain from '@/components/PortfolioDetailMain'
 import { usPortfolioRoutes } from '@/lib/portfolioRoutes'
 
 export const dynamic = 'force-dynamic'
@@ -19,5 +19,5 @@ export default async function UsPortfolioDetailPage({
 }) {
   const { slug } = await params
   if (!usPortfolioRoutes.some((r) => r.slug === slug)) notFound()
-  return <UsPortfolioDetailMain slug={slug} backHref="/portfolios" />
+  return <PortfolioDetailMain slug={slug} backHref="/portfolios" routeSet="us" />
 }

@@ -29,10 +29,7 @@ export default function Footer() {
           derivatives and debt to amplify returns. They are subject to volatility
           decay and are designed for short-term trading by definition of their
           structure. They may not be suitable for long-term investors or investors
-          who are not able to withstand the risk of significant loss. alphastacking.co
-          may receive compensation through affiliate relationships with brokers and
-          financial services. All affiliate relationships are disclosed.{' '}
-          <a href="/affiliate-disclosure">Affiliate disclosure</a>
+          who are not able to withstand the risk of significant loss.
         </p>
       </div>
 
@@ -58,11 +55,6 @@ export default function Footer() {
             🇨🇦 CA
           </Link>
         </div>
-
-        <ul className={styles.links}>
-          <li><a href="/affiliate-disclosure">Affiliate disclosure</a></li>
-          <li><a href="https://x.com/alphastacking" target="_blank" rel="noopener noreferrer">X / Twitter</a></li>
-        </ul>
       </div>
     </footer>
   )

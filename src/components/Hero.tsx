@@ -1,31 +1,36 @@
 import Link from 'next/link'
 import styles from './Hero.module.css'
 
-export default function Hero() {
+export interface HeroProps {
+  /** `ca`: Canadian edition label and CTA to `/ca/portfolios`. */
+  variant?: 'us' | 'ca'
+}
+
+export default function Hero({ variant = 'us' }: HeroProps) {
+  const isCa = variant === 'ca'
+  const portfolioHref = isCa ? '/ca/portfolios' : '/portfolios'
+
   return (
     <section className={styles.hero}>
       <div className={`${styles.label} animate animate-1`}>
-        A new framework for portfolio construction
+        {isCa ? 'Canadian edition' : 'A new framework for portfolio construction'}
       </div>
 
       <h1 className={`${styles.heading} animate animate-2`}>
-        Stack more <em>alpha.</em>
-        <br />
-        Deploy less capital.
+        Stack <em>alpha</em>, not beta
       </h1>
 
       <p className={`${styles.sub} animate animate-3`}>
-        Alpha stacking layers leveraged excess returns on top of a core portfolio —
-        compounding advantage across strategies without proportionally increasing
-        capital at risk.
+        <span className={styles.subHighlightWhite}>Alpha</span>
+        <span className={styles.subHighlightGold}> stacking</span> involves stacking uncorrelated assets on top of a core portfolio to
+        generate excess returns. It improves upon return stacking by focusing on higher expected returns
+        while keeping beta similar to traditional portfolios. Strategies found in hedge funds such as long/short,
+        global macro, risk premia and systematic alternatives are deployed to improve returns while managing risk.
       </p>
 
       <div className={`${styles.actions} animate animate-4`}>
-        <Link href="/portfolios" className={styles.btnPrimary}>
-          Explore sample portfolios
-        </Link>
-        <Link href="/learn" className={styles.btnGhost}>
-          What is alpha stacking? →
+        <Link href={portfolioHref} className={styles.btnPrimary}>
+          Explore portfolios
         </Link>
       </div>
 

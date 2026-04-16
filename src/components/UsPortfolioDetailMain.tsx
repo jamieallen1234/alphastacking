@@ -4,7 +4,6 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import PresetIntlChartPanel from '@/components/PresetIntlChartPanel'
 import PresetHoldingsTable from '@/components/PresetHoldingsTable'
-import Sparkline from '@/components/Sparkline'
 import { getCachedUsCoreBuyHoldChart, getCachedUsInternationalChart } from '@/lib/getCachedPresetChart'
 import { getPortfolioCardById, usPortfolioRoutes } from '@/lib/portfolioRoutes'
 import { US_CORE_BH_PRESET_ID, usCoreBuyHoldHoldings } from '@/lib/presets/usBuyHold'
@@ -80,29 +79,6 @@ export default async function UsPortfolioDetailMain({
           <span className={styles.detailBadge}>{card.badge}</span>
           <h1 className={styles.detailTitle}>{card.name}</h1>
           <p className={styles.detailLede}>{card.description}</p>
-
-          <div className={styles.metricsRowStatic}>
-            <div className={styles.metricBlock}>
-              <span
-                className={`${styles.metricVal} ${card.metrics.returnPositive ? '' : styles.metricValNeg}`}
-              >
-                {card.metrics.return1y}
-              </span>
-              <span className={styles.metricLab}>1Y (illustrative)</span>
-            </div>
-            <div className={styles.metricBlock}>
-              <span className={styles.metricVal}>{card.metrics.sharpe}</span>
-              <span className={styles.metricLab}>Sharpe</span>
-            </div>
-            <div className={styles.metricBlock}>
-              <span className={`${styles.metricVal} ${styles.metricValNeg}`}>{card.metrics.maxDD}</span>
-              <span className={styles.metricLab}>Max DD</span>
-            </div>
-          </div>
-
-          <div className={styles.sparkWrap}>
-            <Sparkline points={card.sparkPoints} color={card.sparkColor} />
-          </div>
 
           <p className={styles.stubNote}>
             Live weighted chart and full position-level weights will be published here — same

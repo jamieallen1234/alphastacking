@@ -159,3 +159,8 @@ export const HUB_SECTION_LABEL: Record<
 export function getPortfolioCardById(id: string) {
   return portfolios.find((p) => p.id === id)
 }
+
+/** Routes shown on portfolio hub grids (excludes coming-soon stubs and preview-only placeholders). */
+export function portfolioHubRoutes(routes: PortfolioRouteDef[]) {
+  return routes.filter((r) => r.kind === 'live')
+}

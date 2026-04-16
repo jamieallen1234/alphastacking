@@ -6,6 +6,7 @@
 }
 
 .stat {
+  min-width: 0;
   padding: 1.5rem 2rem;
   border-right: 0.5px solid var(--color-border);
 }
@@ -32,8 +33,52 @@
   font-size: 12px;
   font-weight: 400;
   color: var(--color-text-faint);
+  letter-spacing: 0.03em;
+  line-height: 1.45;
+  text-transform: none;
+  max-width: 16rem;
+}
+
+.statTriple {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: flex-start;
+}
+
+.statTripleLine1 {
+  font-family: var(--font-mono);
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.statTripleLine2 {
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 1.65vw, 12px);
+  font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--color-gold);
+  white-space: nowrap;
+}
+
+.statTripleLine3 {
+  font-size: clamp(10px, 1.65vw, 12px);
+  font-weight: 400;
+  color: var(--color-text-faint);
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  white-space: nowrap;
+  max-width: none;
+}
+
+@media (max-width: 1024px) {
+  .statTripleLine2,
+  .statTripleLine3 {
+    white-space: normal;
+  }
 }
 
 @media (max-width: 768px) {

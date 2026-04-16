@@ -21,9 +21,9 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Alpha Stacking — Stack more alpha. Deploy less capital.',
+  title: 'Alpha Stacking — Stack alpha, not beta',
   description:
-    'Alpha stacking layers leveraged excess returns on top of a core portfolio — compounding advantage across strategies without proportionally increasing capital at risk.',
+    'Alpha stacking stacks uncorrelated assets on a core portfolio to target excess alpha—using hedge-fund-style strategies while keeping beta similar to traditional portfolios.',
 }
 
 export default function RootLayout({

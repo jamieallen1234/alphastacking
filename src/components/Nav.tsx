@@ -15,8 +15,7 @@ export default function Nav() {
     <>
       <div className={styles.disclaimerBanner}>
         <p>
-          For informational and educational purposes only. Nothing on this site constitutes investment advice.{' '}
-          <a href="/disclaimer">Full disclaimer →</a>
+          For informational and educational purposes only. Nothing on this site constitutes investment advice.
         </p>
       </div>
 
@@ -26,7 +25,6 @@ export default function Nav() {
         </Link>
 
         <ul className={styles.navLinks}>
-          <li><a href="/learn">Learn</a></li>
           <li>
             <Link href={portfolios}>Portfolios</Link>
           </li>
@@ -35,15 +33,10 @@ export default function Nav() {
           </li>
           {isCa ? (
             <li>
-              <a href="/ca-etfs">CA ETFs</a>
+              <Link href="/ca/etfs">CA ETFs</Link>
             </li>
           ) : null}
-          <li><a href="/tools">Tools</a></li>
         </ul>
-
-        <Link href={portfolios} className={styles.navCta}>
-          View portfolios →
-        </Link>
       </nav>
     </>
   )

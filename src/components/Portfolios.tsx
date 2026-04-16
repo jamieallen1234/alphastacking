@@ -13,7 +13,7 @@ export default function Portfolios() {
 
   return (
     <section className={styles.section}>
-      <div className={styles.sectionLabel}>Sample portfolios</div>
+      <div className={styles.sectionLabel}>Model portfolios</div>
       <h2 className={styles.heading}>Real returns. Real ETFs.</h2>
 
       <div className={styles.disclaimer}>

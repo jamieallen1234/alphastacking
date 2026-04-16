@@ -20,7 +20,7 @@ export default function Footer() {
         <p>
           alphastacking.co is an independent educational website. Nothing on this
           site constitutes financial, investment, legal, or tax advice. All content
-          is provided for informational purposes only. Sample portfolios are
+          is provided for informational purposes only. Model portfolios are
           for educational purposes and do not represent actual investment results. Past
           performance is not indicative of future results.
         </p>
@@ -32,8 +32,6 @@ export default function Footer() {
           who are not able to withstand the risk of significant loss. alphastacking.co
           may receive compensation through affiliate relationships with brokers and
           financial services. All affiliate relationships are disclosed.{' '}
-          <a href="/disclaimer">Full disclaimer</a>{' '}
-          ·{' '}
           <a href="/affiliate-disclosure">Affiliate disclosure</a>
         </p>
       </div>
@@ -62,7 +60,6 @@ export default function Footer() {
         </div>
 
         <ul className={styles.links}>
-          <li><a href="/disclaimer">Disclaimer</a></li>
           <li><a href="/affiliate-disclosure">Affiliate disclosure</a></li>
           <li><a href="https://x.com/alphastacking" target="_blank" rel="noopener noreferrer">X / Twitter</a></li>
         </ul>

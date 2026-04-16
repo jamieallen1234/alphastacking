@@ -25,7 +25,7 @@ export default function Framework() {
       <h2 className={styles.heading}>Beyond return stacking</h2>
 
       <div className={styles.definition}>
-        <div className={styles.definitionTerm}>Alpha Stacking — coined 2025</div>
+        <div className={styles.definitionTerm}>Alpha Stacking</div>
         <p>
           An investment framework that deploys capital efficiency and leverage to
           layer multiple sources of excess return on top of a core portfolio,

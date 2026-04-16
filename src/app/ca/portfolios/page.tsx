@@ -6,6 +6,7 @@ import {
   HUB_SECTION_LABEL,
   type PortfolioHubSection,
   type PortfolioRouteDef,
+  portfolioHubRoutes,
   usPortfolioRoutes,
 } from '@/lib/portfolioRoutes'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
@@ -16,31 +17,12 @@ export const metadata = {
 }
 
 function portfolioCard(p: PortfolioRouteDef, href: string) {
-  const isStub = p.kind === 'stub'
-  const inner = (
-    <>
+  return (
+    <Link key={p.slug} href={href} className={styles.card}>
       <span className={styles.cardBadge}>{p.badge}</span>
       <h2 className={styles.cardTitle}>{p.title}</h2>
       <p className={styles.cardDesc}>{p.description}</p>
-      <div className={styles.cardCta}>
-        {p.kind === 'live'
-          ? 'View portfolio →'
-          : p.kind === 'placeholder'
-            ? 'Preview →'
-            : 'Status →'}
-      </div>
-    </>
-  )
-  if (isStub) {
-    return (
-      <div key={p.slug} className={`${styles.card} ${styles.cardDisabled}`}>
-        {inner}
-      </div>
-    )
-  }
-  return (
-    <Link key={p.slug} href={href} className={styles.card}>
-      {inner}
+      <div className={styles.cardCta}>View portfolio →</div>
     </Link>
   )
 }
@@ -60,7 +42,7 @@ function sectionBlocks(
     <>
       {(['leveraged-quarterly', 'buy-hold'] as const).map((section, i) => {
         const meta = HUB_SECTION_LABEL[section]
-        const routes = by(section)
+        const routes = portfolioHubRoutes(by(section))
         if (routes.length === 0) return null
         const id =
           regionPrefix === 'ca'
@@ -102,14 +84,6 @@ export default function CaPortfoliosHubPage() {
       <section className={styles.section}>
         <div className={styles.sectionLabel}>Canadian edition</div>
         <h1 className={styles.heading}>Model portfolios</h1>
-        <p className={styles.lede}>
-          Canada first, then US. See{' '}
-          <Link href="/portfolios" style={{ color: 'var(--color-gold)' }}>
-            US-only hub
-          </Link>
-          . Charts: adjusted closes; start = youngest listing in the basket.
-        </p>
-
         <div className={styles.disclaimer}>
           <span className={styles.disclaimerIcon}>⚠</span>
           <p>Educational models. Past ≠ future. Leveraged / alt funds are risky.</p>

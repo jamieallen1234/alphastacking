@@ -1,9 +1,8 @@
 import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
+import EtfRetailMission from '@/components/EtfRetailMission'
 import Stats from '@/components/Stats'
 import AlphaExample from '@/components/AlphaExample'
-import Framework from '@/components/Framework'
-import Portfolios from '@/components/Portfolios'
 import Footer from '@/components/Footer'
 
 export default function Home() {
@@ -12,12 +11,12 @@ export default function Home() {
       <Nav />
       <Hero />
       <div className="divider" />
-      <Stats />
+      <EtfRetailMission variant="us" />
+      <div className="divider" />
+      <Stats variant="us" />
       <div className="divider" />
       <AlphaExample />
       <div className="divider" />
-      <Framework />
-      <Portfolios />
       <Footer />
     </main>
   )

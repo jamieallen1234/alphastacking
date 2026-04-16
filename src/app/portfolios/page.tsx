@@ -4,6 +4,7 @@ import Footer from '@/components/Footer'
 import {
   HUB_SECTION_LABEL,
   type PortfolioHubSection,
+  portfolioHubRoutes,
   usPortfolioRoutes,
 } from '@/lib/portfolioRoutes'
 import styles from './PortfoliosPage.module.css'
@@ -19,35 +20,14 @@ function portfolioGrid(
 ) {
   return (
     <div className={styles.grid}>
-      {routes.map((p) => {
-        const isStub = p.kind === 'stub'
-        const inner = (
-          <>
-            <span className={styles.cardBadge}>{p.badge}</span>
-            <h2 className={styles.cardTitle}>{p.title}</h2>
-            <p className={styles.cardDesc}>{p.description}</p>
-            <div className={styles.cardCta}>
-              {p.kind === 'live'
-                ? 'View portfolio →'
-                : p.kind === 'placeholder'
-                  ? 'Preview →'
-                  : 'Status →'}
-            </div>
-          </>
-        )
-        if (isStub) {
-          return (
-            <div key={p.slug} className={`${styles.card} ${styles.cardDisabled}`}>
-              {inner}
-            </div>
-          )
-        }
-        return (
-          <Link key={p.slug} href={hrefFor(p.slug)} className={styles.card}>
-            {inner}
-          </Link>
-        )
-      })}
+      {routes.map((p) => (
+        <Link key={p.slug} href={hrefFor(p.slug)} className={styles.card}>
+          <span className={styles.cardBadge}>{p.badge}</span>
+          <h2 className={styles.cardTitle}>{p.title}</h2>
+          <p className={styles.cardDesc}>{p.description}</p>
+          <div className={styles.cardCta}>View portfolio →</div>
+        </Link>
+      ))}
     </div>
   )
 }
@@ -61,9 +41,6 @@ export default function PortfoliosHubPage() {
       <section className={styles.section}>
         <div className={styles.sectionLabel}>US portfolios</div>
         <h1 className={styles.heading}>Model portfolios</h1>
-        <p className={styles.lede}>
-          Not advice. Charts: Yahoo adjusted closes; start date follows the youngest listing in each basket.
-        </p>
 
         <div className={styles.disclaimer}>
           <span className={styles.disclaimerIcon}>⚠</span>
@@ -72,7 +49,7 @@ export default function PortfoliosHubPage() {
 
         {(['leveraged-quarterly', 'buy-hold'] as const).map((section, i) => {
           const meta = HUB_SECTION_LABEL[section]
-          const routes = bySection(section)
+          const routes = portfolioHubRoutes(bySection(section))
           if (routes.length === 0) return null
           return (
             <div key={section} id={section === 'leveraged-quarterly' ? 'us-quarterly' : 'us-buyhold'}>

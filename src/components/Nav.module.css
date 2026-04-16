@@ -17,12 +17,6 @@
   text-align: center;
 }
 
-.disclaimerBanner a {
-  color: rgba(201, 168, 76, 0.9);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
 .nav {
   display: flex;
   align-items: center;
@@ -60,23 +54,6 @@
 
 .navLinks a:hover {
   color: var(--color-text);
-}
-
-.navCta {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: var(--color-gold);
-  border: 0.5px solid var(--color-gold);
-  padding: 0.5rem 1.2rem;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.navCta:hover {
-  background: var(--color-gold);
-  color: var(--color-bg);
 }
 
 @media (max-width: 768px) {

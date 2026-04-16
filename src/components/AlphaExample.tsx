@@ -40,7 +40,7 @@ export default function AlphaExample() {
           <div className={styles.cardValue}>{fmtUsd(SPY_END_10K)}</div>
         </div>
         <div className={styles.card}>
-          <div className={styles.cardLabel}>Illustrative excess alpha portfolio</div>
+          <div className={styles.cardLabel}>Illustrative excess alpha model portfolio</div>
           <div className={`${styles.cardValue} ${styles.cardValueHighlight}`}>
             {fmtUsd(SPY_PLUS_3PCT_ALPHA_END)}
           </div>

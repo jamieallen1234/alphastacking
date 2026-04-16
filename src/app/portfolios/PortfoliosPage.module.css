@@ -82,15 +82,6 @@
   border-color: rgba(201, 168, 76, 0.35);
 }
 
-.cardDisabled {
-  cursor: default;
-  opacity: 0.75;
-}
-
-.cardDisabled:hover {
-  border-color: var(--color-border);
-}
-
 .cardBadge {
   font-family: var(--font-mono);
   font-size: 9px;

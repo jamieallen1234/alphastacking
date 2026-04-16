@@ -5,9 +5,14 @@ import Footer from '@/components/Footer'
 import PresetIntlChartPanel from '@/components/PresetIntlChartPanel'
 import PresetHoldingsTable from '@/components/PresetHoldingsTable'
 import UsPortfolioDetailMain from '@/components/UsPortfolioDetailMain'
-import { getCachedCaCoreBuyHoldChart, getCachedCaInternationalChart } from '@/lib/getCachedPresetChart'
+import {
+  getCachedCaCoreBuyHoldChart,
+  getCachedCaInternationalChart,
+  getCachedCaUsslQqqlHdgeChart,
+} from '@/lib/getCachedPresetChart'
 import { caPortfolioRoutes, usPortfolioRoutes } from '@/lib/portfolioRoutes'
 import { CA_CORE_BH_PRESET_ID, caCoreBuyHoldHoldings } from '@/lib/presets/caBuyHold'
+import { CA_USSL_QQQL_HDGE_PRESET_ID, caUsslQqqlHdgeHoldings } from '@/lib/presets/caBuyHoldHdge'
 import { CA_INTL_PRESET_ID, caInternationalHoldings } from '@/lib/presets/caInternational'
 import { type PresetHolding, weightedBeta } from '@/lib/presets/usInternational'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
@@ -31,6 +36,11 @@ const CA_LIVE: Record<
     presetId: CA_CORE_BH_PRESET_ID,
     holdings: caCoreBuyHoldHoldings,
     load: getCachedCaCoreBuyHoldChart,
+  },
+  'ca-ussl-qqql-hdge': {
+    presetId: CA_USSL_QQQL_HDGE_PRESET_ID,
+    holdings: caUsslQqqlHdgeHoldings,
+    load: getCachedCaUsslQqqlHdgeChart,
   },
 }
 

@@ -36,7 +36,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     kind: 'live',
     hubSection: 'buy-hold',
     title: 'US core (buy & hold)',
-    description: 'QQQ, SPMO, and VFLO at fixed weights; no rebalancing in the model.',
+    description: 'VFLO, QQQ, and SPMO at 40% / 30% / 30%; no rebalancing in the model.',
     featured: true,
   },
   {
@@ -97,10 +97,18 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'ca',
     kind: 'live',
     hubSection: 'buy-hold',
-    title: 'Canadian core (buy & hold)',
+    title: 'US & Canada - Balanced beta',
     description:
-      'HEQL.TO, USSL.TO, QQQL.TO, PFLS.TO, and ZLB.TO at equal weights; no rebalancing in the model.',
+      'USSL.TO, QQQL.TO, ZLB.TO, and PFLS.TO at 30% / 30% / 25% / 15%; no rebalancing in the model.',
     featured: true,
+  },
+  {
+    slug: 'ca-ussl-qqql-hdge',
+    region: 'ca',
+    kind: 'live',
+    hubSection: 'buy-hold',
+    title: 'US + hedge long/short',
+    description: 'USSL.TO, HDGE.TO, and QQQL.TO at 60% / 25% / 15%; static weights, no rebalancing.',
   },
   {
     slug: 'ca-alpha-stack',

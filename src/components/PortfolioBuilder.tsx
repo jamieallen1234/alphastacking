@@ -187,6 +187,7 @@ export default function PortfolioBuilder() {
           syntheticModeling,
           chartCurrency,
           rebalanceSchedule: 'none',
+          holdingTotalReturnPercents: [],
         }
       : null
 

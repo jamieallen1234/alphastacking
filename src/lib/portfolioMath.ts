@@ -86,6 +86,51 @@ export function buildBuyAndHoldSeries(
   return out
 }
 
+/**
+ * Each symbol’s total return % from the first to last **common** NY trading day (same intersection
+ * as {@link buildBuyAndHoldSeries}). Uses the already-clipped, model-adjusted daily series.
+ */
+export function perHoldingTotalReturnPercentsAligned(
+  series: PriceSeries[],
+  symbols: string[]
+): { symbol: string; totalReturnPercent: number | null }[] {
+  if (series.length !== symbols.length) {
+    throw new Error('Series count must match symbol count')
+  }
+  if (series.length === 0) return []
+
+  const dayMaps = series.map((s) => seriesToNyDayPriceMap(s))
+
+  let common: Set<string> | null = null
+  for (const dm of dayMaps) {
+    const keys = new Set(dm.keys())
+    if (common === null) {
+      common = keys
+    } else {
+      const next = new Set<string>()
+      for (const k of common) {
+        if (keys.has(k)) next.add(k)
+      }
+      common = next
+    }
+  }
+  if (!common || common.size < 2) {
+    return symbols.map((symbol) => ({ symbol, totalReturnPercent: null }))
+  }
+
+  const sortedDays = [...common].sort()
+  const day0 = sortedDays[0]!
+  const dayN = sortedDays[sortedDays.length - 1]!
+
+  return symbols.map((symbol, i) => {
+    const dm = dayMaps[i]!
+    const p0 = dm.get(day0)
+    const p1 = dm.get(dayN)
+    if (p0 == null || p1 == null || p0 <= 0) return { symbol, totalReturnPercent: null }
+    return { symbol, totalReturnPercent: ((p1 / p0) - 1) * 100 }
+  })
+}
+
 function yearQuarterKey(nyDay: string): string {
   const [y, m] = nyDay.split('-').map(Number)
   if (!y || !m) return nyDay

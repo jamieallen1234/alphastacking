@@ -1,3 +1,4 @@
+import { CAD_SPY_PROXY_SYMBOL } from '@/lib/cadUsdConversion'
 import { dayKeyToUtcNoonUnix, seriesToNyDayPriceMap } from '@/lib/portfolioMath'
 import type { PriceSeries } from '@/lib/yahooFinance'
 import { fetchFirstTradeDateSec } from '@/lib/yahooFinance'
@@ -126,9 +127,9 @@ export async function heqlSyntheticOverlapFirstTradeSec(): Promise<number> {
   return fetchFirstTradeDateSec('HEQT.TO')
 }
 
-/** Same S&P CAD anchor as HEQL for pre-listing 1.25× simulation. */
-export async function usslSyntheticOverlapFirstTradeSec(): Promise<number> {
-  return fetchFirstTradeDateSec('HEQT.TO')
+/** S&P 500 TR proxy: VFV.TO when CAD (same as benchmark fetch), SPY when USD. */
+export async function usslSyntheticOverlapFirstTradeSec(cadDenominated: boolean): Promise<number> {
+  return fetchFirstTradeDateSec(cadDenominated ? CAD_SPY_PROXY_SYMBOL : 'SPY')
 }
 
 /** Nasdaq-100 anchor for pre-listing 1.25× simulation (QQQ adj. TR, then CAD in chart pipeline). */

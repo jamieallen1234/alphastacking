@@ -4,6 +4,12 @@ export const US_CORE_BH_PRESET_ID = 'us-core-bh-v1'
 
 export const usCoreBuyHoldHoldings: PresetHolding[] = [
   {
+    ticker: 'VFLO',
+    weightPct: 40,
+    beta: 0.75,
+    blurb: 'US dividend growth / quality tilt (Vanguard).',
+  },
+  {
     ticker: 'QQQ',
     weightPct: 30,
     beta: 1.05,
@@ -14,12 +20,6 @@ export const usCoreBuyHoldHoldings: PresetHolding[] = [
     weightPct: 30,
     beta: 1.1,
     blurb: 'S&P 500 momentum factor.',
-  },
-  {
-    ticker: 'VFLO',
-    weightPct: 40,
-    beta: 0.75,
-    blurb: 'US dividend growth / quality tilt (Vanguard).',
   },
 ]
 

@@ -6,6 +6,11 @@ import {
   caCoreBuyHoldWeights,
 } from '@/lib/presets/caBuyHold'
 import {
+  CA_USSL_QQQL_HDGE_PRESET_ID,
+  caUsslQqqlHdgeSymbols,
+  caUsslQqqlHdgeWeights,
+} from '@/lib/presets/caBuyHoldHdge'
+import {
   CA_INTL_PRESET_ID,
   caInternationalSymbols,
   caInternationalWeights,
@@ -111,6 +116,29 @@ export const getCachedCaCoreBuyHoldChart = unstable_cache(
     'default-1y',
     'buy-hold',
     'ussl-qqql-cad125-synth',
+    'core-30-30-15-25',
+  ],
+  { revalidate: DAY }
+)
+
+export const getCachedCaUsslQqqlHdgeChart = unstable_cache(
+  async () =>
+    computePortfolioChart({
+      symbols: caUsslQqqlHdgeSymbols(),
+      weights: caUsslQqqlHdgeWeights(),
+      range: PRESET_CHART_RANGE,
+      cadDenominated: true,
+      rebalanceSchedule: 'none',
+    }),
+  [
+    'preset-chart',
+    CA_USSL_QQQL_HDGE_PRESET_ID,
+    PRESET_CHART_RANGE,
+    'notional-10k',
+    'cad-vfv-usdcad',
+    'default-1y',
+    'buy-hold',
+    'ussl-qqql-hdge-60-15-25',
   ],
   { revalidate: DAY }
 )

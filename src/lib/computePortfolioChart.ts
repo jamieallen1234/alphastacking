@@ -5,6 +5,7 @@ import {
   maxDrawdownPercentFromLevels,
   normalizedBenchmarkByNyDays,
   nyTradingDayKey,
+  perHoldingTotalReturnPercentsAligned,
   totalReturnPercent,
   totalReturnPercentFromValues,
 } from '@/lib/portfolioMath'
@@ -48,7 +49,7 @@ export interface SyntheticModelingNote {
   firstRealNyDay: string
   kind: SyntheticModelingKind
   /** 1.25× CAD levered sleeve: which index TR is scaled (QQQ is converted to CAD in the pipeline). */
-  cadLeveredUnderlying?: 'HEQT.TO' | 'QQQ'
+  cadLeveredUnderlying?: 'HEQT.TO' | 'QQQ' | 'VFV.TO' | 'SPY'
 }
 
 export interface PortfolioChartPayload {
@@ -79,6 +80,8 @@ export interface PortfolioChartPayload {
   chartCurrency?: 'USD' | 'CAD'
   /** `quarterly`: weights reset to targets on the first session of each calendar quarter (after that day’s returns). */
   rebalanceSchedule: 'none' | 'quarterly'
+  /** Each holding’s buy-and-hold TR % over the same common NY days as the chart (merged/synthetic series per symbol). */
+  holdingTotalReturnPercents: { symbol: string; totalReturnPercent: number | null }[]
 }
 
 const DEFAULT_BENCHMARK = 'SPY'
@@ -123,7 +126,7 @@ export async function computePortfolioChart(params: {
       if (ntsdIdx >= 0 && i === ntsdIdx) return ntsdSyntheticOverlapFirstTradeSec()
       if (mateIdx >= 0 && i === mateIdx) return mateSyntheticOverlapFirstTradeSec()
       if (heqlIdx >= 0 && i === heqlIdx) return heqlSyntheticOverlapFirstTradeSec()
-      if (usslIdx >= 0 && i === usslIdx) return usslSyntheticOverlapFirstTradeSec()
+      if (usslIdx >= 0 && i === usslIdx) return usslSyntheticOverlapFirstTradeSec(cadDenominated)
       if (qqqlIdx >= 0 && i === qqqlIdx) return qqqlSyntheticOverlapFirstTradeSec()
       return fetchFirstTradeDateSec(s)
     })
@@ -134,7 +137,7 @@ export async function computePortfolioChart(params: {
 
   const needExtraSpy = ntsdIdx >= 0 && benchmarkFetchSymbol.toUpperCase() !== 'SPY'
 
-  const needHeqt = heqlIdx >= 0 || usslIdx >= 0
+  const needHeqt = heqlIdx >= 0
   const needQqq = qqqlIdx >= 0
 
   const nowSec = Math.floor(Date.now() / 1000)
@@ -212,7 +215,7 @@ export async function computePortfolioChart(params: {
     idx: number,
     underlying: PriceSeries,
     firstRealFloor: string,
-    cadLeveredUnderlying: 'HEQT.TO' | 'QQQ'
+    cadLeveredUnderlying: 'HEQT.TO' | 'QQQ' | 'VFV.TO' | 'SPY'
   ) => {
     const { series: merged, modeling } = buildLeveredUnderlyingMergeSeries(
       seriesMut[idx]!,
@@ -232,8 +235,9 @@ export async function computePortfolioChart(params: {
     }
   }
 
-  if (usslIdx >= 0 && heqtExtra != null) {
-    pushCad125(usslIdx, heqtExtra, USSL_FIRST_REAL_NY_DAY, 'HEQT.TO')
+  if (usslIdx >= 0) {
+    const usslUnderlyingLabel: 'VFV.TO' | 'SPY' = cadDenominated ? 'VFV.TO' : 'SPY'
+    pushCad125(usslIdx, benchSeries, USSL_FIRST_REAL_NY_DAY, usslUnderlyingLabel)
   }
 
   if (qqqlIdx >= 0) {
@@ -290,6 +294,8 @@ export async function computePortfolioChart(params: {
   const chartStartDate = points[0]?.nyDay ?? null
   const limitingFirstTradeDate = nyTradingDayKey(effectiveStartSec)
 
+  const holdingTotalReturnPercents = perHoldingTotalReturnPercentsAligned(clipped, symbols)
+
   return {
     symbols,
     weights,
@@ -313,5 +319,6 @@ export async function computePortfolioChart(params: {
       points.length > 0
         ? new Date(points[points.length - 1]!.t * 1000).toISOString().slice(0, 10)
         : null,
+    holdingTotalReturnPercents,
   }
 }

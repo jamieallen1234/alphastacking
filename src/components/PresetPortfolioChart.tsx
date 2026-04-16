@@ -24,11 +24,17 @@ function formatCalendarDate(isoYmd: string): string {
   })
 }
 
-function cad125Body(slotSymbol: string, when: string, underlying: 'HEQT.TO' | 'QQQ'): string {
+function cad125Body(
+  slotSymbol: string,
+  when: string,
+  underlying: 'HEQT.TO' | 'QQQ' | 'VFV.TO' | 'SPY'
+): string {
   const tr =
     underlying === 'QQQ'
       ? `${underlying} daily total returns (Yahoo adjusted), converted to CAD with NY-aligned USDCAD`
-      : `${underlying} daily total returns (Yahoo adjusted, CAD-listed)`
+      : underlying === 'SPY'
+        ? `${underlying} daily total returns (Yahoo adjusted, USD)`
+        : `${underlying} daily total returns (Yahoo adjusted, CAD-listed)`
   return `before ${when}, ${slotSymbol} is modeled as ${HEQL_SYNTHETIC_LEVERAGE}× ${tr}, reinvesting at ${HEQL_SYNTHETIC_LEVERAGE}× notional; financing ~${(HEQL_CAD_FINANCING_RATE_ON_EXCESS_NOTIONAL_ANNUAL * 100).toFixed(1)}%/yr on the extra 0.25× notional (Canadian-style wholesale carry), i.e. ~${(HEQL_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(2)}%/yr drag on NAV; then actual ${slotSymbol} closes. Simulated.`
 }
 

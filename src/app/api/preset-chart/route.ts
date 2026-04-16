@@ -6,6 +6,11 @@ import {
   caCoreBuyHoldWeights,
 } from '@/lib/presets/caBuyHold'
 import {
+  CA_USSL_QQQL_HDGE_PRESET_ID,
+  caUsslQqqlHdgeSymbols,
+  caUsslQqqlHdgeWeights,
+} from '@/lib/presets/caBuyHoldHdge'
+import {
   CA_INTL_PRESET_ID,
   caInternationalSymbols,
   caInternationalWeights,
@@ -57,9 +62,15 @@ const PRESETS: Record<
     cadDenominated: true,
     rebalanceSchedule: 'none',
   },
+  [CA_USSL_QQQL_HDGE_PRESET_ID]: {
+    symbols: caUsslQqqlHdgeSymbols,
+    weights: caUsslQqqlHdgeWeights,
+    cadDenominated: true,
+    rebalanceSchedule: 'none',
+  },
 }
 
-const PRESET_HINT = `${US_INTL_PRESET_ID}, ${CA_INTL_PRESET_ID}, ${US_CORE_BH_PRESET_ID}, ${CA_CORE_BH_PRESET_ID}`
+const PRESET_HINT = `${US_INTL_PRESET_ID}, ${CA_INTL_PRESET_ID}, ${US_CORE_BH_PRESET_ID}, ${CA_CORE_BH_PRESET_ID}, ${CA_USSL_QQQL_HDGE_PRESET_ID}`
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)

@@ -26,6 +26,7 @@ export const ETF_CHART_SYMBOLS = [
   'DBMF',
   'KMLM',
   'CLSE',
+  'MRGR',
   'ORR',
   'ASGM',
   'HFGM',
@@ -39,6 +40,8 @@ export const ETF_CHART_SYMBOLS = [
   'PFMN.TO',
   'TGAF.TO',
   'DGLM.TO',
+  'BTCC-B.TO',
+  'ETHX-B.TO',
   'ARB.TO',
 ] as const
 

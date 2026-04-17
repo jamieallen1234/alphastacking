@@ -222,7 +222,14 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       '/us-etfs/hfgm'
     ),
   ],
-  arbitrage: [],
+  arbitrage: [
+    us(
+      'mrgr',
+      'MRGR — ProShares Merger ETF',
+      'Rules-based exposure to the S&P Merger Arbitrage Index—liquid listed sleeve for announced M&A spreads.',
+      usPath('mrgr')
+    ),
+  ],
   crypto: CRYPTO_HUB_LIST,
 }
 
@@ -308,5 +315,18 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       '/ca/etfs/arb'
     ),
   ],
-  crypto: [],
+  crypto: [
+    ca(
+      'btccb',
+      'BTCC-B.TO — Purpose Bitcoin ETF (CAD, unhedged)',
+      'Spot Bitcoin in cold storage—Purpose’s flagship Canadian physical BTC sleeve (competes with CI Galaxy and Fidelity for top AUM).',
+      caPath('btccb')
+    ),
+    ca(
+      'ethxb',
+      'ETHX-B.TO — CI Galaxy Ethereum ETF (CAD, unhedged)',
+      'Spot Ether held in custody—CI / Galaxy’s large-capacity Canadian ETH ETF (low fee vs. many peers).',
+      caPath('ethxb')
+    ),
+  ],
 }

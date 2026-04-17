@@ -684,6 +684,35 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialUrl: 'https://www.virtus.com/',
     officialLabel: 'Virtus',
   },
+
+  mrgr: {
+    yahooSymbol: 'MRGR',
+    hubCategoryId: 'arbitrage',
+    badge: 'Arbitrage',
+    h1Title: 'MRGR — ProShares Merger ETF',
+    displayTicker: 'MRGR',
+    issuer: 'ProShares',
+    inception: 'Dec 2012',
+    mer: '0.75%',
+    aum: '~$16M',
+    pageTitle: 'MRGR ETF — Alpha Stacking',
+    description: 'ProShares Merger ETF (MRGR): S&P Merger Arbitrage Index exposure.',
+    lede:
+      'MRGR tracks the S&P Merger Arbitrage Index—rules-based exposure to global merger-arbitrage dynamics in a single listed wrapper.',
+    strategyParas: [
+      'The index targets announced M&A situations per S&P’s methodology; positioning and rebalancing rules are in ProShares disclosures.',
+      'Replication gap vs. the underlying index and financing costs can matter—compare fund NAV to index over full cycles.',
+    ],
+    pedigreeParas: ped(
+      'ProShares',
+      'ProShares is one of the largest U.S. issuers of leveraged, inverse, and strategic beta ETPs; aggregate sponsor footprint is in the tens of billions USD in industry league data (order of magnitude).'
+    ),
+    outperfParas: outf(
+      'deal spreads are wide and completions run on schedule—environments where merger-arbitrage beta pays versus choppy deal breaks'
+    ),
+    officialUrl: 'https://www.proshares.com/our-etfs/strategic/mrgr',
+    officialLabel: 'ProShares (MRGR)',
+  },
 }
 
 export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
@@ -910,5 +939,65 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     outperfParas: outf('macro regimes separate asset classes—when rates, FX, and commodity trends diverge sharply'),
     officialUrl: 'https://www.desjardins.com/',
     officialLabel: 'Desjardins',
+  },
+
+  btccb: {
+    yahooSymbol: 'BTCC-B.TO',
+    hubCategoryId: 'crypto',
+    badge: 'Crypto & digital assets',
+    h1Title: 'BTCC-B.TO — Purpose Bitcoin ETF',
+    displayTicker: 'BTCC.B',
+    issuer: 'Purpose Investments',
+    inception: 'Feb 2021',
+    structure: 'Spot Bitcoin ETF',
+    mer: '~1.0%',
+    aum: '~$1.5B+ CAD',
+    pageTitle: 'BTCC-B.TO ETF — Alpha Stacking',
+    description: 'Purpose Bitcoin ETF, CAD unhedged units (BTCC-B.TO)—physically settled spot Bitcoin.',
+    lede:
+      'BTCC-B is Purpose’s CAD unhedged unit class of the first Canadian spot Bitcoin ETF—direct Bitcoin custody in cold storage, priced in Canadian dollars.',
+    strategyParas: [
+      'Physically backed: the fund holds BTC; NAV tracks the reference index and custodian pricing—see Purpose’s ETF Facts for fees and replication details.',
+      'Crypto is extremely volatile; regulatory, custody, and FX (CAD vs. USD BTC) effects can diverge from holding coins directly.',
+    ],
+    pedigreeParas: ped(
+      'Purpose Investments',
+      'Purpose is an independent Canadian ETF issuer with a broad lineup including crypto spot products; firm scale is smaller than Big-Six bank asset managers—verify group AUM on purposeinvest.com.'
+    ),
+    outperfParas: outf(
+      'bitcoin trends cleanly with supportive liquidity and risk appetite—while drawdowns remain severe when macro and leverage unwind'
+    ),
+    officialUrl: 'https://www.purposeinvest.com/funds/purpose-bitcoin-etf',
+    officialLabel: 'Purpose Investments',
+  },
+
+  ethxb: {
+    yahooSymbol: 'ETHX-B.TO',
+    hubCategoryId: 'crypto',
+    badge: 'Crypto & digital assets',
+    h1Title: 'ETHX-B.TO — CI Galaxy Ethereum ETF',
+    displayTicker: 'ETHX.B',
+    issuer: 'CI Global Asset Management',
+    inception: 'Apr 2021',
+    structure: 'Spot Ether ETF',
+    mer: '~0.7%',
+    aum: '~$650M CAD',
+    pageTitle: 'ETHX-B.TO ETF — Alpha Stacking',
+    description: 'CI Galaxy Ethereum ETF, CAD unhedged units (ETHX-B.TO)—physically settled spot Ether.',
+    lede:
+      'ETHX-B holds spot Ether in custody—CI and Galaxy’s Canadian-listed sleeve with a competitive fee versus many alt ETH wrappers.',
+    strategyParas: [
+      'Direct ETH exposure; staking and on-chain yield are generally outside a plain spot ETF—read the simplified prospectus for permitted activities.',
+      'Ether beta is high-volatility and highly correlated to crypto liquidity cycles; layer-2 and protocol narratives can move ETH faster than broad equity beta.',
+    ],
+    pedigreeParas: ped(
+      'CI Global Asset Management / Galaxy Digital (sub-advisor)',
+      'CI Global Asset Management is one of Canada’s largest independent asset managers; Galaxy Digital advises on crypto implementation—confirm consolidated figures in CI Financial Corp. reporting.'
+    ),
+    outperfParas: outf(
+      'risk-on liquidity and ETH-specific catalysts align—when network usage and fee markets support the bull case for the asset'
+    ),
+    officialUrl: 'https://funds.cifinancial.com/en/funds/alternative_investments/CIGalaxyEthereumETF.html',
+    officialLabel: 'CI Galaxy Ethereum ETF',
   },
 }

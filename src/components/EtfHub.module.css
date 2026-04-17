@@ -43,6 +43,50 @@
   max-width: 40rem;
 }
 
+.etfList {
+  margin: 0.1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.etfLink {
+  display: block;
+  padding: 0.95rem 1rem;
+  border: 0.5px solid rgba(232, 228, 220, 0.12);
+  text-decoration: none;
+  border-radius: 3px;
+  background: linear-gradient(
+    165deg,
+    rgba(232, 228, 220, 0.04) 0%,
+    rgba(232, 228, 220, 0.015) 100%
+  );
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.etfLink:hover {
+  border-color: rgba(201, 168, 76, 0.45);
+  background: linear-gradient(
+    165deg,
+    rgba(201, 168, 76, 0.11) 0%,
+    rgba(232, 228, 220, 0.03) 100%
+  );
+}
+
+.etfName {
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  color: var(--color-text);
+  margin: 0 0 0.35rem;
+}
+
+.etfDesc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(232, 228, 220, 0.72);
+}
+
 .category {
   padding: 1.75rem 0;
   border-top: 0.5px solid var(--color-border-faint);

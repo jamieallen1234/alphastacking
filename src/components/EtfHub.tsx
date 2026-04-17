@@ -1,5 +1,6 @@
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
+import Link from 'next/link'
 import { ETF_CATEGORY_ROWS } from '@/lib/etfCategories'
 import styles from './EtfHub.module.css'
 
@@ -37,7 +38,31 @@ export default function EtfHub({ variant }: EtfHubProps) {
               <h2 id={`etf-cat-${cat.id}`} className={styles.categoryTitle}>
                 {cat.title}
               </h2>
-              <p className={styles.comingSoon}>Coming soon</p>
+              {cat.id === 'return-stacked' && !isCa ? (
+                <ul className={styles.etfList}>
+                  <li>
+                    <Link href="/us-etfs/mate" className={styles.etfLink}>
+                      <p className={styles.etfName}>MATE — Man Active Trend Enhanced ETF</p>
+                      <p className={styles.etfDesc}>
+                        100% S&amp;P 500 beta stacked with 100% trend-following managed futures.
+                      </p>
+                    </Link>
+                  </li>
+                </ul>
+              ) : cat.id === 'long-short' && isCa ? (
+                <ul className={styles.etfList}>
+                  <li>
+                    <Link href="/ca/etfs/hdge" className={styles.etfLink}>
+                      <p className={styles.etfName}>HDGE.TO — Accelerate Absolute Return Fund</p>
+                      <p className={styles.etfDesc}>
+                        Quantitative long/short North American equity strategy in an ETF wrapper.
+                      </p>
+                    </Link>
+                  </li>
+                </ul>
+              ) : (
+                <p className={styles.comingSoon}>Coming soon</p>
+              )}
             </section>
           ))}
         </div>

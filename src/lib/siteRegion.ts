@@ -10,3 +10,8 @@ export function portfoliosPath(isCa: boolean): string {
 export function homePath(isCa: boolean): string {
   return isCa ? '/ca' : '/'
 }
+
+/** US-listed ETF hub: under `/ca` when browsing the Canadian site so nav stays in-region. */
+export function usEtfHubPath(isCa: boolean): string {
+  return isCa ? '/ca/us-etfs' : '/us-etfs'
+}

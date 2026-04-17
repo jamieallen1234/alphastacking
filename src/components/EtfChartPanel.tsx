@@ -17,7 +17,8 @@ const RANGES: { range: YahooRange; label: string }[] = [
 ]
 
 interface EtfChartPanelProps {
-  symbol: 'MATE' | 'HDGE.TO'
+  /** Yahoo Finance symbol (e.g. MATE, HDGE.TO, ZLB.TO) */
+  symbol: string
   initialPayload: EtfChartPayload
 }
 
@@ -50,19 +51,21 @@ export default function EtfChartPanel({ symbol, initialPayload }: EtfChartPanelP
 
   return (
     <div className={chartStyles.chartBlock}>
-      <div className={styles.rangeRow}>
-        <span className={styles.rangeLabel}>Range</span>
-        {RANGES.map(({ range, label }) => (
-          <button
-            key={range}
-            type="button"
-            className={`${styles.rangeBtn} ${payload.range === range ? styles.rangeBtnActive : ''}`}
-            onClick={() => void loadRange(range)}
-            disabled={loading}
-          >
-            {label}
-          </button>
-        ))}
+      <div className={styles.chartToolbar}>
+        <div className={styles.rangeRow}>
+          <span className={styles.rangeLabel}>Range</span>
+          {RANGES.map(({ range, label }) => (
+            <button
+              key={range}
+              type="button"
+              className={`${styles.rangeBtn} ${payload.range === range ? styles.rangeBtnActive : ''}`}
+              onClick={() => void loadRange(range)}
+              disabled={loading}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
       {error ? <p className={styles.rangeError}>{error}</p> : null}
 
@@ -86,7 +89,7 @@ export default function EtfChartPanel({ symbol, initialPayload }: EtfChartPanelP
         series={[{ values: payload.values, color: 'var(--color-gold)', label: payload.symbol }]}
         timestampsSec={payload.timestamps}
         height={140}
-        chartCurrency={symbol === 'HDGE.TO' ? 'CAD' : 'USD'}
+        chartCurrency={symbol.toUpperCase().endsWith('.TO') ? 'CAD' : 'USD'}
       />
 
       <p className={chartStyles.disclaimer}>

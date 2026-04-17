@@ -40,6 +40,20 @@ body {
   overflow-x: hidden;
 }
 
+/**
+ * Footer legal + ETF disclaimers — same microcopy size.
+ * ETF pages nest this inside `.bodySection p` (14px); `main p` beats that specificity so size matches footer.
+ */
+.legalFooterCopy,
+main p.legalFooterCopy {
+  max-width: 900px;
+  font-size: 11px;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--color-text-ghost);
+}
+
 .divider {
   height: 0.5px;
   background: var(--color-border);

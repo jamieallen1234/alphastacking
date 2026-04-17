@@ -1,8 +1,11 @@
+.chartToolbar {
+  margin-bottom: 0.8rem;
+}
+
 .rangeRow {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  margin-bottom: 0.8rem;
   flex-wrap: wrap;
 }
 
@@ -16,6 +19,8 @@
 }
 
 .rangeBtn {
+  position: relative;
+  z-index: 1;
   border: 0.5px solid var(--color-border);
   color: rgba(232, 228, 220, 0.6);
   background: transparent;

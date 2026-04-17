@@ -1,14 +1,16 @@
 import Link from 'next/link'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
+import EtfPageHubNav from '@/components/EtfPageHubNav'
 import EtfChartPanel from '@/components/EtfChartPanel'
+import EtfPageDisclaimers from '@/components/EtfPageDisclaimers'
 import { getCachedMateChart } from '@/lib/getCachedEtfChart'
 import styles from './page.module.css'
 
 export const metadata = {
   title: 'MATE ETF — Alpha Stacking',
   description:
-    'Man Active Trend Enhanced ETF (MATE): structure, manager history, and managed-futures context.',
+    'Man Active Trend Enhanced ETF (MATE): 100% S&P 500 stacked with 100% managed futures, manager context.',
 }
 
 export default async function MateEtfPage() {
@@ -18,15 +20,16 @@ export default async function MateEtfPage() {
     <main className={styles.main}>
       <Nav />
       <section className={styles.section}>
-        <Link href="/us-etfs#return-stacked" className={styles.back}>
+        <EtfPageHubNav variant="us" />
+        <Link href="/us-etfs#return-stacked-ge-2x" className={styles.back}>
           ← ETFs
         </Link>
-        <span className={styles.badge}>Return stacked</span>
+        <span className={styles.badge}>Return Stacked - 2x</span>
         <h1 className={styles.heading}>MATE — Man Active Trend Enhanced ETF</h1>
         <p className={styles.lede}>
-          MATE targets capital growth by layering U.S. equity beta with trend-following managed futures.
-          It is built to keep core equity participation while adding a diversifying, rules-based alpha
-          sleeve.
+          MATE is return-stacked: <strong>100% S&amp;P 500</strong> notional exposure alongside{' '}
+          <strong>100%</strong> trend-following <strong>managed futures</strong>—core large-cap U.S.
+          equity beta plus a diversifying macro sleeve in one fund.
         </p>
 
         <ul className={styles.meta}>
@@ -40,11 +43,14 @@ export default async function MateEtfPage() {
             <strong>Inception:</strong> Dec 16, 2025
           </li>
           <li>
-            <strong>Expense ratio:</strong> 0.97%
-          </li>
-          <li>
             <strong>Beta:</strong>{' '}
             {mateChart.betaVsSpy1y != null ? mateChart.betaVsSpy1y.toFixed(2) : '—'}
+          </li>
+          <li>
+            <strong>MER:</strong> 0.97%
+          </li>
+          <li>
+            <strong>AUM:</strong> ~$37M
           </li>
         </ul>
 
@@ -52,45 +58,50 @@ export default async function MateEtfPage() {
         <EtfChartPanel symbol="MATE" initialPayload={mateChart} />
 
         <div className={styles.bodySection}>
-          <h2>How the stack works</h2>
+          <h2>Strategy</h2>
           <p>
-            In the fund disclosures, Man describes a two-engine design: an equity strategy plus a
-            trend-following strategy. The trend sleeve uses derivatives across equities, rates,
-            currencies, and commodities, while collateral and cash management sit in
-            Treasuries/cash equivalents.
+            Fund disclosures describe that design: <strong>100% S&amp;P 500</strong> equity exposure
+            paired with <strong>100%</strong> <strong>managed futures</strong>—trend-following across
+            equities, rates, currencies, and commodities via derivatives. Collateral and cash management
+            typically sit in Treasuries and cash equivalents.
           </p>
           <p>
-            In plain terms: instead of replacing S&amp;P 500 exposure, MATE layers managed futures on top
-            through cash-efficient instruments.
-          </p>
-        </div>
-
-        <div className={styles.bodySection}>
-          <h2>Manager history before this ETF</h2>
-          <p>
-            Man Group’s roots go back to 1783. Its systematic unit, Man AHL, was founded in 1987 as a
-            CTA, with Man taking a majority stake in 1989 and full ownership in 1994. On Man’s own
-            history pages, AHL is presented as one of the longest-running systematic managers and a
-            platform that expanded from trend-following into broader quantitative strategies over time.
-          </p>
-          <p>
-            That matters for MATE: while the ETF itself is new, the managed-futures process comes from a
-            long-running systematic research/trading organization.
+            In plain terms: full notional S&amp;P 500 equity exposure sits alongside a full notional
+            managed-futures book—cash-efficient implementation, not an either/or trade-off between the two
+            engines.
           </p>
         </div>
 
         <div className={styles.bodySection}>
-          <h2>When managed futures tend to outperform SPY</h2>
+          <h2>Manager and Issuer Pedigree</h2>
           <p>
-            Managed futures strategies are generally trend-following. They tend to shine when large,
-            persistent trends develop across macro markets: sustained equity selloffs, directional rate
-            cycles, prolonged commodity moves, or major FX trends. Those are often the same periods when
-            long-only equity beta is under stress.
+            Man Group is among the world’s largest publicly traded alternatives managers — often described
+            as the biggest listed hedge fund–style firm — with group assets under management of about
+            $227.6 billion as at Dec. 31, 2025 (year-end results announcement). The firm runs systematic quant
+            (including Man AHL and Man Numeric),
+            discretionary, and multi-asset capabilities across public and private markets, with the explicit
+            aim of delivering differentiated performance and risk-adjusted outcomes for clients.
           </p>
           <p>
-            On the issuer page, Man explicitly frames trend-following as historically effective during
-            prolonged equity drawdowns (with reference to the Barclay BTOP50 index). In range-bound,
-            choppy markets with rapid reversals, trend systems can lag as signals whipsaw.
+            Alpha at Man is pursued through research-intensive, institutional-caliber processes: factor and
+            trend models, portfolio construction, and execution at scale — not a single gimmick, but a
+            business built to compound skill across regimes. For MATE, that backdrop matters: the
+            managed-futures sleeve sits inside an organization whose core job is generating excess return
+            for clients, not just packaging beta.
+          </p>
+        </div>
+
+        <div className={styles.bodySection}>
+          <h2>Outperformance</h2>
+          <p>
+            The first sleeve targets <strong>S&amp;P 500</strong> beta; incremental edge vs. that benchmark
+            comes from the <strong>managed-futures</strong> stack. Trend-following tends to shine when large,
+            persistent trends run across macro: directional rate cycles, commodity runs, major FX moves, or
+            equity stress—environments where the second sleeve can diverge from plain large-cap beta.
+          </p>
+          <p>
+            Man frames trend-following as historically additive in those regimes—including prolonged equity
+            drawdowns—when the futures book has room to earn while the equity sleeve tracks its core exposure.
           </p>
         </div>
 
@@ -107,10 +118,7 @@ export default async function MateEtfPage() {
             </a>
             .
           </p>
-          <p className={styles.smallNote}>
-            Educational content only; not investment advice. Past performance does not guarantee future
-            results.
-          </p>
+          <EtfPageDisclaimers />
         </div>
       </section>
       <Footer />

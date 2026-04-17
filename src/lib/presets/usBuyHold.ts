@@ -1,13 +1,19 @@
 import type { PresetHolding } from './usInternational'
 
-export const US_CORE_BH_PRESET_ID = 'us-core-bh-v1'
+export const US_CORE_BH_PRESET_ID = 'us-core-bh-v2'
 
 export const usCoreBuyHoldHoldings: PresetHolding[] = [
   {
     ticker: 'VFLO',
-    weightPct: 40,
+    weightPct: 20,
     beta: 0.75,
-    blurb: 'US dividend growth / quality tilt (Vanguard).',
+    blurb: 'US large-cap cash cows (VictoryShares).',
+  },
+  {
+    ticker: 'AVUV',
+    weightPct: 20,
+    beta: 1.15,
+    blurb: 'US small-cap value (Avantis).',
   },
   {
     ticker: 'QQQ',

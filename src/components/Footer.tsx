@@ -17,14 +17,14 @@ export default function Footer() {
   return (
     <footer>
       <div className={styles.legalBlock}>
-        <p>
+        <p className="legalFooterCopy">
           alphastacking.co is an independent educational website. Nothing on this
           site constitutes financial, investment, legal, or tax advice. All content
           is provided for informational purposes only. Model portfolios are
           for educational purposes and do not represent actual investment results. Past
           performance is not indicative of future results.
         </p>
-        <p>
+        <p className="legalFooterCopy">
           Leveraged and inverse ETFs are complex instruments that use financial
           derivatives and debt to amplify returns. They are subject to volatility
           decay and are designed for short-term trading by definition of their

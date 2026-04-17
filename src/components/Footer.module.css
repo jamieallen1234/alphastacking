@@ -5,13 +5,7 @@
 }
 
 .legalBlock p {
-  font-size: 11px;
-  font-weight: 300;
-  color: var(--color-text-ghost);
-  line-height: 1.7;
   margin: 0 0 0.75rem;
-  max-width: 900px;
-  font-style: italic;
 }
 
 .legalBlock p:last-child {

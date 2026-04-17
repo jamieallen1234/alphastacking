@@ -1,5 +1,6 @@
 import { unstable_cache } from 'next/cache'
-import { fetchDailySeries, type YahooRange } from '@/lib/yahooFinance'
+import { fetchDailySeries, type PriceSeries, type YahooRange } from '@/lib/yahooFinance'
+import { ETF_CHART_SYMBOLS, type EtfChartYahooSymbol } from '@/lib/etfChartSymbols'
 
 const DAY = 86400
 const START_NOTIONAL = 10_000
@@ -23,63 +24,103 @@ function formatNyDate(tsSec: number): string {
   })
 }
 
-export const getCachedMateChart = unstable_cache(
-  async (range: YahooRange = 'max'): Promise<EtfChartPayload> => {
-    const series = await fetchDailySeries('MATE', range)
-    const spy = await fetchDailySeries('SPY', '1y')
-    const first = series.prices[0]
-    const last = series.prices[series.prices.length - 1]
+function isRecoverableEmptySeriesError(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err)
+  return msg.includes('No price data') || msg.includes('No usable closes')
+}
 
-    const values =
-      first && first > 0
-        ? series.prices.map((p) => (p / first) * START_NOTIONAL)
-        : []
+async function buildEtfChartPayload(
+  yahooSymbol: string,
+  range: YahooRange
+): Promise<EtfChartPayload> {
+  let effectiveRange: YahooRange = range
+  let series: PriceSeries
+  try {
+    series = await fetchDailySeries(yahooSymbol, range)
+  } catch (err) {
+    if (range === 'max' || !isRecoverableEmptySeriesError(err)) throw err
+    series = await fetchDailySeries(yahooSymbol, 'max')
+    effectiveRange = 'max'
+  }
+  const spy = await fetchDailySeries('SPY', '1y')
+  const first = series.prices[0]
+  const last = series.prices[series.prices.length - 1]
 
-    const betaVsSpy1y = computeBetaVsSpy(series, spy)
+  const values =
+    first && first > 0 ? series.prices.map((p) => (p / first) * START_NOTIONAL) : []
 
-    return {
-      symbol: series.symbol,
-      range,
-      chartStartDate: formatNyDate(series.timestamps[0]!),
-      timestamps: series.timestamps,
-      values,
-      totalReturnPercent:
-        first && last && first > 0 ? ((last / first - 1) * 100) : null,
-      betaVsSpy1y,
-    }
-  },
-  ['etf-chart', 'MATE', 'v2', 'notional-10k', 'adj-close', 'beta-spy-1y'],
-  { revalidate: DAY }
-)
+  const betaVsSpy1y = computeBetaVsSpy(series, spy)
 
-export const getCachedHdgeChart = unstable_cache(
-  async (range: YahooRange = '1y'): Promise<EtfChartPayload> => {
-    const series = await fetchDailySeries('HDGE.TO', range)
-    const spy = await fetchDailySeries('SPY', '1y')
-    const first = series.prices[0]
-    const last = series.prices[series.prices.length - 1]
+  return {
+    symbol: series.symbol,
+    range: effectiveRange,
+    chartStartDate: formatNyDate(series.timestamps[0]!),
+    timestamps: series.timestamps,
+    values,
+    totalReturnPercent: first && last && first > 0 ? ((last / first - 1) * 100) : null,
+    betaVsSpy1y,
+  }
+}
 
-    const values =
-      first && first > 0
-        ? series.prices.map((p) => (p / first) * START_NOTIONAL)
-        : []
+function createEtfChartLoader(yahooSymbol: EtfChartYahooSymbol) {
+  return unstable_cache(
+    async (range: YahooRange = '1y') => buildEtfChartPayload(yahooSymbol, range),
+    [
+      'etf-chart',
+      yahooSymbol,
+      'v4-unified',
+      'notional-10k',
+      'adj-close',
+      'beta-spy-1y',
+    ],
+    { revalidate: DAY }
+  )
+}
 
-    const betaVsSpy1y = computeBetaVsSpy(series, spy)
+const CACHED_ETF_CHART: Record<EtfChartYahooSymbol, ReturnType<typeof createEtfChartLoader>> =
+  {} as Record<EtfChartYahooSymbol, ReturnType<typeof createEtfChartLoader>>
 
-    return {
-      symbol: series.symbol,
-      range,
-      chartStartDate: formatNyDate(series.timestamps[0]!),
-      timestamps: series.timestamps,
-      values,
-      totalReturnPercent:
-        first && last && first > 0 ? ((last / first - 1) * 100) : null,
-      betaVsSpy1y,
-    }
-  },
-  ['etf-chart', 'HDGE.TO', 'v1', 'notional-10k', 'adj-close', 'beta-spy-1y'],
-  { revalidate: DAY }
-)
+for (const sym of ETF_CHART_SYMBOLS) {
+  CACHED_ETF_CHART[sym] = createEtfChartLoader(sym)
+}
+
+/** Cached ETF price series + beta vs SPY (1y overlap). */
+export async function getCachedEtfChart(
+  yahooSymbol: string,
+  range: YahooRange = '1y'
+): Promise<EtfChartPayload> {
+  const sym = yahooSymbol.toUpperCase() as EtfChartYahooSymbol
+  const loader = CACHED_ETF_CHART[sym]
+  if (!loader) {
+    throw new Error(`Unsupported ETF chart symbol: ${yahooSymbol}`)
+  }
+  return loader(range)
+}
+
+/** MATE historically used `max` default in one path; keep 1y for hub parity. */
+export async function getCachedMateChart(range: YahooRange = '1y') {
+  return getCachedEtfChart('MATE', range)
+}
+
+export async function getCachedHdgeChart(range: YahooRange = '1y') {
+  return getCachedEtfChart('HDGE.TO', range)
+}
+
+export async function getCachedRssyChart(range: YahooRange = '1y') {
+  return getCachedEtfChart('RSSY', range)
+}
+
+export async function getCachedPfmnChart(range: YahooRange = '1y') {
+  return getCachedEtfChart('PFMN.TO', range)
+}
+
+export async function getCachedHfgmChart(range: YahooRange = '1y') {
+  return getCachedEtfChart('HFGM', range)
+}
+
+export async function getCachedArbChart(range: YahooRange = '1y') {
+  return getCachedEtfChart('ARB.TO', range)
+}
 
 function alignedDailyReturns(
   aTs: number[],

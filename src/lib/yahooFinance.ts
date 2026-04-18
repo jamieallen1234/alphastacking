@@ -13,7 +13,11 @@ export type YahooRange =
 export interface PriceSeries {
   symbol: string
   timestamps: number[]
-  /** Adjusted close when available, else regular close */
+  /**
+   * Prefer Yahoo **adjusted** close: industry-standard **total return** proxy on each day
+   * (splits + cash distributions reflected backward through the series). Falls back to unadjusted
+   * `close` only when adj. is missing (rare for liquid listings).
+   */
   prices: number[]
 }
 

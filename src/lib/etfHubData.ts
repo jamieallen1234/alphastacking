@@ -173,6 +173,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Actively managed U.S. small-cap value: profitability, value, and investment discipline vs. Russell 2000 Value.',
       usPath('avuv')
     ),
+    us(
+      'sass',
+      'SASS — M.D. Sass Concentrated Value ETF',
+      'Active, high-conviction U.S. large/mid value—roughly 20–25 names from Russell value universes, out-of-favor and misunderstood stories.',
+      usPath('sass')
+    ),
   ],
   'managed-futures': [
     us(

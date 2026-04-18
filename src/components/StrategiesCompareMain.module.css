@@ -1,0 +1,118 @@
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.article {
+  flex: 1;
+  width: 100%;
+  max-width: var(--home-content-max);
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 3rem;
+}
+
+.back {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 220, 0.45);
+  text-decoration: none;
+  margin-bottom: 1.25rem;
+}
+
+.back:hover {
+  color: var(--color-gold);
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 4vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.lede {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.section {
+  margin-bottom: 2.75rem;
+}
+
+.sectionTitle {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+}
+
+.prose {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+  max-width: 46rem;
+}
+
+.proseMuted {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--color-text-faint);
+  margin-bottom: 1rem;
+  max-width: 46rem;
+}
+
+.chartGrid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 720px) {
+  .chartGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.chartCard {
+  background: var(--color-bg-elevated);
+  border: 0.5px solid var(--color-border-faint);
+  padding: 1rem 1rem 0.25rem;
+  border-radius: 2px;
+}
+
+.chartCardTitle {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgba(232, 228, 220, 0.78);
+  margin-bottom: 0.75rem;
+  max-width: 42rem;
+}
+
+.chartError {
+  font-size: 12px;
+  color: var(--color-red);
+  padding-bottom: 1rem;
+}

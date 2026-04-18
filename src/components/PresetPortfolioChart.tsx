@@ -63,9 +63,17 @@ function syntheticModelingCopy(m: SyntheticModelingNote): { title: string; body:
 
 interface PresetPortfolioChartProps {
   payload: PortfolioChartPayload
+  /** Replaces the default "Portfolio" label in metrics, legend, and chart tooltip. */
+  portfolioLabel?: string
+  /** `minimal`: single-line Yahoo / educational note (e.g. strategy comparison pages). */
+  footnote?: 'default' | 'minimal'
 }
 
-export default function PresetPortfolioChart({ payload }: PresetPortfolioChartProps) {
+export default function PresetPortfolioChart({
+  payload,
+  portfolioLabel = 'Portfolio',
+  footnote = 'default',
+}: PresetPortfolioChartProps) {
   const {
     values,
     benchmarkValues,
@@ -131,7 +139,7 @@ export default function PresetPortfolioChart({ payload }: PresetPortfolioChartPr
     values.length === timestamps.length &&
     values.length >= 2
       ? [
-          { values, color: 'var(--color-gold)', label: 'Portfolio' },
+          { values, color: 'var(--color-gold)', label: portfolioLabel },
           {
             values: benchmarkValues,
             color: 'var(--color-blue)',
@@ -153,7 +161,7 @@ export default function PresetPortfolioChart({ payload }: PresetPortfolioChartPr
               ? `${totalReturnPercent >= 0 ? '+' : ''}${totalReturnPercent.toFixed(2)}%`
               : '—'}
           </div>
-          <div className={styles.metricSub}>Portfolio</div>
+          <div className={styles.metricSub}>{portfolioLabel}</div>
         </div>
         <div>
           <div className={`${styles.metricBig} ${benchClass}`}>
@@ -191,7 +199,7 @@ export default function PresetPortfolioChart({ payload }: PresetPortfolioChartPr
       <div className={styles.legend}>
         <span className={styles.legendItem}>
           <span className={styles.legendSwatch} style={{ background: 'var(--color-gold)' }} />
-          Portfolio
+          {portfolioLabel}
         </span>
         <span className={styles.legendItem}>
           <span className={styles.legendSwatch} style={{ background: 'var(--color-blue)' }} />
@@ -210,11 +218,20 @@ export default function PresetPortfolioChart({ payload }: PresetPortfolioChartPr
             *
           </span>
           <div className={styles.footnoteBody}>
-            <p className={styles.disclaimerLead}>
-              Educational model only — not investment advice. Portfolio betas in the holdings table
-              are weighted to the listed names and weights; they are intended to be accurate to that
-              model and may be updated if holdings, listings, or methodology change.
-            </p>
+            {footnote === 'minimal' ? (
+              <p className={styles.disclaimerLead}>
+                <strong>Total return</strong> series: Yahoo Finance <strong>adjusted close</strong> (cash
+                distributions and splits reflected per Yahoo’s methodology), common U.S. sessions, $10k at
+                first overlap—not fund NAV, not tax-adjusted. Educational only — not investment advice.
+                Past performance does not predict future results.
+              </p>
+            ) : (
+              <p className={styles.disclaimerLead}>
+                Educational model only — not investment advice. Portfolio betas in the holdings table
+                are weighted to the listed names and weights; they are intended to be accurate to that
+                model and may be updated if holdings, listings, or methodology change.
+              </p>
+            )}
             {syntheticModeling.map((m) => {
               const { title, body } = syntheticModelingCopy(m)
               if (!body) return null

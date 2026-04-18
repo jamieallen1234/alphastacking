@@ -93,7 +93,8 @@ export default function EtfChartPanel({ symbol, initialPayload }: EtfChartPanelP
       />
 
       <p className={chartStyles.disclaimer}>
-        Yahoo adjusted close, normalized to $10,000 at first available trade date. Educational only.
+        Total return (Yahoo adjusted close—dividends and splits per Yahoo), normalized to $10,000 at first
+        available trade date. Educational only.
       </p>
     </div>
   )

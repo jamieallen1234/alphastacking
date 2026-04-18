@@ -523,6 +523,35 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'Avantis Investors',
   },
 
+  sass: {
+    yahooSymbol: 'SASS',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'SASS — M.D. Sass Concentrated Value ETF',
+    displayTicker: 'SASS',
+    issuer: 'M.D. Sass',
+    inception: 'Mar 2026',
+    mer: '0.75%',
+    aum: '~$70M',
+    pageTitle: 'SASS ETF — Alpha Stacking',
+    description: 'M.D. Sass Concentrated Value ETF (SASS): active concentrated U.S. value.',
+    lede:
+      'SASS is M.D. Sass’s concentrated U.S. value sleeve—a high-conviction book of about 20–25 large and mid-cap names sourced from Russell 1000/3000 Value, emphasizing misunderstood or out-of-favor situations.',
+    strategyParas: [
+      'The adviser targets value with a catalyst lens—spin-offs, complex balance sheets, and paths to simplification—not passive factor loading.',
+      'Concentration raises single-name and sector risk versus broad value indexes; read holdings and position limits in the prospectus.',
+    ],
+    pedigreeParas: ped(
+      'M.D. Sass LLC',
+      'M.D. Sass is a long-tenured independent adviser; consolidated regulatory AUM is boutique-to mid-market versus mega ETF complexes—confirm the latest Form ADV and sponsor materials.'
+    ),
+    outperfParas: outf(
+      'value spreads widen and mean-reversion favors patient stock pickers—when quality franchises trade at a discount to normalized cash flows'
+    ),
+    officialUrl: 'https://www.mdsassetf.com/',
+    officialLabel: 'M.D. Sass Concentrated Value ETF',
+  },
+
   cta: {
     yahooSymbol: 'CTA',
     hubCategoryId: 'managed-futures',

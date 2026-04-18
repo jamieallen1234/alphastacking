@@ -21,6 +21,7 @@ export const ETF_CHART_SYMBOLS = [
   'CAOS',
   'SPMO',
   'VFLO',
+  'SASS',
   'AVUV',
   'CTA',
   'DBMF',

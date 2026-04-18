@@ -9,12 +9,12 @@ const pillars = [
   {
     num: '02',
     title: 'Uncorrelated layers',
-    body: 'Stack strategies with low correlation — managed futures, long/short equity, global macro — so each layer adds return without proportional risk.',
+    body: 'Combine sleeves whose edges tend to appear in different conditions—trend, carry, dispersion, security selection—so the stack has a plausible path in bull, bear, and choppy tape, not just one macro bet.',
   },
   {
     num: '03',
     title: 'Excess return focus',
-    body: 'Target alpha specifically — not just beta — through factor premia, active strategies, and return-stacked ETFs available to any retail investor.',
+    body: 'Target repeatable premia and active skill, not a second slice of the same equity factor. Use capital efficiency so those sleeves sit alongside a core instead of crowding each other out.',
   },
 ]
 
@@ -27,12 +27,12 @@ export default function Framework() {
       <div className={styles.definition}>
         <div className={styles.definitionTerm}>Alpha Stacking</div>
         <p>
-          An investment framework that deploys capital efficiency and leverage to
-          layer multiple sources of excess return on top of a core portfolio,
-          without proportionally increasing capital at risk. Where return stacking
-          combines uncorrelated betas, alpha stacking goes further — using borrowed
-          or synthetic exposure to access strategy premia, factor tilts, and active
-          returns that would otherwise require displacing existing holdings.
+          An investment framework that takes the best parts of different proven strategies and
+          combines them in synergistic ways—using capital efficiency, leverage, and derivatives only
+          where they fit—so the combined book can aim to outperform in varied environments: bull,
+          bear, and sideways or choppy markets. Where return stacking layers uncorrelated betas, alpha
+          stacking emphasizes sleeves with distinct return drivers that reinforce the whole without
+          forcing you to sell down the core to add each idea.
         </p>
       </div>
 

@@ -22,10 +22,11 @@ export default function Hero({ variant = 'us' }: HeroProps) {
 
       <p className={`${styles.sub} animate animate-3`}>
         <span className={styles.subHighlightWhite}>Alpha</span>
-        <span className={styles.subHighlightGold}> stacking</span> involves stacking uncorrelated assets on top of a core portfolio to
-        generate excess returns. It improves upon return stacking by focusing on higher expected returns
-        while keeping beta similar to traditional portfolios. Strategies found in hedge funds such as long/short,
-        global macro, risk premia and systematic alternatives are deployed to improve returns while managing risk.
+        <span className={styles.subHighlightGold}> stacking</span> takes the strongest ideas from different proven strategies—long/short
+        equity, global macro, managed futures, risk premia, systematic alternatives—and combines them in
+        synergistic ways on top of a core book. The aim is a whole portfolio that can seek excess return
+        in bull, bear, and sideways or choppy markets alike, without treating “more equity beta” as the only
+        dial for performance.
       </p>
 
       <div className={`${styles.actions} animate animate-4`}>

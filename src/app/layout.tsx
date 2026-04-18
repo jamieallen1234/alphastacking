@@ -23,7 +23,7 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'Alpha Stacking — Stack alpha, not beta',
   description:
-    'Alpha stacking stacks uncorrelated assets on a core portfolio to target excess alpha—using hedge-fund-style strategies while keeping beta similar to traditional portfolios.',
+    'Alpha stacking combines the best parts of proven strategies in synergistic ways—seeking excess return in bull, bear, and choppy markets while keeping a deliberate core and risk budget.',
 }
 
 export default function RootLayout({

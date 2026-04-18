@@ -15,3 +15,7 @@ export function homePath(isCa: boolean): string {
 export function usEtfHubPath(isCa: boolean): string {
   return isCa ? '/ca/us-etfs' : '/us-etfs'
 }
+
+export function comparisonPath(isCa: boolean): string {
+  return isCa ? '/ca/comparison' : '/comparison'
+}

@@ -22,6 +22,7 @@ export const ETF_CHART_SYMBOLS = [
   'SPMO',
   'VFLO',
   'SASS',
+  'AVGV',
   'AVUV',
   'CTA',
   'DBMF',

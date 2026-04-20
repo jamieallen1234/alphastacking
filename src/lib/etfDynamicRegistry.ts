@@ -541,6 +541,39 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'VictoryShares (VFLO)',
   },
 
+  avgv: {
+    yahooSymbol: 'AVGV',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'AVGV — Avantis All Equity Markets Value ETF',
+    displayTicker: 'AVGV',
+    issuer: 'Avantis Investors',
+    inception: 'Jun 2023',
+    structure: 'Fund of funds',
+    mer: '0.26%',
+    aum: '~$240M',
+    pageTitle: 'AVGV ETF — Alpha Stacking',
+    description:
+      'Avantis All Equity Markets Value ETF (AVGV): active global equity value via underlying Avantis ETFs.',
+    lede:
+      'AVGV is an actively managed fund-of-funds: under normal conditions it invests at least 80% of assets in equity ETFs—primarily other Avantis funds—allocated across regions and market caps to pursue long-term capital appreciation with a value tilt.',
+    strategyParas: [
+      'Implementation is sleeve-based rather than a single-country stock screen: managers set and adjust weights across underlying Avantis equity ETFs (U.S., international, emerging, large and small cap value sleeves per current disclosures), so you own the firm’s implementation stack plus an extra layer of asset-allocation judgment.',
+      'You pay this fund’s expense ratio on top of the weighted expenses of the underlying ETFs; performance and risks compound through those holdings. The sponsor discloses that results would have been lower without a contractual fee waiver on part of the management fee—confirm the current waiver end date and net/gross figures on the official fund page before sizing.',
+    ],
+    pedigreeParas: ped(
+      `Avantis’s team and process trace to Dimensional Fund Advisors DNA—broad diversification, profitability and value signals, and disciplined portfolio construction—while American Century Investment Management serves as investment adviser under the Avantis Investors brand.`,
+      `AVGV packages that philosophy as a one-ticker sleeve across geographies instead of picking a single regional value ETF; verify current underlying lineup, geographic ranges, and turnover in the latest annual or semiannual report rather than relying on stale third-party snapshots.`,
+    ),
+    outperfParas: [
+      'The structure tends to work when global value spreads are widening and capital rotates away from narrow mega-cap growth leadership—multiple regional value sleeves can participate when the tape broadens beyond one market.',
+      'It is a harder fit when a single geography or factor dominates (for example U.S. large growth squeezing everything else) or when emerging-markets stress hits several sleeves at once; favorable regimes are orderly credit markets with cross-region value participation, not single-theme melt-ups.',
+    ],
+    officialUrl:
+      'https://www.avantisinvestors.com/avantis-investments/avantis-all-equity-markets-value-etf',
+    officialLabel: 'Avantis (AVGV)',
+  },
+
   avuv: {
     yahooSymbol: 'AVUV',
     hubCategoryId: 'factor',

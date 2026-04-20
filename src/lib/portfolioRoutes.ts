@@ -36,7 +36,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     hubSection: 'buy-hold',
     title: 'US core (buy & hold)',
     description:
-      'VFLO, AVUV, QQQ, and SPMO at 20% / 20% / 30% / 30%.',
+      'VFLO, AVGV, QQQ, and SPMO at 20% / 20% / 30% / 30%.',
     featured: true,
   },
   {

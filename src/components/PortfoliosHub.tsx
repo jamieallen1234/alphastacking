@@ -44,7 +44,7 @@ function hubSections({
 }: {
   portfolioRoutes: PortfolioRouteDef[]
   hrefFor: (slug: string) => string
-  anchorIds: { quarterly: string; buyHold: string }
+  anchorIds: { annualRebalance: string; buyHold: string }
   firstSectionMarginTop: CSSProperties['marginTop']
   betweenSections: string
   extraBlurb: string
@@ -54,11 +54,11 @@ function hubSections({
 
   return (
     <>
-      {(['leveraged-quarterly', 'buy-hold'] as const).map((section, i) => {
+      {(['annual-rebalance', 'buy-hold'] as const).map((section, i) => {
         const meta = HUB_SECTION_LABEL[section]
         const routes = portfolioHubRoutes(bySection(section))
         if (routes.length === 0) return null
-        const id = section === 'leveraged-quarterly' ? anchorIds.quarterly : anchorIds.buyHold
+        const id = section === 'annual-rebalance' ? anchorIds.annualRebalance : anchorIds.buyHold
         return (
           <div key={section} id={id}>
             <h2
@@ -99,7 +99,7 @@ export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
           {hubSections({
             portfolioRoutes: usPortfolioRoutes,
             hrefFor: (slug) => `/portfolios/${slug}`,
-            anchorIds: { quarterly: 'us-quarterly', buyHold: 'us-buyhold' },
+            anchorIds: { annualRebalance: 'us-annual-rebalance', buyHold: 'us-buyhold' },
             firstSectionMarginTop: 0,
             betweenSections: '2.75rem',
             extraBlurb: '',
@@ -127,7 +127,7 @@ export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
         {hubSections({
           portfolioRoutes: caPortfolioRoutes,
           hrefFor: (slug) => `/ca/portfolios/${slug}`,
-          anchorIds: { quarterly: 'ca-quarterly', buyHold: 'ca-buyhold' },
+          anchorIds: { annualRebalance: 'ca-annual-rebalance', buyHold: 'ca-buyhold' },
           firstSectionMarginTop: '0.5rem',
           betweenSections: '2.25rem',
           extraBlurb: 'Live CAD charts where noted (VFV.TO benchmark labeled SPY).',
@@ -140,7 +140,7 @@ export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
         {hubSections({
           portfolioRoutes: usPortfolioRoutes,
           hrefFor: (slug) => `/ca/portfolios/${slug}`,
-          anchorIds: { quarterly: 'us-quarterly', buyHold: 'us-buyhold' },
+          anchorIds: { annualRebalance: 'us-annual-rebalance', buyHold: 'us-buyhold' },
           firstSectionMarginTop: '0.5rem',
           betweenSections: '2.25rem',
           extraBlurb: 'Same models as /portfolios; links stay in the Canadian edition.',

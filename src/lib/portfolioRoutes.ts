@@ -3,7 +3,7 @@ import { portfolios } from '@/lib/portfolios'
 export type PortfolioPageKind = 'live' | 'placeholder' | 'stub'
 
 /** Where the card appears on the portfolios hub (US page: US-only rows; CA page: grouped by region + section). */
-export type PortfolioHubSection = 'leveraged-quarterly' | 'buy-hold'
+export type PortfolioHubSection = 'annual-rebalance' | 'buy-hold'
 
 export interface PortfolioRouteDef {
   slug: string
@@ -24,10 +24,10 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     slug: 'us-international',
     region: 'us',
     kind: 'live',
-    hubSection: 'leveraged-quarterly',
+    hubSection: 'annual-rebalance',
     title: 'US international',
     description:
-      'Diversified US-listed mix with intentional beta near 1.0 — modeled with quarterly rebalance to target weights (first US session of each calendar quarter).',
+      'Diversified US-listed mix with intentional beta near 1.0 — modeled with annual rebalance to target weights (first US session of each calendar year).',
     featured: true,
   },
   {
@@ -44,7 +44,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     slug: 'leveraged-premia',
     region: 'us',
     kind: 'placeholder',
-    hubSection: 'leveraged-quarterly',
+    hubSection: 'annual-rebalance',
     title: 'Leveraged Premia',
     badge: 'Aggressive',
     description: 'UPRO + SSO + MATE + CTAP. High-octane LETF core with return-stacked alts.',
@@ -54,7 +54,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     slug: 'alpha-stack',
     region: 'us',
     kind: 'stub',
-    hubSection: 'leveraged-quarterly',
+    hubSection: 'annual-rebalance',
     title: 'The Alpha Stack',
     badge: 'Coming soon',
     description: 'Return-stacked core with managed futures overlay — full breakdown in progress.',
@@ -64,7 +64,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     slug: 'capital-efficient',
     region: 'us',
     kind: 'stub',
-    hubSection: 'leveraged-quarterly',
+    hubSection: 'annual-rebalance',
     title: 'Capital Efficient Core',
     badge: 'Coming soon',
     description: 'Balanced leverage with global macro hedge — model portfolio page coming.',
@@ -74,7 +74,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     slug: 'global-macro-blend',
     region: 'us',
     kind: 'stub',
-    hubSection: 'leveraged-quarterly',
+    hubSection: 'annual-rebalance',
     title: 'Global macro blend',
     badge: 'Planned',
     description: 'Placeholder slot for an additional US model portfolio.',
@@ -87,10 +87,10 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     slug: 'ca-international',
     region: 'ca',
     kind: 'live',
-    hubSection: 'leveraged-quarterly',
+    hubSection: 'annual-rebalance',
     title: 'Canadian international',
     description:
-      'TSX and US-listed sleeves in CAD — quarterly rebalance to target weights (first US session of each calendar quarter).',
+      'TSX and US-listed sleeves in CAD — annual rebalance to target weights (first US session of each calendar year).',
     featured: true,
   },
   {
@@ -115,7 +115,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     slug: 'ca-alpha-stack',
     region: 'ca',
     kind: 'stub',
-    hubSection: 'leveraged-quarterly',
+    hubSection: 'annual-rebalance',
     title: 'Canadian Alpha Stack',
     badge: 'Coming soon',
     description: 'TSX-listed leveraged alternatives — full model page in progress.',
@@ -125,7 +125,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     slug: 'ca-conservative',
     region: 'ca',
     kind: 'stub',
-    hubSection: 'leveraged-quarterly',
+    hubSection: 'annual-rebalance',
     title: 'TSX Efficient Core',
     badge: 'Coming soon',
     description: 'Capital-efficient TSX sleeve — details coming.',
@@ -135,7 +135,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     slug: 'ca-aggressive',
     region: 'ca',
     kind: 'stub',
-    hubSection: 'leveraged-quarterly',
+    hubSection: 'annual-rebalance',
     title: 'Leveraged TSX',
     badge: 'Coming soon',
     description: 'High-conviction Canadian leveraged sleeve — details coming.',
@@ -147,9 +147,9 @@ export const HUB_SECTION_LABEL: Record<
   PortfolioHubSection,
   { heading: string; blurb: string }
 > = {
-  'leveraged-quarterly': {
-    heading: 'Leveraged — quarterly rebalance',
-    blurb: 'Target weights reset on the first US trading session of each calendar quarter (after that session’s closes).',
+  'annual-rebalance': {
+    heading: 'Leveraged — annual rebalance',
+    blurb: 'Target weights reset on the first US trading session of each calendar year (after that session’s closes).',
   },
   'buy-hold': {
     heading: 'Buy & hold',

@@ -86,6 +86,85 @@ export function buildBuyAndHoldSeries(
   return out
 }
 
+function calendarYearFromNyDay(nyDay: string): number {
+  const y = Number(nyDay.split('-')[0])
+  return Number.isFinite(y) ? y : 0
+}
+
+/**
+ * Same calendar alignment as {@link buildBuyAndHoldSeries}; after each session’s close, apply
+ * daily returns, then on the first session of a new **calendar year** rescale holdings to `weights`.
+ */
+export function buildAnnuallyRebalancedSeries(
+  series: PriceSeries[],
+  weights: number[]
+): PortfolioSeriesPoint[] {
+  if (series.length !== weights.length) {
+    throw new Error('Series count must match weight count')
+  }
+  if (series.length === 0) return []
+
+  const dayMaps = series.map((s) => seriesToNyDayPriceMap(s))
+
+  let common: Set<string> | null = null
+  for (const dm of dayMaps) {
+    const keys = new Set(dm.keys())
+    if (common === null) {
+      common = keys
+    } else {
+      const next = new Set<string>()
+      for (const k of common) {
+        if (keys.has(k)) next.add(k)
+      }
+      common = next
+    }
+  }
+  if (!common || common.size === 0) return []
+
+  const sortedDays = [...common].sort()
+  const day0 = sortedDays[0]!
+  if (dayMaps.some((dm) => {
+    const p = dm.get(day0)
+    return p == null || p <= 0
+  })) {
+    return []
+  }
+
+  const wSum = weights.reduce((a, b) => a + b, 0)
+  if (Math.abs(wSum - 1) > 1e-6) {
+    throw new Error('Annual rebalance weights must sum to 1')
+  }
+
+  let h = weights.map((w) => w)
+  const out: PortfolioSeriesPoint[] = []
+
+  for (let k = 0; k < sortedDays.length; k++) {
+    const day = sortedDays[k]!
+    if (k > 0) {
+      const prev = sortedDays[k - 1]!
+      for (let i = 0; i < dayMaps.length; i++) {
+        const p0 = dayMaps[i]!.get(prev)
+        const p1 = dayMaps[i]!.get(day)
+        if (p0 == null || p1 == null || p0 <= 0 || p1 <= 0) {
+          return []
+        }
+        h[i]! *= p1 / p0
+      }
+      if (calendarYearFromNyDay(day) !== calendarYearFromNyDay(prev)) {
+        const tot = h.reduce((a, b) => a + b, 0)
+        if (tot <= 0) return []
+        h = weights.map((w) => w * tot)
+      }
+    }
+
+    const value = h.reduce((a, b) => a + b, 0)
+    if (!Number.isFinite(value) || value <= 0) return []
+    out.push({ t: dayKeyToUtcNoonUnix(day), value, nyDay: day })
+  }
+
+  return out
+}
+
 /**
  * Each symbol’s total return % from the first to last **common** NY trading day (same intersection
  * as {@link buildBuyAndHoldSeries}). Uses the already-clipped, model-adjusted daily series.

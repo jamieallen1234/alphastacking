@@ -35,20 +35,20 @@ const PRESETS: Record<
     symbols: () => string[]
     weights: () => number[]
     cadDenominated: boolean
-    rebalanceSchedule: 'none' | 'quarterly'
+    rebalanceSchedule: 'none' | 'quarterly' | 'annual'
   }
 > = {
   [US_INTL_PRESET_ID]: {
     symbols: usInternationalSymbols,
     weights: usInternationalWeights,
     cadDenominated: false,
-    rebalanceSchedule: 'quarterly',
+    rebalanceSchedule: 'annual',
   },
   [CA_INTL_PRESET_ID]: {
     symbols: caInternationalSymbols,
     weights: caInternationalWeights,
     cadDenominated: true,
-    rebalanceSchedule: 'quarterly',
+    rebalanceSchedule: 'annual',
   },
   [US_CORE_BH_PRESET_ID]: {
     symbols: usCoreBuyHoldSymbols,

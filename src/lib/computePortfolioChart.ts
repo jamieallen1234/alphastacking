@@ -1,4 +1,5 @@
 import {
+  buildAnnuallyRebalancedSeries,
   buildBuyAndHoldSeries,
   buildQuarterlyRebalancedSeries,
   CHART_NOTIONAL_START_USD,
@@ -78,8 +79,11 @@ export interface PortfolioChartPayload {
    * (`benchmarkSymbol` in the payload is still labeled `SPY` for readability).
    */
   chartCurrency?: 'USD' | 'CAD'
-  /** `quarterly`: weights reset to targets on the first session of each calendar quarter (after that day’s returns). */
-  rebalanceSchedule: 'none' | 'quarterly'
+  /**
+   * `quarterly`: weights reset on the first session of each calendar quarter (after that day’s returns).
+   * `annual`: weights reset on the first session of each calendar year (after that day’s returns).
+   */
+  rebalanceSchedule: 'none' | 'quarterly' | 'annual'
   /** Each holding’s buy-and-hold TR % over the same common NY days as the chart (merged/synthetic series per symbol). */
   holdingTotalReturnPercents: { symbol: string; totalReturnPercent: number | null }[]
 }
@@ -97,7 +101,7 @@ export async function computePortfolioChart(params: {
   benchmarkSymbol?: string
   /** US-listed legs → CAD via NY-aligned USDCAD; benchmark fetch defaults to VFV.TO; payload still labels it SPY. */
   cadDenominated?: boolean
-  rebalanceSchedule?: 'none' | 'quarterly'
+  rebalanceSchedule?: 'none' | 'quarterly' | 'annual'
 }): Promise<PortfolioChartPayload> {
   const { symbols, weights, range } = params
   const rebalanceSchedule = params.rebalanceSchedule ?? 'none'
@@ -261,7 +265,9 @@ export async function computePortfolioChart(params: {
   const points =
     rebalanceSchedule === 'quarterly'
       ? buildQuarterlyRebalancedSeries(clipped, weights)
-      : buildBuyAndHoldSeries(clipped, weights)
+      : rebalanceSchedule === 'annual'
+        ? buildAnnuallyRebalancedSeries(clipped, weights)
+        : buildBuyAndHoldSeries(clipped, weights)
   if (points.length < 2) {
     throw new Error('Not enough overlapping sessions for this basket and range after inception.')
   }

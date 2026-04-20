@@ -40,7 +40,7 @@ export const getCachedUsInternationalChart = unstable_cache(
       symbols: usInternationalSymbols(),
       weights: usInternationalWeights(),
       range: PRESET_CHART_RANGE,
-      rebalanceSchedule: 'quarterly',
+      rebalanceSchedule: 'annual',
     }),
   [
     'preset-chart',
@@ -49,7 +49,7 @@ export const getCachedUsInternationalChart = unstable_cache(
     'synth-heql-mate-v1',
     'notional-10k',
     'default-1y',
-    'quarterly-rebal',
+    'annual-rebal',
   ],
   { revalidate: DAY }
 )
@@ -61,7 +61,7 @@ export const getCachedCaInternationalChart = unstable_cache(
       weights: caInternationalWeights(),
       range: PRESET_CHART_RANGE,
       cadDenominated: true,
-      rebalanceSchedule: 'quarterly',
+      rebalanceSchedule: 'annual',
     }),
   [
     'preset-chart',
@@ -72,7 +72,7 @@ export const getCachedCaInternationalChart = unstable_cache(
     'cad-vfv-usdcad',
     'heql-cad-fin-v2',
     'default-1y',
-    'quarterly-rebal',
+    'annual-rebal',
     'cad-levered-125-footnote',
   ],
   { revalidate: DAY }

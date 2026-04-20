@@ -2,7 +2,8 @@ import HomePage from '@/components/HomePage'
 
 export const metadata = {
   title: 'Alpha Stacking — Canadian edition',
-  description: 'Return stacking and model portfolios for Canadian investors.',
+  description:
+    'Alpha stacking combines proven sleeves in synergistic ways—model portfolios and ETF research for Canadian investors, with CAD context where noted.',
 }
 
 export default function CaHomePage() {

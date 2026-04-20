@@ -142,3 +142,93 @@ export const getCachedCaUsslQqqlHdgeChart = unstable_cache(
   ],
   { revalidate: DAY }
 )
+
+/** Home page: full joint history (`max`), same baskets as the live preset detail charts. */
+const PRESET_CHART_RANGE_MAX = 'max' as const
+
+export const getCachedUsInternationalChartMax = unstable_cache(
+  async () =>
+    computePortfolioChart({
+      symbols: usInternationalSymbols(),
+      weights: usInternationalWeights(),
+      range: PRESET_CHART_RANGE_MAX,
+      rebalanceSchedule: 'annual',
+    }),
+  [
+    'preset-chart',
+    US_INTL_PRESET_ID,
+    PRESET_CHART_RANGE_MAX,
+    'synth-heql-mate-v1',
+    'notional-10k',
+    'home-max',
+    'annual-rebal',
+  ],
+  { revalidate: DAY }
+)
+
+export const getCachedCaInternationalChartMax = unstable_cache(
+  async () =>
+    computePortfolioChart({
+      symbols: caInternationalSymbols(),
+      weights: caInternationalWeights(),
+      range: PRESET_CHART_RANGE_MAX,
+      cadDenominated: true,
+      rebalanceSchedule: 'annual',
+    }),
+  [
+    'preset-chart',
+    CA_INTL_PRESET_ID,
+    PRESET_CHART_RANGE_MAX,
+    'synth-heql-inception-2023-10-12',
+    'notional-10k',
+    'cad-vfv-usdcad',
+    'heql-cad-fin-v2',
+    'home-max',
+    'annual-rebal',
+    'cad-levered-125-footnote',
+  ],
+  { revalidate: DAY }
+)
+
+export const getCachedUsCoreBuyHoldChartMax = unstable_cache(
+  async () =>
+    computePortfolioChart({
+      symbols: usCoreBuyHoldSymbols(),
+      weights: usCoreBuyHoldWeights(),
+      range: PRESET_CHART_RANGE_MAX,
+      rebalanceSchedule: 'none',
+    }),
+  [
+    'preset-chart',
+    US_CORE_BH_PRESET_ID,
+    PRESET_CHART_RANGE_MAX,
+    'notional-10k',
+    'home-max',
+    'buy-hold',
+  ],
+  { revalidate: DAY }
+)
+
+export const getCachedCaCoreBuyHoldChartMax = unstable_cache(
+  async () =>
+    computePortfolioChart({
+      symbols: caCoreBuyHoldSymbols(),
+      weights: caCoreBuyHoldWeights(),
+      range: PRESET_CHART_RANGE_MAX,
+      cadDenominated: true,
+      rebalanceSchedule: 'none',
+    }),
+  [
+    'preset-chart',
+    CA_CORE_BH_PRESET_ID,
+    PRESET_CHART_RANGE_MAX,
+    'notional-10k',
+    'cad-vfv-usdcad',
+    'heql-cad-fin-v2',
+    'home-max',
+    'buy-hold',
+    'ussl-qqql-cad125-synth',
+    'core-30-30-15-25',
+  ],
+  { revalidate: DAY }
+)

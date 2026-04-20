@@ -65,14 +65,17 @@ interface PresetPortfolioChartProps {
   payload: PortfolioChartPayload
   /** Replaces the default "Portfolio" label in metrics, legend, and chart tooltip. */
   portfolioLabel?: string
-  /** `minimal`: single-line Yahoo / educational note (e.g. strategy comparison pages). */
-  footnote?: 'default' | 'minimal'
+  /** `minimal`: single-line Yahoo / educational note. `none`: no footnotes or synthetic notes. */
+  footnote?: 'default' | 'minimal' | 'none'
+  /** When false, hides max drawdown columns (e.g. home teaser cards). */
+  showMaxDrawdown?: boolean
 }
 
 export default function PresetPortfolioChart({
   payload,
   portfolioLabel = 'Portfolio',
   footnote = 'default',
+  showMaxDrawdown = true,
 }: PresetPortfolioChartProps) {
   const {
     values,
@@ -179,22 +182,26 @@ export default function PresetPortfolioChart({
           </div>
           <div className={styles.metricSub}>Excess α vs {benchmarkSymbol}</div>
         </div>
-        <div>
-          <div className={`${styles.metricBig} ${ddPortClass}`}>
-            {maxDrawdownPortfolioPercent != null
-              ? `${maxDrawdownPortfolioPercent.toFixed(2)}%`
-              : '—'}
-          </div>
-          <div className={styles.metricSub}>Max drawdown</div>
-        </div>
-        <div>
-          <div className={`${styles.metricBig} ${ddBenchClass}`}>
-            {maxDrawdownBenchmarkPercent != null
-              ? `${maxDrawdownBenchmarkPercent.toFixed(2)}%`
-              : '—'}
-          </div>
-          <div className={styles.metricSub}>{benchmarkSymbol} max DD</div>
-        </div>
+        {showMaxDrawdown ? (
+          <>
+            <div>
+              <div className={`${styles.metricBig} ${ddPortClass}`}>
+                {maxDrawdownPortfolioPercent != null
+                  ? `${maxDrawdownPortfolioPercent.toFixed(2)}%`
+                  : '—'}
+              </div>
+              <div className={styles.metricSub}>Max drawdown</div>
+            </div>
+            <div>
+              <div className={`${styles.metricBig} ${ddBenchClass}`}>
+                {maxDrawdownBenchmarkPercent != null
+                  ? `${maxDrawdownBenchmarkPercent.toFixed(2)}%`
+                  : '—'}
+              </div>
+              <div className={styles.metricSub}>{benchmarkSymbol} max DD</div>
+            </div>
+          </>
+        ) : null}
       </div>
       <div className={styles.legend}>
         <span className={styles.legendItem}>
@@ -212,38 +219,40 @@ export default function PresetPortfolioChart({
         height={140}
         chartCurrency={chartCurrency}
       />
-      <div className={styles.chartFootnotes}>
-        <div className={styles.chartDisclaimerRow}>
-          <span className={styles.footnoteMark} aria-hidden="true">
-            *
-          </span>
-          <div className={styles.footnoteBody}>
-            {footnote === 'minimal' ? (
-              <p className={styles.disclaimerLead}>
-                <strong>Total return</strong> series: Yahoo Finance <strong>adjusted close</strong> (cash
-                distributions and splits reflected per Yahoo’s methodology), common U.S. sessions, $10k at
-                first overlap—not fund NAV, not tax-adjusted. Educational only — not investment advice.
-                Past performance does not predict future results.
-              </p>
-            ) : (
-              <p className={styles.disclaimerLead}>
-                Educational model only — not investment advice. Portfolio betas in the holdings table
-                are weighted to the listed names and weights; they are intended to be accurate to that
-                model and may be updated if holdings, listings, or methodology change.
-              </p>
-            )}
-            {syntheticModeling.map((m) => {
-              const { title, body } = syntheticModelingCopy(m)
-              if (!body) return null
-              return (
-                <p key={`${m.kind}-${m.slotSymbol}`} className={styles.disclaimerDetail}>
-                  <strong>{title}:</strong> {body}
+      {footnote !== 'none' ? (
+        <div className={styles.chartFootnotes}>
+          <div className={styles.chartDisclaimerRow}>
+            <span className={styles.footnoteMark} aria-hidden="true">
+              *
+            </span>
+            <div className={styles.footnoteBody}>
+              {footnote === 'minimal' ? (
+                <p className={styles.disclaimerLead}>
+                  <strong>Total return</strong> series: Yahoo Finance <strong>adjusted close</strong> (cash
+                  distributions and splits reflected per Yahoo’s methodology), common U.S. sessions, $10k at
+                  first overlap—not fund NAV, not tax-adjusted. Educational only — not investment advice.
+                  Past performance does not predict future results.
                 </p>
-              )
-            })}
+              ) : (
+                <p className={styles.disclaimerLead}>
+                  Educational model only — not investment advice. Portfolio betas in the holdings table
+                  are weighted to the listed names and weights; they are intended to be accurate to that
+                  model and may be updated if holdings, listings, or methodology change.
+                </p>
+              )}
+              {syntheticModeling.map((m) => {
+                const { title, body } = syntheticModelingCopy(m)
+                if (!body) return null
+                return (
+                  <p key={`${m.kind}-${m.slotSymbol}`} className={styles.disclaimerDetail}>
+                    <strong>{title}:</strong> {body}
+                  </p>
+                )
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </div>
   )
 }

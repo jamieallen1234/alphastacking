@@ -3,13 +3,16 @@ import Hero from '@/components/Hero'
 import EtfRetailMission from '@/components/EtfRetailMission'
 import Stats from '@/components/Stats'
 import AlphaExample from '@/components/AlphaExample'
+import HomePortfolioCharts from '@/components/HomePortfolioCharts'
 import Footer from '@/components/Footer'
+import type { HomePortfolioChartSlot } from '@/lib/loadHomePortfolioCharts'
 
 export interface HomePageProps {
   variant: 'us' | 'ca'
+  homePortfolioChartSlots: HomePortfolioChartSlot[]
 }
 
-export default function HomePage({ variant }: HomePageProps) {
+export default function HomePage({ variant, homePortfolioChartSlots }: HomePageProps) {
   return (
     <main>
       <Nav />
@@ -20,6 +23,7 @@ export default function HomePage({ variant }: HomePageProps) {
       <Stats />
       <div className="divider" />
       <AlphaExample />
+      <HomePortfolioCharts variant={variant} slots={homePortfolioChartSlots} />
       <div className="divider" />
       <Footer />
     </main>

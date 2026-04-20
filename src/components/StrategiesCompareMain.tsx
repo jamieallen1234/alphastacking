@@ -1,30 +1,9 @@
 import Link from 'next/link'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
-import PresetPortfolioChart from '@/components/PresetPortfolioChart'
+import ComparisonChartCard from '@/components/ComparisonChartCard'
 import type { StrategyCompareSlot } from '@/lib/loadStrategyCompareCharts'
 import styles from './StrategiesCompareMain.module.css'
-
-function ChartSlot({ slot }: { slot: StrategyCompareSlot }) {
-  if (!slot.ok) {
-    return (
-      <div className={styles.chartCard}>
-        <h3 className={styles.chartCardTitle}>{slot.heading}</h3>
-        <p className={styles.chartError}>{slot.message}</p>
-      </div>
-    )
-  }
-  return (
-    <div className={styles.chartCard}>
-      <h3 className={styles.chartCardTitle}>{slot.heading}</h3>
-      <PresetPortfolioChart
-        payload={slot.payload}
-        portfolioLabel={slot.portfolioLabel}
-        footnote="minimal"
-      />
-    </div>
-  )
-}
 
 export interface StrategiesCompareMainProps {
   variant: 'us' | 'ca'
@@ -76,7 +55,7 @@ export default function StrategiesCompareMain({
           </p>
           <div className={styles.chartGrid}>
             {charts.returnStacking.map((s) => (
-              <ChartSlot key={s.id} slot={s} />
+              <ComparisonChartCard key={s.id} slot={s} />
             ))}
           </div>
         </section>
@@ -96,7 +75,7 @@ export default function StrategiesCompareMain({
           </p>
           <div className={styles.chartGrid}>
             {charts.allWeather.map((s) => (
-              <ChartSlot key={s.id} slot={s} />
+              <ComparisonChartCard key={s.id} slot={s} />
             ))}
           </div>
         </section>
@@ -116,7 +95,7 @@ export default function StrategiesCompareMain({
           </p>
           <div className={styles.chartGrid}>
             {charts.managedFutures.map((s) => (
-              <ChartSlot key={s.id} slot={s} />
+              <ComparisonChartCard key={s.id} slot={s} />
             ))}
           </div>
         </section>
@@ -133,7 +112,7 @@ export default function StrategiesCompareMain({
           </p>
           <div className={styles.chartGrid}>
             {charts.traditional6040.map((s) => (
-              <ChartSlot key={s.id} slot={s} />
+              <ComparisonChartCard key={s.id} slot={s} />
             ))}
           </div>
         </section>
@@ -150,7 +129,7 @@ export default function StrategiesCompareMain({
           </p>
           <div className={styles.chartGrid}>
             {charts.btalTail.map((s) => (
-              <ChartSlot key={s.id} slot={s} />
+              <ComparisonChartCard key={s.id} slot={s} />
             ))}
           </div>
         </section>

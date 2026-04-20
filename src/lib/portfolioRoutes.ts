@@ -25,9 +25,8 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'us',
     kind: 'live',
     hubSection: 'annual-rebalance',
-    title: 'US international',
-    description:
-      'Diversified US-listed mix with intentional beta near 1.0 — modeled with annual rebalance to target weights (first US session of each calendar year).',
+    title: 'US international (rebalance yearly)',
+    description: 'Diversified US-listed mix with intentional beta near 1.0.',
     featured: true,
   },
   {
@@ -37,7 +36,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     hubSection: 'buy-hold',
     title: 'US core (buy & hold)',
     description:
-      'VFLO, AVUV, QQQ, and SPMO at 20% / 20% / 30% / 30%; no rebalancing in the model.',
+      'VFLO, AVUV, QQQ, and SPMO at 20% / 20% / 30% / 30%.',
     featured: true,
   },
   {
@@ -88,9 +87,8 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'ca',
     kind: 'live',
     hubSection: 'annual-rebalance',
-    title: 'Canadian international',
-    description:
-      'TSX and US-listed sleeves in CAD — annual rebalance to target weights (first US session of each calendar year).',
+    title: 'Canadian international (rebalance yearly)',
+    description: 'TSX and US-listed sleeves in CAD.',
     featured: true,
   },
   {
@@ -100,7 +98,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     hubSection: 'buy-hold',
     title: 'US & Canada - Balanced beta',
     description:
-      'USSL.TO, QQQL.TO, ZLB.TO, and PFLS.TO at 30% / 30% / 25% / 15%; no rebalancing in the model.',
+      'USSL.TO, QQQL.TO, ZLB.TO, and PFLS.TO at 30% / 30% / 25% / 15%.',
     featured: true,
   },
   {
@@ -109,7 +107,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     kind: 'live',
     hubSection: 'buy-hold',
     title: 'US + hedge long/short',
-    description: 'USSL.TO, HDGE.TO, and QQQL.TO at 60% / 25% / 15%; static weights, no rebalancing.',
+    description: 'USSL.TO, HDGE.TO, and QQQL.TO at 60% / 25% / 15%.',
   },
   {
     slug: 'ca-alpha-stack',
@@ -153,7 +151,7 @@ export const HUB_SECTION_LABEL: Record<
   },
   'buy-hold': {
     heading: 'Buy & hold',
-    blurb: 'Static weights in the model; no periodic rebalancing.',
+    blurb: 'Weights stay at the listed sleeve percentages for the modeled window.',
   },
 }
 

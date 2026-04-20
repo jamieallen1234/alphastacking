@@ -1,0 +1,124 @@
+.section {
+  padding: 0 3rem 2.5rem;
+  max-width: var(--home-content-max);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  margin: 0 0 0.75rem;
+  line-height: 1.4;
+}
+
+.lede {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1.5;
+  margin: 0 0 1.25rem;
+}
+
+.chartGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .chartGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card {
+  background: var(--color-bg-elevated);
+  border: 0.5px solid var(--color-border-faint);
+  border-radius: 2px;
+  padding: 1rem 1rem 0.75rem;
+}
+
+.cardHeader {
+  margin-bottom: 0.65rem;
+}
+
+.cardTitle {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 0 0 0.35rem;
+  line-height: 1.25;
+}
+
+.cardTitleLink {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.cardTitleLink:hover {
+  color: var(--color-gold);
+}
+
+.cardDesc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.chartHeading {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  margin: 0 0 0.5rem;
+}
+
+.chartFallback {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.cardCta {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: rgba(201, 168, 76, 0.9);
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+
+.cardCta:hover {
+  text-decoration: underline;
+}
+
+.foot {
+  margin: 1.25rem 0 0;
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--color-text-faint);
+}
+
+.link {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: rgba(201, 168, 76, 0.9);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

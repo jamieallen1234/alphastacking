@@ -22,8 +22,9 @@ export default function HomePage({ variant, homePortfolioChartSlots }: HomePageP
       <div className="divider" />
       <Stats />
       <div className="divider" />
-      <AlphaExample />
       <HomePortfolioCharts variant={variant} slots={homePortfolioChartSlots} />
+      <div className="divider" />
+      <AlphaExample edition={variant} />
       <div className="divider" />
       <Footer />
     </main>

@@ -7,15 +7,52 @@ description: >-
   tickers, or drafting strategy/pedigree/outperformance copy with a hedge-fund
   and alpha lens. Enforces concise paragraphs, section word budgets, and
   constructive Outperformance framing (favorable regimes; return-stacked second sleeve).
-  When adding multiple ETFs in one request, fetch issuer sites early so the user can
-  approve network permissions before bulk work.
+  When adding multiple ETFs in one request, follow the batch workflow: verify every
+  issuer URL early, then complete the full checklist per ticker—no thin copy on “the rest.”
 ---
 
 # Create ETF page (Alpha Stacking)
 
-## Multiple ETFs in one request
+## Multiple ETFs in one request (batch mode)
 
-If the user asks for **two or more** ETF pages in the same task, **hit the official issuer / fund websites first** (read or fetch product pages, ETF Facts, prospectus links). Many sites use **cookies, bot checks, or regional gates** and may **require explicit network permission** in the environment. Checking early surfaces those prompts **before** you spend turns on copy, charts, and hub wiring—so the user can **approve access up front** and avoid stalled batch work.
+Use this whenever the user names **two or more** tickers or asks to “add several” ETFs. **Do not** treat the first ETF as the only one that gets MATE-level depth, official URLs, charts, and hub wiring.
+
+### Why batch fails without structure
+
+Agents often: (1) research only the first ticker, (2) reuse generic issuer homepages for siblings, (3) skip `etfDynamicRegistry` parity (§3f) on later rows, or (4) wire the hub for one symbol and forget chart allowlists for others. This section forces a **repeatable pass per ticker**.
+
+### Phase A — Discovery and access (before most code)
+
+1. **List every symbol** the user asked for (US vs CA, primary ticker / `.TO` class if relevant). If hub category is ambiguous, pick the best fit from `etfCategories.ts` / `etfHubData.ts` or ask once for the whole batch—not per ticker unless truly unclear.
+2. **Fetch or open every official fund URL** (issuer product page, family page with this fund, or SEC summary prospectus per §3f) **for each ticker**. Do this in **one early batch** so the user can **approve network access once** before long edits. Note any 404s, bot walls, or redirects before writing copy.
+3. **Decide page type per ticker**: hand-authored `page.tsx` vs dynamic `etfDynamicRegistry.ts` row—same rules as a single ETF; a batch may mix both.
+
+### Phase B — Full skill pass, **per ticker**, in order
+
+For **each** ETF, complete **before** moving to the next (or explicitly parallelize only when each thread still runs the full list below):
+
+| Step | Hand-authored `page.tsx` | Dynamic registry row |
+| --- | --- | --- |
+| Category / hub | `etfHubData.ts` + back-link `/#id` | `hubCategoryId`, `badge` aligned with `etfCategories.ts` |
+| Official link | §2 “Official ETF page” + verified `href` | `officialUrl` + `officialLabel` (§3f); not issuer root |
+| Body depth | §3 + §4 (Strategy / Pedigree / Outperformance) | `lede`, 2× `strategyParas`, `ped(…)`, 2× `outperfParas` |
+| Chart | §2 chart steps + `ETF_CHART_SYMBOLS` / API | `yahooSymbol` in allowlist + same chart plumbing if new symbol |
+| Checklist | Run §5 mentally for **this** ticker | Same §5 lines for **this** slug |
+
+**Per-ticker parity rule:** The *n*th ETF in the batch must meet the **same** research and URL standards as the first. If you are tired or running long, **finish one ticker completely** rather than shipping three half-done pages.
+
+### Phase C — Integration sweep (after all tickers)
+
+- Confirm **every** new hub `href` resolves (no typos vs `app` routes or `[slug]` keys).
+- Confirm **every** new chart symbol has getter + `route.ts` branch + panel typing.
+- Quick read: ledes and outperform closings not copy-paste identical across unrelated funds (§3d).
+
+### Batch anti-patterns (do not do these)
+
+- One deep write-up plus **placeholder** or **aggregator** URLs for the other tickers.
+- Same **Outperformance** boilerplate pasted across funds with different mechanics.
+- Adding hub rows **without** the page or registry entry (or the reverse).
+- Skipping **Beta / MER / AUM order** in meta or **official link verification** on “small” names in the list.
 
 ## 1. Pick the category
 
@@ -134,6 +171,28 @@ Use this for the **issuer** half of **Manager and Issuer Pedigree** (firm pedigr
 
 - Use **`ped(issuer, groupAum?)`**: the optional second argument is that **one-sentence** issuer/group AUM clause appended to the standard first pedigree paragraph. Custom `pedigreeParas: string[]` (e.g. multi-paragraph stories) should still include group AUM in the **issuer**-focused paragraph when available.
 
+### 3f. Dynamic hub entries — parity with hand-authored pages
+
+When the write-up is a registry row (`US_ETF_DYNAMIC_REGISTRY` / `CA_ETF_DYNAMIC_REGISTRY`) rather than `src/app/.../page.tsx`, treat it with the **same research bar** as MATE (§3): primary issuer materials, ETF Facts, prospectus summaries—not ticker-aggregator blurbs alone.
+
+**`officialUrl` and `officialLabel` (required)**
+
+- **`officialUrl`:** Must be the **best fund-specific URL** you can find on the **issuer or product sponsor** site: the page where an investor would reasonably go for **this ETF’s** factsheet, ETF Facts, holdings, and regulatory PDFs (e.g. iShares product permalink, `investcip.com/etfstrategies.html` for CLSE, `militiaetf.com` for ORR). **Prefer that over** generic industry homepages (`etf.com`, undifferentiated “all ETFs” hub pages, or a parked/unrelated domain). If the sponsor only publishes a family page that lists the fund with a stable anchor, use that page; if no web page exists, use the SEC filing index or summary prospectus URL the issuer links to—and keep `officialLabel` honest (“SEC filings (TICKER)”).
+- **`officialLabel`:** Short, specific text for the outbound link (e.g. `iShares (IALT)`, `Convergence Investment Partners (CLSE)`). It should read like a **product** destination, not vague “Issuer website.”
+- **Verify:** Open `officialUrl` (fetch or browser); confirm it is **live**, **HTTPS**, and **about this fund**—not 404, not a domain-for-sale page, not the wrong company.
+
+**Body fields (same intent as §2 body sections, as strings)**
+
+- **`lede`:** One clear thesis (respect §4 word budget when rendered).
+- **`strategyParas`:** Typically **two** strings—mechanics, sleeves, leverage/rebalance, risks, what to read in the prospectus—mirroring **Strategy** depth.
+- **`pedigreeParas`:** Prefer **`ped(p1, p2)`** with **two** substantive paragraphs (manager/process + issuer scale or boutique honesty per §3e), then the automatic **`PED_VERIFY`** footer—mirroring **Manager and Issuer Pedigree**.
+- **`outperfParas`:** **Two** strings following §3d (favorable regimes; product-specific; closing paragraph not purely negative). Do **not** rely on generic `outf()`-style boilerplate.
+- **`inception` / `mer` / `aum`:** Use **ETF Facts / prospectus** when stating numbers; use `—` or “see ETF Facts” if unknown—**do not invent**.
+
+**Rendering note**
+
+- Registry strings are shown as **plain text** in the dynamic template—**no Markdown** (`**bold**`, etc.); write in normal sentences.
+
 **Do not confuse**
 
 - Meta line **AUM** = usually **this fund** (or, if you only have firm-wide for a boutique, label clearly in copy / pedigree, not a misleading meta-only number).
@@ -167,13 +226,17 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 
 ## 5. Checklist
 
-- [ ] If **multiple ETFs**: issuer sites fetched early; network permission issues surfaced before deep implementation
+- [ ] **Batch (2+ ETFs):** Phase A done—every ticker has a **verified** official URL plan (or SEC fallback labeled in `officialLabel`) before bulk `page.tsx` / registry edits
+- [ ] **Batch:** Phase B done—**each** ticker received a **full** pass (hub + page or registry + chart where applicable); no ticker left with generic-only official link or thin vs first ticker
+- [ ] **Batch:** Phase C integration sweep (hub `href`s, chart allowlist for **all** new symbols)
 - [ ] Category `id` matches back-link hash; badge matches category **title**
 - [ ] Meta list includes **MER** and **AUM** immediately **after** **Beta** (see scaffold); not inside the chart panel
 - [ ] Hub lists the new ETF with correct `href`
 - [ ] Section headings and “Official ETF page” opener match the shared template
 - [ ] Chart: getter + API branch + `EtfChartPanel` type + `chartCurrency` if non-USD (see HDGE)
 - [ ] Copy reflects deep reads of issuer ETF page, manager, and sponsor; regime/outperformance tied to strategy
+- [ ] **Dynamic registry (`etfDynamicRegistry.ts`):** `officialUrl` is a **verified, fund-specific** issuer/sponsor product page (or clearly labeled SEC/prospectus fallback per §3f)—**not** a generic aggregator default; `officialLabel` names the product/destination clearly
+- [ ] **Dynamic registry:** `lede` + two **`strategyParas`** + **`ped(...)`** (two pedigree paragraphs before verify) + two **`outperfParas`** match MATE-level depth (§3f); no Markdown in strings
 - [ ] **Pedigree** includes **issuer / group-level AUM** when findable (source + period); if not findable, states boutique / undisclosed scale (§3e). Dynamic pages: `ped(issuer, groupAum?)` or equivalent in custom `pedigreeParas`
 - [ ] **Outperformance** emphasizes favorable regimes; closing paragraph is not purely negative; return-stacked pages stress the **second sleeve** when the first tracks the benchmark (§3d)
 - [ ] Lede and each body `<p>` respect word budgets (§4); no paragraph runs past **100 words**

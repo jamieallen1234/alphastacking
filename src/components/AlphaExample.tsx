@@ -1,10 +1,12 @@
+import Link from 'next/link'
 import { totalReturnPercentFromValues } from '@/lib/portfolioMath'
+import { learnPath } from '@/lib/siteRegion'
 import styles from './AlphaExample.module.css'
 
 /**
  * Hardcoded from Yahoo SPY adjusted close on 2016-04-15 and 2026-04-15 (one-time fetch).
  * P_start≈176.528, P_end≈699.94 → $10k×(P_end/P_start)≈$39,650.43 → rounded $39,650.
- * Illustrative +3%/yr path: round($39,650.43 × 1.03^10) = $53,287.
+ * Illustrative stacked portfolio: +3% alpha/yr over that SPY path → round($39,650.43 × 1.03^10) = $53,287.
  */
 const START_NOTIONAL = 10_000
 const SPY_END_10K = 39_650
@@ -25,14 +27,14 @@ function fmtTrPct(x: number): string {
   return `${x >= 0 ? '+' : ''}${x.toFixed(2)}%`
 }
 
-export default function AlphaExample() {
+export default function AlphaExample({ edition }: { edition: 'us' | 'ca' }) {
+  const learnHref = learnPath(edition === 'ca')
   return (
     <section className={styles.section}>
       <p className={styles.lede}>
-        Starting with {fmtUsd(START_NOTIONAL)}, how much could{' '}
-        <strong>+3% excess alpha per year</strong>
-        {' '}
-        add over a decade of S&amp;P 500 returns?
+        Starting with $10k, how much could a stacked portfolio generating{' '}
+        <strong>+3% alpha per year</strong>{' '}
+        over S&amp;P 500 yield after a decade?
       </p>
       <div className={styles.grid}>
         <div className={styles.card}>
@@ -40,7 +42,9 @@ export default function AlphaExample() {
           <div className={styles.cardValue}>{fmtUsd(SPY_END_10K)}</div>
         </div>
         <div className={styles.card}>
-          <div className={styles.cardLabel}>Illustrative excess alpha model portfolio</div>
+          <div className={styles.cardLabel}>
+            Illustrative stacked portfolio (+3% alpha/yr vs S&amp;P 500)
+          </div>
           <div className={`${styles.cardValue} ${styles.cardValueHighlight}`}>
             {fmtUsd(SPY_PLUS_3PCT_ALPHA_END)}
           </div>
@@ -52,9 +56,11 @@ export default function AlphaExample() {
           <strong className={styles.excessVal}>{fmtTrPct(EXCESS_ALPHA_PCT)}</strong>
         </p>
       ) : null}
-      <p className={styles.footnote}>
-        * Educational only — not a forecast. Past performance does not predict future
-        results.
+      <p className={styles.learnLine}>
+        Learn how to build alpha stacked portfolios.{' '}
+        <Link href={learnHref} className={styles.learnCta}>
+          Learn →
+        </Link>
       </p>
     </section>
   )

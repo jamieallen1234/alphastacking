@@ -1,5 +1,5 @@
 .hero {
-  padding: 6rem 3rem 4.5rem;
+  padding: 3rem 3rem 2.5rem;
   max-width: var(--home-content-max);
   margin-inline: auto;
   width: 100%;
@@ -93,17 +93,17 @@
 }
 
 .legal {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 300;
   color: var(--color-text-ghost);
-  line-height: 1.6;
-  max-width: 500px;
+  line-height: 1.45;
+  max-width: 100%;
   font-style: italic;
 }
 
 @media (max-width: 768px) {
   .hero {
-    padding: 3rem 1.5rem 3rem;
+    padding: 3rem 1.5rem 2rem;
   }
 
   .actions {

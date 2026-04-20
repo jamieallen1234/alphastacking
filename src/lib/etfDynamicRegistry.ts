@@ -38,8 +38,6 @@ function cryptoLede(ticker: string, thesis: string): string {
   return `${ticker} is an exchange-traded product that, per sponsor disclosures, ${thesis}`
 }
 
-const US_CRYPTO_OFFICIAL = 'https://www.etf.com/'
-
 export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
   begs: {
     yahooSymbol: 'BEGS',
@@ -62,15 +60,16 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Collateral, exchange limits, and borrow/funding markets for the underlying sleeves can gap versus NAV; read Rareview’s prospectus for the exact basket, rebalance rules, and risk factors before sizing.',
     ],
     pedigreeParas: ped(
-      `Rareview Capital is an independent ETF issuer focused on thematic and digital-asset products; it operates outside the Big Three index oligopoly, so distribution and research coverage are thinner than mega-brand funds—confirm current firm figures on rareviewetf.com or Form ADV filings rather than third-party aggregators.`,
+      `Rareview Capital is an independent ETF issuer focused on thematic and digital-asset products; it operates outside the Big Three index oligopoly, so distribution and research coverage are thinner than mega-brand funds—confirm current firm figures on rareviewcapital.com or Form ADV filings rather than third-party aggregators.`,
       `Because BEGS is small-cap by AUM and trades leveraged exposure, bid/ask spreads and premium/discount to NAV can swing harder than large plain-vanilla ETFs—liquidity is part of the “implementation beta” you own alongside the strategy.`,
     ),
     outperfParas: [
       'The design shines when both digital assets and precious metals trend with supportive volatility—gold catching a real-rate or stress bid while crypto retains speculative liquidity often produces the cleanest dual-beta tape for a leveraged long wrapper.',
       'Sharp reversals, correlated selloffs across metals and tokens, or funding spikes that invert futures curves are the natural adversaries—favorable windows are trending, not chop-filled, regimes where you can tolerate daily reset behavior.',
     ],
-    officialUrl: 'https://www.rareviewetf.com/',
-    officialLabel: 'Rareview ETFs',
+    officialUrl:
+      'https://rareviewcapital.com/2x-bull-cryptocurrency-precious-metals-etf/',
+    officialLabel: 'Rareview (BEGS)',
   },
 
   btgd: {
@@ -94,15 +93,15 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'When both legs trend together, compounding can feel exhilarating; when they diverge violently (risk-on crypto vs. risk-off gold), the fund must rebalance risk budgets—read the supplement for how weights are reset and what happens around CME or exchange halts.',
     ],
     pedigreeParas: ped(
-      `Quantify Funds is a California-based issuer that has leaned into branded “stacked” ETPs rather than broad passive lineups; it is not a top-ten sponsor by AUM, so operational resilience depends on a narrow product set and focused distribution—verify any firm-level metrics on quantifyinvestments.com.`,
+      `Quantify Funds is a California-based issuer that has leaned into branded “stacked” ETPs rather than broad passive lineups; it is not a top-ten sponsor by AUM, so operational resilience depends on a narrow product set and focused distribution—verify any firm-level metrics on quantifyfunds.com.`,
       `Because BTGD sits in the same ecosystem as Quantify’s IncomeSTKd funds, compare fee stacks and options overlays across tickers so you are not accidentally doubling the same macro bet in multiple products.`,
     ),
     outperfParas: [
       'You want regimes where bitcoin’s liquidity cycle and gold’s real-rate / FX sensitivity are both working—not necessarily in the same direction every day, but with clean trends that futures books can ride without constant whipsaw.',
       'The hardest tape is sharp deleveraging that hits crypto funding while gold spikes on flight-to-quality—both can move fast, but correlation spikes can still stress dual-book margin; sizing should assume gap risk, not smooth Gaussian returns.',
     ],
-    officialUrl: 'https://quantifyinvestments.com/',
-    officialLabel: 'Quantify Funds (issuer)',
+    officialUrl: 'https://quantifyfunds.com/btgd',
+    officialLabel: 'Quantify Funds (BTGD)',
   },
 
   isbg: {
@@ -133,8 +132,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Premium harvesting works when implied vol is rich but realized paths stay range-bound—think gold grinding with upward skew and bitcoin oscillating inside a band rather than vertical melt-ups or liquidation cascades.',
       'The constructive case is a “carry plus diversifier” window: both underlyings behave well enough that short options survive, yet not so explosively that wings blow through strikes—when either leg gaps, expect NAV to reflect option loss before the metals/crypto story even finishes printing.',
     ],
-    officialUrl: 'https://quantifyinvestments.com/',
-    officialLabel: 'Quantify Funds (issuer)',
+    officialUrl: 'https://quantifyfunds.com/isbg',
+    officialLabel: 'Quantify Funds (ISBG)',
   },
 
   issb: {
@@ -165,8 +164,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Ideal tape: large-cap equities grind higher on earnings while bitcoin provides a diversifying liquidity beta, and index implied volatility sits high enough that the overlay captures carry without repeated gap-through.',
       'Hard tape: macro shocks that hammer both books (2022-style) or liquidity vacuums where bitcoin gaps down faster than options models price—favorable regimes are “orderly risk-on with vol to sell,” not synchronized crash weeks.',
     ],
-    officialUrl: 'https://quantifyinvestments.com/',
-    officialLabel: 'Quantify Funds (issuer)',
+    officialUrl: 'https://quantifyfunds.com/issb',
+    officialLabel: 'Quantify Funds (ISSB)',
   },
 
   ooqb: {
@@ -197,8 +196,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'You are paid for tolerating double-barreled growth risk: mega-cap tech leadership (Nasdaq) plus global liquidity flows into bitcoin futures when both trend, dispersion stays orderly, and funding markets behave.',
       'The constructive regime is “AI capex + risk-on liquidity” without a simultaneous deleveraging in crypto—if bitcoin funding blows out while Nasdaq gaps down, both legs correlate higher than marketing decks imply, so favor windows where each sleeve has independent drivers.',
     ],
-    officialUrl: 'https://volatilityshares.com/',
-    officialLabel: 'Volatility Shares',
+    officialUrl:
+      'https://www.sec.gov/Archives/edgar/data/1884021/000121390025015195/ea0230938-03_497k.htm',
+    officialLabel: 'Volatility Shares — SEC summary prospectus (OOQB)',
   },
 
   oosb: {
@@ -229,8 +229,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Works best when the S&P grinds higher on broad earnings while bitcoin captures a parallel liquidity bid—diversification shows up when correlations stay below one even as both rise.',
       'Hard when macro tightening hits every risk asset simultaneously; the sleeve is not a hedge fund—it is two high-beta sleeves in one wrapper—favorable periods are orderly bull markets with functioning futures markets, not liquidity earthquakes.',
     ],
-    officialUrl: 'https://volatilityshares.com/',
-    officialLabel: 'Volatility Shares',
+    officialUrl:
+      'https://www.sec.gov/Archives/edgar/data/1884021/000121390025015194/ea0230935-03_497k.htm',
+    officialLabel: 'Volatility Shares — SEC summary prospectus (OOSB)',
   },
 
   rssx: {
@@ -259,8 +260,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'The payoff diagram shines when U.S. equities deliver carry while gold hedges real-rate shocks and bitcoin captures speculative liquidity—three sleeves, three different macro channels.',
       'Constructive environments are “macro disagreement” markets: rates and risk appetite send different signals to each sleeve—when every asset class moves in lockstep down, stacking does not magically erase beta.',
     ],
-    officialUrl: 'https://www.returnstackedetfs.com/',
-    officialLabel: 'Return Stacked ETFs',
+    officialUrl:
+      'https://www.returnstackedetfs.com/rssx-return-stacked-us-stocks-gold-bitcoin/',
+    officialLabel: 'Return Stacked ETFs (RSSX)',
   },
 
   wtib: {
@@ -289,8 +291,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Best when oil catches a supply-demand shock or geopolitical premium while bitcoin trades on its own liquidity cycle—macro “reflation + digitization” narratives can lift both, but independence is the diversification pitch.',
       'Hardest when dollar liquidity vanishes and every high-beta sleeve sells together; WTIB is not a hedge—favorable tape is trending energy with orderly crypto funding, not synchronized deleveraging.',
     ],
-    officialUrl: 'https://www.uscfinvestments.com/',
-    officialLabel: 'USCF Investments',
+    officialUrl: 'https://www.uscfinvestments.com/wtib',
+    officialLabel: 'USCF Investments (WTIB)',
   },
 
   rsst: {
@@ -319,8 +321,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'You earn the design fee when equities grind higher while managed futures harvest directional trends elsewhere—rates breaking one way, dollar trends, or commodity curves—so the second sleeve diversifies equity path risk instead of doubling it.',
       'CTA engines bleed in fast mean-reversion or liquidity shocks that invert signals; favorable tape is persistent macro trends with orderly futures markets, not every quarter where stocks and bonds both sell off in sync.',
     ],
-    officialUrl: 'https://www.returnstackedetfs.com/',
-    officialLabel: 'Return Stacked ETFs',
+    officialUrl:
+      'https://www.returnstackedetfs.com/rsst-return-stacked-us-stocks-managed-futures/',
+    officialLabel: 'Return Stacked ETFs (RSST)',
   },
 
   ntsd: {
@@ -349,8 +352,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'The sleeve pays when EAFE-style markets rerate faster than U.S. large caps while futures implementation stays cheap—classic “international catches up” windows with orderly currency markets.',
       'It hurts when the dollar rips, international earnings disappoint, and futures sit in contango simultaneously; this is still equity risk stacked across regions, not a hedge fund—favorable regimes are broad non-U.S. leadership, not every U.S. drawdown.',
     ],
-    officialUrl: 'https://www.wisdomtree.com/',
-    officialLabel: 'WisdomTree',
+    officialUrl:
+      'https://www.wisdomtree.com/investments/etfs/capital-efficient/ntsd',
+    officialLabel: 'WisdomTree (NTSD)',
   },
 
   gde: {
@@ -379,8 +383,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Constructive when equities trend but investors want insurance against real-rate spikes or dollar stress—gold often pays on the margin when the Fed is perceived as behind the curve or geopolitical risk reprices safe havens.',
       'Gold can grind lower for quarters when real yields rise and risk appetite stays firm; the stacked sleeve is not magic diversification—favorable tape is “growth up, vol contained, but tail hedges still bid,” not permanent negative correlation.',
     ],
-    officialUrl: 'https://www.wisdomtree.com/',
-    officialLabel: 'WisdomTree',
+    officialUrl:
+      'https://www.wisdomtree.com/investments/etfs/capital-efficient/gde',
+    officialLabel: 'WisdomTree (GDE)',
   },
 
   flsp: {
@@ -409,8 +414,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Pays when style and cross-asset spreads are wide enough that systematic long/short books earn after transaction costs—think post-shock mean reversion, leadership handoffs between growth and value, or rates markets that trend instead of chop.',
       'Bleeds when factors whipsaw and financing tightens; favorable regimes are dispersion-rich, not low-vol grind higher where every sleeve pays a vig to stay hedged.',
     ],
-    officialUrl: 'https://www.franklintempleton.com/',
-    officialLabel: 'Franklin Templeton',
+    officialUrl:
+      'https://www.franklintempleton.com/investments/options/exchange-traded-funds/products/28388/SINGLCLASS/franklin-liberty-systematic-style-premia-etf/FLSP',
+    officialLabel: 'Franklin Templeton (FLSP)',
   },
 
   ialt: {
@@ -469,8 +475,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'You “win” when realized volatility and gap risk exceed what option prices implied—sharp drawdowns, correlation spikes, or liquidity events where convexity pays multiples of the carry you burned in calm quarters.',
       'You lose slowly in grind-higher, low-vol bull markets and can lose fast if you buy protection into a vol spike that mean-reverts; favorable tape is episodic stress, not buy-and-hold compounding.',
     ],
-    officialUrl: 'https://alphaarchitect.com/',
-    officialLabel: 'Alpha Architect',
+    officialUrl: 'https://funds.alphaarchitect.com/caos/',
+    officialLabel: 'Alpha Architect (CAOS)',
   },
 
   spmo: {
@@ -499,8 +505,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Momentum pays when trends persist longer than consensus expects—AI capex cycles, narrow leadership, or sector rotations where winners keep winning into the next rebalance.',
       'It hurts in sharp factor reversals (growth to value handoffs) and after parabolic moves that mean-revert between index rebalances; favorable tape is trending, orderly liquidity, not every risk-on rip.',
     ],
-    officialUrl: 'https://www.invesco.com/us/financial-products/etfs',
-    officialLabel: 'Invesco ETF hub',
+    officialUrl:
+      'https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=SPMO',
+    officialLabel: 'Invesco (SPMO)',
   },
 
   vflo: {
@@ -529,8 +536,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Works when investors pay up for balance-sheet optionality and punish levered story stocks—late cycle, credit tightening, or macro ranges where cash deployment (buybacks, dividends, M&A) drives returns.',
       'Lags speculative rallies where multiples expand on negative or thin cash flows; favorable tape is fundamentals-first leadership, not meme liquidity.',
     ],
-    officialUrl: 'https://www.vcm.com/',
-    officialLabel: 'Victory Capital',
+    officialUrl:
+      'https://www.vcm.com/products/victoryshares-etfs/victoryshares-etfs-list/victoryshares-free-cash-flow-etf',
+    officialLabel: 'VictoryShares (VFLO)',
   },
 
   avuv: {
@@ -559,8 +567,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Small-cap value works when profitability spreads widen and investors rotate out of mega-cap concentration—classic “catch-up” trades after large-cap growth derates.',
       'It hurts in liquidity-driven rallies where unprofitable small caps squeeze higher, or when credit markets seize; favorable tape is improving fundamentals with orderly funding markets, not every Fed pivot.',
     ],
-    officialUrl: 'https://www.avantisinvestors.com/',
-    officialLabel: 'Avantis Investors',
+    officialUrl:
+      'https://www.avantisinvestors.com/avantis-investments/avantis-us-small-cap-value-etf',
+    officialLabel: 'Avantis (AVUV)',
   },
 
   sass: {
@@ -619,8 +628,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Trend sleeves earn when macro variables persist—directional rates, sustained dollar moves, or commodity curves that trend long enough for models to load size.',
       'They bleed in choppy, range-bound markets and after sharp reversals that stop out trends; favorable tape is macro persistence with liquid futures, not every equity correction.',
     ],
-    officialUrl: 'https://www.simplify.us/',
-    officialLabel: 'Simplify',
+    officialUrl:
+      'https://www.simplify.us/etfs/cta-simplify-managed-futures-strategy-etf',
+    officialLabel: 'Simplify (CTA)',
   },
 
   dbmf: {
@@ -649,8 +659,9 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'You get paid when diversified CTA beta trends cleanly and listed futures can keep up with what opaque hedge funds do gross of fees—think sustained macro moves with low implementation slippage.',
       'You lose when replication error spikes (CTA crowding, position limits) or when trends mean-revert faster than daily positioning data implies; favorable tape is transparent trend persistence, not secret sauce alpha.',
     ],
-    officialUrl: 'https://www.dbi-asset.com/',
-    officialLabel: 'DBi (iMGP)',
+    officialUrl:
+      'https://www.imgp.com/us/fund/us53700t8273-imgp-dbi-managed-futures-strategy-etf/',
+    officialLabel: 'iMGP / DBi (DBMF)',
   },
 
   kmlm: {
@@ -690,27 +701,28 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     h1Title: 'CLSE — Convergence Long/Short Equity ETF',
     displayTicker: 'CLSE',
     issuer: 'Convergence Investment Partners',
-    inception: '—',
-    mer: '—',
+    inception: 'Dec 2009 (strategy); listed Feb 2022',
+    mer: '~1.52% total (0.95% mgmt + short/margin costs; see sponsor table)',
     aum: '~$28M',
     pageTitle: 'CLSE ETF — Alpha Stacking',
-    description: 'Convergence Long/Short Equity ETF (CLSE).',
+    description:
+      'Convergence Long/Short Equity ETF (CLSE): net-long U.S. equity sleeve that pairs a proprietary dynamic quantitative model with discretionary flexibility—long “strong” franchises, short structurally challenged names.',
     lede:
-      'CLSE is an actively managed long/short U.S. equity fund—security selection and pair trades aim for risk-adjusted returns vs. long-only beta.',
+      'CLSE is Convergence’s listed long/short equity sleeve: the sponsor frames it as a net-long book that goes long fundamentally resilient businesses while shorting deteriorating models—implemented with a proprietary dynamic quantitative engine plus manager discretion rather than a passive factor basket.',
     strategyParas: [
-      'Convergence runs a classic hedge-fund-style book inside an ETF: longs in mispriced franchises, shorts in crowded shorts or pair legs, with variable net exposure disclosed in annual/semi reports rather than a static 130/30 template.',
-      'Borrow costs and recall risk on shorts are first-order; in meme squeezes the short book can drag even when longs work—verify gross exposure bands in the prospectus.',
+      'CIP’s materials emphasize a dual toolkit—rules-based signals for timing and risk budgeting, overlaid with fundamental work on business quality, balance sheets, and catalyst paths. Gross, net, and short books shift with the model and manager judgment; fiscal quarter-end holdings files and exposure tables are the ground truth versus any one-sentence summary.',
+      'Shorting is structural to the thesis, so dividend pass-through on borrowed stock, borrow fees, and margin interest are real P&L lines—sponsor fee tables separate management fees from those variable costs. In violent short squeezes or rate spikes, the short book can hurt even when the long book is correct on fundamentals.',
     ],
     pedigreeParas: ped(
-      `Convergence is a Milwaukee-rooted long/short shop with institutional separate-account DNA; the ETF is a distribution wrapper, not a different investment process—read manager letters for continuity with the private book.`,
-      `Firm AUM is not mega-scale; treat CLSE as artisanal capacity with potentially wider bid/ask and premium/discount risk than billion-dollar long-only ETFs.`,
+      `Convergence Investment Partners runs the strategy out of Florida with a long institutional pedigree in long/short equity; the ETF is the same mandate packaged for exchange liquidity, with published fact sheets, investor guides, and quarterly holdings downloads on investcip.com rather than a bare ticker stub.`,
+      `Listed AUM is boutique versus mega issuers—expect wider median bid/ask and more days away from NAV than SPY-class funds—so implementation (limit orders, patience around rebalances) matters as much as the underlying stock calls.`,
     ),
     outperfParas: [
-      'Alpha accrues when U.S. stock dispersion is wide enough that pair trades and idiosyncratic shorts pay for the hedge—earnings seasons with leadership handoffs, post-reorg value, or factor crowding unwinds.',
-      'Macro beta storms drown stock picking: when everything correlates to rates or liquidity, net exposure management dominates; favorable tape is stock-specific stories with orderly borrow markets.',
+      'The sleeve is built for stretches when U.S. dispersion reopens: earnings revisions diverge by sector, “quality” re-rates faster than junk, and single-name shorts pay for funding a net-long posture—classic stock-picker weather after a long stretch of macro-only correlations.',
+      'When every factor loads on the same liquidity trade or rates shock, long and short legs can move together; favorable environments are idiosyncratic earnings cycles and orderly securities lending, not every coordinated risk-off session.',
     ],
-    officialUrl: 'https://www.convergenceip.com/',
-    officialLabel: 'Convergence Investment Partners',
+    officialUrl: 'https://www.investcip.com/etfstrategies.html',
+    officialLabel: 'Convergence Investment Partners (CLSE)',
   },
 
   orr: {
@@ -720,27 +732,28 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     h1Title: 'ORR — Militia Long/Short Equity ETF',
     displayTicker: 'ORR',
     issuer: 'Militia Investments',
-    inception: '—',
-    mer: '—',
+    inception: 'Jan 2025',
+    mer: '1.30% management; headline ratio includes short dividends and borrow (see ETF Facts)',
     aum: '~$22M',
     pageTitle: 'ORR ETF — Alpha Stacking',
-    description: 'Militia Long/Short Equity ETF (ORR).',
+    description:
+      'Militia Long/Short Equity ETF (ORR): actively managed, higher-turnover fundamental long/short global equity—David Orr’s team runs the same style as Militia’s hedge-fund complex inside a Nasdaq-listed wrapper.',
     lede:
-      'ORR pursues a higher-turnover fundamental long/short global equity process—pair trades and thematic books vs. passive beta.',
+      'ORR is Militia’s global long/short equity ETF: the sponsor describes a higher-turnover, fundamental stock-selection process across regions—longs in mispriced franchises, shorts funding pairs and hedges—with capital appreciation as the stated objective rather than tracking an index.',
     strategyParas: [
-      'Militia’s process blends bottom-up fundamentals with thematic overlays across regions; higher turnover means stale holdings files faster than low-turn mutual funds—use commentary and fact sheets for intent between filings.',
-      'Global long/short introduces session risk (Asia/Europe moves while U.S. is closed) and currency policy choices—confirm whether sleeves are hedged back to USD in the prospectus.',
+      'Under normal circumstances the fund invests the bulk of assets in equities and equity ETFs, mixing single names with baskets where it improves liquidity or express a macro view. Turnover is intentionally high versus closet-index funds, so each month’s schedule of investments is more informative than stale marketing blurbs.',
+      'Because shorts are economically large, published expense ratios can look eye-watering next to plain equity ETFs: dividend pass-through on borrowed stock and financing costs flow through the expense line even when management fees are mid-single digits—read the “adjusted” fee disclosure and compare net-of-financing performance to peers, not just the headline ratio.',
     ],
     pedigreeParas: ped(
-      `Militia is a concentrated global long/short boutique; the ETF wrapper is newer and smaller than institutional hedge-fund share classes, so capacity and liquidity are real constraints.`,
-      `Without trillion-scale balance sheet support, operational resilience depends on prime broker relationships and internal risk systems—due diligence should include Form ADV and personnel stability, not just past returns.`,
+      `Militia is led by founder and CIO David Orr, who also runs a long/short global hedge-fund complex; ORR is the ETF share class of that intellectual property, distributed with operational plumbing typical of advisor-focused ETF launches (compliance docs, shareholder reports, and a dedicated militiaetf.com landing page).`,
+      `The franchise is boutique by design—capacity, borrow relationships, and PM continuity matter more than brand marketing—verify Form ADV assets, personnel, and prime-broker lineup alongside live AUM on the sponsor site before sizing.`,
     ),
     outperfParas: [
-      'Works when regional leadership diverges—Japan vs. U.S. tech, European cyclicals vs. U.S. defensives—giving pair trades room to diverge from a single global beta.',
-      'Suffers when macro correlations go to one and borrow markets tighten; favorable tape is wide cross-regional dispersion with functioning short locates.',
+      'Edge shows up when global leadership diverges enough that stock-specific shorts pay for themselves: Japan quality vs. U.S. megacap, EM airports vs. domestic REITs, or thematic unwinds where fundamentals and positioning disagree for months, not days.',
+      'Macro “risk-on / risk-off” tapes crush dispersion; the constructive case is wide cross-regional earnings revision gaps with orderly securities lending—not synchronized liquidity shocks where every book correlates to one factor.',
     ],
-    officialUrl: 'https://militiainvestments.com/',
-    officialLabel: 'Militia Investments',
+    officialUrl: 'https://militiaetf.com/',
+    officialLabel: 'Militia Long/Short Equity ETF (ORR)',
   },
 
   asgm: {
@@ -751,26 +764,27 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'ASGM',
     issuer: 'Virtus / AlphaSimplex',
     inception: '—',
-    mer: '—',
+    mer: 'See Virtus summary prospectus / ETF Facts',
     aum: '~$210M',
     pageTitle: 'ASGM ETF — Alpha Stacking',
-    description: 'Virtus AlphaSimplex Global Macro ETF (ASGM).',
+    description:
+      'Virtus AlphaSimplex Global Macro ETF (ASGM): systematic global macro sleeve that pairs dedicated equity risk with futures across rates, FX, and commodities—Virtus lists AlphaSimplex as sub-adviser.',
     lede:
-      'ASGM runs a systematic global macro process: equity sleeves plus futures across rates, currencies, and commodities.',
+      'ASGM packages AlphaSimplex’s research-driven global macro engine inside Virtus’s ETF shelf: the mandate blends a strategic equity component with systematic futures sleeves designed to rotate macro risk—rates, currencies, commodities—rather than betting everything on a single equity factor.',
     strategyParas: [
-      'AlphaSimplex’s research stack mixes adaptive risk budgeting with trend and macro signals; ASGM can hold equity beta alongside futures sleeves that rotate rates, FX, and commodity exposure—read how volatility targeting scales gross exposure in quiet vs. chaotic markets.',
-      'Because signals are systematic, regime misclassification is the tail risk: the fund can de-risk too late or re-risk too early around macro pivots—compare drawdowns to discretionary macro peers over 2008-style liquidity events.',
+      'Virtus disclosures describe adaptive risk budgeting layered on trend and macro signals; gross exposure can expand or contract with volatility targeting, so headline beta in any given month may look nothing like a 60/40 proxy. Futures implementation, roll timing, and margin are central—read how sleeves interact when equities and bonds sell off together.',
+      'Because the process is model-driven, the failure mode is regime shift: models optimized on long histories can lag abrupt policy reversals or liquidity shocks. Stress tests against 2020 and 2022-style months matter more than a single backtested decade.',
     ],
     pedigreeParas: ped(
-      `AlphaSimplex grew out of MIT-linked quantitative research (Andrew Lo lineage) before joining Virtus’s multi-affiliate platform—intellectual capital is academic systematic macro, not discretionary storytellers.`,
-      `Virtus is a public multi-affiliate manager with tens of billions in consolidated AUM per quarterly filings—enough infrastructure for futures execution and compliance, while ASGM itself remains a specialist sleeve.`,
+      `AlphaSimplex spun out of MIT-linked quantitative finance (Andrew Lo’s research ecosystem) before becoming Virtus’s systematic macro affiliate—its edge is published methodology, peer-reviewed roots, and institutional risk systems rather than discretionary macro “stories.”`,
+      `Virtus Investment Partners is a public multi-boutique manager with consolidated assets in the tens of billions of dollars per SEC filings—large enough for prime brokerage and swap infrastructure, while ASGM remains a specialist ETF for investors who want macro convexity alongside listed equity beta.`,
     ),
     outperfParas: [
-      'Pays when cross-asset trends diverge cleanly—rates down while dollar up, or commodity shocks with uneven equity sector impacts—giving macro futures room to diversify equity path.',
-      'Hurts in whipsaw macro where adaptive models flip signals frequently; favorable tape is persistent macro variables with liquid futures curves, not single-day Fed dots plot reversals.',
+      'The design pays when macro variables diverge: dollar trends vs. EM, curve steepeners vs. equities, or commodity shocks that hit sectors unevenly—windows where futures sleeves earn while an equity core still participates in carry.',
+      'Whipsaw tape punishes adaptive systems that flip signals monthly; favorable environments are persistent trends with liquid curves, not single-meeting Fed reversals where every asset reprices in one session.',
     ],
-    officialUrl: 'https://www.virtus.com/',
-    officialLabel: 'Virtus',
+    officialUrl: 'https://www.virtus.com/products/virtus-alphasimplex-global-macro-etf',
+    officialLabel: 'Virtus (ASGM)',
   },
 
   mrgr: {
@@ -832,8 +846,8 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Constructive when global balanced beta grinds while futures sleeves harvest independent trends—dollar cycles, curve steepeners, or commodity shocks that do not move global equities in lockstep.',
       'Stress arrives when correlations spike and both sleeves de-risk into the same liquidity hole; favorable tape is persistent macro trends with functioning futures markets, not simultaneous crashes in stocks and bonds with vol targeting cutting exposure late.',
     ],
-    officialUrl: 'https://www.returnstackedetfs.ca/',
-    officialLabel: 'Return Stacked® ETFs Canada',
+    officialUrl: 'https://returnstackedetfs.ca/rgbm-global-balanced-macro-etf/',
+    officialLabel: 'Return Stacked ETFs Canada (RGBM)',
   },
 
   onec: {
@@ -863,8 +877,8 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Pays when at least one sleeve is clearly earning—credit dislocation trades, macro trends, or long/short dispersion—while others tread water, so the blended correlation to 60/40 actually falls.',
       'Hurts when every alt sleeve faces hostile funding markets at once; favorable tape is rich dispersion with functioning leverage in underlyings, not synchronized deleveraging.',
     ],
-    officialUrl: 'https://accelerateshares.com/',
-    officialLabel: 'Accelerate ETFs',
+    officialUrl: 'https://accelerateshares.com/investment-solutions/onec/',
+    officialLabel: 'Accelerate (ONEC)',
   },
 
   pfaa: {
@@ -894,8 +908,9 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Wins when sleeves diversify each other—macro trends paying while equity long/short harvests dispersion, or credit RV working while equities chop.',
       'Loses when every sleeve pays for the same macro shock (liquidity, leverage, correlation to one); favorable tape is at least one clean trend or spread environment, not universal calm.',
     ],
-    officialUrl: 'https://pictonmahoney.com/',
-    officialLabel: 'Picton Mahoney',
+    officialUrl:
+      'https://casl.pictonmahoney.com/en/Solutions/Fortified-Alternative-Funds-Solutions.aspx',
+    officialLabel: 'Picton Mahoney (Fortified alternatives — PFAA)',
   },
 
   zlb: {
@@ -924,8 +939,9 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Pays when investors favor stable cash flows and defensives—TSX ranges, credit worries, or late-cycle rotations out of high-beta commodity beta.',
       'Hurts in rip-roaring commodity or liquidity rallies where volatility itself is rewarded; favorable tape is risk-off tone or quality leadership, not every cyclical upswing.',
     ],
-    officialUrl: 'https://www.bmo.com/en-ca/main/etfs/',
-    officialLabel: 'BMO ETFs',
+    officialUrl:
+      'https://www.bmoetfs.ca/etfs/zlb-bmo-low-volatility-canadian-equity-etf',
+    officialLabel: 'BMO ETFs (ZLB)',
   },
 
   atsx: {
@@ -955,8 +971,8 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Works when TSX60 dispersion is high—stock-specific earnings revisions matter more than WTI alone—and factor signals cleanly separate quality from junk inside the benchmark.',
       'Suffers when everything trades as one macro beta (commodity + rates shock) and short books pay borrow while longs re-rate down together.',
     ],
-    officialUrl: 'https://accelerateshares.com/',
-    officialLabel: 'Accelerate ETFs',
+    officialUrl: 'https://accelerateshares.com/investment-solutions/atsx/',
+    officialLabel: 'Accelerate (ATSX)',
   },
 
   pfls: {
@@ -986,8 +1002,9 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Pays when moderate net plus pair trades earns while macro storms buffet long-only peers—leadership spreads inside sectors, orderly credit markets, and stock pickers rewarded for balance-sheet work.',
       'Hurts in correlation spikes where shorts and longs re-rate together; favorable tape is dispersion-rich global equities, not single-factor melt-ups.',
     ],
-    officialUrl: 'https://pictonmahoney.com/',
-    officialLabel: 'Picton Mahoney',
+    officialUrl:
+      'https://casl.pictonmahoney.com/en/Solutions/Fortified-Alternative-Funds-Solutions.aspx',
+    officialLabel: 'Picton Mahoney (Fortified alternatives — PFLS)',
   },
 
   tgaf: {
@@ -1017,8 +1034,8 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Alpha accrues when global dispersion is wide enough that a 200-name book can be short crowded winners and long neglected quality without every leg sharing the same macro beta.',
       'Macro storms that crush all regions together overwhelm stock picking; favorable tape is idiosyncratic earnings cycles with functioning short locates, not synchronized central-bank hiking.',
     ],
-    officialUrl: 'https://tralucent.ca/',
-    officialLabel: 'Tralucent Asset Management',
+    officialUrl: 'https://tralucent.ca/about-the-etf/',
+    officialLabel: 'Tralucent (TGAF)',
   },
 
   dglm: {
@@ -1048,8 +1065,8 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Pays when macro variables diverge—curve steepeners, dollar trends, commodity shocks—with enough persistence that systematic sleeves earn after fees.',
       'Bleeds in whipsaw macro where signals flip quickly; favorable tape is clean trends with liquid futures, not single-meeting Fed reversals.',
     ],
-    officialUrl: 'https://www.desjardins.com/',
-    officialLabel: 'Desjardins',
+    officialUrl: 'https://www.fondsdesjardins.com/etf/global-macro/',
+    officialLabel: 'Desjardins (DGLM)',
   },
 
   btccb: {

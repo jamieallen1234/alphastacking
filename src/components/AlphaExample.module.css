@@ -98,15 +98,28 @@
   color: var(--color-gold);
 }
 
-.footnote {
-  font-size: 11px;
-  font-weight: 300;
-  color: var(--color-text-faint);
+.learnLine {
+  margin-top: 0;
+  font-size: 13px;
   line-height: 1.55;
+  color: var(--color-text-muted);
 }
 
-.footnote code {
+/* Match portfolios hub `.cardCta` (PortfoliosPage.module.css). */
+.learnCta {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(232, 228, 220, 0.45);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  text-decoration: none;
+  opacity: 0.95;
+  transition: color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+}
+
+.learnCta:hover {
+  color: var(--color-gold-hover);
+  opacity: 1;
 }

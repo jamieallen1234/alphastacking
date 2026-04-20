@@ -36,9 +36,7 @@ export default function Hero({ variant = 'us' }: HeroProps) {
       </div>
 
       <p className={`${styles.legal} animate animate-5`}>
-        Educational content only. Not investment advice. Past performance does not
-        guarantee future results. Leveraged ETFs involve substantial risk and are
-        not suitable for all investors.
+        Educational only—not advice. Past performance does not guarantee future results. Leveraged ETFs involve substantial risk.
       </p>
     </section>
   )

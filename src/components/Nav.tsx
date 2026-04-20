@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { homePath, portfoliosPath, usEtfHubPath } from '@/lib/siteRegion'
+import { homePath, learnPath, portfoliosPath, usEtfHubPath } from '@/lib/siteRegion'
 import styles from './Nav.module.css'
 
 export default function Nav() {
@@ -10,6 +10,7 @@ export default function Nav() {
   const isCa = pathname === '/ca' || pathname.startsWith('/ca/')
   const home = homePath(isCa)
   const portfolios = portfoliosPath(isCa)
+  const learn = learnPath(isCa)
   const usEtfHub = usEtfHubPath(isCa)
 
   return (
@@ -37,6 +38,9 @@ export default function Nav() {
               <Link href="/ca/etfs">CA ETFs</Link>
             </li>
           ) : null}
+          <li>
+            <Link href={learn}>Learn</Link>
+          </li>
         </ul>
       </nav>
     </>

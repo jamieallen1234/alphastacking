@@ -18,6 +18,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/us-etfs',
     '/ca/etfs',
     '/ca/us-etfs',
+    '/learn',
+    '/ca/learn',
     '/us-etfs/mate',
     '/us-etfs/rssy',
     '/us-etfs/hfgm',

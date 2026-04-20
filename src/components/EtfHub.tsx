@@ -6,7 +6,10 @@ import { getEtfHubItems, type EtfHubListItem } from '@/lib/etfHubData'
 import styles from './EtfHub.module.css'
 
 export interface EtfHubProps {
-  variant: 'us' | 'ca'
+  /** Which ETF universe to list (US-listed vs Canadian-listed rows in `etfHubData`). */
+  listing: 'us' | 'ca'
+  /** Regional site chrome: Canadian edition vs United States (nav + labels). */
+  edition: 'us' | 'ca'
 }
 
 function EtfRow({ item }: { item: EtfHubListItem }) {
@@ -24,29 +27,28 @@ function EtfRow({ item }: { item: EtfHubListItem }) {
   )
 }
 
-export default function EtfHub({ variant }: EtfHubProps) {
-  const isCa = variant === 'ca'
-  const categoryRows = getEtfHubCategoryRows(variant)
+export default function EtfHub({ listing, edition }: EtfHubProps) {
+  const categoryRows = getEtfHubCategoryRows(listing)
 
   return (
     <main className={styles.main}>
       <Nav />
       <section className={styles.section} aria-labelledby="etf-hub-heading">
         <div className={styles.sectionLabel}>
-          {isCa ? 'Canadian edition' : 'United States'}
+          {edition === 'ca' ? 'Canadian edition' : 'United States'}
         </div>
         <h1 id="etf-hub-heading" className={styles.heading}>
           ETFs
         </h1>
         <p className={styles.lede}>
-          {isCa
+          {listing === 'ca'
             ? 'Canadian-listed and we track for alpha stacking — grouped by strategy. Full write-ups are on the way.'
             : 'US-listed funds we track for alpha stacking — grouped by strategy. Full write-ups are on the way.'}
         </p>
 
         <div className={styles.categories}>
           {categoryRows.map((cat) => {
-            const items = getEtfHubItems(variant, cat.id)
+            const items = getEtfHubItems(listing, cat.id, edition)
             return (
               <section
                 key={cat.id}

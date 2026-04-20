@@ -23,6 +23,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/us-etfs/mate',
     '/us-etfs/rssy',
     '/us-etfs/hfgm',
+    '/ca/us-etfs/mate',
+    '/ca/us-etfs/rssy',
+    '/ca/us-etfs/hfgm',
     '/ca/etfs/hdge',
     '/ca/etfs/arb',
     '/ca/etfs/pfmn',
@@ -30,6 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   for (const slug of Object.keys(US_ETF_DYNAMIC_REGISTRY)) {
     paths.add(`/us-etfs/${slug}`)
+    paths.add(`/ca/us-etfs/${slug}`)
   }
   for (const slug of Object.keys(CA_ETF_DYNAMIC_REGISTRY)) {
     paths.add(`/ca/etfs/${slug}`)

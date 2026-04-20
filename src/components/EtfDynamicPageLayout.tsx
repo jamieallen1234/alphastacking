@@ -9,8 +9,8 @@ import type { EtfChartPayload } from '@/lib/getCachedEtfChart'
 
 export interface EtfDynamicPageLayoutProps {
   variant: 'us' | 'ca'
-  /** e.g. `/us-etfs` or `/ca/etfs` */
-  hubBase: '/us-etfs' | '/ca/etfs'
+  /** Hub root for back links (US site, CA-listed hub, or US-listed hub under Canadian edition). */
+  hubBase: '/us-etfs' | '/ca/etfs' | '/ca/us-etfs'
   def: EtfDynamicDef
   chart: EtfChartPayload
   /** CSS module from `page.module.css` (same shape as MATE / HDGE ETF pages). */

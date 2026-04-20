@@ -31,16 +31,33 @@ function ca(
   return { key, nameLine, desc, href }
 }
 
-/** Resolve hub ETF rows; CA merges the two US return-stacked buckets under `return-stacked`. */
-export function getEtfHubItems(variant: 'us' | 'ca', categoryId: string): EtfHubListItem[] {
-  if (variant === 'ca' && categoryId === 'return-stacked') {
-    return [
+/**
+ * Resolve hub ETF rows; CA merges the two US return-stacked buckets under `return-stacked`.
+ * When `listing === 'us'` and `edition === 'ca'`, rewrite `/us-etfs/...` hrefs to `/ca/us-etfs/...`
+ * so the Canadian shell stays in-region.
+ */
+export function getEtfHubItems(
+  listing: 'us' | 'ca',
+  categoryId: string,
+  edition: 'us' | 'ca' = 'us'
+): EtfHubListItem[] {
+  let rows: EtfHubListItem[]
+  if (listing === 'ca' && categoryId === 'return-stacked') {
+    rows = [
       ...ETF_HUB_CA['return-stacked-ge-2x'],
       ...ETF_HUB_CA['return-stacked-lt-2x'],
     ]
+  } else {
+    const table = listing === 'ca' ? ETF_HUB_CA : ETF_HUB_US
+    rows = table[categoryId as keyof typeof table] ?? []
   }
-  const table = variant === 'ca' ? ETF_HUB_CA : ETF_HUB_US
-  return table[categoryId as keyof typeof table] ?? []
+  if (listing === 'us' && edition === 'ca') {
+    return rows.map((item) => ({
+      ...item,
+      href: item.href.replace(/^\/us-etfs\//, '/ca/us-etfs/'),
+    }))
+  }
+  return rows
 }
 
 const usPath = (key: string) => `/us-etfs/${key}`

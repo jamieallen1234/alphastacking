@@ -6,5 +6,5 @@ export const metadata = {
 }
 
 export default function UsEtfHubPage() {
-  return <EtfHub variant="us" />
+  return <EtfHub listing="us" edition="us" />
 }

@@ -7,5 +7,5 @@ export const metadata = {
 }
 
 export default function CaUsEtfHubPage() {
-  return <EtfHub variant="us" />
+  return <EtfHub listing="us" edition="ca" />
 }

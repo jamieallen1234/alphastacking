@@ -13,8 +13,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const paths = new Set<string>([
     '/',
     '/ca',
-    '/comparison',
-    '/ca/comparison',
     '/portfolios',
     '/ca/portfolios',
     '/us-etfs',

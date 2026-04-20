@@ -898,7 +898,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'PFAA packages Picton Mahoney’s multi-strategy alpha process—long/short, relative value, and macro sleeves—in an ETF structure.',
     strategyParas: [
       'PFAA is Picton’s multi-strat sleeve in ETF form: internal capital rotates between long/short equity, relative-value credit, and macro books as risk budgets change—monthly factsheets matter more than a one-page marketing summary.',
-      'Performance fees and higher MER stacks versus plain beta are explicit tradeoffs; compare net-of-fee outcomes to owning separate Picton sleeves if you care about fee attribution.',
+      'Performance fees and higher MER stacks versus plain beta are explicit tradeoffs; compare net-of-fee outcomes to owning separate Picton sleeves if you care about fee attribution. *Fee note: 0.95% management fee plus 20% performance fee above a 2% hurdle rate.',
     ],
     pedigreeParas: ped(
       `Picton Mahoney is one of Canada’s larger independent alt managers; PICTON Investments has cited low-teens billions CAD in firm AUM in recent communications—enough depth for multi-strat infrastructure while still boutique versus global banks.`,

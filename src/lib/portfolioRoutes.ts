@@ -37,7 +37,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     title: 'US Alpha Stack',
     badge: 'Advanced',
     description:
-      'NTSD, UPRO, SSO, MATE, RSSY, ORR, CLSE, FLSP, IALT, and HFGM at 10% / 7.5% / 12.5% / 12.5% / 5% / 20% / 7.5% / 12.5% / 7.5% / 5%.',
+      'LETF-heavy core with trend, long/short equity, alternatives, and macro sleeves — beta near 1.0.',
   },
   {
     slug: 'us-core-buy-hold',
@@ -46,7 +46,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     hubSection: 'buy-hold',
     title: 'Growth & Value Barbell',
     description:
-      'VFLO, AVGV, QQQ, and SPMO at 20% / 20% / 30% / 30%.',
+      'Barbell across dividend growth, global value, Nasdaq-100, and S&P momentum.',
     featured: true,
   },
   {
@@ -98,7 +98,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     kind: 'live',
     hubSection: 'annual-rebalance',
     title: 'Canadian international',
-    description: 'TSX and US-listed sleeves in CAD.',
+    description: 'CAD-diversified US and Canadian sleeves with intentional beta near 1.0.',
     featured: true,
   },
   {
@@ -108,7 +108,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     hubSection: 'buy-hold',
     title: 'US & Canada - Balanced beta',
     description:
-      'USSL.TO, QQQL.TO, ZLB.TO, and PFLS.TO at 30% / 30% / 25% / 15%.',
+      'Levered US growth stack with Canadian low-vol equity and preferred income — modeled in CAD.',
     featured: true,
   },
   {
@@ -117,7 +117,8 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     kind: 'live',
     hubSection: 'buy-hold',
     title: 'US + hedge long/short',
-    description: 'USSL.TO, HDGE.TO, and QQQL.TO at 60% / 25% / 15%.',
+    description:
+      'Concentrated levered US growth with a Canadian market-neutral long/short sleeve — three positions, buy and hold.',
   },
   {
     slug: 'ca-alpha-stack',
@@ -156,8 +157,9 @@ export const HUB_SECTION_LABEL: Record<
   { heading: string; blurb: string }
 > = {
   'annual-rebalance': {
-    heading: 'Leveraged — annual rebalance',
-    blurb: 'Target weights reset on the first US trading session of each calendar year (after that session’s closes).',
+    heading: 'Leveraged — multi-sleeve',
+    blurb:
+      'Models combine LETFs and alternative sleeves with deliberate sizing; open each portfolio for weights and methodology.',
   },
   'buy-hold': {
     heading: 'Buy & hold',

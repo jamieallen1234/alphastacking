@@ -123,7 +123,7 @@ export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
           anchorIds: { annualRebalance: 'ca-annual-rebalance', buyHold: 'ca-buyhold' },
           firstSectionMarginTop: '0.5rem',
           betweenSections: '2.25rem',
-          extraBlurb: 'Live CAD charts where noted (VFV.TO benchmark labeled SPY).',
+          extraBlurb: '',
           headingFontSize: 11,
         })}
 
@@ -136,7 +136,7 @@ export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
           anchorIds: { annualRebalance: 'us-annual-rebalance', buyHold: 'us-buyhold' },
           firstSectionMarginTop: '0.5rem',
           betweenSections: '2.25rem',
-          extraBlurb: 'Same models as /portfolios; links stay in the Canadian edition.',
+          extraBlurb: '',
           headingFontSize: 11,
         })}
       </section>

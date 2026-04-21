@@ -4,7 +4,7 @@ description: >-
   Adds a real model portfolio to Alpha Stacking with live holdings, weighted
   total-return charts (Yahoo-backed `computePortfolioChart`), preset API, and
   hub cards. Covers US site (`/portfolios/...`) and Canadian edition
-  (`/ca/portfolios/...`). Use when adding buy-and-hold or annually rebalanced
+  (`/ca/portfolios/...`). Use when adding buy-and-hold or scheduled-rebalance
   baskets, new preset modules, `portfolioRoutes`, `getCachedPresetChart`, or
   `PortfolioDetailMain` live maps—never stub or placeholder-only pages.
 ---
@@ -27,7 +27,8 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
 1. **`src/lib/portfolioRoutes.ts`**  
    - Append `{ slug, region: 'us' | 'ca', kind: 'live', hubSection, title, description, featured? }`.  
    - `hubSection`: `'buy-hold'` or `'annual-rebalance'` (sets which hub block the card sits in).  
-   - `kind` must be **`'live'`**.
+   - `kind` must be **`'live'`**.  
+   - **`description`** (hub card + home teaser copy): **one short sentence**, strategy-level — same bar as **US Multi-Strategy** (`"Diversified US-listed mix with intentional beta near 1.0."`). **Do not** paste ticker lists or `10% / 7.5% / …` weight strings here; those belong on the **detail page** (`PresetHoldingsTable` + preset `blurb`s in `src/lib/presets/...`). **Do not** call out rebalance cadence (e.g. annual January) in this field — keep it high-level; cadence lives in chart math and on-page methodology if needed. **Do not** use the word **static** here (e.g. “static weights” / “static barbell”) — say what the model *is*, not that weights never change.
 
 2. **`src/lib/presets/<portfolio>.ts`**  
    - `…_PRESET_ID` stable string (version suffix if weights may change).  
@@ -56,6 +57,7 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
 
 ## Anti-patterns
 
+- Using **`description`** on the hub route as a **full sleeve / weight breakdown** — keep the card readable; weights are visible on `/portfolios/[slug]`.
 - Shipping a route **without** `US_LIVE` / `CA_LIVE` + preset + API — the page will not render a real chart.
 - Using **`cadDenominated: false`** for a portfolio meant for the **Canadian edition** without an explicit, documented reason.
 - Broad refactors of unrelated presets or hub layout while adding one portfolio.

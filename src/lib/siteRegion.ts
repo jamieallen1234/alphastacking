@@ -16,7 +16,7 @@ export function usEtfHubPath(isCa: boolean): string {
   return isCa ? '/ca/us-etfs' : '/us-etfs'
 }
 
-/** Portfolio construction guide (placeholder until content ships). */
+/** Learn hub index. */
 export function learnPath(isCa: boolean): string {
   return isCa ? '/ca/learn' : '/learn'
 }

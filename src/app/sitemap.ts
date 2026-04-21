@@ -20,6 +20,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/ca/us-etfs',
     '/learn',
     '/ca/learn',
+    '/learn/return-stacking-vs-alpha-stacking',
+    '/ca/learn/return-stacking-vs-alpha-stacking',
     '/us-etfs/mate',
     '/us-etfs/rssy',
     '/us-etfs/hfgm',

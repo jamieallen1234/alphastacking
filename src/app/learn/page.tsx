@@ -3,7 +3,7 @@ import LearnPage from '@/components/LearnPage'
 export const metadata = {
   title: 'Learn — Alpha Stacking',
   description:
-    'Portfolio construction and return stacking—educational guides (content coming soon).',
+    'Educational articles on portfolio construction: return stacking vs. alpha stacking, sleeves, and correlation — not personalized advice.',
 }
 
 export default function UsLearnPage() {

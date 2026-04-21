@@ -1,6 +1,6 @@
 import type { PresetHolding } from './usInternational'
 
-/** US advanced model — LETF core, capital-efficient sleeve, alts; weights reset each January. */
+/** US Alpha Stack model (us-advanced preset) — LETF core, capital-efficient sleeve, alts; weights reset each January. */
 export const US_ADVANCED_PRESET_ID = 'us-advanced-v1'
 
 export const usAdvancedHoldings: PresetHolding[] = [

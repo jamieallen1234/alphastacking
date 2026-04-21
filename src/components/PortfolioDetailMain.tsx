@@ -190,7 +190,7 @@ export default async function PortfolioDetailMain({ slug, backHref, routeSet }: 
 
             <p className={styles.stubNote}>
               Live weighted chart and full position-level weights will be published here — same
-              methodology as our US international portfolio.
+              methodology as our US Multi-Strategy portfolio.
             </p>
           </section>
           <Footer />

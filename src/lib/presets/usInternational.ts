@@ -1,4 +1,4 @@
-/** US international portfolio — weighted beta ≈ 1.0 */
+/** US Multi-Strategy portfolio (us-international preset) — weighted beta ≈ 1.0 */
 
 export interface PresetHolding {
   ticker: string

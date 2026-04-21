@@ -25,7 +25,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'us',
     kind: 'live',
     hubSection: 'annual-rebalance',
-    title: 'US international',
+    title: 'US Multi-Strategy',
     description: 'Diversified US-listed mix with intentional beta near 1.0.',
     featured: true,
   },
@@ -34,7 +34,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'us',
     kind: 'live',
     hubSection: 'annual-rebalance',
-    title: 'US advanced',
+    title: 'US Alpha Stack',
     badge: 'Advanced',
     description:
       'NTSD, UPRO, SSO, MATE, RSSY, ORR, CLSE, FLSP, IALT, and HFGM at 10% / 7.5% / 12.5% / 12.5% / 5% / 20% / 7.5% / 12.5% / 7.5% / 5%.',

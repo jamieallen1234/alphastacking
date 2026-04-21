@@ -1,6 +1,7 @@
 import { caCoreBuyHoldSymbols } from '@/lib/presets/caBuyHold'
 import { caUsslQqqlHdgeSymbols } from '@/lib/presets/caBuyHoldHdge'
 import { caInternationalSymbols } from '@/lib/presets/caInternational'
+import { usAdvancedSymbols } from '@/lib/presets/usAdvanced'
 import { usCoreBuyHoldSymbols } from '@/lib/presets/usBuyHold'
 import { usInternationalSymbols } from '@/lib/presets/usInternational'
 
@@ -9,6 +10,7 @@ export function allPortfolioPresetSymbols(): Set<string> {
   const out = new Set<string>()
   for (const sym of [
     ...usCoreBuyHoldSymbols(),
+    ...usAdvancedSymbols(),
     ...usInternationalSymbols(),
     ...caCoreBuyHoldSymbols(),
     ...caUsslQqqlHdgeSymbols(),

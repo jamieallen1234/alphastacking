@@ -37,6 +37,7 @@ For **each** ETF, complete **before** moving to the next (or explicitly parallel
 | Official link | §2 “Official ETF page” + verified `href` | `officialUrl` + `officialLabel` (§3f); not issuer root |
 | Body depth | §3 + §4 (Strategy / Pedigree / Outperformance) | `lede`, 2× `strategyParas`, `ped(…)`, 2× `outperfParas` |
 | Chart | §2 chart steps + `ETF_CHART_SYMBOLS` / API | `yahooSymbol` in allowlist + same chart plumbing if new symbol |
+| Portfolio proxy links | §2b: add **`HAND_AUTHORED_US_SLUG`** entry for this uppercase ticker | §2b: if ticker is a chart proxy, **`yahooSymbol`** match supplies the hub link—else **`OFFICIAL_ETF_HOME`** |
 | Checklist | Run §5 mentally for **this** ticker | Same §5 lines for **this** slug |
 
 **Per-ticker parity rule:** The *n*th ETF in the batch must meet the **same** research and URL standards as the first. If you are tired or running long, **finish one ticker completely** rather than shipping three half-done pages.
@@ -45,6 +46,7 @@ For **each** ETF, complete **before** moving to the next (or explicitly parallel
 
 - Confirm **every** new hub `href` resolves (no typos vs `app` routes or `[slug]` keys).
 - Confirm **every** new chart symbol has getter + `route.ts` branch + panel typing.
+- If any new ticker is a **portfolio chart proxy** (footnotes / synthetic modeling), confirm **`portfolioProxyEtfNav.ts`** per §2b.
 - Quick read: ledes and outperform closings not copy-paste identical across unrelated funds (§3d).
 
 ### Batch anti-patterns (do not do these)
@@ -98,6 +100,30 @@ Register the ETF on the hub: add an entry to `src/lib/etfHubData.ts` under the c
 3. `src/components/EtfChartPanel.tsx` — ensure the Yahoo symbol string is supported (see `etfChartSymbols.ts` / API allowlist).
 
 Use `getCached…Chart('1y')` (or `max` if you standardize on MATE) in the page server component when calling the chart.
+
+## 2b. Portfolio chart proxy links (`portfolioProxyEtfNav`)
+
+Preset portfolio charts (`src/components/PresetPortfolioChart.tsx`) wrap many footnote tickers in **`ProxyLink`**, which calls **`getPortfolioProxyEtfNav`** in **`src/lib/portfolioProxyEtfNav.ts`**. If that function returns **`null`**, the ticker still shows in the disclaimer but **is not a link**—readers lose the “on-site review vs official fund page” behavior.
+
+### When this applies
+
+Update proxy navigation **whenever the ETF you add (or its Yahoo symbol) appears as a proxy or sleeve** in portfolio modeling—not only when you add a hub write-up. Quick discovery:
+
+- Search the codebase for **`ProxyLink`**, **`getPortfolioProxyEtfNav`**, **`OFFICIAL_ETF_HOME`**, and preset / synthetic helpers (**`syntheticProxyMerge`**, **`computePortfolioChart`**, blurbs that say “proxied by” / “pre-history”).
+- Common linked tickers in footnotes today include **SPY**, **EFA**, **QQQ**, **VFV.TO**, **HEQT.TO**, **HEQL.TO**, **USSL.TO**, **QQQL.TO**, **NTSD**, **MATE**, **RSST**, **FLSP**, **DBMF**, **ASGM**, plus **dynamic slot symbols** (e.g. IALT, HFGM) that must resolve the same way.
+
+### What to change in `portfolioProxyEtfNav.ts`
+
+Resolution order is fixed: **hand-authored US slug** → **US dynamic registry** (`yahooSymbol` match, case-insensitive) → **CA dynamic registry** → **`OFFICIAL_ETF_HOME`** external issuer URL.
+
+| Situation | Action |
+| --- | --- |
+| New **US hand-authored** page under `src/app/us-etfs/<slug>/` and the chart uses that **uppercase** ticker (e.g. `ORR`) | Add **`TICKER: 'slug'`** to **`HAND_AUTHORED_US_SLUG`**. |
+| Fund is a **US or CA `etfDynamicRegistry.ts`** row and **`yahooSymbol`** matches the proxy string | **No map change**—slug routing is automatic; CA reviews use **`/ca/etfs/{slug}`**. |
+| Proxy ticker is used in charts but **there is no on-site page yet** (not in hand map or registries) | Add **`'TICKER': 'https://…'`** to **`OFFICIAL_ETF_HOME`** using the **exact** Yahoo-style key (uppercase; include **`.TO`** if that is what `ProxyLink` passes). Use a **verified** fund product URL (same bar as §3f `officialUrl`). |
+| You **later** add a write-up so the ticker is covered on-site | **Remove** that symbol from **`OFFICIAL_ETF_HOME`** if it was only a fallback, so the internal hub route wins. |
+
+**Hub base:** `getPortfolioProxyEtfNav` receives **`hubBaseUs`** (`/us-etfs` vs `/ca/us-etfs`); the component derives it from the pathname—no change needed for normal ETF page work unless you alter that convention.
 
 ## 3. Research deep dives (before writing copy)
 
@@ -234,6 +260,7 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 - [ ] Hub lists the new ETF with correct `href`
 - [ ] Section headings and “Official ETF page” opener match the shared template
 - [ ] Chart: getter + API branch + `EtfChartPanel` type + `chartCurrency` if non-USD (see HDGE)
+- [ ] **Portfolio proxies:** If this ticker (or `yahooSymbol`) appears in **`PresetPortfolioChart`** / synthetic preset copy, **`portfolioProxyEtfNav.ts`** is updated per §2b (hand slug, registry parity, or **`OFFICIAL_ETF_HOME`**; drop official-only row when an on-site page exists)
 - [ ] Copy reflects deep reads of issuer ETF page, manager, and sponsor; regime/outperformance tied to strategy
 - [ ] **Dynamic registry (`etfDynamicRegistry.ts`):** `officialUrl` is a **verified, fund-specific** issuer/sponsor product page (or clearly labeled SEC/prospectus fallback per §3f)—**not** a generic aggregator default; `officialLabel` names the product/destination clearly
 - [ ] **Dynamic registry:** `lede` + two **`strategyParas`** + **`ped(...)`** (two pedigree paragraphs before verify) + two **`outperfParas`** match MATE-level depth (§3f); no Markdown in strings

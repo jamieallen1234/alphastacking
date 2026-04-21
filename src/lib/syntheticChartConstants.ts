@@ -5,6 +5,9 @@
 /** NTSD: expense + financing / implementation (annualized). */
 export const NTSD_SYNTHETIC_ANNUAL_DRAG = 0.006
 
+/** HFGM pre-listing leg: 1.5× ASGM daily returns minus a small implementation / fee haircut (annualized). */
+export const HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG = 0.006
+
 /**
  * HEQL.TO ≈ 1.25× HEQT.TO on **daily total returns** (Yahoo adjusted close = TR incl. distributions).
  * Each day’s scaled return `1.25 × r_HEQT` reinvests the 1.25× notional consistently in the chain.

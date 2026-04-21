@@ -79,6 +79,15 @@
   margin: 2rem 0 0.9rem;
 }
 
+.chartProxyNote {
+  margin: 0.65rem 0 0;
+  max-width: 46rem;
+  font-size: 11px;
+  line-height: 1.55;
+  font-weight: 300;
+  color: rgba(232, 228, 220, 0.42);
+}
+
 .bodySection {
   margin-top: 1.9rem;
   max-width: 52rem;

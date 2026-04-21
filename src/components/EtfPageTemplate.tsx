@@ -35,6 +35,8 @@ export type EtfPageTemplateProps = {
     yahooSymbol: string
     payload: EtfChartPayload
   }
+  /** Optional note directly under the chart (e.g. model-portfolio proxy). */
+  belowChart?: ReactNode
   styles: Record<string, string>
   children: ReactNode
 }
@@ -48,6 +50,7 @@ export default function EtfPageTemplate({
   lede,
   meta,
   chart,
+  belowChart,
   styles,
   children,
 }: EtfPageTemplateProps) {
@@ -93,6 +96,7 @@ export default function EtfPageTemplate({
 
         <h2 className={styles.chartHeading}>{chart.displayLabel} price history</h2>
         <EtfChartPanel symbol={chart.yahooSymbol} initialPayload={chart.payload} />
+        {belowChart}
 
         {children}
       </section>

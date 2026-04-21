@@ -21,6 +21,11 @@ import {
   usCoreBuyHoldWeights,
 } from '@/lib/presets/usBuyHold'
 import {
+  US_ADVANCED_PRESET_ID,
+  usAdvancedSymbols,
+  usAdvancedWeights,
+} from '@/lib/presets/usAdvanced'
+import {
   US_INTL_PRESET_ID,
   usInternationalSymbols,
   usInternationalWeights,
@@ -50,6 +55,26 @@ export const getCachedUsInternationalChart = unstable_cache(
     'notional-10k',
     'default-1y',
     'annual-rebal',
+  ],
+  { revalidate: DAY }
+)
+
+export const getCachedUsAdvancedChart = unstable_cache(
+  async () =>
+    computePortfolioChart({
+      symbols: usAdvancedSymbols(),
+      weights: usAdvancedWeights(),
+      range: PRESET_CHART_RANGE,
+      rebalanceSchedule: 'annual',
+    }),
+  [
+    'preset-chart',
+    US_ADVANCED_PRESET_ID,
+    PRESET_CHART_RANGE,
+    'notional-10k',
+    'default-1y',
+    'annual-rebal',
+    'upro-sso-mate-ntsd',
   ],
   { revalidate: DAY }
 )
@@ -205,6 +230,26 @@ export const getCachedUsCoreBuyHoldChartMax = unstable_cache(
     'notional-10k',
     'home-max',
     'buy-hold',
+  ],
+  { revalidate: DAY }
+)
+
+export const getCachedUsAdvancedChartMax = unstable_cache(
+  async () =>
+    computePortfolioChart({
+      symbols: usAdvancedSymbols(),
+      weights: usAdvancedWeights(),
+      range: PRESET_CHART_RANGE_MAX,
+      rebalanceSchedule: 'annual',
+    }),
+  [
+    'preset-chart',
+    US_ADVANCED_PRESET_ID,
+    PRESET_CHART_RANGE_MAX,
+    'notional-10k',
+    'home-max',
+    'annual-rebal',
+    'upro-sso-mate-ntsd',
   ],
   { revalidate: DAY }
 )

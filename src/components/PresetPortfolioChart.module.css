@@ -85,6 +85,15 @@
   color: rgba(232, 228, 220, 0.72);
 }
 
+/* Same tone as .disclaimerDetail / .footnoteBody; underline for affordance without gold accent */
+.proxyLink,
+.proxyLink:hover,
+.proxyLink:visited {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .metricBig {
   font-family: var(--font-mono);
   font-size: 1.25rem;

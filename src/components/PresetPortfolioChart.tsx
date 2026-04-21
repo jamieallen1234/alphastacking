@@ -1,13 +1,19 @@
 'use client'
 
+import Link from 'next/link'
+import { useMemo } from 'react'
+import { usePathname } from 'next/navigation'
 import ReturnLineChart from '@/components/ReturnLineChart'
 import type { PortfolioChartPayload, SyntheticModelingNote } from '@/lib/computePortfolioChart'
 import {
   HEQL_CAD_FINANCING_RATE_ON_EXCESS_NOTIONAL_ANNUAL,
   HEQL_SYNTHETIC_ANNUAL_DRAG,
   HEQL_SYNTHETIC_LEVERAGE,
+  HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG,
   NTSD_SYNTHETIC_ANNUAL_DRAG,
 } from '@/lib/syntheticChartConstants'
+import type { PortfolioUsEtfHubBase } from '@/lib/portfolioProxyEtfNav'
+import { getPortfolioProxyEtfNav } from '@/lib/portfolioProxyEtfNav'
 import styles from './PresetPortfolioChart.module.css'
 
 function formatCalendarDate(isoYmd: string): string {
@@ -24,40 +30,158 @@ function formatCalendarDate(isoYmd: string): string {
   })
 }
 
-function cad125Body(
-  slotSymbol: string,
-  when: string,
-  underlying: 'HEQT.TO' | 'QQQ' | 'VFV.TO' | 'SPY'
-): string {
-  const tr =
-    underlying === 'QQQ'
-      ? `${underlying} daily total returns (Yahoo adjusted), converted to CAD with NY-aligned USDCAD`
-      : underlying === 'SPY'
-        ? `${underlying} daily total returns (Yahoo adjusted, USD)`
-        : `${underlying} daily total returns (Yahoo adjusted, CAD-listed)`
-  return `before ${when}, ${slotSymbol} is modeled as ${HEQL_SYNTHETIC_LEVERAGE}× ${tr}, reinvesting at ${HEQL_SYNTHETIC_LEVERAGE}× notional; financing ~${(HEQL_CAD_FINANCING_RATE_ON_EXCESS_NOTIONAL_ANNUAL * 100).toFixed(1)}%/yr on the extra 0.25× notional (Canadian-style wholesale carry), i.e. ~${(HEQL_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(2)}%/yr drag on NAV; then actual ${slotSymbol} closes. Simulated.`
+function ProxyLink({
+  ticker,
+  hubBase,
+  children,
+}: {
+  ticker: string
+  hubBase: PortfolioUsEtfHubBase
+  children: React.ReactNode
+}) {
+  const nav = getPortfolioProxyEtfNav(ticker, hubBase)
+  if (!nav) return <>{children}</>
+  if (nav.external) {
+    return (
+      <a href={nav.href} target="_blank" rel="noopener noreferrer" className={styles.proxyLink}>
+        {children}
+      </a>
+    )
+  }
+  return (
+    <Link href={nav.href} className={styles.proxyLink}>
+      {children}
+    </Link>
+  )
 }
 
-function syntheticModelingCopy(m: SyntheticModelingNote): { title: string; body: string } {
+function Cad125UnderlyingLine({
+  underlying,
+  hubBase,
+}: {
+  underlying: 'HEQT.TO' | 'QQQ' | 'VFV.TO' | 'SPY'
+  hubBase: PortfolioUsEtfHubBase
+}) {
+  if (underlying === 'QQQ') {
+    return (
+      <>
+        <ProxyLink ticker="QQQ" hubBase={hubBase}>
+          QQQ
+        </ProxyLink>{' '}
+        daily total returns (Yahoo adjusted), converted to CAD with NY-aligned USDCAD
+      </>
+    )
+  }
+  if (underlying === 'SPY') {
+    return (
+      <>
+        <ProxyLink ticker="SPY" hubBase={hubBase}>
+          SPY
+        </ProxyLink>{' '}
+        daily total returns (Yahoo adjusted, USD)
+      </>
+    )
+  }
+  return (
+    <>
+      <ProxyLink ticker={underlying} hubBase={hubBase}>
+        {underlying}
+      </ProxyLink>{' '}
+      daily total returns (Yahoo adjusted, CAD-listed)
+    </>
+  )
+}
+
+function SyntheticModelingLine({
+  m,
+  hubBase,
+}: {
+  m: SyntheticModelingNote
+  hubBase: PortfolioUsEtfHubBase
+}) {
   const when = formatCalendarDate(m.firstRealNyDay)
+
   switch (m.kind) {
     case 'ntsd':
-      return {
-        title: 'NTSD (modeled segment)',
-        body: `before ${when}, NTSD is shown as a simulated daily blend (90% SPY + 60% EFA returns, minus ~${(NTSD_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(1)}% annual drag), then actual NTSD closes. Not published NAV history.`,
-      }
+      return (
+        <p key={`ntsd-${m.firstRealNyDay}`} className={styles.disclaimerDetail}>
+          <ProxyLink ticker="NTSD" hubBase={hubBase}>
+            NTSD
+          </ProxyLink>
+          : before {when}, NTSD is shown as a simulated daily blend (90%{' '}
+          <ProxyLink ticker="SPY" hubBase={hubBase}>
+            SPY
+          </ProxyLink>{' '}
+          + 60%{' '}
+          <ProxyLink ticker="EFA" hubBase={hubBase}>
+            EFA
+          </ProxyLink>{' '}
+          returns, minus ~{(NTSD_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(1)}% annual drag).
+        </p>
+      )
     case 'cad_levered_125': {
       const u = m.cadLeveredUnderlying ?? 'HEQT.TO'
-      return {
-        title: `${m.slotSymbol} (modeled segment)`,
-        body: cad125Body(m.slotSymbol, when, u),
-      }
+      return (
+        <p key={`cad125-${m.slotSymbol}-${m.firstRealNyDay}`} className={styles.disclaimerDetail}>
+          <ProxyLink ticker={m.slotSymbol} hubBase={hubBase}>
+            {m.slotSymbol}
+          </ProxyLink>
+          : before {when},{' '}
+          {m.slotSymbol} is modeled as {HEQL_SYNTHETIC_LEVERAGE}×{' '}
+          <Cad125UnderlyingLine underlying={u} hubBase={hubBase} />, reinvesting at {HEQL_SYNTHETIC_LEVERAGE}×
+          notional; financing ~{(HEQL_CAD_FINANCING_RATE_ON_EXCESS_NOTIONAL_ANNUAL * 100).toFixed(1)}%/yr on the
+          extra 0.25× notional (Canadian-style wholesale carry), i.e. ~
+          {(HEQL_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(2)}%/yr drag on NAV.
+        </p>
+      )
     }
     case 'mate_rsst':
-      return {
-        title: 'MATE (modeled segment)',
-        body: `before ${when}, MATE is proxied by RSST daily returns, then actual MATE closes. RSST is a rough SPY-stack analogue, not MATE NAV history.`,
-      }
+      return (
+        <p key={`mate-${m.firstRealNyDay}`} className={styles.disclaimerDetail}>
+          <ProxyLink ticker="MATE" hubBase={hubBase}>
+            MATE
+          </ProxyLink>
+          : before {when}, MATE is proxied by{' '}
+          <ProxyLink ticker="RSST" hubBase={hubBase}>
+            RSST
+          </ProxyLink>{' '}
+          daily returns.
+        </p>
+      )
+    case 'ialt_flsp_dbmf':
+      return (
+        <p key={`ialt-${m.firstRealNyDay}`} className={styles.disclaimerDetail}>
+          <ProxyLink ticker={m.slotSymbol} hubBase={hubBase}>
+            {m.slotSymbol}
+          </ProxyLink>
+          : before {when},{' '}
+          {m.slotSymbol} is proxied by 50%{' '}
+          <ProxyLink ticker="FLSP" hubBase={hubBase}>
+            FLSP
+          </ProxyLink>{' '}
+          and 50%{' '}
+          <ProxyLink ticker="DBMF" hubBase={hubBase}>
+            DBMF
+          </ProxyLink>{' '}
+          daily returns.
+        </p>
+      )
+    case 'hfgm_asgm':
+      return (
+        <p key={`hfgm-${m.firstRealNyDay}`} className={styles.disclaimerDetail}>
+          <ProxyLink ticker={m.slotSymbol} hubBase={hubBase}>
+            {m.slotSymbol}
+          </ProxyLink>
+          : before {when},{' '}
+          {m.slotSymbol} is proxied by 1.5×{' '}
+          <ProxyLink ticker="ASGM" hubBase={hubBase}>
+            ASGM
+          </ProxyLink>{' '}
+          daily returns, minus ~{(HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(1)}% annual drag.
+        </p>
+      )
+    default:
+      return null
   }
 }
 
@@ -77,6 +201,12 @@ export default function PresetPortfolioChart({
   footnote = 'default',
   showMaxDrawdown = true,
 }: PresetPortfolioChartProps) {
+  const pathname = usePathname()
+  const hubBase: PortfolioUsEtfHubBase = useMemo(
+    () => (pathname.startsWith('/ca') ? '/ca/us-etfs' : '/us-etfs'),
+    [pathname]
+  )
+
   const {
     values,
     benchmarkValues,
@@ -155,6 +285,16 @@ export default function PresetPortfolioChart({
     return null
   }
 
+  const limitingFootnote = (
+    <>
+      <ProxyLink ticker={limitingSymbol} hubBase={hubBase}>
+        {limitingSymbol}
+      </ProxyLink>
+      {"'s inception date of "}
+      {limitingFirstTradeDate} is limiting the backtest.
+    </>
+  )
+
   return (
     <div className={styles.chartBlock}>
       <div className={styles.metricsRow}>
@@ -219,8 +359,8 @@ export default function PresetPortfolioChart({
         height={140}
         chartCurrency={chartCurrency}
       />
-      {footnote !== 'none' ? (
-        <div className={styles.chartFootnotes}>
+      <div className={styles.chartFootnotes}>
+        {footnote !== 'none' ? (
           <div className={styles.chartDisclaimerRow}>
             <span className={styles.footnoteMark} aria-hidden="true">
               *
@@ -240,19 +380,16 @@ export default function PresetPortfolioChart({
                   model and may be updated if holdings, listings, or methodology change.
                 </p>
               )}
-              {syntheticModeling.map((m) => {
-                const { title, body } = syntheticModelingCopy(m)
-                if (!body) return null
-                return (
-                  <p key={`${m.kind}-${m.slotSymbol}`} className={styles.disclaimerDetail}>
-                    <strong>{title}:</strong> {body}
-                  </p>
-                )
-              })}
+              {syntheticModeling.map((m) => (
+                <SyntheticModelingLine key={`${m.kind}-${m.slotSymbol}-${m.firstRealNyDay}`} m={m} hubBase={hubBase} />
+              ))}
+              <p className={styles.disclaimerDetail}>{limitingFootnote}</p>
             </div>
           </div>
-        </div>
-      ) : null}
+        ) : (
+          <p className={styles.disclaimerDetail}>{limitingFootnote}</p>
+        )}
+      </div>
     </div>
   )
 }

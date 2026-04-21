@@ -25,16 +25,26 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'us',
     kind: 'live',
     hubSection: 'annual-rebalance',
-    title: 'US international (rebalance yearly)',
+    title: 'US international',
     description: 'Diversified US-listed mix with intentional beta near 1.0.',
     featured: true,
+  },
+  {
+    slug: 'us-advanced',
+    region: 'us',
+    kind: 'live',
+    hubSection: 'annual-rebalance',
+    title: 'US advanced',
+    badge: 'Advanced',
+    description:
+      'NTSD, UPRO, SSO, MATE, RSSY, ORR, CLSE, FLSP, IALT, and HFGM at 10% / 7.5% / 12.5% / 12.5% / 5% / 20% / 7.5% / 12.5% / 7.5% / 5%.',
   },
   {
     slug: 'us-core-buy-hold',
     region: 'us',
     kind: 'live',
     hubSection: 'buy-hold',
-    title: 'US core (buy & hold)',
+    title: 'Growth & Value Barbell',
     description:
       'VFLO, AVGV, QQQ, and SPMO at 20% / 20% / 30% / 30%.',
     featured: true,
@@ -87,7 +97,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'ca',
     kind: 'live',
     hubSection: 'annual-rebalance',
-    title: 'Canadian international (rebalance yearly)',
+    title: 'Canadian international',
     description: 'TSX and US-listed sleeves in CAD.',
     featured: true,
   },
@@ -151,7 +161,7 @@ export const HUB_SECTION_LABEL: Record<
   },
   'buy-hold': {
     heading: 'Buy & hold',
-    blurb: 'Weights stay at the listed sleeve percentages for the modeled window.',
+    blurb: '',
   },
 }
 

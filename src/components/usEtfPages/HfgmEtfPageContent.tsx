@@ -2,6 +2,7 @@ import EtfPageTemplate from '@/components/EtfPageTemplate'
 import EtfPageDisclaimers from '@/components/EtfPageDisclaimers'
 import { getCachedHfgmChart } from '@/lib/getCachedEtfChart'
 import { betaVsSpyDisplay } from '@/lib/etfPageFormat'
+import { HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG } from '@/lib/syntheticChartConstants'
 import type { UsEtfHubBase } from '@/lib/usEtfHubBase'
 import styles from '@/app/us-etfs/hfgm/page.module.css'
 
@@ -32,6 +33,12 @@ export default async function HfgmEtfPageContent({ hubBase }: { hubBase: UsEtfHu
         beta: betaVsSpyDisplay(hfgmChart),
       }}
       chart={{ displayLabel: 'HFGM', yahooSymbol: 'HFGM', payload: hfgmChart }}
+      belowChart={
+        <p className={styles.chartProxyNote}>
+          Model portfolio charts on this site extend HFGM before its first listed session using 1.5× ASGM
+          (Virtus AlphaSimplex Global Macro) daily total returns minus ~{(HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(1)}% annual drag as a proxy; the chart above is HFGM-only (Yahoo adjusted close).
+        </p>
+      }
       styles={styles}
     >
       <div className={styles.bodySection}>

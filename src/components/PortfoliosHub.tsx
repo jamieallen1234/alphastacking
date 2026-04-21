@@ -59,6 +59,7 @@ function hubSections({
         const routes = portfolioHubRoutes(bySection(section))
         if (routes.length === 0) return null
         const id = section === 'annual-rebalance' ? anchorIds.annualRebalance : anchorIds.buyHold
+        const ledeText = [meta.blurb.trim(), extraBlurb.trim()].filter(Boolean).join(' ')
         return (
           <div key={section} id={id}>
             <h2
@@ -70,10 +71,11 @@ function hubSections({
             >
               {meta.heading}
             </h2>
-            <p className={styles.lede} style={{ marginBottom: '1.25rem', fontSize: 13 }}>
-              {meta.blurb}
-              {extraBlurb ? ` ${extraBlurb}` : ''}
-            </p>
+            {ledeText ? (
+              <p className={styles.lede} style={{ marginBottom: '1.25rem', fontSize: 13 }}>
+                {ledeText}
+              </p>
+            ) : null}
             {portfolioGrid(routes, hrefFor)}
           </div>
         )
@@ -90,11 +92,6 @@ export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
         <section className={styles.section}>
           <div className={styles.sectionLabel}>US portfolios</div>
           <h1 className={styles.heading}>Model portfolios</h1>
-
-          <div className={styles.disclaimer}>
-            <span className={styles.disclaimerIcon}>⚠</span>
-            <p>Educational models. Past ≠ future. Leveraged ETFs are risky.</p>
-          </div>
 
           {hubSections({
             portfolioRoutes: usPortfolioRoutes,
@@ -116,10 +113,6 @@ export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
       <section className={styles.section}>
         <div className={styles.sectionLabel}>Canadian edition</div>
         <h1 className={styles.heading}>Model portfolios</h1>
-        <div className={styles.disclaimer}>
-          <span className={styles.disclaimerIcon}>⚠</span>
-          <p>Educational models. Past ≠ future. Leveraged / alt funds are risky.</p>
-        </div>
 
         <h2 className={styles.chartHeading} id="ca-block" style={{ marginTop: 0 }}>
           Canada

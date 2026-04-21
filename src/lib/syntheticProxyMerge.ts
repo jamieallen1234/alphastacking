@@ -123,6 +123,11 @@ export async function mateSyntheticOverlapFirstTradeSec(): Promise<number> {
   return fetchFirstTradeDateSec('RSST')
 }
 
+/** Joint history for HFGM uses ASGM (1.5× daily returns minus `HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG` / 252 in merge) before HFGM’s first real session. */
+export async function hfgmSyntheticOverlapFirstTradeSec(): Promise<number> {
+  return fetchFirstTradeDateSec('ASGM')
+}
+
 export async function heqlSyntheticOverlapFirstTradeSec(): Promise<number> {
   return fetchFirstTradeDateSec('HEQT.TO')
 }

@@ -42,6 +42,7 @@ import {
   clipSeriesFromTime,
   fetchDailySeries,
   fetchFirstTradeDateSec,
+  runWithYahooGaps,
   type PriceSeries,
   type YahooRange,
 } from '@/lib/yahooFinance'
@@ -142,17 +143,25 @@ export async function computePortfolioChart(params: {
   const usslIdx = symbols.findIndex((s) => s.toUpperCase() === 'USSL.TO')
   const qqqlIdx = symbols.findIndex((s) => s.toUpperCase() === 'QQQL.TO')
 
-  const firstTradeSecs = await Promise.all(
-    symbols.map(async (s, i) => {
-      if (ntsdIdx >= 0 && i === ntsdIdx) return ntsdSyntheticOverlapFirstTradeSec()
-      if (mateIdx >= 0 && i === mateIdx) return mateSyntheticOverlapFirstTradeSec()
-      if (ialtIdx >= 0 && i === ialtIdx) return ialtSyntheticOverlapFirstTradeSec()
-      if (hfgmIdx >= 0 && i === hfgmIdx) return hfgmSyntheticOverlapFirstTradeSec()
-      if (heqlIdx >= 0 && i === heqlIdx) return heqlSyntheticOverlapFirstTradeSec()
-      if (usslIdx >= 0 && i === usslIdx) return usslSyntheticOverlapFirstTradeSec(cadDenominated)
-      if (qqqlIdx >= 0 && i === qqqlIdx) return qqqlSyntheticOverlapFirstTradeSec()
-      return fetchFirstTradeDateSec(s)
-    })
+  const firstTradeSecs = await runWithYahooGaps(
+    symbols.map(
+      (s, i) => () =>
+        ntsdIdx >= 0 && i === ntsdIdx
+          ? ntsdSyntheticOverlapFirstTradeSec()
+          : mateIdx >= 0 && i === mateIdx
+            ? mateSyntheticOverlapFirstTradeSec()
+            : ialtIdx >= 0 && i === ialtIdx
+              ? ialtSyntheticOverlapFirstTradeSec()
+              : hfgmIdx >= 0 && i === hfgmIdx
+                ? hfgmSyntheticOverlapFirstTradeSec()
+                : heqlIdx >= 0 && i === heqlIdx
+                  ? heqlSyntheticOverlapFirstTradeSec()
+                  : usslIdx >= 0 && i === usslIdx
+                    ? usslSyntheticOverlapFirstTradeSec(cadDenominated)
+                    : qqqlIdx >= 0 && i === qqqlIdx
+                      ? qqqlSyntheticOverlapFirstTradeSec()
+                      : fetchFirstTradeDateSec(s)
+    )
   )
   const effectiveStartSec = Math.max(...firstTradeSecs)
   const limitingIdx = firstTradeSecs.indexOf(effectiveStartSec)
@@ -166,20 +175,33 @@ export async function computePortfolioChart(params: {
   const nowSec = Math.floor(Date.now() / 1000)
   const maxWindow = range === 'max' ? { fromSec: effectiveStartSec, toSec: nowSec } : undefined
 
-  const [series, benchSeries, efaExtra, spyExtra, heqtExtra, qqqExtra, rsstExtra, ialtFlspExtra, ialtDbmfExtra, hfgmAsgmExtra, usdCadSeries] =
-    await Promise.all([
-      Promise.all(symbols.map((s) => fetchDailySeries(s, range, maxWindow))),
-      fetchDailySeries(benchmarkFetchSymbol, range, maxWindow),
-      ntsdIdx >= 0 ? fetchDailySeries('EFA', range, maxWindow) : Promise.resolve(null),
-      needExtraSpy ? fetchDailySeries('SPY', range, maxWindow) : Promise.resolve(null),
-      needHeqt ? fetchDailySeries('HEQT.TO', range, maxWindow) : Promise.resolve(null),
-      needQqq ? fetchDailySeries('QQQ', range, maxWindow) : Promise.resolve(null),
-      mateIdx >= 0 ? fetchDailySeries('RSST', range, maxWindow) : Promise.resolve(null),
-      needIaltFlspProxy ? fetchDailySeries('FLSP', range, maxWindow) : Promise.resolve(null),
-      needIaltDbmfProxy ? fetchDailySeries('DBMF', range, maxWindow) : Promise.resolve(null),
-      needHfgmAsgmProxy ? fetchDailySeries('ASGM', range, maxWindow) : Promise.resolve(null),
-      cadDenominated ? fetchDailySeries(USDCAD_YAHOO_SYMBOL, range, maxWindow) : Promise.resolve(null),
-    ])
+  const seriesAndBenchTasks: Array<() => Promise<PriceSeries | null>> = [
+    ...symbols.map((s) => () => fetchDailySeries(s, range, maxWindow)),
+    () => fetchDailySeries(benchmarkFetchSymbol, range, maxWindow),
+    () => (ntsdIdx >= 0 ? fetchDailySeries('EFA', range, maxWindow) : Promise.resolve(null)),
+    () => (needExtraSpy ? fetchDailySeries('SPY', range, maxWindow) : Promise.resolve(null)),
+    () => (needHeqt ? fetchDailySeries('HEQT.TO', range, maxWindow) : Promise.resolve(null)),
+    () => (needQqq ? fetchDailySeries('QQQ', range, maxWindow) : Promise.resolve(null)),
+    () => (mateIdx >= 0 ? fetchDailySeries('RSST', range, maxWindow) : Promise.resolve(null)),
+    () => (needIaltFlspProxy ? fetchDailySeries('FLSP', range, maxWindow) : Promise.resolve(null)),
+    () => (needIaltDbmfProxy ? fetchDailySeries('DBMF', range, maxWindow) : Promise.resolve(null)),
+    () => (needHfgmAsgmProxy ? fetchDailySeries('ASGM', range, maxWindow) : Promise.resolve(null)),
+    () => (cadDenominated ? fetchDailySeries(USDCAD_YAHOO_SYMBOL, range, maxWindow) : Promise.resolve(null)),
+  ]
+  const mergedSeriesResults = await runWithYahooGaps(seriesAndBenchTasks)
+  let r = 0
+  const series = mergedSeriesResults.slice(r, r + symbols.length) as PriceSeries[]
+  r += symbols.length
+  const benchSeries = mergedSeriesResults[r++] as PriceSeries
+  const efaExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const spyExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const heqtExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const qqqExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const rsstExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const ialtFlspExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const ialtDbmfExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const hfgmAsgmExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const usdCadSeries = mergedSeriesResults[r++] as PriceSeries | null
 
   let seriesMut = series
   let efaMut = efaExtra
@@ -399,5 +421,30 @@ export async function computePortfolioChart(params: {
         ? new Date(points[points.length - 1]!.t * 1000).toISOString().slice(0, 10)
         : null,
     holdingTotalReturnPercents,
+  }
+}
+
+export function emptyPortfolioChartPayload(chartCurrency: 'USD' | 'CAD'): PortfolioChartPayload {
+  return {
+    symbols: [],
+    weights: [],
+    range: 'max',
+    timestamps: [],
+    values: [],
+    totalReturnPercent: null,
+    benchmarkSymbol: 'SPY',
+    benchmarkValues: [],
+    benchmarkTotalReturnPercent: null,
+    excessAlphaPercent: null,
+    maxDrawdownPortfolioPercent: null,
+    maxDrawdownBenchmarkPercent: null,
+    limitingSymbol: '',
+    limitingFirstTradeDate: '',
+    chartStartDate: null,
+    asOf: null,
+    syntheticModeling: [],
+    chartCurrency,
+    rebalanceSchedule: 'none',
+    holdingTotalReturnPercents: [],
   }
 }

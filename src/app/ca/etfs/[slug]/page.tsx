@@ -1,5 +1,9 @@
 import { notFound } from 'next/navigation'
 import EtfDynamicPageLayout from '@/components/EtfDynamicPageLayout'
+import {
+  mergeDynamicEtfEfficiencyWithPatch,
+} from '@/lib/etfDynamicEfficiencyBySlug'
+import { getCachedMonthlyEfficiencyPatchForSlug } from '@/lib/getCachedMonthlyEtfEfficiencyGrades'
 import { CA_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
 import { getCachedEtfChart } from '@/lib/getCachedEtfChart'
 import styles from '../hdge/page.module.css'
@@ -25,9 +29,16 @@ export default async function CaEtfDynamicPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const def = CA_ETF_DYNAMIC_REGISTRY[slug]
-  if (!def) notFound()
-  const chart = await getCachedEtfChart(def.yahooSymbol, '1y')
+  const raw = CA_ETF_DYNAMIC_REGISTRY[slug]
+  if (!raw) notFound()
+  let monthlyPatch = null
+  try {
+    monthlyPatch = await getCachedMonthlyEfficiencyPatchForSlug(slug, 'ca')
+  } catch {
+    monthlyPatch = null
+  }
+  const def = mergeDynamicEtfEfficiencyWithPatch(raw, slug, 'ca', monthlyPatch)
+  const chart = await getCachedEtfChart(def.yahooSymbol, '1y', def.betaBenchmarkSymbol)
   return (
     <EtfDynamicPageLayout
       variant="ca"

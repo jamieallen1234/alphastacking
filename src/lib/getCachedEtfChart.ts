@@ -1,6 +1,11 @@
 import { unstable_cache } from 'next/cache'
-import { fetchDailySeries, type PriceSeries, type YahooRange } from '@/lib/yahooFinance'
-import { ETF_CHART_SYMBOLS, type EtfChartYahooSymbol } from '@/lib/etfChartSymbols'
+import {
+  fetchDailySeries,
+  fetchFirstTradeDateSec,
+  type PriceSeries,
+  type YahooRange,
+} from '@/lib/yahooFinance'
+import { isAllowedEtfChartSymbol, type EtfChartYahooSymbol } from '@/lib/etfChartSymbols'
 
 const DAY = 86400
 const START_NOTIONAL = 10_000
@@ -13,6 +18,28 @@ export interface EtfChartPayload {
   values: number[]
   totalReturnPercent: number | null
   betaVsSpy1y: number | null
+  /** Yahoo first session (unix sec); drives disabling long chart ranges for new listings. */
+  firstListedTsSec: number | null
+}
+
+/** Default benchmark for beta: TSX ETFs vs XIU, otherwise SPY. */
+function defaultBetaBenchmarkForSymbol(yahooSymbol: string): string {
+  const sym = yahooSymbol.trim().toUpperCase()
+  return sym.endsWith('.TO') ? 'XIU.TO' : 'SPY'
+}
+
+/** Safe empty series when Yahoo is unavailable or symbol is not chartable (SSR must not 500). */
+export function emptyEtfChartPayload(symbol: string, range: YahooRange = '1y'): EtfChartPayload {
+  return {
+    symbol: symbol.trim().toUpperCase() || '—',
+    range,
+    chartStartDate: '—',
+    timestamps: [],
+    values: [],
+    totalReturnPercent: null,
+    betaVsSpy1y: null,
+    firstListedTsSec: null,
+  }
 }
 
 function formatNyDate(tsSec: number): string {
@@ -31,7 +58,8 @@ function isRecoverableEmptySeriesError(err: unknown): boolean {
 
 async function buildEtfChartPayload(
   yahooSymbol: string,
-  range: YahooRange
+  range: YahooRange,
+  betaBenchmarkSymbol: string
 ): Promise<EtfChartPayload> {
   let effectiveRange: YahooRange = range
   let series: PriceSeries
@@ -42,14 +70,19 @@ async function buildEtfChartPayload(
     series = await fetchDailySeries(yahooSymbol, 'max')
     effectiveRange = 'max'
   }
-  const spy = await fetchDailySeries('SPY', '1y')
+  const benchmark = betaBenchmarkSymbol.trim().toUpperCase() || defaultBetaBenchmarkForSymbol(yahooSymbol)
+  const [benchmarkSeries, firstListedTsSec] = await Promise.all([
+    fetchDailySeries(benchmark, '1y'),
+    fetchFirstTradeDateSec(yahooSymbol).catch((): null => null),
+  ])
+
   const first = series.prices[0]
   const last = series.prices[series.prices.length - 1]
 
   const values =
     first && first > 0 ? series.prices.map((p) => (p / first) * START_NOTIONAL) : []
 
-  const betaVsSpy1y = computeBetaVsSpy(series, spy)
+  const betaVsSpy1y = computeBetaVsSpy(series, benchmarkSeries)
 
   return {
     symbol: series.symbol,
@@ -59,42 +92,47 @@ async function buildEtfChartPayload(
     values,
     totalReturnPercent: first && last && first > 0 ? ((last / first - 1) * 100) : null,
     betaVsSpy1y,
+    firstListedTsSec,
   }
 }
 
-function createEtfChartLoader(yahooSymbol: EtfChartYahooSymbol) {
-  return unstable_cache(
-    async (range: YahooRange = '1y') => buildEtfChartPayload(yahooSymbol, range),
-    [
-      'etf-chart',
-      yahooSymbol,
-      'v4-unified',
-      'notional-10k',
-      'adj-close',
-      'beta-spy-1y',
-    ],
-    { revalidate: DAY }
-  )
+const etfChartLoaderBySymbolRange = new Map<string, () => Promise<EtfChartPayload>>()
+
+function getEtfChartCachedLoader(
+  sym: EtfChartYahooSymbol,
+  range: YahooRange,
+  betaBenchmarkSymbol: string
+): () => Promise<EtfChartPayload> {
+  const benchmark = betaBenchmarkSymbol.trim().toUpperCase() || defaultBetaBenchmarkForSymbol(sym)
+  const k = `${sym}\t${range}\t${benchmark}`
+  let loader = etfChartLoaderBySymbolRange.get(k)
+  if (!loader) {
+    loader = unstable_cache(
+      async () => buildEtfChartPayload(sym, range, benchmark),
+      ['etf-chart', 'v6-beta-benchmark', 'v5-first-listed', 'notional-10k', 'adj-close', 'beta-spy-1y', sym, range, benchmark],
+      { revalidate: DAY }
+    )
+    etfChartLoaderBySymbolRange.set(k, loader)
+  }
+  return loader
 }
 
-const CACHED_ETF_CHART: Record<EtfChartYahooSymbol, ReturnType<typeof createEtfChartLoader>> =
-  {} as Record<EtfChartYahooSymbol, ReturnType<typeof createEtfChartLoader>>
-
-for (const sym of ETF_CHART_SYMBOLS) {
-  CACHED_ETF_CHART[sym] = createEtfChartLoader(sym)
-}
-
-/** Cached ETF price series + beta vs SPY (1y overlap). */
+/** Cached ETF price series + beta vs market benchmark (1y overlap). */
 export async function getCachedEtfChart(
   yahooSymbol: string,
-  range: YahooRange = '1y'
+  range: YahooRange = '1y',
+  betaBenchmarkSymbol?: string
 ): Promise<EtfChartPayload> {
   const sym = yahooSymbol.toUpperCase() as EtfChartYahooSymbol
-  const loader = CACHED_ETF_CHART[sym]
-  if (!loader) {
-    throw new Error(`Unsupported ETF chart symbol: ${yahooSymbol}`)
+  const benchmark = betaBenchmarkSymbol?.trim().toUpperCase() || defaultBetaBenchmarkForSymbol(sym)
+  if (!isAllowedEtfChartSymbol(sym)) {
+    return emptyEtfChartPayload(yahooSymbol, range)
   }
-  return loader(range)
+  try {
+    return await getEtfChartCachedLoader(sym, range, benchmark)()
+  } catch {
+    return emptyEtfChartPayload(sym, range)
+  }
 }
 
 /** MATE historically used `max` default in one path; keep 1y for hub parity. */

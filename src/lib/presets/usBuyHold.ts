@@ -10,10 +10,10 @@ export const usCoreBuyHoldHoldings: PresetHolding[] = [
     blurb: 'US large-cap cash cows (VictoryShares).',
   },
   {
-    ticker: 'AVGV',
+    ticker: 'AVUV',
     weightPct: 20,
-    beta: 0.85,
-    blurb: 'Global equity value via Avantis underlying ETFs (fund-of-funds).',
+    beta: 1.15,
+    blurb: 'US small-cap value with profitability/value tilts (Avantis).',
   },
   {
     ticker: 'QQQ',

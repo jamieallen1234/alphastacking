@@ -1,47 +1,22 @@
 /**
- * On-site ETF write-ups for hub tickers that do not use a hand-authored `page.tsx`.
- * Hand-authored pages (MATE, RSSY, HFGM, HDGE, PFMN, ARB) stay in `src/app/.../<slug>/`.
+ * On-site ETF write-ups for hub tickers. Featured US/CA entries live in `etfFeaturedRegistryDefs.ts`
+ * and are merged here so every ETF page uses `EtfDynamicPageLayout`.
  */
 
+import { CA_ETF_FEATURED_PART, US_ETF_FEATURED_PART } from '@/lib/etfFeaturedRegistryDefs'
 import { NTSD_CAPITAL_EFFICIENCY_TOOLTIP_NA } from '@/lib/etfEfficiencyNtsdCopy'
 
-export type EtfDynamicEfficiencyLineDef = {
-  grade: string
-  gradeTone?: 'gold' | 'muted'
-  tooltip: string
-}
+import type {
+  EtfDynamicDef,
+  EtfDynamicEfficiencyDef,
+  EtfDynamicEfficiencyLineDef,
+} from '@/lib/etfDynamicRegistryTypes'
 
-export type EtfDynamicEfficiencyDef = {
-  capital?: EtfDynamicEfficiencyLineDef
-  alpha?: EtfDynamicEfficiencyLineDef
-  notes?: string[]
-  footnotes?: string[]
-}
-
-export type EtfDynamicDef = {
-  /** Yahoo Finance symbol for `/api/etf-chart` and SSG (must be in `ETF_CHART_SYMBOLS`). */
-  yahooSymbol: string
-  /** Hub section `id` / hash (see `etfCategories.ts`; CA Return Stacked → `return-stacked`). */
-  hubCategoryId: string
-  badge: string
-  h1Title: string
-  displayTicker: string
-  issuer: string
-  inception: string
-  structure?: string
-  mer: string
-  aum: string
-  pageTitle: string
-  description: string
-  lede: string
-  strategyParas: string[]
-  pedigreeParas: string[]
-  outperfParas: string[]
-  officialUrl: string
-  officialLabel: string
-  /** Optional Capital / Alpha efficiency row + notes (see `EtfEfficiencyGrades`). */
-  efficiency?: EtfDynamicEfficiencyDef
-}
+export type {
+  EtfDynamicDef,
+  EtfDynamicEfficiencyDef,
+  EtfDynamicEfficiencyLineDef,
+} from '@/lib/etfDynamicRegistryTypes'
 
 const PED_VERIFY =
   'Verify fees, leverage or short limits, tax character, and current holdings on the issuer’s official ETF page and filings—this site is educational only, not a recommendation.'
@@ -64,6 +39,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'BEGS',
     issuer: 'Rareview Capital',
     inception: 'Feb 7, 2025',
+    structure: 'Leveraged crypto + precious-metals',
     mer: '0.99%',
     aum: '~$12M',
     pageTitle: 'BEGS ETF — Alpha Stacking',
@@ -97,6 +73,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'BTGD',
     issuer: 'Quantify Funds',
     inception: 'Oct 15, 2024',
+    structure: 'Stacked bitcoin + gold futures',
     mer: '1.05%',
     aum: '~$45M',
     pageTitle: 'BTGD ETF — Alpha Stacking',
@@ -129,6 +106,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'ISBG',
     issuer: 'Quantify Funds',
     inception: 'Jan 20, 2026',
+    structure: 'Bitcoin + gold options-income',
     mer: '1.14%',
     aum: '~$28M',
     pageTitle: 'ISBG ETF — Alpha Stacking',
@@ -161,6 +139,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'ISSB',
     issuer: 'Quantify Funds',
     inception: 'Jan 20, 2026',
+    structure: 'US equity + bitcoin options-income',
     mer: '1.14%',
     aum: '~$22M',
     pageTitle: 'ISSB ETF — Alpha Stacking',
@@ -193,6 +172,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'OOQB',
     issuer: 'Volatility Shares',
     inception: 'Feb 18, 2025',
+    structure: 'Stacked Nasdaq-100 + bitcoin',
     mer: '0.85%',
     aum: '~$180M',
     pageTitle: 'OOQB ETF — Alpha Stacking',
@@ -226,6 +206,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'OOSB',
     issuer: 'Volatility Shares',
     inception: 'Feb 18, 2025',
+    structure: 'Stacked S&P 500 + bitcoin',
     mer: '0.85%',
     aum: '~$95M',
     pageTitle: 'OOSB ETF — Alpha Stacking',
@@ -259,6 +240,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'RSSX',
     issuer: 'Tidal / Return Stacked ETFs',
     inception: 'May 29, 2025',
+    structure: 'Return-stacked US equity + gold/bitcoin',
     mer: '0.68%',
     aum: '~$55M',
     pageTitle: 'RSSX ETF — Alpha Stacking',
@@ -290,6 +272,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'WTIB',
     issuer: 'USCF Investments',
     inception: 'Dec 9, 2025',
+    structure: 'Oil + bitcoin strategy',
     mer: '0.93%',
     aum: '~$18M',
     pageTitle: 'WTIB ETF — Alpha Stacking',
@@ -320,6 +303,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'RSST',
     issuer: 'Tidal / Return Stacked ETFs',
     inception: 'Sep 5, 2023',
+    structure: 'Return-stacked US equity + managed futures',
     mer: '1.04%',
     aum: '~$340M',
     pageTitle: 'RSST ETF — Alpha Stacking',
@@ -351,6 +335,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'NTSD',
     issuer: 'WisdomTree',
     inception: 'Mar 19, 2026',
+    structure: 'Capital-efficient US + international equity',
     mer: '0.35%',
     aum: '~$420M',
     pageTitle: 'NTSD ETF — Alpha Stacking',
@@ -388,6 +373,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'GDE',
     issuer: 'WisdomTree',
     inception: 'Mar 15, 2022',
+    structure: 'Capital-efficient US equity + gold',
     mer: '0.20%',
     aum: '~$950M',
     pageTitle: 'GDE ETF — Alpha Stacking',
@@ -419,6 +405,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'FLSP',
     issuer: 'Franklin Templeton',
     inception: 'Dec 18, 2019',
+    structure: 'Systematic style-premia alternatives',
     mer: '0.65%',
     aum: '~$55M',
     pageTitle: 'FLSP ETF — Alpha Stacking',
@@ -450,6 +437,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'IALT',
     issuer: 'BlackRock iShares',
     inception: 'Dec 9, 2025',
+    structure: 'Multi-strategy systematic alternatives',
     mer: '~0.99% (see prospectus / ETF Facts)',
     aum: '~$110M',
     pageTitle: 'IALT ETF — Alpha Stacking',
@@ -480,6 +468,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'CAOS',
     issuer: 'Alpha Architect',
     inception: 'Aug 14, 2013',
+    structure: 'Tail-risk options',
     mer: '0.63%',
     aum: '~$42M',
     pageTitle: 'CAOS ETF — Alpha Stacking',
@@ -510,6 +499,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'SPMO',
     issuer: 'Invesco',
     inception: 'Oct 2015',
+    structure: 'US large-cap momentum factor',
     mer: '0.13%',
     aum: '~$13B',
     pageTitle: 'SPMO ETF — Alpha Stacking',
@@ -541,6 +531,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'VFLO',
     issuer: 'Victory Capital',
     inception: 'Jun 2023',
+    structure: 'US free-cash-flow factor',
     mer: '0.44%',
     aum: '~$6B',
     pageTitle: 'VFLO ETF — Alpha Stacking',
@@ -564,39 +555,6 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'VictoryShares (VFLO)',
   },
 
-  avgv: {
-    yahooSymbol: 'AVGV',
-    hubCategoryId: 'factor',
-    badge: 'Factor',
-    h1Title: 'AVGV — Avantis All Equity Markets Value ETF',
-    displayTicker: 'AVGV',
-    issuer: 'Avantis Investors',
-    inception: 'Jun 2023',
-    structure: 'Fund of funds',
-    mer: '0.26%',
-    aum: '~$240M',
-    pageTitle: 'AVGV ETF — Alpha Stacking',
-    description:
-      'Avantis All Equity Markets Value ETF (AVGV): active global equity value via underlying Avantis ETFs.',
-    lede:
-      'AVGV is an actively managed fund-of-funds: under normal conditions it invests at least 80% of assets in equity ETFs—primarily other Avantis funds—allocated across regions and market caps to pursue long-term capital appreciation with a value tilt.',
-    strategyParas: [
-      'Implementation is sleeve-based rather than a single-country stock screen: managers set and adjust weights across underlying Avantis equity ETFs (U.S., international, emerging, large and small cap value sleeves per current disclosures), so you own the firm’s implementation stack plus an extra layer of asset-allocation judgment.',
-      'You pay this fund’s expense ratio on top of the weighted expenses of the underlying ETFs; performance and risks compound through those holdings. The sponsor discloses that results would have been lower without a contractual fee waiver on part of the management fee—confirm the current waiver end date and net/gross figures on the official fund page before sizing.',
-    ],
-    pedigreeParas: ped(
-      `Avantis’s team and process trace to Dimensional Fund Advisors DNA—broad diversification, profitability and value signals, and disciplined portfolio construction—while American Century Investment Management serves as investment adviser under the Avantis Investors brand.`,
-      `AVGV packages that philosophy as a one-ticker sleeve across geographies instead of picking a single regional value ETF; verify current underlying lineup, geographic ranges, and turnover in the latest annual or semiannual report rather than relying on stale third-party snapshots.`,
-    ),
-    outperfParas: [
-      'The structure tends to work when global value spreads are widening and capital rotates away from narrow mega-cap growth leadership—multiple regional value sleeves can participate when the tape broadens beyond one market.',
-      'It is a harder fit when a single geography or factor dominates (for example U.S. large growth squeezing everything else) or when emerging-markets stress hits several sleeves at once; favorable regimes are orderly credit markets with cross-region value participation, not single-theme melt-ups.',
-    ],
-    officialUrl:
-      'https://www.avantisinvestors.com/avantis-investments/avantis-all-equity-markets-value-etf',
-    officialLabel: 'Avantis (AVGV)',
-  },
-
   avuv: {
     yahooSymbol: 'AVUV',
     hubCategoryId: 'factor',
@@ -605,6 +563,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'AVUV',
     issuer: 'Avantis Investors',
     inception: 'Sep 2019',
+    structure: 'US small-cap value factor',
     mer: '0.25%',
     aum: '~$24B',
     pageTitle: 'AVUV ETF — Alpha Stacking',
@@ -636,6 +595,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'SASS',
     issuer: 'M.D. Sass',
     inception: 'Mar 2026',
+    structure: 'Concentrated active US value',
     mer: '0.75%',
     aum: '~$70M',
     pageTitle: 'SASS ETF — Alpha Stacking',
@@ -666,6 +626,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'CTA',
     issuer: 'Simplify Asset Management',
     inception: 'Mar 7, 2022',
+    structure: 'Systematic managed-futures',
     mer: '0.75%',
     aum: '~$150M',
     pageTitle: 'CTA ETF — Alpha Stacking',
@@ -697,6 +658,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'DBMF',
     issuer: 'iMGP / DBi',
     inception: 'May 7, 2019',
+    structure: 'Managed-futures replication',
     mer: '0.85%',
     aum: '~$1.1B',
     pageTitle: 'DBMF ETF — Alpha Stacking',
@@ -728,6 +690,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'KMLM',
     issuer: 'KraneShares',
     inception: 'Dec 1, 2020',
+    structure: 'Rules-based managed-futures trend',
     mer: '~0.90% (verify ETF Facts)',
     aum: '~$400M',
     pageTitle: 'KMLM ETF — Alpha Stacking',
@@ -758,6 +721,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'CLSE',
     issuer: 'Convergence Investment Partners',
     inception: 'Dec 2009 (strategy); listed Feb 2022',
+    structure: 'Active long/short US equity',
     mer: '~1.52% total (0.95% mgmt + short/margin costs; see sponsor table)',
     aum: '~$28M',
     pageTitle: 'CLSE ETF — Alpha Stacking',
@@ -789,6 +753,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'ORR',
     issuer: 'Militia Investments',
     inception: 'Jan 2025',
+    structure: 'Active global long/short equity',
     mer: '1.30% management; headline ratio includes short dividends and borrow (see ETF Facts)',
     aum: '~$22M',
     pageTitle: 'ORR ETF — Alpha Stacking',
@@ -820,6 +785,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'ASGM',
     issuer: 'Virtus / AlphaSimplex',
     inception: 'Aug 4, 2025',
+    structure: 'Systematic global macro',
     mer: '0.86%',
     aum: '~$210M',
     pageTitle: 'ASGM ETF — Alpha Stacking',
@@ -851,6 +817,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'MRGR',
     issuer: 'ProShares',
     inception: 'Dec 2012',
+    structure: 'Merger arbitrage',
     mer: '0.75%',
     aum: '~$16M',
     pageTitle: 'MRGR ETF — Alpha Stacking',
@@ -872,6 +839,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialUrl: 'https://www.proshares.com/our-etfs/strategic/mrgr',
     officialLabel: 'ProShares (MRGR)',
   },
+
+  ...US_ETF_FEATURED_PART,
 }
 
 export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
@@ -883,8 +852,8 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'RGBM / RGBM.U',
     issuer: 'LongPoint / Return Stacked® ETFs Canada',
     inception: 'Feb 2025',
-    structure: 'Alternative mutual fund (TSX)',
-    mer: '0.85% mgmt + performance fee (see prospectus)',
+    structure: 'Return-stacked balanced + macro alternatives',
+    mer: '0.85% + perf fee',
     aum: '~$33M CAD',
     pageTitle: 'RGBM.TO ETF — Alpha Stacking',
     description: 'Return Stacked® Global Balanced & Macro ETF (RGBM.TO), Canadian listing.',
@@ -914,7 +883,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'ONEC',
     issuer: 'Accelerate Financial Technologies',
     inception: 'Jan 27, 2021',
-    structure: 'Alternative ETF',
+    structure: 'Multi-asset alternatives fund-of-funds',
     mer: '0.20%*',
     aum: '~$95M CAD',
     pageTitle: 'ONEC.TO ETF — Alpha Stacking',
@@ -945,8 +914,8 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'PFAA',
     issuer: 'Picton Mahoney',
     inception: 'May 3, 2022',
-    structure: 'Alternative ETF',
-    mer: '0.95%*',
+    structure: 'Multi-strategy alpha alternatives',
+    mer: '0.95% + perf fee',
     aum: '~$78M CAD',
     pageTitle: 'PFAA.TO ETF — Alpha Stacking',
     description: 'Picton Mahoney multi-strategy alpha alternatives ETF (PFAA.TO).',
@@ -971,6 +940,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   zlb: {
     yahooSymbol: 'ZLB.TO',
+    betaBenchmarkSymbol: 'XIU.TO',
     hubCategoryId: 'factor',
     badge: 'Factor',
     h1Title: 'ZLB.TO — BMO Low Volatility Canadian Equity ETF',
@@ -1008,8 +978,8 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'ATSX',
     issuer: 'Accelerate Financial Technologies',
     inception: 'May 10, 2019',
-    structure: 'Alternative ETF',
-    mer: '0.00%*',
+    structure: 'Quantitative long/short equity (150/50)',
+    mer: '0% + perf fee',
     aum: '~$42M CAD',
     pageTitle: 'ATSX.TO ETF — Alpha Stacking',
     description: 'Accelerate Canadian Long Short Equity Fund (ATSX.TO).',
@@ -1039,8 +1009,8 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'PFLS',
     issuer: 'Picton Mahoney',
     inception: 'Jul 15, 2020',
-    structure: 'Alternative ETF',
-    mer: '0.9%',
+    structure: 'Global long/short equity alternatives',
+    mer: '0.95% + perf fee',
     aum: '~$62M CAD',
     pageTitle: 'PFLS.TO ETF — Alpha Stacking',
     description: 'Picton Mahoney Fortified Long Short Alternative Fund ETF (PFLS.TO).',
@@ -1071,9 +1041,9 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'TGAF',
     issuer: 'Tralucent Asset Management',
     inception: 'Nov 2023',
-    structure: 'Alternative ETF',
+    structure: 'Global long/short equity alternatives',
     mer: '~1.0%',
-    aum: '~$75M+ CAD (total fund)',
+    aum: '~$75M+ CAD',
     pageTitle: 'TGAF.TO ETF — Alpha Stacking',
     description: 'Tralucent Global Alt (Long/Short) Equity Fund ETF (TGAF.TO).',
     lede:
@@ -1102,7 +1072,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'DGLM',
     issuer: 'Desjardins Global Asset Management',
     inception: 'Aug 28, 2025',
-    structure: 'Alternative ETF',
+    structure: 'Systematic global macro alternatives',
     mer: '0.9%',
     aum: '~$32M CAD',
     pageTitle: 'DGLM.TO ETF — Alpha Stacking',
@@ -1133,7 +1103,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'BTCC.B',
     issuer: 'Purpose Investments',
     inception: 'Feb 2021',
-    structure: 'Spot Bitcoin ETF',
+    structure: 'Spot Bitcoin',
     mer: '~1.0%',
     aum: '~$1.5B+ CAD',
     pageTitle: 'BTCC-B.TO ETF — Alpha Stacking',
@@ -1164,7 +1134,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'ETHX.B',
     issuer: 'CI Global Asset Management',
     inception: 'Apr 2021',
-    structure: 'Spot Ether ETF',
+    structure: 'Spot Ether',
     mer: '~0.7%',
     aum: '~$650M CAD',
     pageTitle: 'ETHX-B.TO ETF — Alpha Stacking',
@@ -1186,4 +1156,6 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialUrl: 'https://funds.cifinancial.com/en/funds/alternative_investments/CIGalaxyEthereumETF.html',
     officialLabel: 'CI Galaxy Ethereum ETF',
   },
+
+  ...CA_ETF_FEATURED_PART,
 }

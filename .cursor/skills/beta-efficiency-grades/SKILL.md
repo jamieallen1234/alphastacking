@@ -203,9 +203,9 @@ Steps:
 6. Promote N/A grades to calculated grades where 4-month threshold is now met.
 7. Update the disclosure line: *"Beta Efficiency grades last calculated: January [Year]. Based on data through December [Year]."*
 
-## 6. ETF Detail Page Display — Component Spec (MATE reference implementation)
+## 6. ETF Detail Page Display — Component Spec (unified template)
 
-This section reflects the **current shipped UX**: shared **`EtfEfficiencyGrades`** (`EtfEfficiencyMetaExtras`, `EtfEfficiencyPageFootnotes`) in `src/components/etfEfficiency/`, styled by `EtfEfficiencyGrades.module.css`. **MATE** wires copy via `mateEfficiencyCopy` in `MateEtfPageContent`. **Dynamic** ETF pages use `EtfDynamicDef.efficiency` in `etfDynamicRegistry.ts` and `EtfDynamicPageLayout` → `EtfPageTemplate` `metaExtras`. Use this as the default for other ETF pages until intentionally revised.
+This section reflects the **current shipped UX**: shared **`EtfEfficiencyGrades`** (`EtfEfficiencyMetaExtras`, `EtfEfficiencyPageFootnotes`) in `src/components/etfEfficiency/`, styled by `EtfEfficiencyGrades.module.css`. **Every** US and CA ETF detail page uses the same stack: `EtfDynamicDef` in `src/lib/etfDynamicRegistry.ts` (base tickers plus featured entries from `src/lib/etfFeaturedRegistryDefs.ts`) → **`EtfDynamicPageLayout`** → **`EtfPageTemplate`** `metaExtras`. Wire grades and tooltip copy on **`EtfDynamicDef.efficiency`** (inline objects or shared helpers—e.g. MATE spreads `mateEfficiencyCopy` from `src/components/usEtfPages/mateEfficiencyCopy.ts` inside its featured def). There are no separate “hand-authored” ETF page components for grades; keep all efficiency UI changes on this path so hub, detail, and monthly recompute stay aligned.
 
 ### Inline “meta line” grades (no boxed chips)
 
@@ -245,7 +245,7 @@ Keep the disclosure line **near the grades** (below the grade row is fine) since
 
 ### Where this appears
 
-**ETF detail pages** — stats block region (implemented on MATE via `EtfPageTemplate` `metaExtras`).
+**ETF detail pages** — stats block region (`EtfPageTemplate` `metaExtras` on all `/us-etfs/[slug]` and `/ca/etfs/[slug]` pages).
 
 **ETF hub page** — add as a visible column in each category table:
 
@@ -413,14 +413,14 @@ Use this appendix when turning the framework into shipped UI/data work.
 
 ### A2) ETF source-of-truth wiring
 
-- **Primary ETF metadata lives in** `src/lib/etfDynamicRegistry.ts` (plus hand-authored pages for some ETFs).
-- **Dynamic ETFs:** optional `efficiency` on `EtfDynamicDef` supplies Capital / Alpha lines (grade, optional `gradeTone`, tooltip), optional `notes` under the row, and optional `footnotes` for page-bottom copy—consumed by `EtfDynamicPageLayout`.
+- **Primary ETF metadata lives in** `src/lib/etfDynamicRegistry.ts`, merged with featured tickers from **`src/lib/etfFeaturedRegistryDefs.ts`**. Types and optional flags (e.g. `monthlyGradeRecompute`) live in **`src/lib/etfDynamicRegistryTypes.ts`**.
+- **All ETF detail pages** are served by **`[slug]`** routes; there is no parallel “hand-authored” page type for efficiency work.
+- **`EtfDynamicDef`:** optional `efficiency` supplies Capital / Alpha lines (grade, optional `gradeTone`, tooltip), optional `notes` under the row, and optional `footnotes` for page-bottom copy—consumed by **`EtfDynamicPageLayout`**. Monthly Yahoo-driven grade patches run through **`src/lib/etfEfficiencyGradesCompute.ts`**; set **`monthlyGradeRecompute: false`** on a def when editorial grades must not be overwritten by that job.
 - **Future / richer data:** a keyed sidecar or extended schema can still add role/classification, fixed vs observable split fields (`equityWeight`, `alphaWeight`, `asOf`, source note), computed grade payloads, and provisional flags—keep formulas centralized (see A1).
-- For hand-authored ETFs (e.g. `src/app/us-etfs/mate/page.tsx`, `src/app/us-etfs/hfgm/page.tsx`, etc.), prefer reusing **`EtfEfficiencyGrades`** and the same copy patterns as dynamic pages to avoid drift.
 
 ### A3) ETF detail page UI
 
-- Prefer extending `EtfPageTemplate` with an optional **`metaExtras`** slot (MATE pattern) so grades sit directly under the `<ul className={styles.meta}>` block.
+- Grades use `EtfPageTemplate`’s **`metaExtras`** slot (wired from `EtfDynamicPageLayout`) so they sit directly under the `<ul className={styles.meta}>` block on every ETF page.
 - For stacked ETFs:
   - render **both** grades inline on one row when possible (wrap on small screens)
   - render observable-split disclosure line where applicable (ASGM, HFGM)
@@ -428,10 +428,10 @@ Use this appendix when turning the framework into shipped UI/data work.
   - **do not** decorate the grade with symbols; add a **page-bottom** provisional footnote (see §6)
 - For `<4` months:
   - render `N/A` only (no letter grade)
-- Tooltip implementation notes (MATE):
+- Tooltip implementation notes (detail pages):
   - custom bubble + **no** `title` attribute on the hover target
   - `white-space: pre-line` (or real `<p>` nodes) for two-paragraph tooltips
-  - escape apostrophes in TS string literals (`MATE\'s ...`) to avoid breaking builds
+  - escape apostrophes in TS string literals where needed to avoid breaking builds
 
 ### A4) ETF hub listing UI
 
@@ -459,7 +459,7 @@ Use this appendix when turning the framework into shipped UI/data work.
 
 - Reuse site tokens in `src/app/globals.css` and existing meta/footnote patterns.
 - For detail pages, prefer **typography-first** presentation (underline grades; gold for standout `A+` when desired) rather than bordered chips.
-- Tooltip bubble: dark surface + subtle border + compact sans text (MATE: `.efficiencyTooltip`).
+- Tooltip bubble: dark surface + subtle border + compact sans text (see `.efficiencyTooltip` in `EtfEfficiencyGrades.module.css`).
 
 ### A8) Data refresh workflow
 

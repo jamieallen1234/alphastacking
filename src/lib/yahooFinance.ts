@@ -146,3 +146,32 @@ export async function fetchDailySeries(
 
   return { symbol, timestamps, prices }
 }
+
+/**
+ * Pause between Yahoo chart requests to reduce 429 / throttling when many symbols load in one SSR job.
+ * Override with `ALPHASTACKING_YAHOO_GAP_MS` (milliseconds, ≥ 0).
+ */
+export function getYahooRequestGapMs(): number {
+  const raw = process.env.ALPHASTACKING_YAHOO_GAP_MS
+  if (raw == null || raw === '') return 400
+  const n = Number(raw)
+  return Number.isFinite(n) && n >= 0 ? n : 400
+}
+
+export async function yahooRequestGap(): Promise<void> {
+  const ms = getYahooRequestGapMs()
+  if (ms <= 0) return
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
+/** Run async tasks strictly one after another, waiting `yahooRequestGap()` between each (not before the first). */
+export async function runWithYahooGaps<T>(tasks: Array<() => Promise<T>>): Promise<T[]> {
+  const out: T[] = []
+  for (let i = 0; i < tasks.length; i++) {
+    if (i > 0) await yahooRequestGap()
+    out.push(await tasks[i]!())
+  }
+  return out
+}

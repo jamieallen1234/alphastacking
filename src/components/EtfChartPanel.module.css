@@ -37,6 +37,11 @@
   color: var(--color-gold);
 }
 
+.rangeBtn:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
 .rangeError {
   color: var(--color-red);
   font-size: 11px;

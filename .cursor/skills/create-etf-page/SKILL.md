@@ -83,14 +83,18 @@ Register the ETF on the hub: add an entry to `src/lib/etfHubData.ts` under the c
    - `<span className={styles.badge}>` — same text as category **title** in `etfCategories.ts`
    - `<h1 className={styles.heading}>` — `TICKER — Fund legal name`
    - `<p className={styles.lede}>`
-   - `<ul className={styles.meta}>` — **ticker**, **issuer/manager**, **inception**, **structure** (if useful), then **Beta** (vs SPY when computed from chart, or a disclosed estimate), then **MER**, then **AUM** (fund-level unless the issuer only publishes firm-wide AUM—say so in pedigree). **Order:** **Beta**, then **MER**, then **AUM**—never put MER/AUM inside `<EtfChartPanel />`.
+   - Meta rows (current standard):
+     - Row 1 (`<ul className={styles.meta}>`): **ticker**, **issuer/manager**, **inception**
+     - Row 2 (`<ul className={styles.meta}>`): **Category** (from `def.structure`), then **Beta**, **MER**, **AUM**
+     - Keep **Beta → MER → AUM** order and never put MER/AUM inside `<EtfChartPanel />`.
+     - **Beta benchmark rule:** do not force SPY globally. Use market-appropriate benchmark defaults (**US tickers → SPY**, **`.TO` tickers → XIU.TO**) unless a specific ETF needs an explicit override (`betaBenchmarkSymbol`).
    - `<h2 className={styles.chartHeading}>` — `{TICKER} price history` (use the primary ticker string, e.g. `HDGE.TO` or `MATE`)
    - `<EtfChartPanel symbol="…" initialPayload={…} />` — range controls + chart only (below); **no** `mer` / `aum` props
    - Four `<div className={styles.bodySection}>` blocks with `<h2>` headings in this exact order:
      1. `Strategy`
      2. `Manager and Issuer Pedigree`
      3. `Outperformance`
-     4. `Official ETF page` — lead with **Read the official ETF page for …** then the external link (`{TICKER} official page`), then **`<EtfPageDisclaimers />`** (`@/components/EtfPageDisclaimers`) for the shared Beta/MER + educational footnotes. Do **not** add a long “beta vs. SPY / currency” footnote unless the user asks.
+     4. `Official ETF page` — lead with **Read the official ETF page for …** then the external link (`{TICKER} official page`), then **`<EtfPageDisclaimers />`** (`@/components/EtfPageDisclaimers`) for the shared Beta/MER + educational footnotes. Do **not** add a long “beta benchmark / currency” footnote unless the user asks.
    - `</section>` → `<Footer />`
 
 **Price chart (required for parity with MATE/HDGE)**
@@ -214,6 +218,7 @@ When the write-up is a registry row (`US_ETF_DYNAMIC_REGISTRY` / `CA_ETF_DYNAMIC
 - **`pedigreeParas`:** Prefer **`ped(p1, p2)`** with **two** substantive paragraphs (manager/process + issuer scale or boutique honesty per §3e), then the automatic **`PED_VERIFY`** footer—mirroring **Manager and Issuer Pedigree**.
 - **`outperfParas`:** **Two** strings following §3d (favorable regimes; product-specific; closing paragraph not purely negative). Do **not** rely on generic `outf()`-style boilerplate.
 - **`inception` / `mer` / `aum`:** Use **ETF Facts / prospectus** when stating numbers; use `—` or “see ETF Facts” if unknown—**do not invent**.
+- **MER + performance fee:** When the fund charges a **performance fee** on top of management, set registry `mer` to **`<management>% + perf fee`** (e.g. `0.85% + perf fee`, `0% + perf fee`). Spell out hurdles, crystallization, and “see prospectus” detail in **Strategy** / pedigree / ETF Facts notes—not in the meta line (keeps the stat row scannable and matches `parseMerAnnual` picking the first `x%`).
 
 **Rendering note**
 
@@ -256,7 +261,8 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 - [ ] **Batch:** Phase B done—**each** ticker received a **full** pass (hub + page or registry + chart where applicable); no ticker left with generic-only official link or thin vs first ticker
 - [ ] **Batch:** Phase C integration sweep (hub `href`s, chart allowlist for **all** new symbols)
 - [ ] Category `id` matches back-link hash; badge matches category **title**
-- [ ] Meta list includes **MER** and **AUM** immediately **after** **Beta** (see scaffold); not inside the chart panel
+- [ ] Meta rows follow the standard: row 1 = **Ticker/Issuer/Inception**, row 2 = **Category/Beta/MER/AUM** (Beta → MER → AUM order); not inside the chart panel
+- [ ] Beta uses market benchmark defaults (US→SPY, `.TO`→XIU.TO) or an intentional `betaBenchmarkSymbol` override; do not hardcode SPY for Canadian ETFs
 - [ ] Hub lists the new ETF with correct `href`
 - [ ] Section headings and “Official ETF page” opener match the shared template
 - [ ] Chart: getter + API branch + `EtfChartPanel` type + `chartCurrency` if non-USD (see HDGE)

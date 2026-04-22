@@ -16,6 +16,19 @@ const RANGES: { range: YahooRange; label: string }[] = [
   { range: 'max', label: 'All' },
 ]
 
+const SEC_PER_CAL_YEAR = 365.25 * 86400
+
+/** Grey out ranges longer than listing history (Yahoo first trade). */
+function rangeNotYetAvailable(range: YahooRange, firstListedTsSec: number | null): boolean {
+  if (firstListedTsSec == null) return false
+  const elapsed = Date.now() / 1000 - firstListedTsSec
+  const slack = 14 * 86400
+  if (range === '5y') return elapsed + slack < 5 * SEC_PER_CAL_YEAR
+  if (range === '2y') return elapsed + slack < 2 * SEC_PER_CAL_YEAR
+  if (range === '1y') return elapsed + slack < 1 * SEC_PER_CAL_YEAR
+  return false
+}
+
 interface EtfChartPanelProps {
   /** Yahoo Finance symbol (e.g. MATE, HDGE.TO, ZLB.TO) */
   symbol: string
@@ -54,17 +67,25 @@ export default function EtfChartPanel({ symbol, initialPayload }: EtfChartPanelP
       <div className={styles.chartToolbar}>
         <div className={styles.rangeRow}>
           <span className={styles.rangeLabel}>Range</span>
-          {RANGES.map(({ range, label }) => (
-            <button
-              key={range}
-              type="button"
-              className={`${styles.rangeBtn} ${payload.range === range ? styles.rangeBtnActive : ''}`}
-              onClick={() => void loadRange(range)}
-              disabled={loading}
-            >
-              {label}
-            </button>
-          ))}
+          {RANGES.map(({ range, label }) => {
+            const unavailable = rangeNotYetAvailable(range, payload.firstListedTsSec ?? null)
+            return (
+              <button
+                key={range}
+                type="button"
+                className={`${styles.rangeBtn} ${payload.range === range ? styles.rangeBtnActive : ''}`}
+                onClick={() => void loadRange(range)}
+                disabled={loading || unavailable}
+                title={
+                  unavailable
+                    ? 'Not enough listing history for this range yet (first Yahoo session).'
+                    : undefined
+                }
+              >
+                {label}
+              </button>
+            )
+          })}
         </div>
       </div>
       {error ? <p className={styles.rangeError}>{error}</p> : null}

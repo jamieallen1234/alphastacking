@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import EtfPageTemplate from '@/components/EtfPageTemplate'
 import EtfPageDisclaimers from '@/components/EtfPageDisclaimers'
-import type { EtfDynamicDef } from '@/lib/etfDynamicRegistry'
+import type { EtfDynamicDef } from '@/lib/etfDynamicRegistryTypes'
 import { betaVsSpyDisplay } from '@/lib/etfPageFormat'
 import type { EtfChartPayload } from '@/lib/getCachedEtfChart'
 import type { EtfPageHubBase } from '@/components/EtfPageTemplate'
@@ -51,6 +51,8 @@ export default function EtfDynamicPageLayout({
   chart,
   styles,
 }: EtfDynamicPageLayoutProps) {
+  const categoryValue = def.structure ?? def.badge
+
   return (
     <EtfPageTemplate
       variant={variant}
@@ -59,13 +61,17 @@ export default function EtfDynamicPageLayout({
       badge={def.badge}
       heading={def.h1Title}
       lede={def.lede}
+      ledeHtml={def.contentFormat === 'html'}
       meta={{
         ticker: def.displayTicker,
         issuerOrManager: def.issuer,
+        issuerRole: def.issuerRole,
         inception: def.inception,
         mer: def.mer,
         aum: def.aum,
-        structure: def.structure,
+        structure: categoryValue,
+        structureLabel: 'Category',
+        structureStartsNewRow: true,
         beta: betaVsSpyDisplay(chart),
       }}
       metaExtras={buildEfficiencyMetaExtras(def)}
@@ -74,27 +80,47 @@ export default function EtfDynamicPageLayout({
         yahooSymbol: def.yahooSymbol,
         payload: chart,
       }}
+      belowChart={
+        def.belowChart ? (
+          <p
+            className={styles.chartProxyNote}
+            dangerouslySetInnerHTML={{ __html: def.belowChart }}
+          />
+        ) : undefined
+      }
       styles={styles}
     >
       <div className={styles.bodySection}>
         <h2>Strategy</h2>
-        {def.strategyParas.map((p, i) => (
-          <p key={i}>{p}</p>
-        ))}
+        {def.strategyParas.map((p, i) =>
+          def.contentFormat === 'html' ? (
+            <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
+          ) : (
+            <p key={i}>{p}</p>
+          )
+        )}
       </div>
 
       <div className={styles.bodySection}>
         <h2>Manager and Issuer Pedigree</h2>
-        {def.pedigreeParas.map((p, i) => (
-          <p key={i}>{p}</p>
-        ))}
+        {def.pedigreeParas.map((p, i) =>
+          def.contentFormat === 'html' ? (
+            <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
+          ) : (
+            <p key={i}>{p}</p>
+          )
+        )}
       </div>
 
       <div className={styles.bodySection}>
         <h2>Outperformance</h2>
-        {def.outperfParas.map((p, i) => (
-          <p key={i}>{p}</p>
-        ))}
+        {def.outperfParas.map((p, i) =>
+          def.contentFormat === 'html' ? (
+            <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
+          ) : (
+            <p key={i}>{p}</p>
+          )
+        )}
       </div>
 
       <div className={styles.bodySection}>

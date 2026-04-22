@@ -270,6 +270,7 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 - [ ] Copy reflects deep reads of issuer ETF page, manager, and sponsor; regime/outperformance tied to strategy
 - [ ] **Dynamic registry (`etfDynamicRegistry.ts`):** `officialUrl` is a **verified, fund-specific** issuer/sponsor product page (or clearly labeled SEC/prospectus fallback per §3f)—**not** a generic aggregator default; `officialLabel` names the product/destination clearly
 - [ ] **Dynamic registry:** `lede` + two **`strategyParas`** + **`ped(...)`** (two pedigree paragraphs before verify) + two **`outperfParas`** match MATE-level depth (§3f); no Markdown in strings
+- [ ] **Stacked sleeves:** if the ETF has both capital and alpha sleeves, add / update `src/lib/etfStackExposureBySlug.ts` with explicit component weights (`capital` vs `alpha`) and benchmark mapping (core and market) so grading does not rely on text inference
 - [ ] **Pedigree** includes **issuer / group-level AUM** when findable (source + period); if not findable, states boutique / undisclosed scale (§3e). Dynamic pages: `ped(issuer, groupAum?)` or equivalent in custom `pedigreeParas`
 - [ ] **Outperformance** emphasizes favorable regimes; closing paragraph is not purely negative; return-stacked pages stress the **second sleeve** when the first tracks the benchmark (§3d)
 - [ ] Lede and each body `<p>` respect word budgets (§4); no paragraph runs past **100 words**

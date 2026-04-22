@@ -55,9 +55,9 @@ export async function getCachedMonthlyEfficiencyPatchForSlug(
       async () => {
         const spy5y = await fetchDailySeries('SPY', '5y')
         const rf5y = await fetchDailySeries('^IRX', '5y')
-        return computeMonthlyEfficiencyPatchForSlug(def, staticEff, spy5y, rf5y)
+        return computeMonthlyEfficiencyPatchForSlug(def, staticEff, spy5y, rf5y, slug)
       },
-      ['etf-efficiency-monthly-per-slug-v15-leveraged-equity-additions', monthKey, universe, slug],
+      ['etf-efficiency-monthly-per-slug-v20-explicit-sleeve-map', monthKey, universe, slug],
       { revalidate: MONTHLY_EFFICIENCY_REVALIDATE_SEC }
     )
     slugLoaderByKey.set(cacheKey, loader)

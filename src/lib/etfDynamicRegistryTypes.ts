@@ -44,6 +44,15 @@ export type EtfDynamicDef = {
    * @default true
    */
   monthlyGradeRecompute?: boolean
+  /**
+   * Optional exposure split (percent notional) used for stacked capital-efficiency normalization.
+   * Capital usage fraction is computed as:
+   *   capitalBucketExposurePct / (capitalBucketExposurePct + alphaBucketExposurePct)
+   */
+  capitalBucketExposurePct?: number
+  alphaBucketExposurePct?: number
+  /** True when both sleeves are equity risk and should be treated as capital (not alpha) for capital efficiency. */
+  allEquityStack?: boolean
   /** Optional beta benchmark symbol; defaults by market (e.g. `.TO` → `XIU.TO`, US → `SPY`). */
   betaBenchmarkSymbol?: string
 }

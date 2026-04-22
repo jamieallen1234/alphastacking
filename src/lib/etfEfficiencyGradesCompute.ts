@@ -1,6 +1,7 @@
 import type { EtfDynamicDef, EtfDynamicEfficiencyDef } from '@/lib/etfDynamicRegistryTypes'
 import { isAllowedEtfChartSymbol } from '@/lib/etfChartSymbols'
 import { EFFICIENCY_PROVISIONAL_FOOTNOTE } from '@/lib/etfEfficiencyTooltipFraming'
+import { ETF_STACK_EXPOSURE_BY_SLUG } from '@/lib/etfStackExposureBySlug'
 import { fetchDailySeries, type PriceSeries } from '@/lib/yahooFinance'
 
 /** Partial override merged onto static `efficiency` (grades + optional footnotes). */
@@ -148,6 +149,59 @@ function inferStackedEquityBenchmarkSymbol(def: EtfDynamicDef): string {
   return 'SPY'
 }
 
+function capitalMarketBenchmarkSymbol(def: EtfDynamicDef, slug?: string): string {
+  const mapped = slug ? ETF_STACK_EXPOSURE_BY_SLUG[slug]?.capitalMarketBenchmarkSymbol : undefined
+  if (mapped) return mapped
+  return def.yahooSymbol.endsWith('.TO') ? 'VFV.TO' : 'SPY'
+}
+
+function inferExposureSplitFromCopy(def: EtfDynamicDef): { capital: number; alpha: number } | null {
+  const text = `${def.h1Title} ${def.description} ${def.lede} ${def.structure ?? ''}`
+  const slash = text.match(/(\d{1,3})\s*\/\s*(\d{1,3})/)
+  if (slash) {
+    const a = Number(slash[1])
+    const b = Number(slash[2])
+    if (Number.isFinite(a) && Number.isFinite(b) && a > 0 && b > 0) return { capital: a, alpha: b }
+  }
+  const pct = [...text.matchAll(/(\d{1,3})\s*%/g)]
+    .map((m) => Number(m[1]))
+    .filter((n) => Number.isFinite(n) && n > 0)
+  if (pct.length >= 2) return { capital: pct[0]!, alpha: pct[1]! }
+  return null
+}
+
+function inferExposureSplitPct(def: EtfDynamicDef, slug?: string): { capital: number; alpha: number } {
+  if (slug) {
+    const mapped = ETF_STACK_EXPOSURE_BY_SLUG[slug]
+    if (mapped) {
+      const capital = mapped.components
+        .filter((c) => c.bucket === 'capital')
+        .reduce((s, c) => s + c.pct, 0)
+      const alpha = mapped.components
+        .filter((c) => c.bucket === 'alpha')
+        .reduce((s, c) => s + c.pct, 0)
+      if (capital > 0 || alpha > 0) return { capital, alpha }
+    }
+  }
+  if ((def.capitalBucketExposurePct ?? 0) > 0 && (def.alphaBucketExposurePct ?? 0) > 0) {
+    return {
+      capital: def.capitalBucketExposurePct!,
+      alpha: def.alphaBucketExposurePct!,
+    }
+  }
+  const inferred = inferExposureSplitFromCopy(def)
+  if (inferred) return inferred
+  // Fallback priors when explicit or inferred notional split is unavailable.
+  if (def.hubCategoryId === 'return-stacked-lt-2x') return { capital: 90, alpha: 60 }
+  if (def.hubCategoryId === 'return-stacked-ge-2x' || def.hubCategoryId === 'return-stacked') {
+    return { capital: 100, alpha: 100 }
+  }
+  const text = `${def.h1Title} ${def.structure ?? ''} ${def.lede}`.toLowerCase()
+  if (text.includes('90/60')) return { capital: 90, alpha: 60 }
+  if (text.includes('2x') || text.includes('return stacked')) return { capital: 100, alpha: 100 }
+  return { capital: 100, alpha: 0 }
+}
+
 function hasExplicitEquitySide(text: string): boolean {
   return (
     text.includes('equity') ||
@@ -230,16 +284,36 @@ function buildSyntheticBlendSeries(
 async function getStackedCoreBenchmarkSeries(
   def: EtfDynamicDef,
   etf: PriceSeries,
-  spyShared?: PriceSeries
+  spyShared?: PriceSeries,
+  slug?: string
 ): Promise<PriceSeries | null> {
-  const text = `${def.h1Title} ${def.structure ?? ''} ${def.lede}`.toLowerCase()
-  if (text.includes('balanced')) {
+  const mapped = slug ? ETF_STACK_EXPOSURE_BY_SLUG[slug] : undefined
+  if (mapped?.coreBenchmarkBlend && mapped.coreBenchmarkBlend.length >= 2) {
+    const [aLeg, bLeg] = mapped.coreBenchmarkBlend
+    const [a, b] = await Promise.all([
+      fetchDailySeries(aLeg.symbol, '5y'),
+      fetchDailySeries(bLeg.symbol, '5y'),
+    ])
+    return buildSyntheticBlendSeries(a, b, aLeg.weightPct / 100, bLeg.weightPct / 100)
+  }
+  if (mapped?.coreBenchmarkSymbol) {
+    if (mapped.coreBenchmarkSymbol === 'SPY' && spyShared) return spyShared
+    return fetchDailySeries(mapped.coreBenchmarkSymbol, '5y')
+  }
+  const structureText = (def.structure ?? '').toLowerCase()
+  const titleText = def.h1Title.toLowerCase()
+  const isExplicitBalancedCore =
+    structureText.includes('balanced') ||
+    titleText.includes('global balanced') ||
+    titleText.includes('balanced')
+  if (isExplicitBalancedCore) {
     // Balanced core benchmark: 50% global equity + 50% bonds.
     const eqSym = def.yahooSymbol.endsWith('.TO') ? 'VEQT.TO' : 'VT'
     const bondSym = def.yahooSymbol.endsWith('.TO') ? 'VAB.TO' : 'BND'
     const [eq, bonds] = await Promise.all([fetchDailySeries(eqSym, '5y'), fetchDailySeries(bondSym, '5y')])
     return buildSyntheticBlendSeries(eq, bonds, 0.5, 0.5)
   }
+  const text = `${def.h1Title} ${def.structure ?? ''} ${def.lede}`.toLowerCase()
   if (!hasExplicitEquitySide(text)) {
     const candidates = inferNonEquityStackCandidates(def)
     let bestSeries: PriceSeries | null = null
@@ -282,7 +356,8 @@ export async function computeMonthlyEfficiencyPatchForSlug(
   staticEff: EtfDynamicEfficiencyDef | undefined,
   /** When building many slugs in one job, pass one shared SPY `max` series to avoid refetching SPY per ticker. */
   spyShared?: PriceSeries,
-  rfShared?: PriceSeries
+  rfShared?: PriceSeries,
+  slug?: string
 ): Promise<MonthlyEfficiencyGradePatch | null> {
   if (def.monthlyGradeRecompute === false) return null
 
@@ -302,7 +377,7 @@ export async function computeMonthlyEfficiencyPatchForSlug(
     const equityOnlyByCategory = def.hubCategoryId === 'factor' || def.hubCategoryId === 'long-short'
     const stackedByLines = !equityOnlyByCategory && inferred.hasCapital && inferred.hasAlpha
     if (stackedByLines) {
-      benchmark = await getStackedCoreBenchmarkSeries(def, etf, spyShared)
+      benchmark = await getStackedCoreBenchmarkSeries(def, etf, spyShared, slug)
       if (!benchmark) return null
     } else {
       benchmark = spyShared ?? (await fetchDailySeries('SPY', '5y'))
@@ -334,14 +409,35 @@ export async function computeMonthlyEfficiencyPatchForSlug(
   let capitalExcess = etfCagr - benchmarkCagr
   if (stackedByLines) {
     try {
-      const spyCapital = spyShared ?? (await fetchDailySeries('SPY', '5y'))
-      const coreVsSpy = alignedCloseSeries(benchmark, spyCapital)
-      if (coreVsSpy) {
-        const coreIntervals = coreVsSpy.etf.length - 1
-        const coreCagr = cagrFromCloses(coreVsSpy.etf, coreIntervals)
-        const spyCagr = cagrFromCloses(coreVsSpy.bench, coreIntervals)
-        if (coreCagr != null && spyCagr != null) {
-          capitalExcess = coreCagr - spyCagr
+      const marketSym = capitalMarketBenchmarkSymbol(def, slug)
+      const marketSeries =
+        marketSym === 'SPY' && spyShared ? spyShared : await fetchDailySeries(marketSym, '5y')
+      const mappedAllEquity = slug ? ETF_STACK_EXPOSURE_BY_SLUG[slug]?.allEquityStack : undefined
+      if (mappedAllEquity || def.allEquityStack) {
+        const etfVsMarket = alignedCloseSeries(etf, marketSeries)
+        if (etfVsMarket) {
+          const eqIntervals = etfVsMarket.etf.length - 1
+          const eqCagr = cagrFromCloses(etfVsMarket.etf, eqIntervals)
+          const marketCagr = cagrFromCloses(etfVsMarket.bench, eqIntervals)
+          if (eqCagr != null && marketCagr != null) {
+            capitalExcess = eqCagr - marketCagr
+          }
+        }
+      } else {
+        const coreVsMarket = alignedCloseSeries(benchmark, marketSeries)
+        if (coreVsMarket) {
+          const coreIntervals = coreVsMarket.etf.length - 1
+          const coreCagr = cagrFromCloses(coreVsMarket.etf, coreIntervals)
+          const marketCagr = cagrFromCloses(coreVsMarket.bench, coreIntervals)
+          if (coreCagr != null && marketCagr != null) {
+            const split = inferExposureSplitPct(def, slug)
+            const stackMultiple = (split.capital + split.alpha) / 100
+            // Apply stack multiple to the equity bucket itself (not to full 100% capital base).
+            // Example: 50/100 -> 1.5x on 50% equity => 75% effective equity notional.
+            const effectiveEquityNotional = (split.capital / 100) * stackMultiple
+            const coreCapitalAdjustedCagr = coreCagr * Math.max(0.01, effectiveEquityNotional)
+            capitalExcess = coreCapitalAdjustedCagr - marketCagr
+          }
         }
       }
     } catch {
@@ -372,9 +468,18 @@ export async function computeMonthlyEfficiencyPatchForSlug(
 
   if (hasAlpha) {
     const alphaBeta = stackedByLines && beta != null ? beta - 1 : beta
-    const baseScorePp = stackedByLines
-      ? (etfCagr - benchmarkCagr - (riskFreeAnnual + 0.0175)) * 100
-      : (etfCagr - riskFreeAnnual) * 100
+    const optionsOverlayAssumption = slug ? ETF_STACK_EXPOSURE_BY_SLUG[slug]?.optionsOverlayAssumption : false
+    let baseScorePp: number
+    if (stackedByLines) {
+      const alphaSleeveReturn = etfCagr - benchmarkCagr
+      const adjustedAlphaSleeveReturn = optionsOverlayAssumption
+        ? alphaSleeveReturn * 0.7 + 0.06
+        : alphaSleeveReturn
+      baseScorePp = (adjustedAlphaSleeveReturn - (riskFreeAnnual + 0.0175)) * 100
+    } else {
+      const adjustedEtfCagr = optionsOverlayAssumption ? etfCagr * 0.7 + 0.06 : etfCagr
+      baseScorePp = (adjustedEtfCagr - riskFreeAnnual) * 100
+    }
     const scorePp = alphaScorePpWithBetaBonus(baseScorePp, alphaBeta)
     patch.alpha = {
       grade: alphaLetterFromScorePp(scorePp),

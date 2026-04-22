@@ -11,25 +11,46 @@ import {
   type EtfEfficiencyGradeLine,
 } from '@/components/etfEfficiency/EtfEfficiencyGrades'
 
-function buildEfficiencyMetaExtras(def: EtfDynamicDef): ReactNode {
+function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload): ReactNode {
   const eff = def.efficiency
   if (!eff) return undefined
   const lines: EtfEfficiencyGradeLine[] = []
-  if (eff.capital) {
-    lines.push({
-      label: 'Capital Efficiency:',
-      grade: eff.capital.grade,
-      gradeTone: eff.capital.gradeTone,
-      tooltip: eff.capital.tooltip,
-    })
-  }
-  if (eff.alpha) {
-    lines.push({
-      label: 'Alpha Efficiency:',
-      grade: eff.alpha.grade,
-      gradeTone: eff.alpha.gradeTone,
-      tooltip: eff.alpha.tooltip,
-    })
+  const equityOnlyByCategory = def.hubCategoryId === 'factor' || def.hubCategoryId === 'long-short'
+  if (equityOnlyByCategory) {
+    const beta = chart.betaVsSpy1y
+    const useAlpha = beta != null && beta < 0.8
+    if (useAlpha && eff.alpha) {
+      lines.push({
+        label: 'Alpha Efficiency:',
+        grade: eff.alpha.grade ?? 'N/A',
+        gradeTone: eff.alpha.gradeTone,
+        tooltip: eff.alpha.tooltip,
+      })
+    } else if (!useAlpha && eff.capital) {
+      lines.push({
+        label: 'Capital Efficiency:',
+        grade: eff.capital.grade ?? 'N/A',
+        gradeTone: eff.capital.gradeTone,
+        tooltip: eff.capital.tooltip,
+      })
+    }
+  } else {
+    if (eff.capital) {
+      lines.push({
+        label: 'Capital Efficiency:',
+        grade: eff.capital.grade ?? 'N/A',
+        gradeTone: eff.capital.gradeTone,
+        tooltip: eff.capital.tooltip,
+      })
+    }
+    if (eff.alpha) {
+      lines.push({
+        label: 'Alpha Efficiency:',
+        grade: eff.alpha.grade ?? 'N/A',
+        gradeTone: eff.alpha.gradeTone,
+        tooltip: eff.alpha.tooltip,
+      })
+    }
   }
   if (lines.length === 0) return undefined
   return <EtfEfficiencyMetaExtras lines={lines} notes={eff.notes} />
@@ -74,7 +95,7 @@ export default function EtfDynamicPageLayout({
         structureStartsNewRow: true,
         beta: betaVsSpyDisplay(chart),
       }}
-      metaExtras={buildEfficiencyMetaExtras(def)}
+      metaExtras={buildEfficiencyMetaExtras(def, chart)}
       chart={{
         displayLabel: def.displayTicker,
         yahooSymbol: def.yahooSymbol,

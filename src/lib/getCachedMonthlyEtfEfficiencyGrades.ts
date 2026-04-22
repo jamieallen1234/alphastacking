@@ -53,10 +53,11 @@ export async function getCachedMonthlyEfficiencyPatchForSlug(
   if (!loader) {
     loader = unstable_cache(
       async () => {
-        const spyMax = await fetchDailySeries('SPY', 'max')
-        return computeMonthlyEfficiencyPatchForSlug(def, staticEff, spyMax)
+        const spy5y = await fetchDailySeries('SPY', '5y')
+        const rf5y = await fetchDailySeries('^IRX', '5y')
+        return computeMonthlyEfficiencyPatchForSlug(def, staticEff, spy5y, rf5y)
       },
-      ['etf-efficiency-monthly-per-slug-v1', monthKey, universe, slug],
+      ['etf-efficiency-monthly-per-slug-v10-alpha-band-rebalance-3', monthKey, universe, slug],
       { revalidate: MONTHLY_EFFICIENCY_REVALIDATE_SEC }
     )
     slugLoaderByKey.set(cacheKey, loader)

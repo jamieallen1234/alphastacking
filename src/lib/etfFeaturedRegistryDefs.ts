@@ -36,7 +36,6 @@ export const US_ETF_FEATURED_PART: Record<string, EtfDynamicDef> = {
     description:
       'Man Active Trend Enhanced ETF (MATE): 100% S&P 500 stacked with 100% managed futures, manager context.',
     contentFormat: 'html',
-    monthlyGradeRecompute: false,
     lede: fb.MATE_LEDE_HTML,
     strategyParas: fb.MATE_STRATEGY_PARAS_HTML,
     pedigreeParas: fb.MATE_PEDIGREE_PARAS_HTML,
@@ -45,11 +44,10 @@ export const US_ETF_FEATURED_PART: Record<string, EtfDynamicDef> = {
     officialLabel: 'MATE official page',
     efficiency: {
       capital: {
-        grade: 'A+',
         gradeTone: 'gold',
         tooltip: MATE_CAPITAL_EFFICIENCY_TOOLTIP,
       },
-      alpha: { grade: 'B+', tooltip: MATE_ALPHA_EFFICIENCY_TOOLTIP },
+      alpha: { tooltip: MATE_ALPHA_EFFICIENCY_TOOLTIP },
       footnotes: [MATE_EFFICIENCY_FOOTNOTE],
     },
   },
@@ -77,13 +75,11 @@ export const US_ETF_FEATURED_PART: Record<string, EtfDynamicDef> = {
     officialLabel: 'RSSY official page',
     efficiency: {
       capital: {
-        grade: 'B',
         tooltip: capitalEfficiencyTooltip(
           'RSSY targets roughly 100% notional large-cap U.S. equity (ETFs, futures, or combinations) alongside a parallel sleeve per Return Stacked® disclosures.'
         ),
       },
       alpha: {
-        grade: 'B',
         tooltip: alphaEfficiencyStackedTooltip(
           'The second sleeve is a quantitative futures-yield program—long and short futures across commodities, rates, currencies, and equity indices targeting roll and curve payoffs rather than pure directional beta.'
         ),
@@ -114,13 +110,11 @@ export const US_ETF_FEATURED_PART: Record<string, EtfDynamicDef> = {
     officialLabel: 'HFGM official page',
     efficiency: {
       capital: {
-        grade: 'B',
         tooltip: capitalEfficiencyTooltip(
           'HFGM includes an estimated ~50% S&P 500–style equity sleeve (futures and related exposure) alongside macro alternatives per Unlimited published holdings—capital efficiency scores that equity book versus SPY net of costs.'
         ),
       },
       alpha: {
-        grade: 'B',
         tooltip: alphaEfficiencyStackedTooltip(
           'The non-core sleeve is systematic global macro—rates, FX, commodities, and selective equity beta implemented with ETFs and listed futures to target hedge-fund Global Macro sector return patterns.'
         ),
@@ -157,7 +151,6 @@ export const CA_ETF_FEATURED_PART: Record<string, EtfDynamicDef> = {
     officialLabel: 'HDGE.TO official page',
     efficiency: {
       capital: {
-        grade: 'B',
         tooltip: capitalEfficiencyTooltip(
           'HDGE.TO is Accelerate’s quantitative long/short North American equity sleeve—ranked longs and shorts with material short exposure per disclosures, scored like other long/short equity vehicles vs SPY net of costs.'
         ),
@@ -192,7 +185,6 @@ export const CA_ETF_FEATURED_PART: Record<string, EtfDynamicDef> = {
     officialLabel: 'Picton Mahoney (Fortified alternatives — PFMN)',
     efficiency: {
       capital: {
-        grade: 'B',
         tooltip: capitalEfficiencyTooltip(
           'PFMN.TO is Picton’s Fortified market-neutral long/short equity mandate—paired longs and shorts designed for lower net beta versus broad Canadian equities per ETF Facts.'
         ),
@@ -224,7 +216,6 @@ export const CA_ETF_FEATURED_PART: Record<string, EtfDynamicDef> = {
     officialLabel: 'ARB.TO official page',
     efficiency: {
       alpha: {
-        grade: 'B',
         tooltip: alphaEfficiencyUnstackedTooltip(
           'ARB.TO is Accelerate’s merger and SPAC arbitrage sleeve—deal-target longs with acquirer or related hedges per prospectus, event-driven returns rather than broad equity beta.'
         ),

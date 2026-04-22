@@ -359,7 +359,6 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'WisdomTree (NTSD)',
     efficiency: {
       capital: {
-        grade: 'N/A',
         tooltip: NTSD_CAPITAL_EFFICIENCY_TOOLTIP_NA,
       },
     },

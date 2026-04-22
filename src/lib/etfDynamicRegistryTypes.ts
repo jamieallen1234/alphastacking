@@ -1,5 +1,5 @@
 export type EtfDynamicEfficiencyLineDef = {
-  grade: string
+  grade?: string
   gradeTone?: 'gold' | 'muted'
   tooltip: string
 }

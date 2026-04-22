@@ -16,39 +16,36 @@ export type MonthlyEfficiencySnapshot = {
   ca: Record<string, MonthlyEfficiencyGradePatch | null>
 }
 
-const SPY_MER_ANNUAL = 0.00094
-
-function parseMerAnnual(mer: string): number {
-  const m = mer.match(/([\d.]+)\s*%/)
-  if (!m) return 0.002
-  const v = parseFloat(m[1])
-  return Number.isFinite(v) ? v / 100 : 0.002
-}
-
 function alignedCloseSeries(
   etf: PriceSeries,
-  spy: PriceSeries
-): { etf: number[]; spy: number[]; firstTs: number; lastTs: number } | null {
-  const spyByTs = new Map<number, number>()
-  for (let i = 0; i < spy.timestamps.length; i++) {
-    spyByTs.set(spy.timestamps[i]!, spy.prices[i]!)
+  bench: PriceSeries
+): { etf: number[]; bench: number[]; firstTs: number; lastTs: number } | null {
+  // Yahoo `max` bars often differ by 1s across symbols; align by UTC day bucket, not raw second.
+  const dayKey = (tsSec: number) => Math.floor(tsSec / 86400)
+  const benchByTs = new Map<number, { ts: number; px: number }>()
+  for (let i = 0; i < bench.timestamps.length; i++) {
+    const ts = bench.timestamps[i]!
+    const px = bench.prices[i]!
+    if (!Number.isFinite(px) || px <= 0) continue
+    benchByTs.set(dayKey(ts), { ts, px })
   }
   const etfC: number[] = []
-  const spyC: number[] = []
+  const benchC: number[] = []
   const tsList: number[] = []
   for (let i = 0; i < etf.timestamps.length; i++) {
     const t = etf.timestamps[i]!
     const e = etf.prices[i]!
-    const s = spyByTs.get(t)
-    if (s == null || !Number.isFinite(e) || !Number.isFinite(s) || e <= 0 || s <= 0) continue
+    const b = benchByTs.get(dayKey(t))
+    if (b == null || !Number.isFinite(e) || e <= 0) continue
     etfC.push(e)
-    spyC.push(s)
+    benchC.push(b.px)
+    // Shared day key is enough for history windows; keep ETF timestamp for monotonic ordering.
     tsList.push(t)
   }
   if (etfC.length < 60 || tsList.length < 2) return null
   return {
     etf: etfC,
-    spy: spyC,
+    bench: benchC,
     firstTs: tsList[0]!,
     lastTs: tsList[tsList.length - 1]!,
   }
@@ -60,17 +57,64 @@ function cagrFromCloses(closes: number[], tradingIntervals: number): number | nu
   const last = closes[closes.length - 1]!
   if (first <= 0 || last <= 0) return null
   const years = tradingIntervals / 252
-  if (years < 0.34) return null
+  // ~4 months threshold (skill rule); 0.30y avoids edge misses around holiday/session counts.
+  if (years < 0.30) return null
   return (last / first) ** (1 / years) - 1
+}
+
+function betaFromAlignedCloses(etfCloses: number[], benchCloses: number[]): number | null {
+  if (etfCloses.length !== benchCloses.length || etfCloses.length < 20) return null
+  const etfRet: number[] = []
+  const benchRet: number[] = []
+  for (let i = 1; i < etfCloses.length; i++) {
+    const e0 = etfCloses[i - 1]
+    const e1 = etfCloses[i]
+    const b0 = benchCloses[i - 1]
+    const b1 = benchCloses[i]
+    if (!e0 || !e1 || !b0 || !b1 || e0 <= 0 || b0 <= 0) continue
+    etfRet.push(e1 / e0 - 1)
+    benchRet.push(b1 / b0 - 1)
+  }
+  if (etfRet.length < 20 || etfRet.length !== benchRet.length) return null
+  const meanE = etfRet.reduce((s, x) => s + x, 0) / etfRet.length
+  const meanB = benchRet.reduce((s, x) => s + x, 0) / benchRet.length
+  let cov = 0
+  let varB = 0
+  for (let i = 0; i < etfRet.length; i++) {
+    cov += (etfRet[i]! - meanE) * (benchRet[i]! - meanB)
+    varB += (benchRet[i]! - meanB) ** 2
+  }
+  if (varB <= 0) return null
+  const beta = cov / varB
+  return beta === 0 ? 0.01 : beta
 }
 
 function monthsSinceFirstBar(firstTsSec: number, lastTsSec: number): number {
   return (lastTsSec - firstTsSec) / (30.44 * 86400)
 }
 
-/** Simplified capital score vs SPY (annual excess vs SPY, net of extra MER vs SPY). */
-function capitalLetterFromExcess(etfMinusSpyAnnual: number, merEtf: number): string {
-  const scorePp = (etfMinusSpyAnnual - (merEtf - SPY_MER_ANNUAL)) * 100
+function averageAnnualYieldInWindow(
+  annualYieldSeries: PriceSeries,
+  fromTsSec: number,
+  toTsSec: number
+): number | null {
+  if (toTsSec <= fromTsSec) return null
+  const vals: number[] = []
+  for (let i = 0; i < annualYieldSeries.timestamps.length; i++) {
+    const ts = annualYieldSeries.timestamps[i]!
+    if (ts < fromTsSec || ts > toTsSec) continue
+    const yPct = annualYieldSeries.prices[i]!
+    if (!Number.isFinite(yPct)) continue
+    const y = yPct / 100
+    if (y > -0.05 && y < 0.3) vals.push(y)
+  }
+  if (vals.length < 10) return null
+  return vals.reduce((s, x) => s + x, 0) / vals.length
+}
+
+/** Capital score from annual excess return vs SPY (both series already net of fund fees in adj close). */
+function capitalLetterFromExcess(etfMinusSpyAnnual: number): string {
+  const scorePp = etfMinusSpyAnnual * 100
   if (scorePp >= 10) return 'A+'
   if (scorePp >= 4) return 'A'
   if (scorePp >= -2) return 'B'
@@ -78,29 +122,30 @@ function capitalLetterFromExcess(etfMinusSpyAnnual: number, merEtf: number): str
   return 'D'
 }
 
-/** Unstacked alpha: annual return net of MER vs ~4.5% hurdle (skill §3, blended RF). */
-function alphaLetterUnstacked(etfCagr: number, merEtf: number): string {
-  const net = etfCagr - merEtf
-  const scorePp = (net - 0.045) * 100
-  if (scorePp >= 8) return 'A+'
-  if (scorePp >= 4) return 'A'
-  if (scorePp >= 1) return 'B'
-  if (scorePp >= -1) return 'C'
+function alphaLetterFromScorePp(scorePp: number): string {
+  // Stricter distribution targets: fewer A+ grades and a wider middle C bucket.
+  if (scorePp >= 15) return 'A+'
+  if (scorePp >= 8) return 'A'
+  if (scorePp >= 4) return 'B'
+  if (scorePp >= -2) return 'C'
   return 'D'
 }
 
-/**
- * Stacked alpha sleeve (very rough): fund CAGR minus SPY proxy for equity leg,
- * minus stacked hurdle ~ RF + borrow (~6.25% annual).
- */
-function alphaLetterStackedProxy(etfCagr: number, spyCagr: number, merEtf: number): string {
-  const sleeveNet = etfCagr - spyCagr - merEtf * 0.5
-  const scorePp = (sleeveNet - 0.0625) * 100
-  if (scorePp >= 8) return 'A+'
-  if (scorePp >= 4) return 'A'
-  if (scorePp >= 1) return 'B'
-  if (scorePp >= -1) return 'C'
-  return 'D'
+function alphaScorePpWithBetaBonus(baseScorePp: number, beta: number | null): number {
+  if (baseScorePp <= 0 || beta == null) return baseScorePp
+  const absBeta = Math.abs(beta)
+  // Reward near-market-neutral alpha sleeves; fades to 0 at |beta|>=0.8.
+  const lowBetaBonusPp = Math.max(0, (0.8 - absBeta) * 2.5)
+  // Extra credit for defensive negative-beta alpha when it clears hurdle.
+  const negativeBetaBonusPp = beta < 0 ? absBeta * 5.0 : 0
+  return baseScorePp + lowBetaBonusPp + negativeBetaBonusPp
+}
+
+function inferStackedEquityBenchmarkSymbol(def: EtfDynamicDef): string {
+  const text = `${def.h1Title} ${def.structure ?? ''} ${def.lede}`.toLowerCase()
+  if (text.includes('nasdaq-100') || text.includes('nasdaq 100')) return 'QQQ'
+  if (text.includes('s&p/tsx') || text.includes('tsx')) return 'XIU.TO'
+  return 'SPY'
 }
 
 function inferLines(staticEff: EtfDynamicEfficiencyDef | undefined): {
@@ -118,37 +163,58 @@ export async function computeMonthlyEfficiencyPatchForSlug(
   def: EtfDynamicDef,
   staticEff: EtfDynamicEfficiencyDef | undefined,
   /** When building many slugs in one job, pass one shared SPY `max` series to avoid refetching SPY per ticker. */
-  spyShared?: PriceSeries
+  spyShared?: PriceSeries,
+  rfShared?: PriceSeries
 ): Promise<MonthlyEfficiencyGradePatch | null> {
   if (def.monthlyGradeRecompute === false) return null
 
   const sym = def.yahooSymbol.trim()
   if (!isAllowedEtfChartSymbol(sym)) return null
 
-  const { hasCapital, hasAlpha } = inferLines(staticEff)
+  const inferred = inferLines(staticEff)
+  let hasCapital = inferred.hasCapital
+  let hasAlpha = inferred.hasAlpha
 
   let etf: PriceSeries
-  let spy: PriceSeries
+  let benchmark: PriceSeries
+  let rf: PriceSeries
   try {
-    etf = await fetchDailySeries(sym, 'max')
-    spy = spyShared ?? (await fetchDailySeries('SPY', 'max'))
+    // Grade on live history up to ~5Y with dense daily bars (Yahoo `max` can be sparse).
+    etf = await fetchDailySeries(sym, '5y')
+    const equityOnlyByCategory = def.hubCategoryId === 'factor' || def.hubCategoryId === 'long-short'
+    const stackedByLines = !equityOnlyByCategory && inferred.hasCapital && inferred.hasAlpha
+    if (stackedByLines) {
+      const benchSymbol = inferStackedEquityBenchmarkSymbol(def)
+      benchmark = await fetchDailySeries(benchSymbol, '5y')
+    } else {
+      benchmark = spyShared ?? (await fetchDailySeries('SPY', '5y'))
+    }
+    rf = rfShared ?? (await fetchDailySeries('^IRX', '5y'))
   } catch {
     return null
   }
 
-  const aligned = alignedCloseSeries(etf, spy)
+  const aligned = alignedCloseSeries(etf, benchmark)
   if (!aligned) return null
 
   const n = aligned.etf.length
   const intervals = n - 1
   const etfCagr = cagrFromCloses(aligned.etf, intervals)
-  const spyCagr = cagrFromCloses(aligned.spy, intervals)
-  if (etfCagr == null || spyCagr == null) return null
+  const benchmarkCagr = cagrFromCloses(aligned.bench, intervals)
+  if (etfCagr == null || benchmarkCagr == null) return null
+  const beta = betaFromAlignedCloses(aligned.etf, aligned.bench)
+  const equityOnlyByCategory = def.hubCategoryId === 'factor' || def.hubCategoryId === 'long-short'
+  if (equityOnlyByCategory && beta != null) {
+    const useAlpha = beta < 0.8
+    hasCapital = !useAlpha
+    hasAlpha = useAlpha
+  }
+  const stackedByLines = !equityOnlyByCategory && inferred.hasCapital && inferred.hasAlpha
 
   const monthsHist = monthsSinceFirstBar(aligned.firstTs, aligned.lastTs)
 
-  const mer = parseMerAnnual(def.mer)
-  const excess = etfCagr - spyCagr
+  const excess = etfCagr - benchmarkCagr
+  const riskFreeAnnual = averageAnnualYieldInWindow(rf, aligned.firstTs, aligned.lastTs) ?? 0.03
 
   const patch: MonthlyEfficiencyGradePatch = {}
   const footnotes: string[] = []
@@ -164,15 +230,20 @@ export async function computeMonthlyEfficiencyPatchForSlug(
     footnotes.push(EFFICIENCY_PROVISIONAL_FOOTNOTE)
   }
 
-  const bothRows = hasCapital && hasAlpha
-
   if (hasCapital) {
-    patch.capital = { grade: capitalLetterFromExcess(excess, mer) }
+    patch.capital = {
+      grade: stackedByLines ? 'B' : capitalLetterFromExcess(excess),
+    }
   }
 
   if (hasAlpha) {
+    const alphaBeta = stackedByLines && beta != null ? beta - 1 : beta
+    const baseScorePp = stackedByLines
+      ? (etfCagr - benchmarkCagr - (riskFreeAnnual + 0.0175)) * 100
+      : (etfCagr - riskFreeAnnual) * 100
+    const scorePp = alphaScorePpWithBetaBonus(baseScorePp, alphaBeta)
     patch.alpha = {
-      grade: bothRows ? alphaLetterStackedProxy(etfCagr, spyCagr, mer) : alphaLetterUnstacked(etfCagr, mer),
+      grade: alphaLetterFromScorePp(scorePp),
     }
   }
 

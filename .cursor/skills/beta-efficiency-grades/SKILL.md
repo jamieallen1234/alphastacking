@@ -28,6 +28,15 @@ Includes:
 - Long/short equity ETFs (CLSE, ORR)
 - Capital-efficient diversified equity (NTSD — treated as equity, not stacked)
 
+#### Beta-switch rule for equity-only ETFs (new)
+
+For **equity-only** ETFs in the **factor** or **long/short** categories, choose exactly one line by live beta:
+
+- If `beta < 0.8` -> show **Alpha Efficiency** (unstacked alpha formula).
+- If `beta >= 0.8` -> show **Capital Efficiency**.
+
+Do not show both lines for these equity-only categories at the same time.
+
 ### Role 2: Alpha-Side Vehicle
 
 Graded with **Alpha Efficiency** badge.
@@ -309,19 +318,20 @@ Use **two paragraphs** in the bubble (render as two paragraphs; in CSS `white-sp
 **Near-zero beta (between -0.10 and +0.10):**
 Treat as near-zero for stability and avoid divide-by-near-zero blowups in capital-freed math.
 
-**Negative beta treatment (replacement rule):**
-Negative beta is treated as a bonus multiplier on Alpha Efficiency, conditional on the sleeve clearing its hurdle rate.
+**Beta treatment in Alpha Efficiency (replacement rule):**
+Alpha Efficiency includes a **beta-aware bonus** when the sleeve already clears its hurdle rate.
 
-The logic: negative beta means the sleeve tends to rise when equities fall. That crisis-alpha property is genuinely more valuable than zero beta — it's not just uncorrelated, it's actively defensive. But only if the return is real. A negative beta sleeve that loses money is not a bonus — it's a losing trade that happens to zig when equities zag.
+The logic: lower absolute beta means cleaner “alpha, not beta.” Negative beta gets extra credit because it can hedge equity drawdowns. But bonuses apply only when base return is real (above hurdle).
 
-For unstacked alpha ETFs with negative beta:
+For unstacked alpha ETFs:
 
 ```text
 Base score = Annualized Return - Risk-Free Rate
 
 If base score > 0 (clears risk-free hurdle):
-  bonus = |Beta| x 5.0
-  final score = base score + bonus
+  low-beta bonus = max(0, (0.8 - |Beta|) x 2.5)
+  negative-beta bonus = (Beta < 0) ? |Beta| x 5.0 : 0
+  final score = base score + low-beta bonus + negative-beta bonus
 
 If base score <= 0 (does not clear hurdle):
   no bonus
@@ -346,8 +356,9 @@ Then apply the same conditional bonus:
 Base score = Estimated Alpha Sleeve Return - (Risk-Free Rate + Borrowing Spread)
 
 If base score > 0:
-  bonus = |Alpha Sleeve Beta| x 5.0
-  final score = base score + bonus
+  low-beta bonus = max(0, (0.8 - |Alpha Sleeve Beta|) x 2.5)
+  negative-beta bonus = (Alpha Sleeve Beta < 0) ? |Alpha Sleeve Beta| x 5.0 : 0
+  final score = base score + low-beta bonus + negative-beta bonus
 
 If base score <= 0:
   no bonus

@@ -28,6 +28,7 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
    - Append `{ slug, region: 'us' | 'ca', kind: 'live', hubSection, title, description, featured? }`.  
    - `hubSection`: `'buy-hold'` or `'annual-rebalance'` (sets which hub block the card sits in).  
    - `kind` must be **`'live'`**.  
+   - **Advanced labeling rule:** If any holding is a **3x leveraged ETF** (for example `UPRO`, `TQQQ`, `SPXL`, `SOXL`), the portfolio title or description must explicitly include **`advanced`** (same pattern as the current UPRO example). Treat this as mandatory risk labeling, not optional copy style.
    - **`description`** (hub card + home teaser copy): **one short sentence**, strategy-level — same bar as **US Multi-Strategy** (`"Diversified US-listed mix with intentional beta near 1.0."`). **Do not** paste ticker lists or `10% / 7.5% / …` weight strings here; those belong on the **detail page** (`PresetHoldingsTable` + preset `blurb`s in `src/lib/presets/...`). **Do not** call out rebalance cadence (e.g. annual January) in this field — keep it high-level; cadence lives in chart math and on-page methodology if needed. **Do not** use the word **static** here (e.g. “static weights” / “static barbell”) — say what the model *is*, not that weights never change.
 
 2. **`src/lib/presets/<portfolio>.ts`**  

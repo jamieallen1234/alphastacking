@@ -253,6 +253,32 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('mrgr')
     ),
   ],
+  'leveraged-equity': [
+    us(
+      'sso',
+      'SSO — ProShares Ultra S&P500',
+      '2x daily S&P 500 exposure via derivatives and daily reset leverage.',
+      usPath('sso')
+    ),
+    us(
+      'upro',
+      'UPRO — ProShares UltraPro S&P500',
+      '3x daily S&P 500 exposure designed for tactical high-beta positioning.',
+      usPath('upro')
+    ),
+    us(
+      'qld',
+      'QLD — ProShares Ultra QQQ',
+      '2x daily Nasdaq-100 exposure with daily reset leverage.',
+      usPath('qld')
+    ),
+    us(
+      'tqqq',
+      'TQQQ — ProShares UltraPro QQQ',
+      '3x daily Nasdaq-100 leverage for tactical growth-beta expression.',
+      usPath('tqqq')
+    ),
+  ],
   crypto: CRYPTO_HUB_LIST,
 }
 
@@ -338,6 +364,7 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       '/ca/etfs/arb'
     ),
   ],
+  'leveraged-equity': [],
   crypto: [
     ca(
       'btccb',

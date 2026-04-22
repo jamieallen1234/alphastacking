@@ -490,6 +490,130 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'Alpha Architect (CAOS)',
   },
 
+  sso: {
+    yahooSymbol: 'SSO',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'SSO — ProShares Ultra S&P500',
+    displayTicker: 'SSO',
+    issuer: 'ProShares',
+    inception: 'Jun 2006',
+    structure: '2x daily S&P 500 leverage',
+    mer: '0.89%',
+    aum: '~$7.5B',
+    pageTitle: 'SSO ETF — Alpha Stacking',
+    description: 'ProShares Ultra S&P500 (SSO): 2x daily S&P 500 leverage.',
+    lede:
+      'SSO seeks daily investment results, before fees and expenses, that correspond to two times the daily performance of the S&P 500.',
+    strategyParas: [
+      'SSO is a daily-reset leveraged ETF: futures, swaps, and cash collateral target about 2x of each day’s S&P 500 move, not a fixed long-horizon leverage multiple. Compounding makes multi-day outcomes path-dependent in volatile, mean-reverting tapes.',
+      'Because leverage is reset every session, implementation details (swap financing, derivative spreads, rebalancing at close) matter. Treat it as a tactical high-beta tool or an explicit sleeve in a risk budget, not a direct substitute for unlevered core equity.',
+    ],
+    pedigreeParas: ped(
+      `ProShares is one of the largest U.S. leveraged and inverse ETF sponsors, with long operating history in daily-reset index products and deep derivatives execution infrastructure.`,
+      `The issuer’s parent complex is measured in the tens of billions in ETF assets in public league tables, giving SSO scale and secondary-market liquidity that many niche leveraged products lack.`
+    ),
+    outperfParas: [
+      'SSO tends to shine when U.S. large-cap momentum is persistent and drawdowns are shallow enough that daily compounding can work in your favor over holding windows longer than one session.',
+      'The most favorable regime is orderly trend-following risk-on where realized volatility stays contained; choppy sideways markets and sharp reversals are the classic drag profile for daily-reset leverage.',
+    ],
+    officialUrl: 'https://www.proshares.com/our-etfs/leveraged-and-inverse/sso',
+    officialLabel: 'ProShares (SSO)',
+  },
+
+  upro: {
+    yahooSymbol: 'UPRO',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'UPRO — ProShares UltraPro S&P500',
+    displayTicker: 'UPRO',
+    issuer: 'ProShares',
+    inception: 'Jun 2009',
+    structure: '3x daily S&P 500 leverage',
+    mer: '0.91%',
+    aum: '~$5.0B',
+    pageTitle: 'UPRO ETF — Alpha Stacking',
+    description: 'ProShares UltraPro S&P500 (UPRO): 3x daily S&P 500 leverage.',
+    lede:
+      'UPRO targets three times the daily return of the S&P 500, before fees and expenses, using listed derivatives and collateral management.',
+    strategyParas: [
+      'UPRO is a high-octane daily reset vehicle: it seeks ~3x of each day’s S&P 500 move, then rebalances notional for the next session. Over multi-day windows, realized outcomes depend heavily on volatility and sequence of returns.',
+      'This structure is generally used for tactical views or explicitly risk-managed overlays. In sustained trends, compounding can amplify returns; in volatile two-way markets, volatility drag can materially erode performance versus simple 3x intuition.',
+    ],
+    pedigreeParas: ped(
+      `ProShares has run leveraged index ETFs across cycles since the mid-2000s and is a category-defining issuer for daily-reset exposure tools in U.S. markets.`,
+      `Scale, primary-market relationships, and established index-linked derivatives workflows are key implementation advantages for a fund like UPRO where execution quality matters as much as headline leverage.`
+    ),
+    outperfParas: [
+      'UPRO historically benefits most in persistent broad-equity bull runs where index breadth and earnings momentum keep S&P trend strength intact for extended periods.',
+      'Favorable conditions are strong directional tapes with controlled volatility; repeated sharp reversals and panic deleveraging windows are where daily-reset convexity typically works against holders.',
+    ],
+    officialUrl: 'https://www.proshares.com/our-etfs/leveraged-and-inverse/upro',
+    officialLabel: 'ProShares (UPRO)',
+  },
+
+  qld: {
+    yahooSymbol: 'QLD',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'QLD — ProShares Ultra QQQ',
+    displayTicker: 'QLD',
+    issuer: 'ProShares',
+    inception: 'Jun 2006',
+    structure: '2x daily Nasdaq-100 leverage',
+    mer: '0.95%',
+    aum: '~$9.0B',
+    pageTitle: 'QLD ETF — Alpha Stacking',
+    description: 'ProShares Ultra QQQ (QLD): 2x daily Nasdaq-100 leverage.',
+    lede:
+      'QLD seeks daily investment results, before fees and expenses, corresponding to two times the daily performance of the Nasdaq-100 Index.',
+    strategyParas: [
+      'QLD gives levered access to Nasdaq-100 beta with a daily reset, typically implemented through index swaps and futures rather than cash stock replication. That makes path and volatility just as important as directional conviction.',
+      'Because the underlying index is growth and tech heavy, macro rate shifts and valuation compression can produce larger swings than broad-market leverage funds. Position sizing and rebalance discipline matter more than simple long-only assumptions.',
+    ],
+    pedigreeParas: ped(
+      `ProShares is a leading sponsor in leveraged index wrappers and has operated Ultra and UltraPro families through multiple volatility regimes.`,
+      `Category scale and liquidity are stronger than many thematic leveraged products, but users should still monitor spread behavior and tracking around high-vol sessions.`
+    ),
+    outperfParas: [
+      'QLD tends to perform best when mega-cap growth leadership is persistent and the Nasdaq-100 trend is strong with relatively contained realized volatility.',
+      'Constructive regimes are clean risk-on growth expansions; violent factor rotations and whipsaw rate shocks are usually adverse for daily-reset leveraged Nasdaq exposure.',
+    ],
+    officialUrl: 'https://www.proshares.com/our-etfs/leveraged-and-inverse/qld',
+    officialLabel: 'ProShares (QLD)',
+  },
+
+  tqqq: {
+    yahooSymbol: 'TQQQ',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'TQQQ — ProShares UltraPro QQQ',
+    displayTicker: 'TQQQ',
+    issuer: 'ProShares',
+    inception: 'Feb 2010',
+    structure: '3x daily Nasdaq-100 leverage',
+    mer: '0.86%',
+    aum: '~$23B',
+    pageTitle: 'TQQQ ETF — Alpha Stacking',
+    description: 'ProShares UltraPro QQQ (TQQQ): 3x daily Nasdaq-100 leverage.',
+    lede:
+      'TQQQ targets three times the daily return of the Nasdaq-100 Index, before fees and expenses, via derivative exposure and daily rebalancing.',
+    strategyParas: [
+      'TQQQ is one of the highest-beta mainstream index ETFs: it resets to ~3x Nasdaq-100 exposure each day, so compounding dominates medium-horizon outcomes. Trend helps; chop and volatility drag hurt.',
+      'It is generally used as a tactical expression on growth leadership, not a passive core allocation. Funding costs, derivative execution, and index concentration all matter when volatility rises.',
+    ],
+    pedigreeParas: ped(
+      `ProShares’ leveraged lineup is one of the most established in U.S. ETFs, and TQQQ is among the highest-liquidity products in the daily-reset Nasdaq leverage category.`,
+      `Large asset scale and active secondary-market participation support tradability, but risk remains dominated by path dependence and concentrated growth-equity exposure.`
+    ),
+    outperfParas: [
+      'TQQQ can outperform dramatically in sustained Nasdaq uptrends where breadth and earnings revisions keep growth leadership intact over long stretches.',
+      'Favorable regimes are persistent, directional growth rallies with manageable volatility; sudden style reversals and liquidity shocks are the primary failure mode for 3x daily exposure.',
+    ],
+    officialUrl: 'https://www.proshares.com/our-etfs/leveraged-and-inverse/tqqq',
+    officialLabel: 'ProShares (TQQQ)',
+  },
+
   spmo: {
     yahooSymbol: 'SPMO',
     hubCategoryId: 'factor',

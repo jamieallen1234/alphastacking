@@ -223,6 +223,34 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  sso: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'SSO seeks 2x daily S&P 500 exposure via swaps and futures; capital efficiency compares realized annualized return versus SPY with daily-reset compounding effects.'
+      ),
+    },
+  },
+  upro: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'UPRO targets 3x daily S&P 500 exposure; capital efficiency reflects realized annualized excess versus SPY after path dependence and volatility drag.'
+      ),
+    },
+  },
+  qld: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'QLD provides 2x daily Nasdaq-100 exposure; capital efficiency is scored against SPY under the same annualized excess-return framework used for other equity-side ETFs.'
+      ),
+    },
+  },
+  tqqq: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'TQQQ provides 3x daily Nasdaq-100 exposure; capital efficiency is measured on realized annualized excess versus SPY, including daily reset compounding behavior.'
+      ),
+    },
+  },
   spmo: {
     capital: {
       tooltip: capitalEfficiencyTooltip(

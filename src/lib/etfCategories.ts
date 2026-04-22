@@ -8,6 +8,7 @@ export const ETF_CATEGORY_ROWS = [
   { id: 'long-short', title: 'Long/short' },
   { id: 'global-macro', title: 'Global macro' },
   { id: 'arbitrage', title: 'Arbitrage' },
+  { id: 'leveraged-equity', title: 'Leveraged equity ETFs (advanced)' },
   { id: 'crypto', title: 'Crypto & digital assets' },
 ] as const
 

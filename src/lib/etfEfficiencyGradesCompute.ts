@@ -115,8 +115,8 @@ function averageAnnualYieldInWindow(
 /** Capital score from annual excess return vs SPY (both series already net of fund fees in adj close). */
 function capitalLetterFromExcess(etfMinusSpyAnnual: number): string {
   const scorePp = etfMinusSpyAnnual * 100
-  if (scorePp >= 10) return 'A+'
-  if (scorePp >= 4) return 'A'
+  if (scorePp >= 6) return 'A+'
+  if (scorePp > 1) return 'A'
   if (scorePp >= -2) return 'B'
   if (scorePp >= -6) return 'C'
   return 'D'
@@ -144,8 +144,126 @@ function alphaScorePpWithBetaBonus(baseScorePp: number, beta: number | null): nu
 function inferStackedEquityBenchmarkSymbol(def: EtfDynamicDef): string {
   const text = `${def.h1Title} ${def.structure ?? ''} ${def.lede}`.toLowerCase()
   if (text.includes('nasdaq-100') || text.includes('nasdaq 100')) return 'QQQ'
-  if (text.includes('s&p/tsx') || text.includes('tsx')) return 'XIU.TO'
+  if (def.yahooSymbol.endsWith('.TO')) return 'VFV.TO'
   return 'SPY'
+}
+
+function hasExplicitEquitySide(text: string): boolean {
+  return (
+    text.includes('equity') ||
+    text.includes('s&p 500') ||
+    text.includes('s&p500') ||
+    text.includes('us stocks') ||
+    text.includes('stocks') ||
+    text.includes('nasdaq') ||
+    text.includes('tsx') ||
+    text.includes('acwi') ||
+    text.includes('veqt') ||
+    text.includes('large-cap')
+  )
+}
+
+function inferNonEquityStackCandidates(def: EtfDynamicDef): string[] {
+  const text = `${def.h1Title} ${def.structure ?? ''} ${def.lede}`.toLowerCase()
+  const isCa = def.yahooSymbol.endsWith('.TO')
+  const picks: string[] = []
+  if (text.includes('bitcoin') || text.includes('crypto')) picks.push('BTC-USD')
+  if (text.includes('gold')) picks.push(isCa ? 'CGL.TO' : 'GLD')
+  if (text.includes('oil') || text.includes('crude') || text.includes('wti')) picks.push(isCa ? 'HUC.TO' : 'USO')
+  if (text.includes('managed futures') || text.includes('futures yield') || text.includes('global macro')) {
+    picks.push('DBMF')
+  }
+  if (text.includes('commodity')) picks.push('DBC')
+  // Always include broad equity as fallback anchor for beta ranking.
+  picks.push(isCa ? 'VFV.TO' : 'SPY')
+  return [...new Set(picks)]
+}
+
+function buildSyntheticBlendSeries(
+  a: PriceSeries,
+  b: PriceSeries,
+  weightA: number,
+  weightB: number
+): PriceSeries | null {
+  const dayKey = (tsSec: number) => Math.floor(tsSec / 86400)
+  const aByDay = new Map<number, { ts: number; px: number }>()
+  const bByDay = new Map<number, { ts: number; px: number }>()
+  for (let i = 0; i < a.timestamps.length; i++) {
+    const ts = a.timestamps[i]!
+    const px = a.prices[i]!
+    if (!Number.isFinite(px) || px <= 0) continue
+    aByDay.set(dayKey(ts), { ts, px })
+  }
+  for (let i = 0; i < b.timestamps.length; i++) {
+    const ts = b.timestamps[i]!
+    const px = b.prices[i]!
+    if (!Number.isFinite(px) || px <= 0) continue
+    bByDay.set(dayKey(ts), { ts, px })
+  }
+  const days = [...aByDay.keys()].filter((d) => bByDay.has(d)).sort((x, y) => x - y)
+  if (days.length < 60) return null
+  const timestamps: number[] = []
+  const prices: number[] = []
+  let synthPx = 100
+  for (let i = 0; i < days.length; i++) {
+    const day = days[i]!
+    const aNow = aByDay.get(day)!
+    const bNow = bByDay.get(day)!
+    if (i === 0) {
+      timestamps.push(Math.max(aNow.ts, bNow.ts))
+      prices.push(synthPx)
+      continue
+    }
+    const prevDay = days[i - 1]!
+    const aPrev = aByDay.get(prevDay)!
+    const bPrev = bByDay.get(prevDay)!
+    const retA = aNow.px / aPrev.px - 1
+    const retB = bNow.px / bPrev.px - 1
+    const blendRet = weightA * retA + weightB * retB
+    synthPx *= 1 + blendRet
+    timestamps.push(Math.max(aNow.ts, bNow.ts))
+    prices.push(synthPx)
+  }
+  return { timestamps, prices }
+}
+
+async function getStackedCoreBenchmarkSeries(
+  def: EtfDynamicDef,
+  etf: PriceSeries,
+  spyShared?: PriceSeries
+): Promise<PriceSeries | null> {
+  const text = `${def.h1Title} ${def.structure ?? ''} ${def.lede}`.toLowerCase()
+  if (text.includes('balanced')) {
+    // Balanced core benchmark: 50% global equity + 50% bonds.
+    const eqSym = def.yahooSymbol.endsWith('.TO') ? 'VEQT.TO' : 'VT'
+    const bondSym = def.yahooSymbol.endsWith('.TO') ? 'VAB.TO' : 'BND'
+    const [eq, bonds] = await Promise.all([fetchDailySeries(eqSym, '5y'), fetchDailySeries(bondSym, '5y')])
+    return buildSyntheticBlendSeries(eq, bonds, 0.5, 0.5)
+  }
+  if (!hasExplicitEquitySide(text)) {
+    const candidates = inferNonEquityStackCandidates(def)
+    let bestSeries: PriceSeries | null = null
+    let bestBeta = Number.NEGATIVE_INFINITY
+    for (const sym of candidates) {
+      try {
+        const candidateSeries = sym === 'SPY' && spyShared ? spyShared : await fetchDailySeries(sym, '5y')
+        const aligned = alignedCloseSeries(etf, candidateSeries)
+        if (!aligned) continue
+        const beta = betaFromAlignedCloses(aligned.etf, aligned.bench)
+        if (beta == null) continue
+        if (beta > bestBeta) {
+          bestBeta = beta
+          bestSeries = candidateSeries
+        }
+      } catch {
+        continue
+      }
+    }
+    if (bestSeries) return bestSeries
+  }
+  const benchSymbol = inferStackedEquityBenchmarkSymbol(def)
+  if (benchSymbol === 'SPY' && spyShared) return spyShared
+  return fetchDailySeries(benchSymbol, '5y')
 }
 
 function inferLines(staticEff: EtfDynamicEfficiencyDef | undefined): {
@@ -184,8 +302,8 @@ export async function computeMonthlyEfficiencyPatchForSlug(
     const equityOnlyByCategory = def.hubCategoryId === 'factor' || def.hubCategoryId === 'long-short'
     const stackedByLines = !equityOnlyByCategory && inferred.hasCapital && inferred.hasAlpha
     if (stackedByLines) {
-      const benchSymbol = inferStackedEquityBenchmarkSymbol(def)
-      benchmark = await fetchDailySeries(benchSymbol, '5y')
+      benchmark = await getStackedCoreBenchmarkSeries(def, etf, spyShared)
+      if (!benchmark) return null
     } else {
       benchmark = spyShared ?? (await fetchDailySeries('SPY', '5y'))
     }
@@ -213,7 +331,23 @@ export async function computeMonthlyEfficiencyPatchForSlug(
 
   const monthsHist = monthsSinceFirstBar(aligned.firstTs, aligned.lastTs)
 
-  const excess = etfCagr - benchmarkCagr
+  let capitalExcess = etfCagr - benchmarkCagr
+  if (stackedByLines) {
+    try {
+      const spyCapital = spyShared ?? (await fetchDailySeries('SPY', '5y'))
+      const coreVsSpy = alignedCloseSeries(benchmark, spyCapital)
+      if (coreVsSpy) {
+        const coreIntervals = coreVsSpy.etf.length - 1
+        const coreCagr = cagrFromCloses(coreVsSpy.etf, coreIntervals)
+        const spyCagr = cagrFromCloses(coreVsSpy.bench, coreIntervals)
+        if (coreCagr != null && spyCagr != null) {
+          capitalExcess = coreCagr - spyCagr
+        }
+      }
+    } catch {
+      // Keep fallback capitalExcess from ETF-vs-core if SPY fetch fails.
+    }
+  }
   const riskFreeAnnual = averageAnnualYieldInWindow(rf, aligned.firstTs, aligned.lastTs) ?? 0.03
 
   const patch: MonthlyEfficiencyGradePatch = {}
@@ -232,7 +366,7 @@ export async function computeMonthlyEfficiencyPatchForSlug(
 
   if (hasCapital) {
     patch.capital = {
-      grade: stackedByLines ? 'B' : capitalLetterFromExcess(excess),
+      grade: capitalLetterFromExcess(capitalExcess),
     }
   }
 

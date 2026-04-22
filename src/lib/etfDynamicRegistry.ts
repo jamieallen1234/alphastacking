@@ -3,6 +3,21 @@
  * Hand-authored pages (MATE, RSSY, HFGM, HDGE, PFMN, ARB) stay in `src/app/.../<slug>/`.
  */
 
+import { NTSD_CAPITAL_EFFICIENCY_TOOLTIP_NA } from '@/lib/etfEfficiencyNtsdCopy'
+
+export type EtfDynamicEfficiencyLineDef = {
+  grade: string
+  gradeTone?: 'gold' | 'muted'
+  tooltip: string
+}
+
+export type EtfDynamicEfficiencyDef = {
+  capital?: EtfDynamicEfficiencyLineDef
+  alpha?: EtfDynamicEfficiencyLineDef
+  notes?: string[]
+  footnotes?: string[]
+}
+
 export type EtfDynamicDef = {
   /** Yahoo Finance symbol for `/api/etf-chart` and SSG (must be in `ETF_CHART_SYMBOLS`). */
   yahooSymbol: string
@@ -24,6 +39,8 @@ export type EtfDynamicDef = {
   outperfParas: string[]
   officialUrl: string
   officialLabel: string
+  /** Optional Capital / Alpha efficiency row + notes (see `EtfEfficiencyGrades`). */
+  efficiency?: EtfDynamicEfficiencyDef
 }
 
 const PED_VERIFY =
@@ -355,6 +372,12 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialUrl:
       'https://www.wisdomtree.com/investments/etfs/capital-efficient/ntsd',
     officialLabel: 'WisdomTree (NTSD)',
+    efficiency: {
+      capital: {
+        grade: 'N/A',
+        tooltip: NTSD_CAPITAL_EFFICIENCY_TOOLTIP_NA,
+      },
+    },
   },
 
   gde: {

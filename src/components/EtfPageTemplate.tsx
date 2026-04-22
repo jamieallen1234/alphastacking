@@ -35,6 +35,8 @@ export type EtfPageTemplateProps = {
     yahooSymbol: string
     payload: EtfChartPayload
   }
+  /** Optional block rendered directly under the meta line (e.g. efficiency badges). */
+  metaExtras?: ReactNode
   /** Optional note directly under the chart (e.g. model-portfolio proxy). */
   belowChart?: ReactNode
   styles: Record<string, string>
@@ -50,6 +52,7 @@ export default function EtfPageTemplate({
   lede,
   meta,
   chart,
+  metaExtras,
   belowChart,
   styles,
   children,
@@ -93,6 +96,7 @@ export default function EtfPageTemplate({
             <strong>AUM:</strong> {meta.aum}
           </li>
         </ul>
+        {metaExtras}
 
         <h2 className={styles.chartHeading}>{chart.displayLabel} price history</h2>
         <EtfChartPanel symbol={chart.yahooSymbol} initialPayload={chart.payload} />

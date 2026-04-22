@@ -3,6 +3,15 @@ import EtfPageDisclaimers from '@/components/EtfPageDisclaimers'
 import { getCachedMateChart } from '@/lib/getCachedEtfChart'
 import { betaVsSpyDisplay } from '@/lib/etfPageFormat'
 import type { UsEtfHubBase } from '@/lib/usEtfHubBase'
+import {
+  MATE_ALPHA_EFFICIENCY_TOOLTIP,
+  MATE_CAPITAL_EFFICIENCY_TOOLTIP,
+  MATE_EFFICIENCY_FOOTNOTE,
+} from '@/components/usEtfPages/mateEfficiencyCopy'
+import {
+  EtfEfficiencyMetaExtras,
+  EtfEfficiencyPageFootnotes,
+} from '@/components/etfEfficiency/EtfEfficiencyGrades'
 import styles from '@/app/us-etfs/mate/page.module.css'
 
 export default async function MateEtfPageContent({ hubBase }: { hubBase: UsEtfHubBase }) {
@@ -24,12 +33,28 @@ export default async function MateEtfPageContent({ hubBase }: { hubBase: UsEtfHu
       }
       meta={{
         ticker: 'MATE',
-        issuerOrManager: 'Man ETF Series Trust / Man Group',
+        issuerOrManager: 'Man Group',
         inception: 'Dec 16, 2025',
         mer: '0.97%',
         aum: '~$37M',
         beta: betaVsSpyDisplay(mateChart),
       }}
+      metaExtras={
+        <EtfEfficiencyMetaExtras
+          lines={[
+            {
+              label: 'Capital Efficiency:',
+              grade: 'A+',
+              tooltip: MATE_CAPITAL_EFFICIENCY_TOOLTIP,
+            },
+            {
+              label: 'Alpha Efficiency:',
+              grade: 'B+',
+              tooltip: MATE_ALPHA_EFFICIENCY_TOOLTIP,
+            },
+          ]}
+        />
+      }
       chart={{ displayLabel: 'MATE', yahooSymbol: 'MATE', payload: mateChart }}
       styles={styles}
     >
@@ -96,6 +121,8 @@ export default async function MateEtfPageContent({ hubBase }: { hubBase: UsEtfHu
         </p>
         <EtfPageDisclaimers />
       </div>
+
+      <EtfEfficiencyPageFootnotes paragraphs={[MATE_EFFICIENCY_FOOTNOTE]} />
     </EtfPageTemplate>
   )
 }

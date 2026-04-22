@@ -1,0 +1,115 @@
+/* Inline efficiency row (detail pages) — shared by MATE, dynamic US ETF pages, etc. */
+
+.efficiencyRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.75rem;
+  margin: -0.25rem 0 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+.efficiencyItem {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.efficiencyTitle {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.efficiencyGrade {
+  margin-left: 0.35rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.efficiencyGradeStrong {
+  margin-left: 0.35rem;
+  font-weight: 500;
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Hover / keyboard: tooltip bubble — do not duplicate with native `title` on the same node. */
+.efficiencyTooltipHost {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 0.15rem;
+  cursor: help;
+  outline: none;
+}
+
+.efficiencyTooltipHost:hover .efficiencyTooltip,
+.efficiencyTooltipHost:focus-visible .efficiencyTooltip {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.efficiencyTooltip {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 6;
+  width: min(22rem, 88vw);
+  padding: 0.65rem 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.45;
+  white-space: pre-line;
+  color: rgba(232, 228, 220, 0.88);
+  background: #121214;
+  border: 0.5px solid var(--color-border);
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+
+.efficiencyNotes {
+  margin: 0 0 1.5rem;
+  max-width: 50rem;
+}
+
+.efficiencyNotes p {
+  margin: 0 0 0.45rem;
+  font-size: 11px;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--color-text-ghost);
+}
+
+.efficiencyNotes p:last-child {
+  margin-bottom: 0;
+}
+
+.pageFootnotes {
+  margin-top: 2.75rem;
+  padding-top: 1.25rem;
+  border-top: 0.5px solid var(--color-border-faint);
+  max-width: 52rem;
+}
+
+.pageFootnotes p {
+  margin: 0 0 0.65rem;
+  font-size: 11px;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--color-text-ghost);
+}
+
+.pageFootnotes p:last-child {
+  margin-bottom: 0;
+}

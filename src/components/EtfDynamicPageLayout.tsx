@@ -1,9 +1,39 @@
+import type { ReactNode } from 'react'
 import EtfPageTemplate from '@/components/EtfPageTemplate'
 import EtfPageDisclaimers from '@/components/EtfPageDisclaimers'
 import type { EtfDynamicDef } from '@/lib/etfDynamicRegistry'
 import { betaVsSpyDisplay } from '@/lib/etfPageFormat'
 import type { EtfChartPayload } from '@/lib/getCachedEtfChart'
 import type { EtfPageHubBase } from '@/components/EtfPageTemplate'
+import {
+  EtfEfficiencyMetaExtras,
+  EtfEfficiencyPageFootnotes,
+  type EtfEfficiencyGradeLine,
+} from '@/components/etfEfficiency/EtfEfficiencyGrades'
+
+function buildEfficiencyMetaExtras(def: EtfDynamicDef): ReactNode {
+  const eff = def.efficiency
+  if (!eff) return undefined
+  const lines: EtfEfficiencyGradeLine[] = []
+  if (eff.capital) {
+    lines.push({
+      label: 'Capital Efficiency:',
+      grade: eff.capital.grade,
+      gradeTone: eff.capital.gradeTone,
+      tooltip: eff.capital.tooltip,
+    })
+  }
+  if (eff.alpha) {
+    lines.push({
+      label: 'Alpha Efficiency:',
+      grade: eff.alpha.grade,
+      gradeTone: eff.alpha.gradeTone,
+      tooltip: eff.alpha.tooltip,
+    })
+  }
+  if (lines.length === 0) return undefined
+  return <EtfEfficiencyMetaExtras lines={lines} notes={eff.notes} />
+}
 
 export interface EtfDynamicPageLayoutProps {
   variant: 'us' | 'ca'
@@ -38,6 +68,7 @@ export default function EtfDynamicPageLayout({
         structure: def.structure,
         beta: betaVsSpyDisplay(chart),
       }}
+      metaExtras={buildEfficiencyMetaExtras(def)}
       chart={{
         displayLabel: def.displayTicker,
         yahooSymbol: def.yahooSymbol,
@@ -77,6 +108,9 @@ export default function EtfDynamicPageLayout({
         </p>
         <EtfPageDisclaimers />
       </div>
+      {def.efficiency?.footnotes != null && def.efficiency.footnotes.length > 0 ? (
+        <EtfEfficiencyPageFootnotes paragraphs={def.efficiency.footnotes} />
+      ) : null}
     </EtfPageTemplate>
   )
 }

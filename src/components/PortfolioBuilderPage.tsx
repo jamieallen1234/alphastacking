@@ -21,8 +21,8 @@ export default async function PortfolioBuilderPage({ edition }: { edition: 'us' 
         </div>
         <h1 className={styles.heading}>Portfolio builder</h1>
         <p className={styles.lede}>
-          Build a temporary portfolio from tracked ETFs, set row allocations and efficiency sleeve,
-          then generate a cache-backed chart.
+          Build a portfolio from tracked ETFs, set row allocations and efficiency sleeve, then generate
+          a portfolio chart.
         </p>
         <PortfolioBuilderTool edition={edition} options={options} />
       </section>

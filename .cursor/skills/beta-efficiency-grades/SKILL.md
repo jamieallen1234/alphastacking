@@ -77,7 +77,7 @@ Treat as **equity-side vehicle** (Capital Efficiency badge only), not stacked.
 
 **Rationale:** the developed international sleeve (EAFE-style, often ~60% notional alongside a U.S. equity sleeve) is **equity beta**, not an uncorrelated alpha sleeve. Both sleeves are equity-derived—do **not** show an Alpha Efficiency row.
 
-**Copy:** describe the sponsor’s capital-efficient equity stack in the normal **Strategy** / lede / meta flow. The Capital Efficiency tooltip’s second paragraph should summarize that **equity-side** construction (see §7). This skill does **not** require a separate line under the grades (or in the tooltip) explaining headline beta vs. “SPY leverage”—omit unless editorially needed elsewhere on the page.
+**Copy:** describe the sponsor’s capital-efficient equity stack in the normal **Strategy** / lede / meta flow. The Capital Efficiency tooltip’s second paragraph should summarize that **equity-side** construction (see §7). This skill does **not** require a separate line under the grades (or in the tooltip) explaining headline beta and benchmark leverage—omit unless editorially needed elsewhere on the page.
 
 ## 2. Capital Efficiency — Formula and Grade Bands
 

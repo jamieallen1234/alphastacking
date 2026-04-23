@@ -1,6 +1,6 @@
 import type { EtfChartPayload } from '@/lib/getCachedEtfChart'
 
-/** Beta from cached chart payload (1y), benchmark selected by market/symbol. */
-export function betaVsSpyDisplay(chart: EtfChartPayload): string {
-  return chart.betaVsSpy1y != null ? chart.betaVsSpy1y.toFixed(2) : '—'
+/** Formatted beta from cached chart payload (1y, listing benchmark). */
+export function chartBetaDisplay(chart: EtfChartPayload): string {
+  return chart.beta1y != null ? chart.beta1y.toFixed(2) : '—'
 }

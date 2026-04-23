@@ -17,13 +17,14 @@ export interface EtfChartPayload {
   timestamps: number[]
   values: number[]
   totalReturnPercent: number | null
-  betaVsSpy1y: number | null
+  /** 1y OLS beta (listing benchmark). */
+  beta1y: number | null
   /** Yahoo first session (unix sec); drives disabling long chart ranges for new listings. */
   firstListedTsSec: number | null
 }
 
 /** Default benchmark for beta: TSX ETFs vs XIU, otherwise SPY. */
-function defaultBetaBenchmarkForSymbol(yahooSymbol: string): string {
+export function defaultBetaBenchmarkForSymbol(yahooSymbol: string): string {
   const sym = yahooSymbol.trim().toUpperCase()
   return sym.endsWith('.TO') ? 'XIU.TO' : 'SPY'
 }
@@ -37,7 +38,7 @@ export function emptyEtfChartPayload(symbol: string, range: YahooRange = '1y'): 
     timestamps: [],
     values: [],
     totalReturnPercent: null,
-    betaVsSpy1y: null,
+    beta1y: null,
     firstListedTsSec: null,
   }
 }
@@ -82,7 +83,7 @@ async function buildEtfChartPayload(
   const values =
     first && first > 0 ? series.prices.map((p) => (p / first) * START_NOTIONAL) : []
 
-  const betaVsSpy1y = computeBetaVsSpy(series, benchmarkSeries)
+  const beta1y = computeBetaVsBenchmark(series, benchmarkSeries)
 
   return {
     symbol: series.symbol,
@@ -91,7 +92,7 @@ async function buildEtfChartPayload(
     timestamps: series.timestamps,
     values,
     totalReturnPercent: first && last && first > 0 ? ((last / first - 1) * 100) : null,
-    betaVsSpy1y,
+    beta1y,
     firstListedTsSec,
   }
 }
@@ -109,7 +110,7 @@ function getEtfChartCachedLoader(
   if (!loader) {
     loader = unstable_cache(
       async () => buildEtfChartPayload(sym, range, benchmark),
-      ['etf-chart', 'v6-beta-benchmark', 'v5-first-listed', 'notional-10k', 'adj-close', 'beta-spy-1y', sym, range, benchmark],
+      ['etf-chart', 'v6-beta-benchmark', 'v5-first-listed', 'notional-10k', 'adj-close', 'beta-1y', sym, range, benchmark],
       { revalidate: DAY }
     )
     etfChartLoaderBySymbolRange.set(k, loader)
@@ -117,7 +118,7 @@ function getEtfChartCachedLoader(
   return loader
 }
 
-/** Cached ETF price series + beta vs market benchmark (1y overlap). */
+/** Cached ETF price series + 1y regression beta (listing benchmark). */
 export async function getCachedEtfChart(
   yahooSymbol: string,
   range: YahooRange = '1y',
@@ -190,11 +191,17 @@ function alignedDailyReturns(
   return { aRet, bRet }
 }
 
-function computeBetaVsSpy(
+/** OLS beta of ETF daily returns on benchmark returns (aligned by matching session timestamps). */
+export function computeBetaVsBenchmark(
   etf: { timestamps: number[]; prices: number[] },
-  spy: { timestamps: number[]; prices: number[] }
+  benchmark: { timestamps: number[]; prices: number[] }
 ): number | null {
-  const { aRet, bRet } = alignedDailyReturns(etf.timestamps, etf.prices, spy.timestamps, spy.prices)
+  const { aRet, bRet } = alignedDailyReturns(
+    etf.timestamps,
+    etf.prices,
+    benchmark.timestamps,
+    benchmark.prices
+  )
   if (aRet.length < 20 || bRet.length !== aRet.length) return null
   const meanA = aRet.reduce((s, x) => s + x, 0) / aRet.length
   const meanB = bRet.reduce((s, x) => s + x, 0) / bRet.length

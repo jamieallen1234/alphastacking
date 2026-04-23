@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import PresetPortfolioChart from '@/components/PresetPortfolioChart'
 import type { PortfolioChartPayload } from '@/lib/computePortfolioChart'
 import {
@@ -34,9 +34,17 @@ function newRow(id: number): BuilderRow {
   }
 }
 
+/** Integer % only: strips non-digits; if user typed or pasted a decimal, keeps the whole part. */
+function sanitizeAllocationInput(raw: string): string {
+  if (raw === '') return ''
+  const head = raw.split(/[.,]/)[0]
+  return head.replace(/\D/g, '')
+}
+
 function parseAllocation(v: string): number | null {
-  if (!v.trim()) return null
-  const n = Number(v)
+  const t = v.trim()
+  if (!t) return null
+  const n = parseInt(t, 10)
   if (!Number.isFinite(n) || n < 0) return null
   return n
 }
@@ -44,6 +52,93 @@ function parseAllocation(v: string): number | null {
 function gradeSortKey(g: PortfolioBuilderEtfOption['capitalGrade']): number {
   if (g == null) return 99
   return GRADE_RANK[g] ?? 99
+}
+
+type SelectOption = { value: string; label: string }
+
+function BuilderThemedSelect({
+  id,
+  ariaLabelledBy,
+  value,
+  options,
+  placeholder,
+  onChange,
+  disabled,
+  triggerClassName,
+}: {
+  id: string
+  ariaLabelledBy?: string
+  value: string
+  options: SelectOption[]
+  placeholder: string
+  onChange: (value: string) => void
+  disabled?: boolean
+  /** Extra classes for the closed trigger (e.g. multi-line ETF labels). */
+  triggerClassName?: string
+}) {
+  const [open, setOpen] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const listId = `${id}-listbox`
+
+  useEffect(() => {
+    if (!open) return
+    const onDoc = (e: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', onDoc)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDoc)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  const selected = options.find((o) => o.value === value)
+  const display = selected?.label ?? placeholder
+
+  return (
+    <div ref={rootRef} className={styles.customSelectRoot}>
+      <button
+        type="button"
+        id={id}
+        className={`${styles.select} ${styles.customSelectTrigger}${triggerClassName ? ` ${triggerClassName}` : ''}`}
+        disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={listId}
+        aria-labelledby={ariaLabelledBy}
+        onClick={() => {
+          if (disabled) return
+          setOpen((o) => !o)
+        }}
+      >
+        {display}
+      </button>
+      {open && !disabled ? (
+        <ul id={listId} role="listbox" className={styles.customSelectList} aria-labelledby={ariaLabelledBy}>
+          {options.map((o) => (
+            <li key={o.value === '' ? '__empty' : o.value} role="presentation" className={styles.customSelectItem}>
+              <button
+                type="button"
+                role="option"
+                aria-selected={o.value === value}
+                className={`${styles.customSelectOption} ${o.value === value ? styles.customSelectOptionSelected : ''}`}
+                onClick={() => {
+                  onChange(o.value)
+                  setOpen(false)
+                }}
+              >
+                {o.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  )
 }
 
 function rowEligibleOptions(options: PortfolioBuilderEtfOption[], row: BuilderRow): PortfolioBuilderEtfOption[] {
@@ -57,6 +152,43 @@ function rowEligibleOptions(options: PortfolioBuilderEtfOption[], row: BuilderRo
     if (r !== 0) return r
     return a.displayTicker.localeCompare(b.displayTicker)
   })
+}
+
+function formatBeta(b: number | string | null | undefined): string {
+  if (b == null || b === '') return ''
+  const n = typeof b === 'number' ? b : Number(b)
+  if (!Number.isFinite(n)) return ''
+  return n.toFixed(2)
+}
+
+function formatRowBeta(row: BuilderRow, options: PortfolioBuilderEtfOption[]): string {
+  if (!row.symbol.trim()) return ''
+  const eligible = rowEligibleOptions(options, row)
+  const o = eligible.find((x) => x.symbol === row.symbol)
+  if (!o) return ''
+  return formatBeta(o.beta)
+}
+
+/** Σ wᵢβᵢ when allocation is 100% and every row has a symbol with a known beta. */
+function weightedPortfolioBeta(
+  rows: BuilderRow[],
+  options: PortfolioBuilderEtfOption[],
+  allocationValid: boolean,
+  hasIncompleteRow: boolean
+): number | null {
+  if (!allocationValid || hasIncompleteRow) return null
+  let sum = 0
+  for (const r of rows) {
+    const pct = parseAllocation(r.allocation)
+    if (pct == null || pct <= 0 || !r.symbol.trim()) return null
+    const eligible = rowEligibleOptions(options, r)
+    const o = eligible.find((x) => x.symbol === r.symbol)
+    if (!o || o.beta == null) return null
+    const b = typeof o.beta === 'number' ? o.beta : Number(o.beta)
+    if (!Number.isFinite(b)) return null
+    sum += (pct / 100) * b
+  }
+  return sum
 }
 
 export default function PortfolioBuilderTool({
@@ -89,8 +221,33 @@ export default function PortfolioBuilderTool({
       }),
     [rows]
   )
-  const allocationValid = Math.abs(totalAllocation - 100) < 0.0001
-  const canGenerate = !hasIncompleteRow && allocationValid && rows.length > 0 && !loading
+  const allocationValid = totalAllocation === 100
+  const weightedBeta = useMemo(
+    () => weightedPortfolioBeta(rows, options, allocationValid, hasIncompleteRow),
+    [rows, options, allocationValid, hasIncompleteRow]
+  )
+  const betaBlocksGenerate =
+    allocationValid && !hasIncompleteRow && weightedBeta != null && weightedBeta > 2.5
+  const canGenerate =
+    !hasIncompleteRow && allocationValid && rows.length > 0 && !loading && !betaBlocksGenerate
+
+  const builderError = useMemo(() => {
+    if (error) return error
+    if (!allocationValid) return 'Allocation must total exactly 100% before generating.'
+    if (hasIncompleteRow) return 'Each line needs a positive % and an ETF before generating.'
+    if (weightedBeta != null && weightedBeta > 2.5) {
+      return `Weighted portfolio beta is ${weightedBeta.toFixed(2)} (limit 2.5). Reduce leverage or add lower-beta sleeves before generating.`
+    }
+    return null
+  }, [error, allocationValid, hasIncompleteRow, weightedBeta])
+
+  const builderWarning = useMemo(() => {
+    if (!allocationValid || hasIncompleteRow) return null
+    if (weightedBeta != null && weightedBeta > 1.5 && weightedBeta <= 2.5) {
+      return `Weighted portfolio beta is ${weightedBeta.toFixed(2)}. Above 1.5 increases drawdown risk versus a market-like book.`
+    }
+    return null
+  }, [allocationValid, hasIncompleteRow, weightedBeta])
 
   const overlapDays = useMemo(
     () =>
@@ -166,86 +323,178 @@ export default function PortfolioBuilderTool({
     <div className={styles.panel}>
       <div className={styles.topMeta}>
         <h2 className={styles.title}>Portfolio builder</h2>
-        <span className={styles.subtle}>Temporary (not saved)</span>
       </div>
 
       <div className={styles.rowList}>
+        <div className={styles.holdingHeadWrap}>
+          <div className={styles.holdingHeadInner}>
+            <div className={styles.holdingRow}>
+              <div className={styles.colHead} id="portfolio-builder-h-alloc">
+                % of portfolio
+              </div>
+              <div className={styles.colHead} id="portfolio-builder-h-eff">
+                Efficiency
+              </div>
+              <div className={styles.colHead} id="portfolio-builder-h-etf">
+                ETF
+              </div>
+              <div className={`${styles.colHead} ${styles.colHeadBeta}`} id="portfolio-builder-h-beta">
+                Beta
+              </div>
+            </div>
+          </div>
+          <div className={styles.holdingSideRail} aria-hidden="true" />
+        </div>
+
         {rows.map((row) => {
           const eligible = rowEligibleOptions(options, row)
           const isSymbolStillValid = row.symbol && eligible.some((o) => o.symbol === row.symbol)
+          const rowBetaText = formatRowBeta(row, options)
+          const rowBetaMuted = rowBetaText === ''
           return (
-            <div key={row.id} className={styles.row}>
-              <div className={styles.field}>
-                <label className={styles.label} htmlFor={`${row.id}-alloc`}>
-                  % of portfolio
-                </label>
-                <input
-                  id={`${row.id}-alloc`}
-                  className={styles.input}
-                  inputMode="decimal"
-                  value={row.allocation}
-                  onChange={(e) => updateRow(row.id, { allocation: e.target.value })}
-                  placeholder="e.g. 15"
-                />
-              </div>
+            <div key={row.id} className={styles.holdingWrap}>
+              <fieldset className={styles.holding} aria-label="Portfolio line">
+                <div className={styles.holdingRow}>
+                  <div className={styles.holdingCell}>
+                    <input
+                      id={`${row.id}-alloc`}
+                      className={styles.input}
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={row.allocation}
+                      onChange={(e) =>
+                        updateRow(row.id, { allocation: sanitizeAllocationInput(e.target.value) })
+                      }
+                      placeholder="e.g. 15"
+                      aria-labelledby="portfolio-builder-h-alloc"
+                    />
+                  </div>
 
-              <div className={styles.field}>
-                <label className={styles.label} htmlFor={`${row.id}-eff`}>
-                  Efficiency
-                </label>
-                <select
-                  id={`${row.id}-eff`}
-                  className={styles.select}
-                  value={row.efficiencyKind}
-                  onChange={(e) => updateRow(row.id, { efficiencyKind: e.target.value as EfficiencyKind, symbol: '' })}
-                >
-                  <option value="capital">Capital</option>
-                  <option value="alpha">Alpha</option>
-                </select>
-              </div>
+                  <div className={styles.holdingCell}>
+                    <BuilderThemedSelect
+                      id={`${row.id}-eff`}
+                      ariaLabelledBy="portfolio-builder-h-eff"
+                      value={row.efficiencyKind}
+                      options={[
+                        { value: 'capital', label: 'Capital' },
+                        { value: 'alpha', label: 'Alpha' },
+                      ]}
+                      placeholder="Capital"
+                      onChange={(v) =>
+                        updateRow(row.id, { efficiencyKind: v as EfficiencyKind, symbol: '' })
+                      }
+                    />
+                  </div>
 
-              <div className={styles.field}>
-                <label className={styles.label} htmlFor={`${row.id}-symbol`}>
-                  ETF ({row.efficiencyKind})
-                </label>
-                <select
-                  id={`${row.id}-symbol`}
-                  className={styles.select}
-                  value={isSymbolStillValid ? row.symbol : ''}
-                  onChange={(e) => updateRow(row.id, { symbol: e.target.value })}
-                >
-                  <option value="">{eligible.length ? 'Select ETF' : 'No eligible ETFs'}</option>
-                  {eligible.map((o) => {
-                    const grade = row.efficiencyKind === 'capital' ? o.capitalGrade : o.alphaGrade
-                    const gradeLabel = grade ?? 'N/A'
-                    return (
-                      <option key={`${row.id}-${o.universe}-${o.symbol}`} value={o.symbol}>
-                        {o.displayTicker} ({gradeLabel})
-                      </option>
-                    )
-                  })}
-                </select>
-              </div>
+                  <div
+                    className={`${styles.holdingCell} ${styles.holdingCellGrow} ${styles.holdingCellSleeve}`}
+                  >
+                    <span id={`${row.id}-sleeve-ctx`} className={styles.srOnly}>
+                      {row.efficiencyKind} sleeve
+                    </span>
+                    <BuilderThemedSelect
+                      id={`${row.id}-symbol`}
+                      ariaLabelledBy={`portfolio-builder-h-etf ${row.id}-sleeve-ctx`}
+                      triggerClassName={styles.selectEtfTrigger}
+                      value={isSymbolStillValid ? row.symbol : ''}
+                      options={
+                        eligible.length === 0
+                          ? [{ value: '', label: 'No eligible ETFs' }]
+                          : [
+                              { value: '', label: 'Select ETF' },
+                              ...eligible.map((o) => {
+                                const grade =
+                                  row.efficiencyKind === 'capital' ? o.capitalGrade : o.alphaGrade
+                                const gradeLabel = grade ?? 'N/A'
+                                return {
+                                  value: o.symbol,
+                                  label: `${o.title} (${gradeLabel})`,
+                                }
+                              }),
+                            ]
+                      }
+                      placeholder={eligible.length ? 'Select ETF' : 'No eligible ETFs'}
+                      onChange={(symbol) => updateRow(row.id, { symbol })}
+                      disabled={eligible.length === 0}
+                    />
+                  </div>
 
-              <div className={styles.rowActions}>
+                  <div className={`${styles.holdingCell} ${styles.holdingCellBeta}`}>
+                    <div
+                      className={`${styles.betaReadout} ${rowBetaMuted ? styles.betaReadoutMuted : ''}`}
+                      aria-labelledby="portfolio-builder-h-beta"
+                    >
+                      {rowBetaText}
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <div className={styles.holdingSideRail}>
                 <button
                   type="button"
-                  className={styles.btn}
+                  className={`${styles.btn} ${styles.btnSquareIcon}`}
                   disabled={rows.length <= 1}
                   onClick={() => removeRow(row.id)}
+                  aria-label="Remove this line"
                 >
-                  Remove
+                  X
                 </button>
               </div>
             </div>
           )
         })}
+
+        <div className={styles.totalFieldRow}>
+          <div className={styles.holdingWrap}>
+            <fieldset className={`${styles.holding} ${styles.totalHolding}`} aria-label="Portfolio totals">
+              <div className={styles.holdingRow}>
+                <div className={styles.totalOutCell}>
+                  <output
+                    id="portfolio-builder-total-pct"
+                    className={`${styles.totalOutput} ${allocationValid ? '' : styles.totalOutputMismatch}`}
+                    aria-label={`Total allocation ${totalAllocation} percent of 100 percent`}
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
+                    {totalAllocation} / 100%
+                  </output>
+                </div>
+                <div className={styles.totalMidSpacer} aria-hidden="true" />
+                <div className={`${styles.holdingCell} ${styles.holdingCellBeta}`}>
+                  <div
+                    id="portfolio-builder-total-beta"
+                    role="status"
+                    className={`${styles.betaReadout} ${weightedBeta == null ? styles.betaReadoutMuted : ''}`}
+                    aria-label={
+                      weightedBeta != null
+                        ? `Weighted portfolio beta ${weightedBeta.toFixed(2)}`
+                        : 'Weighted portfolio beta not shown; needs 100% allocation, each line filled, and beta available for every holding.'
+                    }
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
+                    {weightedBeta != null ? weightedBeta.toFixed(2) : ''}
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <div className={styles.holdingSideRail}>
+              <button
+                type="button"
+                className={`${styles.btn} ${styles.btnSquareIcon}`}
+                onClick={addRow}
+                disabled={rows.length >= MAX_ROWS}
+                aria-label="Add row"
+                title="Add row"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className={styles.controls}>
-        <button type="button" className={styles.btn} onClick={addRow} disabled={rows.length >= MAX_ROWS}>
-          Add row
-        </button>
         <button
           type="button"
           className={`${styles.btn} ${styles.btnPrimary}`}
@@ -259,20 +508,8 @@ export default function PortfolioBuilderTool({
         </button>
       </div>
 
-      <div className={styles.statusRow}>
-        <span className={styles.statusItem}>Rows: {rows.length} / {MAX_ROWS}</span>
-        <span className={`${styles.statusItem} ${allocationValid ? '' : styles.statusWarn}`}>
-          Total allocation: {totalAllocation.toFixed(2)}%
-        </span>
-      </div>
-
-      {!allocationValid ? (
-        <p className={styles.error}>Allocation must total exactly 100% before generating.</p>
-      ) : null}
-      {hasIncompleteRow ? (
-        <p className={styles.error}>Fill every row with a positive allocation and ETF selection.</p>
-      ) : null}
-      {error ? <p className={styles.error}>{error}</p> : null}
+      {builderError ? <p className={styles.error}>{builderError}</p> : null}
+      {builderWarning ? <p className={styles.warning}>{builderWarning}</p> : null}
 
       {payload ? (
         <>

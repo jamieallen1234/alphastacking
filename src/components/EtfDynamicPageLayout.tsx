@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import EtfPageTemplate from '@/components/EtfPageTemplate'
 import EtfPageDisclaimers from '@/components/EtfPageDisclaimers'
 import type { EtfDynamicDef } from '@/lib/etfDynamicRegistryTypes'
-import { betaVsSpyDisplay } from '@/lib/etfPageFormat'
+import { chartBetaDisplay } from '@/lib/etfPageFormat'
 import type { EtfChartPayload } from '@/lib/getCachedEtfChart'
 import type { EtfPageHubBase } from '@/components/EtfPageTemplate'
 import {
@@ -19,7 +19,7 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, s
   const stackLines = slug ? stackExposureLineAvailability(slug) : null
   const equityOnlyByCategory = def.hubCategoryId === 'factor' || def.hubCategoryId === 'long-short'
   if (equityOnlyByCategory) {
-    const beta = chart.betaVsSpy1y
+    const beta = chart.beta1y
     const useAlpha = beta != null && beta < 0.8
     if (useAlpha && eff.alpha) {
       lines.push({
@@ -98,7 +98,7 @@ export default function EtfDynamicPageLayout({
         structure: categoryValue,
         structureLabel: 'Category',
         structureStartsNewRow: true,
-        beta: betaVsSpyDisplay(chart),
+        beta: chartBetaDisplay(chart),
       }}
       metaExtras={buildEfficiencyMetaExtras(def, chart, slug)}
       chart={{

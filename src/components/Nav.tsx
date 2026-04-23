@@ -2,7 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { homePath, learnPath, portfoliosPath, usEtfHubPath } from '@/lib/siteRegion'
+import {
+  homePath,
+  learnPath,
+  portfolioBuilderPath,
+  portfoliosPath,
+  usEtfHubPath,
+} from '@/lib/siteRegion'
 import styles from './Nav.module.css'
 
 export default function Nav() {
@@ -10,6 +16,7 @@ export default function Nav() {
   const isCa = pathname === '/ca' || pathname.startsWith('/ca/')
   const home = homePath(isCa)
   const portfolios = portfoliosPath(isCa)
+  const portfolioBuilder = portfolioBuilderPath(isCa)
   const learn = learnPath(isCa)
   const usEtfHub = usEtfHubPath(isCa)
 
@@ -40,6 +47,9 @@ export default function Nav() {
           ) : null}
           <li>
             <Link href={learn}>Learn</Link>
+          </li>
+          <li>
+            <Link href={portfolioBuilder}>Builder</Link>
           </li>
         </ul>
       </nav>

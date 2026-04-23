@@ -7,6 +7,10 @@ export function portfoliosPath(isCa: boolean): string {
   return isCa ? '/ca/portfolios' : '/portfolios'
 }
 
+export function portfolioBuilderPath(isCa: boolean): string {
+  return isCa ? '/ca/portfolio-builder' : '/portfolio-builder'
+}
+
 export function homePath(isCa: boolean): string {
   return isCa ? '/ca' : '/'
 }

@@ -10,11 +10,13 @@ import {
   EtfEfficiencyPageFootnotes,
   type EtfEfficiencyGradeLine,
 } from '@/components/etfEfficiency/EtfEfficiencyGrades'
+import { stackExposureLineAvailability } from '@/lib/etfStackExposureBySlug'
 
-function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload): ReactNode {
+function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, slug?: string): ReactNode {
   const eff = def.efficiency
   if (!eff) return undefined
   const lines: EtfEfficiencyGradeLine[] = []
+  const stackLines = slug ? stackExposureLineAvailability(slug) : null
   const equityOnlyByCategory = def.hubCategoryId === 'factor' || def.hubCategoryId === 'long-short'
   if (equityOnlyByCategory) {
     const beta = chart.betaVsSpy1y
@@ -35,7 +37,7 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload): 
       })
     }
   } else {
-    if (eff.capital) {
+    if (eff.capital && (!stackLines || stackLines.hasEquitySleeve)) {
       lines.push({
         label: 'Capital Efficiency:',
         grade: eff.capital.grade ?? 'N/A',
@@ -43,7 +45,7 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload): 
         tooltip: eff.capital.tooltip,
       })
     }
-    if (eff.alpha) {
+    if (eff.alpha && (!stackLines || stackLines.hasNonEquitySleeve)) {
       lines.push({
         label: 'Alpha Efficiency:',
         grade: eff.alpha.grade ?? 'N/A',
@@ -61,6 +63,8 @@ export interface EtfDynamicPageLayoutProps {
   hubBase: EtfPageHubBase
   def: EtfDynamicDef
   chart: EtfChartPayload
+  /** Route slug for stack exposure rules (capital = equity sleeves only). */
+  slug?: string
   /** CSS module from `page.module.css` (same shape as MATE / HDGE ETF pages). */
   styles: Record<string, string>
 }
@@ -70,6 +74,7 @@ export default function EtfDynamicPageLayout({
   hubBase,
   def,
   chart,
+  slug,
   styles,
 }: EtfDynamicPageLayoutProps) {
   const categoryValue = def.structure ?? def.badge
@@ -95,7 +100,7 @@ export default function EtfDynamicPageLayout({
         structureStartsNewRow: true,
         beta: betaVsSpyDisplay(chart),
       }}
-      metaExtras={buildEfficiencyMetaExtras(def, chart)}
+      metaExtras={buildEfficiencyMetaExtras(def, chart, slug)}
       chart={{
         displayLabel: def.displayTicker,
         yahooSymbol: def.yahooSymbol,

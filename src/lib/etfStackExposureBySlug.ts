@@ -23,6 +23,14 @@ export type EtfStackExposureConfig = {
   coreBenchmarkSymbol?: string
   /** Optional synthetic core benchmark blend. */
   coreBenchmarkBlend?: Array<{ symbol: string; weightPct: number }>
+  /**
+   * Equity-only sleeve benchmark for capital efficiency + residual alpha (ignores non-equity
+   * sleeves such as bonds in the same notional “capital” bucket).
+   */
+  equityCoreBenchmarkSymbol?: string
+  equityCoreBenchmarkBlend?: Array<{ symbol: string; weightPct: number }>
+  /** When true, `coreBenchmarkBlend` is treated as the equity-only core (every leg is equity). */
+  equityOnlyUsesCoreBlend?: boolean
   /** Explicitly force all-equity stack capital treatment. */
   allEquityStack?: boolean
   /** If true, apply options-overlay adjustment: 20% gain haircut + 6% distribution assumption. */
@@ -68,6 +76,7 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
       { symbol: 'SPY', weightPct: 90 },
       { symbol: 'VDU', weightPct: 60 },
     ],
+    equityOnlyUsesCoreBlend: true,
     allEquityStack: true,
   },
   gde: {
@@ -94,10 +103,8 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
       { name: 'Macro futures', pct: 100, bucket: 'alpha', assetClass: 'alternatives' },
     ],
     capitalMarketBenchmarkSymbol: 'VFV.TO',
-    coreBenchmarkBlend: [
-      { symbol: 'VEQT.TO', weightPct: 50 },
-      { symbol: 'VAB.TO', weightPct: 50 },
-    ],
+    /** Capital efficiency uses equity sleeve only; bonds + macro are alpha-side. */
+    equityCoreBenchmarkSymbol: 'VEQT.TO',
   },
   asgm: {
     components: [
@@ -172,5 +179,32 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     coreBenchmarkSymbol: 'SPY',
     optionsOverlayAssumption: true,
   },
+  /** USCF: actively tilted WTI-style crude + bitcoin; no listed equity sleeve — alpha-only vs blend anchor. */
+  wtib: {
+    components: [
+      { name: 'Crude oil (WTI-linked)', pct: 100, bucket: 'capital', assetClass: 'commodity' },
+      { name: 'Bitcoin', pct: 100, bucket: 'alpha', assetClass: 'crypto' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkBlend: [
+      { symbol: 'USO', weightPct: 50 },
+      { symbol: 'BTC-USD', weightPct: 50 },
+    ],
+  },
+}
+
+/** Sleeves with `assetClass === 'equity'` vs everything else (used for efficiency line + grade rules). */
+export function stackExposureLineAvailability(
+  slug: string
+): { hasEquitySleeve: boolean; hasNonEquitySleeve: boolean } | null {
+  const m = ETF_STACK_EXPOSURE_BY_SLUG[slug]
+  if (!m) return null
+  let equity = 0
+  let nonEquity = 0
+  for (const c of m.components) {
+    if (c.assetClass === 'equity') equity += c.pct
+    else nonEquity += c.pct
+  }
+  return { hasEquitySleeve: equity > 0, hasNonEquitySleeve: nonEquity > 0 }
 }
 

@@ -166,14 +166,9 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     footnotes: [EFFICIENCY_PROVISIONAL_FOOTNOTE],
   },
   wtib: {
-    capital: {
-      tooltip: capitalEfficiencyTooltip(
-        'WTIB balances crude oil and bitcoin futures/ETP exposure in an actively tilted sleeve—commodity + digital beta in one fund.'
-      ),
-    },
     alpha: {
       tooltip: alphaEfficiencyStackedTooltip(
-        'The non-U.S.-large-cap leg is the oil/bitcoin futures stack and how USCF allocates between them—curve and funding matter as much as spot narratives.'
+        'WTIB is oil plus bitcoin futures/ETP exposure in one fund—no separate listed equity sleeve; efficiency is scored on the non-equity stack versus a crude/bitcoin blend anchor and hurdle rates.'
       ),
     },
     footnotes: [EFFICIENCY_PROVISIONAL_FOOTNOTE],

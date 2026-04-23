@@ -45,6 +45,7 @@ export default async function UsEtfDynamicPage({
       hubBase="/us-etfs"
       def={def}
       chart={chart}
+      slug={slug}
       styles={styles}
     />
   )

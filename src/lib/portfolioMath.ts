@@ -300,7 +300,31 @@ export function totalReturnPercent(points: PortfolioSeriesPoint[]): number | nul
 }
 
 /**
+ * Last `benchDays[i]` with `benchDays[i] <= day` (ISO `YYYY-MM-DD` sort order = chronological).
+ * Returns index in `benchDays` or -1 if no day is on or before `day`.
+ */
+function upperBoundBenchDayIndex(benchDays: readonly string[], day: string): number {
+  let lo = 0
+  let hi = benchDays.length - 1
+  let ans = -1
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1
+    if (benchDays[mid]! <= day) {
+      ans = mid
+      lo = mid + 1
+    } else {
+      hi = mid - 1
+    }
+  }
+  return ans
+}
+
+/**
  * Align benchmark to portfolio **NY calendar days** (same order as portfolio series points).
+ *
+ * When the benchmark is a different listing calendar (e.g. `VFV.TO` vs. US-listed legs), some
+ * portfolio NY sessions have no local benchmark bar. We use the **last benchmark close on or
+ * before** that NY day (carry forward), so CAD charts stay aligned without dropping the line.
  */
 export function normalizedBenchmarkByNyDays(
   bench: PriceSeries,
@@ -308,9 +332,21 @@ export function normalizedBenchmarkByNyDays(
 ): number[] | null {
   if (sortedNyDayKeys.length < 2) return null
   const dm = seriesToNyDayPriceMap(bench)
+  const benchDays = [...dm.keys()]
+    .filter((d) => {
+      if (!d) return false
+      const p = dm.get(d)
+      return p != null && p > 0
+    })
+    .sort()
+  if (benchDays.length === 0) return null
+
   const raw: number[] = []
   for (const day of sortedNyDayKeys) {
-    const p = dm.get(day)
+    if (!day) return null
+    const idx = upperBoundBenchDayIndex(benchDays, day)
+    if (idx < 0) return null
+    const p = dm.get(benchDays[idx]!)
     if (p == null || p <= 0) return null
     raw.push(p)
   }

@@ -48,6 +48,7 @@ export default async function CaUsEtfDynamicPage({
       hubBase="/ca/us-etfs"
       def={def}
       chart={chart}
+      slug={slug}
       styles={styles}
     />
   )

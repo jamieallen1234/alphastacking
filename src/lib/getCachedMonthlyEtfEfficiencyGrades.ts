@@ -57,7 +57,7 @@ export async function getCachedMonthlyEfficiencyPatchForSlug(
         const rf5y = await fetchDailySeries('^IRX', '5y')
         return computeMonthlyEfficiencyPatchForSlug(def, staticEff, spy5y, rf5y, slug)
       },
-      ['etf-efficiency-monthly-per-slug-v20-explicit-sleeve-map', monthKey, universe, slug],
+      ['etf-efficiency-monthly-per-slug-v25-under12m-step-plus-b-plus-cap', monthKey, universe, slug],
       { revalidate: MONTHLY_EFFICIENCY_REVALIDATE_SEC }
     )
     slugLoaderByKey.set(cacheKey, loader)

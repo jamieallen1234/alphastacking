@@ -121,7 +121,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     pedigreeParas: ped(
       `Quantify’s IncomeSTKd suite competes with yield-focused crypto ETPs from larger sponsors; its edge is packaging bespoke stacks for RIAs who want tickers instead of separately managed option books—scale is boutique, so monitoring capacity in the options markets matters more than for trillion-dollar complexes.`,
-      `Because ISBG shares sponsor DNA with BTGD/ISSB, read each prospectus side by side: sleeve weights, fee breakpoints, and whether the same desk runs the option overlay for multiple tickers.`,
+      `Because ISBG shares sponsor DNA with BTGD, read each prospectus side by side: sleeve weights, fee breakpoints, and whether the same desk runs the option overlay for multiple tickers.`,
     ),
     outperfParas: [
       'Premium harvesting works when implied vol is rich but realized paths stay range-bound—think gold grinding with upward skew and bitcoin oscillating inside a band rather than vertical melt-ups or liquidation cascades.',
@@ -129,39 +129,6 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     officialUrl: 'https://quantifyfunds.com/isbg',
     officialLabel: 'Quantify Funds (ISBG)',
-  },
-
-  issb: {
-    yahooSymbol: 'ISSB',
-    hubCategoryId: 'crypto',
-    badge: 'Crypto & digital assets',
-    h1Title: 'ISSB — IncomeSTKd 1x US Stocks & 1x Bitcoin Premium ETF',
-    displayTicker: 'ISSB',
-    issuer: 'Quantify Funds',
-    inception: 'Jan 20, 2026',
-    structure: 'US equity + bitcoin options-income',
-    mer: '1.14%',
-    aum: '~$22M',
-    pageTitle: 'ISSB ETF — Alpha Stacking',
-    description: 'IncomeSTKd US stocks + bitcoin premium ETF (ISSB).',
-    lede: cryptoLede(
-      'ISSB',
-      'pairs large-cap U.S. equity beta with bitcoin beta and an options-premium sleeve for income.'
-    ),
-    strategyParas: [
-      'ISSB explicitly marries S&P 500–style equity beta with bitcoin futures/ETP exposure, then sells volatility to fund distributions—so correlations matter: when stocks and bitcoin sell off together, short option legs can face simultaneous pressure on two uncorrelated “short vol” books.',
-      'Collateral routing between equity futures, Treasury bills, and crypto derivatives is spelled out in the prospectus; any mismatch during stress weeks is where tracking error versus a mental model of “QQQ + BTC + yield” shows up.',
-    ],
-    pedigreeParas: ped(
-      `Quantify pitches ISSB to advisors who want a single-ticker “traditional risk asset + digital risk asset + income” story; the sponsor is not trying to compete with Vanguard on expense ratios—it competes on structure, which means you must understand the derivative stack, not just the marketing slide.`,
-      `Given the sleeve overlap with other Quantify stacked products, map your aggregate exposure across accounts so you are not stacking multiple short-vol books on the same S&P and BTC betas.`,
-    ),
-    outperfParas: [
-      'Ideal tape: large-cap equities grind higher on earnings while bitcoin provides a diversifying liquidity beta, and index implied volatility sits high enough that the overlay captures carry without repeated gap-through.',
-      'Hard tape: macro shocks that hammer both books (2022-style) or liquidity vacuums where bitcoin gaps down faster than options models price—favorable regimes are “orderly risk-on with vol to sell,” not synchronized crash weeks.',
-    ],
-    officialUrl: 'https://quantifyfunds.com/issb',
-    officialLabel: 'Quantify Funds (ISSB)',
   },
 
   ooqb: {

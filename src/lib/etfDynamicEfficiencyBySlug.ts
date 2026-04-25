@@ -155,18 +155,6 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
-  issb: {
-    capital: {
-      tooltip: insufficientHistoryTooltip(
-        'ISSB pairs large-cap U.S. equity exposure with bitcoin and an options-premium sleeve; stacked capital efficiency is tracked once sufficient live NAV exists.'
-      ),
-    },
-    alpha: {
-      tooltip: insufficientHistoryTooltip(
-        'The stacked book includes short-volatility and distribution mechanics alongside equity and crypto legs—grade when history threshold is met.'
-      ),
-    },
-  },
   ooqb: {
     capital: {
       tooltip: capitalEfficiencyTooltip(

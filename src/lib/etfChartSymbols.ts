@@ -6,7 +6,6 @@ export const ETF_CHART_SYMBOLS = [
   'BEGS',
   'BTGD',
   'ISBG',
-  'ISSB',
   'OOQB',
   'OOSB',
   'RSSX',

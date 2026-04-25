@@ -169,16 +169,6 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     coreBenchmarkSymbol: 'IBIT',
     optionsOverlayAssumption: true,
   },
-  issb: {
-    components: [
-      { name: 'S&P 500 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
-      { name: 'Bitcoin', pct: 100, bucket: 'alpha', assetClass: 'crypto' },
-      { name: 'Options-income overlay', pct: 100, bucket: 'alpha', assetClass: 'options-income' },
-    ],
-    capitalMarketBenchmarkSymbol: 'SPY',
-    coreBenchmarkSymbol: 'SPY',
-    optionsOverlayAssumption: true,
-  },
   /** USCF: actively tilted WTI-style crude + bitcoin; no listed equity sleeve — alpha-only vs blend anchor. */
   wtib: {
     components: [

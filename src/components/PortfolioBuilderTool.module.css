@@ -50,7 +50,7 @@
 }
 
 .colHeadBeta {
-  grid-column: 4;
+  grid-column: 5;
   text-align: left;
 }
 
@@ -83,7 +83,7 @@
   border: 0;
 }
 
-/** Card body: four columns — %, efficiency, ETF, beta (× sits outside in .holdingSideRail). */
+/** Card body: five columns — %, efficiency, category, ETF, beta (× sits outside in .holdingSideRail). */
 .holding {
   flex: 1;
   min-width: 0;
@@ -96,12 +96,12 @@
 }
 
 /**
- * Fixed % / efficiency / β track widths so every row (and the total line) shares the same column
- * starts; only the ETF column is `1fr` — variable col 1 was shifting β when totals were wider.
+ * Fixed % / efficiency / category / β track widths so every row (and the total line)
+ * shares column starts; only the ETF column is `1fr`.
  */
 .holdingRow {
   display: grid;
-  grid-template-columns: 7rem 9.5rem minmax(0, 1fr) 4.5rem;
+  grid-template-columns: 6rem 6rem 10rem minmax(0, 1fr) 4.5rem;
   gap: 0.35rem 0.65rem;
   align-items: center;
   width: 100%;
@@ -138,29 +138,23 @@
   padding-bottom: 0.35rem;
 }
 
-/** Allocation total only: keep β readout bordered like data rows. */
-.totalHolding .totalOutput {
-  background: transparent;
-  border-color: transparent;
-}
-
+/** Keep total output chrome visible in both valid and mismatch states. */
 .totalHolding .totalOutputMismatch {
   border-color: rgba(226, 75, 74, 0.45);
-  background: transparent;
 }
 
 .totalFieldRow .holdingRow {
   align-items: stretch;
 }
 
-/** Spans efficiency + ETF columns so portfolio β shares column 4 with row β readouts. */
+/** Spans efficiency + category + ETF columns so portfolio β shares column 5. */
 .totalMidSpacer {
-  grid-column: 2 / 4;
+  grid-column: 2 / 5;
   min-width: 0;
 }
 
 .holdingCellBeta {
-  grid-column: 4;
+  grid-column: 5;
   /* Do not inherit .holdingCell min-width: 0 — it can squeeze this track until figures disappear. */
   min-width: 4.5rem;
 }
@@ -319,6 +313,29 @@
   padding: 0;
 }
 
+.customSelectSearchRow {
+  margin: 0;
+  padding: 0.2rem 0.45rem 0.35rem;
+}
+
+.customSelectSearchInput {
+  width: 100%;
+  box-sizing: border-box;
+  border: 0.5px solid var(--color-border);
+  border-radius: 3px;
+  background: rgba(232, 228, 220, 0.03);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  padding: 0.35rem 0.5rem;
+}
+
+.customSelectSearchInput:focus {
+  outline: none;
+  border-color: var(--color-gold-border);
+  box-shadow: 0 0 0 1px var(--color-gold-dim);
+}
+
 .customSelectOption {
   display: block;
   width: 100%;
@@ -457,7 +474,7 @@
   .holdingHeadInner .holdingRow,
   .holding .holdingRow,
   .totalHolding .holdingRow {
-    min-width: 25rem;
+    min-width: 34rem;
   }
 
   .holdingSideRail {

@@ -398,15 +398,15 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     footnotes: [EFFICIENCY_PROVISIONAL_FOOTNOTE],
   },
   btccb: {
-    capital: {
-      tooltip: capitalEfficiencyTooltip(
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
         'BTCC-B holds spot Bitcoin in cold storage—CAD-unhedged Purpose Bitcoin ETF units, direct digital-asset beta in a regulated wrapper.'
       ),
     },
   },
   ethxb: {
-    capital: {
-      tooltip: capitalEfficiencyTooltip(
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
         'ETHX-B holds spot Ether in custody—CI Galaxy’s Canadian-listed spot sleeve with CAD unhedged pricing.'
       ),
     },

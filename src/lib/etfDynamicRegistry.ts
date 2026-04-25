@@ -979,7 +979,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
   rgbm: {
     yahooSymbol: 'RGBM.TO',
     hubCategoryId: 'return-stacked',
-    badge: 'Return Stacked',
+    badge: 'Return Stacked - 2x+',
     h1Title: 'RGBM.TO — Return Stacked® Global Balanced & Macro ETF',
     displayTicker: 'RGBM / RGBM.U',
     issuer: 'LongPoint / Return Stacked® ETFs Canada',

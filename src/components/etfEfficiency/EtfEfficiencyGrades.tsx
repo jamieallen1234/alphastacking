@@ -1,7 +1,7 @@
 import effStyles from '@/components/etfEfficiency/EtfEfficiencyGrades.module.css'
 
 export type EtfEfficiencyGradeLine = {
-  /** Include trailing colon, e.g. `Capital Efficiency:` */
+  /** Include trailing colon, e.g. `Equity Efficiency:` */
   label: string
   grade: string
   /** `gold` highlights standout grades (e.g. A+). Default: muted. */

@@ -193,6 +193,68 @@ interface PresetPortfolioChartProps {
   footnote?: 'default' | 'minimal' | 'none'
   /** When false, hides max drawdown columns (e.g. home teaser cards). */
   showMaxDrawdown?: boolean
+  /** Optional weighted portfolio beta for scoring blocks (e.g. builder output). */
+  weightedBeta?: number | null
+  /** Show weighted letter scorecard (SPY baseline = B). */
+  showScorecard?: boolean
+}
+
+type LetterGrade = 'A+' | 'A' | 'B+' | 'B' | 'C' | 'D'
+
+function pointsToLetter(points: number): LetterGrade {
+  if (points >= 4.5) return 'A+'
+  if (points >= 3.5) return 'A'
+  if (points >= 2.5) return 'B+'
+  if (points >= 1.5) return 'B'
+  if (points >= 0.75) return 'C'
+  return 'D'
+}
+
+function downgradeOneLetter(grade: LetterGrade): LetterGrade {
+  if (grade === 'A+') return 'A'
+  if (grade === 'A') return 'B+'
+  if (grade === 'B+') return 'B'
+  if (grade === 'B') return 'C'
+  return 'D'
+}
+
+/**
+ * Relative return versus benchmark in percent:
+ *   ((portfolioTR / benchmarkTR) - 1) * 100
+ * Positive => earned more than benchmark; negative => earned less.
+ * SPY baseline B around 0%, with A+ at +50% or better.
+ */
+function alphaPoints(alphaVsBenchmarkPct: number): number {
+  if (alphaVsBenchmarkPct >= 50) return 5
+  if (alphaVsBenchmarkPct >= 25) return 4
+  if (alphaVsBenchmarkPct > 0) return 3
+  if (alphaVsBenchmarkPct > -15) return 2
+  if (alphaVsBenchmarkPct > -40) return 1
+  return 0
+}
+
+/**
+ * Relative max-drawdown versus benchmark in percent:
+ *   ((|portfolioDD| / |benchmarkDD|) - 1) * 100
+ * Positive => worse drawdown than benchmark; negative => better.
+ * SPY baseline B around 0%, with D at +40% or worse.
+ */
+function drawdownPoints(drawdownVsBenchmarkPct: number): number {
+  if (drawdownVsBenchmarkPct <= -40) return 5
+  if (drawdownVsBenchmarkPct <= -20) return 4
+  if (drawdownVsBenchmarkPct < 0) return 3
+  if (drawdownVsBenchmarkPct < 15) return 2
+  if (drawdownVsBenchmarkPct < 40) return 1
+  return 0
+}
+
+function betaPoints(betaEdge: number): number {
+  if (betaEdge >= 0.5) return 5
+  if (betaEdge >= 0.2) return 4
+  if (betaEdge >= 0) return 3
+  if (betaEdge > -0.2) return 2
+  if (betaEdge > -0.5) return 1
+  return 0
 }
 
 export default function PresetPortfolioChart({
@@ -200,6 +262,8 @@ export default function PresetPortfolioChart({
   portfolioLabel = 'Portfolio',
   footnote = 'default',
   showMaxDrawdown = true,
+  weightedBeta = null,
+  showScorecard = false,
 }: PresetPortfolioChartProps) {
   const pathname = usePathname()
   const hubBase: PortfolioUsEtfHubBase = useMemo(
@@ -295,6 +359,38 @@ export default function PresetPortfolioChart({
     </>
   )
 
+  const alphaEdge =
+    totalReturnPercent != null &&
+    benchmarkTotalReturnPercent != null &&
+    Math.abs(benchmarkTotalReturnPercent) > 0
+      ? ((totalReturnPercent / benchmarkTotalReturnPercent - 1) * 100)
+      : null
+  const drawdownEdge =
+    maxDrawdownPortfolioPercent != null &&
+    maxDrawdownBenchmarkPercent != null &&
+    Math.abs(maxDrawdownBenchmarkPercent) > 0
+      ? ((Math.abs(maxDrawdownPortfolioPercent) / Math.abs(maxDrawdownBenchmarkPercent) - 1) * 100)
+      : null
+  const betaEdge = weightedBeta != null ? 1 - weightedBeta : null
+
+  const alphaGrade = alphaEdge != null ? pointsToLetter(alphaPoints(alphaEdge)) : null
+  const drawdownGrade = drawdownEdge != null ? pointsToLetter(drawdownPoints(drawdownEdge)) : null
+  const betaGrade = betaEdge != null ? pointsToLetter(betaPoints(betaEdge)) : null
+
+  const weightedScore =
+    alphaEdge != null && drawdownEdge != null && betaEdge != null
+      ? alphaPoints(alphaEdge) * 0.5 + drawdownPoints(drawdownEdge) * 0.3 + betaPoints(betaEdge) * 0.2
+      : null
+  const rawOverallGrade = weightedScore != null ? pointsToLetter(weightedScore) : null
+  const underOneYear = (() => {
+    const ts = Date.parse(`${limitingFirstTradeDate}T00:00:00Z`)
+    if (!Number.isFinite(ts)) return false
+    const days = (Date.now() - ts) / (1000 * 60 * 60 * 24)
+    return days < 365
+  })()
+  const overallGrade =
+    rawOverallGrade != null && underOneYear ? downgradeOneLetter(rawOverallGrade) : rawOverallGrade
+
   return (
     <div className={styles.chartBlock}>
       <div className={styles.metricsRow}>
@@ -359,6 +455,28 @@ export default function PresetPortfolioChart({
         height={140}
         chartCurrency={chartCurrency}
       />
+      {showScorecard ? (
+        <div className={styles.scorecard}>
+          <div className={styles.scorecardHeader}>
+            <strong>Portfolio score:</strong> {overallGrade ?? '—'}
+          </div>
+          {overallGrade != null && underOneYear ? (
+            <p className={styles.scorecardLine}>
+              <strong>Adjustment:</strong> Portfolio history is under 1 year, so the overall score is
+              downgraded by one letter.
+            </p>
+          ) : null}
+          <p className={styles.scorecardLine}>
+            <strong>Excess alpha:</strong> {alphaGrade ?? '—'}
+          </p>
+          <p className={styles.scorecardLine}>
+            <strong>Max drawdown:</strong> {drawdownGrade ?? '—'}
+          </p>
+          <p className={styles.scorecardLine}>
+            <strong>Beta:</strong> {betaGrade ?? '—'}
+          </p>
+        </div>
+      ) : null}
       <div className={styles.chartFootnotes}>
         {footnote !== 'none' ? (
           <div className={styles.chartDisclaimerRow}>

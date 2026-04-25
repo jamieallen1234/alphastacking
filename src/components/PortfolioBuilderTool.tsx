@@ -12,13 +12,14 @@ import type { PortfolioBuilderEtfOption } from '@/lib/portfolioBuilderEtfOptions
 import type { YahooRange } from '@/lib/yahooFinance'
 import styles from './PortfolioBuilderTool.module.css'
 
-type EfficiencyKind = 'capital' | 'alpha'
+type EfficiencyKind = 'capital' | 'alpha' | 'all'
 type BuilderEdition = 'us' | 'ca'
 
 type BuilderRow = {
   id: string
   allocation: string
   efficiencyKind: EfficiencyKind
+  category: string
   symbol: string
 }
 
@@ -30,8 +31,16 @@ function newRow(id: number): BuilderRow {
     id: `row-${id}`,
     allocation: '',
     efficiencyKind: 'capital',
+    category: 'all',
     symbol: '',
   }
+}
+
+function defaultRows(): BuilderRow[] {
+  return [
+    { ...newRow(1), allocation: '50' },
+    { ...newRow(2), efficiencyKind: 'alpha', allocation: '50' },
+  ]
 }
 
 /** Integer % only: strips non-digits; if user typed or pasted a decimal, keeps the whole part. */
@@ -54,7 +63,7 @@ function gradeSortKey(g: PortfolioBuilderEtfOption['capitalGrade']): number {
   return GRADE_RANK[g] ?? 99
 }
 
-type SelectOption = { value: string; label: string }
+type SelectOption = { value: string; label: string; searchText?: string }
 
 function BuilderThemedSelect({
   id,
@@ -65,6 +74,8 @@ function BuilderThemedSelect({
   onChange,
   disabled,
   triggerClassName,
+  searchable,
+  searchPlaceholder,
 }: {
   id: string
   ariaLabelledBy?: string
@@ -75,8 +86,12 @@ function BuilderThemedSelect({
   disabled?: boolean
   /** Extra classes for the closed trigger (e.g. multi-line ETF labels). */
   triggerClassName?: string
+  /** Optional inline filter input in open listbox (used by ETF picker). */
+  searchable?: boolean
+  searchPlaceholder?: string
 }) {
   const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState('')
   const rootRef = useRef<HTMLDivElement>(null)
   const listId = `${id}-listbox`
 
@@ -98,6 +113,12 @@ function BuilderThemedSelect({
 
   const selected = options.find((o) => o.value === value)
   const display = selected?.label ?? placeholder
+  const q = query.trim().toLowerCase()
+  const visibleOptions = !searchable || !q
+    ? options
+    : options.filter((o) =>
+        `${o.label} ${o.searchText ?? ''}`.toLowerCase().includes(q)
+      )
 
   return (
     <div ref={rootRef} className={styles.customSelectRoot}>
@@ -112,14 +133,30 @@ function BuilderThemedSelect({
         aria-labelledby={ariaLabelledBy}
         onClick={() => {
           if (disabled) return
-          setOpen((o) => !o)
+          setOpen((o) => {
+            const next = !o
+            if (next) setQuery('')
+            return next
+          })
         }}
       >
         {display}
       </button>
       {open && !disabled ? (
         <ul id={listId} role="listbox" className={styles.customSelectList} aria-labelledby={ariaLabelledBy}>
-          {options.map((o) => (
+          {searchable ? (
+            <li role="presentation" className={styles.customSelectSearchRow}>
+              <input
+                type="text"
+                className={styles.customSelectSearchInput}
+                placeholder={searchPlaceholder ?? 'Filter...'}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                aria-label="Filter options"
+              />
+            </li>
+          ) : null}
+          {visibleOptions.map((o) => (
             <li key={o.value === '' ? '__empty' : o.value} role="presentation" className={styles.customSelectItem}>
               <button
                 type="button"
@@ -142,9 +179,16 @@ function BuilderThemedSelect({
 }
 
 function rowEligibleOptions(options: PortfolioBuilderEtfOption[], row: BuilderRow): PortfolioBuilderEtfOption[] {
-  const eligible = options.filter((o) =>
-    row.efficiencyKind === 'capital' ? o.capitalEligible : o.alphaEligible
-  )
+  const eligible = options.filter((o) => {
+    const efficiencyOk =
+      row.efficiencyKind === 'all'
+        ? o.capitalEligible || o.alphaEligible
+        : row.efficiencyKind === 'capital'
+          ? o.capitalEligible
+          : o.alphaEligible
+    const categoryOk = row.category === 'all' || o.category === row.category
+    return efficiencyOk && categoryOk
+  })
   return eligible.sort((a, b) => {
     const ag = row.efficiencyKind === 'capital' ? a.capitalGrade : a.alphaGrade
     const bg = row.efficiencyKind === 'capital' ? b.capitalGrade : b.alphaGrade
@@ -152,6 +196,31 @@ function rowEligibleOptions(options: PortfolioBuilderEtfOption[], row: BuilderRo
     if (r !== 0) return r
     return a.displayTicker.localeCompare(b.displayTicker)
   })
+}
+
+function rowCategoryOptions(options: PortfolioBuilderEtfOption[], row: BuilderRow): SelectOption[] {
+  const categories = Array.from(
+    new Set(
+      options
+        .filter((o) =>
+          row.efficiencyKind === 'all'
+            ? o.capitalEligible || o.alphaEligible
+            : row.efficiencyKind === 'capital'
+              ? o.capitalEligible
+              : o.alphaEligible
+        )
+        .map((o) => o.category)
+    )
+  ).sort((a, b) => a.localeCompare(b))
+  return [{ value: 'all', label: 'All' }, ...categories.map((c) => ({ value: c, label: c }))]
+}
+
+function optionGradeLabel(row: BuilderRow, o: PortfolioBuilderEtfOption): string {
+  if (row.efficiencyKind === 'capital') return o.capitalGrade ?? 'N/A'
+  if (row.efficiencyKind === 'alpha') return o.alphaGrade ?? 'N/A'
+  const c = o.capitalGrade ?? 'N/A'
+  const a = o.alphaGrade ?? 'N/A'
+  return `Eq ${c} / Alpha ${a}`
 }
 
 function formatBeta(b: number | string | null | undefined): string {
@@ -198,8 +267,8 @@ export default function PortfolioBuilderTool({
   edition: BuilderEdition
   options: PortfolioBuilderEtfOption[]
 }) {
-  const [rows, setRows] = useState<BuilderRow[]>([newRow(1)])
-  const [nextId, setNextId] = useState(2)
+  const [rows, setRows] = useState<BuilderRow[]>(defaultRows)
+  const [nextId, setNextId] = useState(3)
   const [payload, setPayload] = useState<PortfolioChartPayload | null>(null)
   const [activeRange, setActiveRange] = useState<YahooRange>('1y')
   const [loading, setLoading] = useState(false)
@@ -312,8 +381,8 @@ export default function PortfolioBuilderTool({
   }, [])
 
   const resetAll = useCallback(() => {
-    setRows([newRow(1)])
-    setNextId(2)
+    setRows(defaultRows())
+    setNextId(3)
     setPayload(null)
     setError(null)
     setActiveRange('1y')
@@ -330,10 +399,13 @@ export default function PortfolioBuilderTool({
           <div className={styles.holdingHeadInner}>
             <div className={styles.holdingRow}>
               <div className={styles.colHead} id="portfolio-builder-h-alloc">
-                % of portfolio
+                Portfolio %
               </div>
               <div className={styles.colHead} id="portfolio-builder-h-eff">
                 Efficiency
+              </div>
+              <div className={styles.colHead} id="portfolio-builder-h-category">
+                Category
               </div>
               <div className={styles.colHead} id="portfolio-builder-h-etf">
                 ETF
@@ -347,6 +419,8 @@ export default function PortfolioBuilderTool({
         </div>
 
         {rows.map((row) => {
+          const categoryOptions = rowCategoryOptions(options, row)
+          const isCategoryStillValid = row.category === 'all' || categoryOptions.some((o) => o.value === row.category)
           const eligible = rowEligibleOptions(options, row)
           const isSymbolStillValid = row.symbol && eligible.some((o) => o.symbol === row.symbol)
           const rowBetaText = formatRowBeta(row, options)
@@ -376,13 +450,25 @@ export default function PortfolioBuilderTool({
                       ariaLabelledBy="portfolio-builder-h-eff"
                       value={row.efficiencyKind}
                       options={[
-                        { value: 'capital', label: 'Capital' },
+                        { value: 'all', label: 'All' },
+                        { value: 'capital', label: 'Equity' },
                         { value: 'alpha', label: 'Alpha' },
                       ]}
-                      placeholder="Capital"
+                      placeholder="All"
                       onChange={(v) =>
-                        updateRow(row.id, { efficiencyKind: v as EfficiencyKind, symbol: '' })
+                        updateRow(row.id, { efficiencyKind: v as EfficiencyKind, category: 'all', symbol: '' })
                       }
+                    />
+                  </div>
+
+                  <div className={styles.holdingCell}>
+                    <BuilderThemedSelect
+                      id={`${row.id}-category`}
+                      ariaLabelledBy="portfolio-builder-h-category"
+                      value={isCategoryStillValid ? row.category : 'all'}
+                      options={categoryOptions}
+                      placeholder="All"
+                      onChange={(category) => updateRow(row.id, { category, symbol: '' })}
                     />
                   </div>
 
@@ -396,6 +482,8 @@ export default function PortfolioBuilderTool({
                       id={`${row.id}-symbol`}
                       ariaLabelledBy={`portfolio-builder-h-etf ${row.id}-sleeve-ctx`}
                       triggerClassName={styles.selectEtfTrigger}
+                      searchable
+                      searchPlaceholder="Type symbol or ETF name"
                       value={isSymbolStillValid ? row.symbol : ''}
                       options={
                         eligible.length === 0
@@ -403,12 +491,11 @@ export default function PortfolioBuilderTool({
                           : [
                               { value: '', label: 'Select ETF' },
                               ...eligible.map((o) => {
-                                const grade =
-                                  row.efficiencyKind === 'capital' ? o.capitalGrade : o.alphaGrade
-                                const gradeLabel = grade ?? 'N/A'
+                                const gradeLabel = optionGradeLabel(row, o)
                                 return {
                                   value: o.symbol,
                                   label: `${o.title} (${gradeLabel})`,
+                                  searchText: `${o.displayTicker} ${o.symbol} ${o.title}`,
                                 }
                               }),
                             ]
@@ -540,7 +627,12 @@ export default function PortfolioBuilderTool({
               )
             })}
           </div>
-          <PresetPortfolioChart payload={payload} portfolioLabel="Custom portfolio" />
+          <PresetPortfolioChart
+            payload={payload}
+            portfolioLabel="Custom portfolio"
+            weightedBeta={weightedBeta}
+            showScorecard
+          />
         </>
       ) : null}
     </div>

@@ -30,7 +30,7 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, s
       })
     } else if (!useAlpha && eff.capital) {
       lines.push({
-        label: 'Capital Efficiency:',
+        label: 'Equity Efficiency:',
         grade: eff.capital.grade ?? 'N/A',
         gradeTone: eff.capital.gradeTone,
         tooltip: eff.capital.tooltip,
@@ -39,7 +39,7 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, s
   } else {
     if (eff.capital && (!stackLines || stackLines.hasEquitySleeve)) {
       lines.push({
-        label: 'Capital Efficiency:',
+        label: 'Equity Efficiency:',
         grade: eff.capital.grade ?? 'N/A',
         gradeTone: eff.capital.gradeTone,
         tooltip: eff.capital.tooltip,

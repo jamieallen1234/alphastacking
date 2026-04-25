@@ -11,12 +11,27 @@ import { fetchDailySeries, type PriceSeries } from '@/lib/yahooFinance'
 
 export type PortfolioBuilderEfficiencyGrade = 'A+' | 'A' | 'B+' | 'B' | 'C' | 'D'
 
+const LETF_SYMBOLS = new Set([
+  'SSO',
+  'UPRO',
+  'QLD',
+  'TQQQ',
+  'HEQL.TO',
+  'USSL.TO',
+  'QQQL.TO',
+])
+
+function builderCategoryFor(def: { yahooSymbol: string; badge: string }): string {
+  return LETF_SYMBOLS.has(def.yahooSymbol.toUpperCase()) ? 'LETF' : def.badge
+}
+
 export type PortfolioBuilderEtfOption = {
   slug: string
   universe: 'us' | 'ca'
   symbol: string
   displayTicker: string
   title: string
+  category: string
   /** ETF page shows a Capital efficiency row (include N/A / pending compute). */
   capitalEligible: boolean
   /** ETF page shows an Alpha efficiency row. */
@@ -72,6 +87,7 @@ async function buildOptionsForUniverse(universe: 'us' | 'ca'): Promise<Portfolio
         symbol: def.yahooSymbol,
         displayTicker: def.displayTicker,
         title: def.h1Title,
+        category: builderCategoryFor(def),
         capitalEligible,
         alphaEligible,
         capitalGrade,
@@ -87,7 +103,7 @@ const DAY = 86400
 
 export const getCachedPortfolioBuilderOptionsUs = unstable_cache(
   async () => buildOptionsForUniverse('us'),
-  ['portfolio-builder-options-v7-beta-1y-chart-parity', 'us'],
+  ['portfolio-builder-options-v9-letf-category', 'us'],
   { revalidate: DAY }
 )
 
@@ -99,7 +115,7 @@ export const getCachedPortfolioBuilderOptionsCa = unstable_cache(
     ])
     return [...ca, ...us].sort((a, b) => a.displayTicker.localeCompare(b.displayTicker))
   },
-  ['portfolio-builder-options-v7-beta-1y-chart-parity', 'ca'],
+  ['portfolio-builder-options-v9-letf-category', 'ca'],
   { revalidate: DAY }
 )
 

@@ -53,6 +53,14 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, s
         tooltip: eff.alpha.tooltip,
       })
     }
+    if (eff.stacked) {
+      lines.push({
+        label: 'Stacked Efficiency:',
+        grade: eff.stacked.grade ?? 'N/A',
+        gradeTone: eff.stacked.gradeTone,
+        tooltip: eff.stacked.tooltip,
+      })
+    }
   }
   if (lines.length === 0) return undefined
   return <EtfEfficiencyMetaExtras lines={lines} notes={eff.notes} />

@@ -12,6 +12,45 @@ import {
   insufficientHistoryTooltip,
 } from '@/lib/etfEfficiencyTooltipFraming'
 
+const LETTER_POINTS: Record<string, number> = { 'A+': 5, A: 4, 'B+': 3, B: 2, C: 1, D: 0 }
+
+function pointsToLetter(points: number): string {
+  if (points >= 4.5) return 'A+'
+  if (points >= 3.5) return 'A'
+  if (points >= 2.5) return 'B+'
+  if (points >= 1.5) return 'B'
+  if (points >= 0.5) return 'C'
+  return 'D'
+}
+
+function attachStackedEfficiency(def: EtfDynamicDef, eff: EtfDynamicEfficiencyDef): EtfDynamicEfficiencyDef {
+  const cp = def.capitalBucketExposurePct ?? 0
+  const ap = def.alphaBucketExposurePct ?? 0
+  // Stacked score applies only to blended equity+alpha products.
+  if (cp <= 0 || ap <= 0 || def.allEquityStack) return eff
+  if (!eff.capital || !eff.alpha) return eff
+  const cGrade = eff.capital.grade
+  const aGrade = eff.alpha.grade
+  if (!cGrade || !aGrade) return eff
+  const cPts = LETTER_POINTS[cGrade]
+  const aPts = LETTER_POINTS[aGrade]
+  if (cPts == null || aPts == null) return eff
+  const wC = cp / (cp + ap)
+  const wA = ap / (cp + ap)
+  const blended = cPts * wC + aPts * wA
+  const grade = pointsToLetter(blended)
+  return {
+    ...eff,
+    stacked: {
+      grade,
+      gradeTone: grade === 'A+' ? 'gold' : 'muted',
+      tooltip:
+        `Stacked Efficiency blends Equity and Alpha Efficiency using configured sleeve weights (${Math.round(wC * 100)}% equity / ${Math.round(wA * 100)}% alpha).` +
+        `\n\nThis line is only shown for portfolios with both an equity sleeve and a non-equity alpha sleeve.`,
+    },
+  }
+}
+
 function secondParagraphFromTooltip(tooltip: string | undefined): string | null {
   if (!tooltip) return null
   const parts = tooltip.split('\n\n').map((p) => p.trim()).filter((p) => p.length > 0)
@@ -430,7 +469,7 @@ export function mergeDynamicEtfEfficiency(
   if (!staticEff) return def
 
   const merged = applyMonthlyEfficiencyGradePatch(staticEff, patch, slug)
-  return { ...def, efficiency: merged }
+  return { ...def, efficiency: attachStackedEfficiency(def, merged) }
 }
 
 /** Merge using a precomputed monthly patch (single-slug fetch path). */
@@ -444,5 +483,5 @@ export function mergeDynamicEtfEfficiencyWithPatch(
   const staticEff = def.efficiency ?? map[slug]
   if (!staticEff) return def
   const merged = applyMonthlyEfficiencyGradePatch(staticEff, patch, slug)
-  return { ...def, efficiency: merged }
+  return { ...def, efficiency: attachStackedEfficiency(def, merged) }
 }

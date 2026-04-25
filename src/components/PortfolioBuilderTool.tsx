@@ -12,7 +12,7 @@ import type { PortfolioBuilderEtfOption } from '@/lib/portfolioBuilderEtfOptions
 import type { YahooRange } from '@/lib/yahooFinance'
 import styles from './PortfolioBuilderTool.module.css'
 
-type EfficiencyKind = 'capital' | 'alpha' | 'all'
+type EfficiencyKind = 'capital' | 'alpha' | 'stacked' | 'all'
 type BuilderEdition = 'us' | 'ca'
 
 type BuilderRow = {
@@ -182,7 +182,9 @@ function rowEligibleOptions(options: PortfolioBuilderEtfOption[], row: BuilderRo
   const eligible = options.filter((o) => {
     const efficiencyOk =
       row.efficiencyKind === 'all'
-        ? o.capitalEligible || o.alphaEligible
+        ? o.capitalEligible || o.alphaEligible || o.stackedEligible
+        : row.efficiencyKind === 'stacked'
+          ? o.stackedEligible
         : row.efficiencyKind === 'capital'
           ? o.capitalEligible
           : o.alphaEligible
@@ -204,7 +206,9 @@ function rowCategoryOptions(options: PortfolioBuilderEtfOption[], row: BuilderRo
       options
         .filter((o) =>
           row.efficiencyKind === 'all'
-            ? o.capitalEligible || o.alphaEligible
+            ? o.capitalEligible || o.alphaEligible || o.stackedEligible
+            : row.efficiencyKind === 'stacked'
+              ? o.stackedEligible
             : row.efficiencyKind === 'capital'
               ? o.capitalEligible
               : o.alphaEligible
@@ -218,6 +222,8 @@ function rowCategoryOptions(options: PortfolioBuilderEtfOption[], row: BuilderRo
 function optionGradeLabel(row: BuilderRow, o: PortfolioBuilderEtfOption): string {
   if (row.efficiencyKind === 'capital') return o.capitalGrade ?? 'N/A'
   if (row.efficiencyKind === 'alpha') return o.alphaGrade ?? 'N/A'
+  if (row.efficiencyKind === 'stacked') return o.stackedGrade ?? 'N/A'
+  if (o.stackedEligible) return `Stacked ${o.stackedGrade ?? 'N/A'}`
   const c = o.capitalGrade ?? 'N/A'
   const a = o.alphaGrade ?? 'N/A'
   return `Eq ${c} / Alpha ${a}`
@@ -411,7 +417,7 @@ export default function PortfolioBuilderTool({
                 ETF
               </div>
               <div className={`${styles.colHead} ${styles.colHeadBeta}`} id="portfolio-builder-h-beta">
-                Beta
+                1Y BETA
               </div>
             </div>
           </div>
@@ -453,6 +459,7 @@ export default function PortfolioBuilderTool({
                         { value: 'all', label: 'All' },
                         { value: 'capital', label: 'Equity' },
                         { value: 'alpha', label: 'Alpha' },
+                        { value: 'stacked', label: 'Stacked' },
                       ]}
                       placeholder="All"
                       onChange={(v) =>

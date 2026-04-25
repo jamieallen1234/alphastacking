@@ -7,6 +7,7 @@ export type EtfDynamicEfficiencyLineDef = {
 export type EtfDynamicEfficiencyDef = {
   capital?: EtfDynamicEfficiencyLineDef
   alpha?: EtfDynamicEfficiencyLineDef
+  stacked?: EtfDynamicEfficiencyLineDef
   notes?: string[]
   footnotes?: string[]
 }

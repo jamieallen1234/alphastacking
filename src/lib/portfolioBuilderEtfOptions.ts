@@ -36,9 +36,12 @@ export type PortfolioBuilderEtfOption = {
   capitalEligible: boolean
   /** ETF page shows an Alpha efficiency row. */
   alphaEligible: boolean
+  /** ETF page shows a blended Stacked efficiency row (equity + alpha sleeves). */
+  stackedEligible: boolean
   /** Letter grade when computed; null if line exists but grade is N/A or missing. */
   capitalGrade: PortfolioBuilderEfficiencyGrade | null
   alphaGrade: PortfolioBuilderEfficiencyGrade | null
+  stackedGrade: PortfolioBuilderEfficiencyGrade | null
   /** Same 1y regression beta as the ETF detail chart (listing benchmark). */
   beta: number | null
 }
@@ -75,23 +78,27 @@ async function buildOptionsForUniverse(universe: 'us' | 'ca'): Promise<Portfolio
       const beta = etf1y && bench1y ? computeBetaVsBenchmark(etf1y, bench1y) : null
       const merged = mergeDynamicEtfEfficiencyWithPatch(def, slug, universe, patch)
       const stackLines = stackExposureLineAvailability(slug)
+      const stackedEligible = merged.efficiency?.stacked != null
       const capitalEligible =
-        merged.efficiency?.capital != null && (!stackLines || stackLines.hasEquitySleeve)
+        !stackedEligible && merged.efficiency?.capital != null && (!stackLines || stackLines.hasEquitySleeve)
       const alphaEligible =
-        merged.efficiency?.alpha != null && (!stackLines || stackLines.hasNonEquitySleeve)
+        !stackedEligible && merged.efficiency?.alpha != null && (!stackLines || stackLines.hasNonEquitySleeve)
       const capitalGrade = asGrade(merged.efficiency?.capital?.grade)
       const alphaGrade = asGrade(merged.efficiency?.alpha?.grade)
+      const stackedGrade = asGrade(merged.efficiency?.stacked?.grade)
       return {
         slug,
         universe,
         symbol: def.yahooSymbol,
         displayTicker: def.displayTicker,
         title: def.h1Title,
-        category: builderCategoryFor(def),
+        category: stackedEligible ? 'Stacked' : builderCategoryFor(def),
         capitalEligible,
         alphaEligible,
+        stackedEligible,
         capitalGrade,
         alphaGrade,
+        stackedGrade,
         beta,
       } satisfies PortfolioBuilderEtfOption
     })
@@ -103,7 +110,7 @@ const DAY = 86400
 
 export const getCachedPortfolioBuilderOptionsUs = unstable_cache(
   async () => buildOptionsForUniverse('us'),
-  ['portfolio-builder-options-v9-letf-category', 'us'],
+  ['portfolio-builder-options-v10-stacked-efficiency', 'us'],
   { revalidate: DAY }
 )
 
@@ -115,7 +122,7 @@ export const getCachedPortfolioBuilderOptionsCa = unstable_cache(
     ])
     return [...ca, ...us].sort((a, b) => a.displayTicker.localeCompare(b.displayTicker))
   },
-  ['portfolio-builder-options-v9-letf-category', 'ca'],
+  ['portfolio-builder-options-v10-stacked-efficiency', 'ca'],
   { revalidate: DAY }
 )
 

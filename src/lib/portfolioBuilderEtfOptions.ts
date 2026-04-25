@@ -78,11 +78,14 @@ async function buildOptionsForUniverse(universe: 'us' | 'ca'): Promise<Portfolio
       const beta = etf1y && bench1y ? computeBetaVsBenchmark(etf1y, bench1y) : null
       const merged = mergeDynamicEtfEfficiencyWithPatch(def, slug, universe, patch)
       const stackLines = stackExposureLineAvailability(slug)
+      const allowAlphaByCategory = def.hubCategoryId === 'global-macro'
       const stackedEligible = merged.efficiency?.stacked != null
       const capitalEligible =
         !stackedEligible && merged.efficiency?.capital != null && (!stackLines || stackLines.hasEquitySleeve)
       const alphaEligible =
-        !stackedEligible && merged.efficiency?.alpha != null && (!stackLines || stackLines.hasNonEquitySleeve)
+        !stackedEligible &&
+        merged.efficiency?.alpha != null &&
+        (allowAlphaByCategory || !stackLines || stackLines.hasNonEquitySleeve)
       const capitalGrade = asGrade(merged.efficiency?.capital?.grade)
       const alphaGrade = asGrade(merged.efficiency?.alpha?.grade)
       const stackedGrade = asGrade(merged.efficiency?.stacked?.grade)

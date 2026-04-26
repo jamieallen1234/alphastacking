@@ -18,6 +18,11 @@ interface PresetIntlChartPanelProps {
   overlapInceptionYmd: string
   /** Weighted holdings beta used by scorecard in the chart panel. */
   weightedBeta: number
+  exposureSummary?: {
+    grossLongEquityPct: number
+    grossShortEquityPct: number
+    grossAlphaExposurePct: number
+  } | null
 }
 
 export default function PresetIntlChartPanel({
@@ -25,6 +30,7 @@ export default function PresetIntlChartPanel({
   initialPayload,
   overlapInceptionYmd,
   weightedBeta,
+  exposureSummary = null,
 }: PresetIntlChartPanelProps) {
   const [payload, setPayload] = useState(initialPayload)
   const [activeRange, setActiveRange] = useState<YahooRange>(initialPayload.range)
@@ -94,7 +100,12 @@ export default function PresetIntlChartPanel({
         })}
       </div>
       {error ? <p className={styles.rangeError}>{error}</p> : null}
-      <PresetPortfolioChart payload={payload} weightedBeta={weightedBeta} showScorecard />
+      <PresetPortfolioChart
+        payload={payload}
+        weightedBeta={weightedBeta}
+        showScorecard
+        exposureSummary={exposureSummary}
+      />
     </div>
   )
 }

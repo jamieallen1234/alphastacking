@@ -9,6 +9,7 @@ import {
   PRESET_RANGE_MIN_DAYS,
 } from '@/lib/presetChartRanges'
 import type { PortfolioBuilderEtfOption } from '@/lib/portfolioBuilderEtfOptions'
+import { buildExposureSummaryFromWeightedTickers } from '@/lib/exposureSummary'
 import type { YahooRange } from '@/lib/yahooFinance'
 import styles from './PortfolioBuilderTool.module.css'
 
@@ -300,6 +301,15 @@ export default function PortfolioBuilderTool({
     () => weightedPortfolioBeta(rows, options),
     [rows, options]
   )
+  const exposureSummary = useMemo(() => {
+    const weightedTickers = rows
+      .map((r) => {
+        const pct = parseAllocation(r.allocation)
+        return { ticker: r.symbol, weightPct: pct ?? 0 }
+      })
+      .filter((r) => r.ticker.trim() !== '' && r.weightPct > 0)
+    return buildExposureSummaryFromWeightedTickers(weightedTickers)
+  }, [rows])
   const betaBlocksGenerate =
     allocationValid && !hasIncompleteRow && weightedBeta != null && weightedBeta > 2.5
   const canGenerate =
@@ -638,6 +648,7 @@ export default function PortfolioBuilderTool({
             portfolioLabel="Custom portfolio"
             weightedBeta={weightedBeta}
             showScorecard
+            exposureSummary={exposureSummary}
           />
         </>
       ) : null}

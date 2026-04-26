@@ -125,6 +125,12 @@
   max-width: 46rem;
 }
 
+.scorecardCols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.25rem;
+}
+
 .scorecardHeader {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -141,5 +147,11 @@
   font-family: var(--font-sans);
   font-size: 12px;
   color: rgba(232, 228, 220, 0.8);
+}
+
+@media (max-width: 700px) {
+  .scorecardCols {
+    grid-template-columns: 1fr;
+  }
 }
 

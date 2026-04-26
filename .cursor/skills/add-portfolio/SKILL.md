@@ -46,6 +46,9 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
    - Scorecard parity: pass the model’s weighted beta into `PresetIntlChartPanel`, and ensure
      the panel renders `PresetPortfolioChart` with `showScorecard` enabled so model portfolios
      use the same letter-grade scoring block as the builder.
+   - Exposure parity: compute and pass the modeled sleeve exposure summary
+     (`Net leveage`, `Gross longs`, `Gross shorts`, `Gross alpha & alts`) so every live
+     portfolio uses the same right-side scorecard block as the builder.
 
 5. **`src/app/api/preset-chart/route.ts`**  
    - Register preset in **`PRESETS`**; append id to **`PRESET_HINT`**.
@@ -55,6 +58,7 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
    - Open the detail URL on the correct edition; exercise range tabs (preset refetch).  
    - Confirm the card appears on **`/portfolios`** or **`/ca/portfolios`** in the right section.
    - Confirm scorecard appears on the detail chart and updates across ranges.
+   - Confirm the four-line exposure block appears beside scores and populates with modeled values.
 
 ## Cache keys
 

@@ -197,6 +197,12 @@ interface PresetPortfolioChartProps {
   weightedBeta?: number | null
   /** Show weighted letter scorecard (SPY baseline = B). */
   showScorecard?: boolean
+  /** Optional modeled gross exposure summary shown under scorecard. */
+  exposureSummary?: {
+    grossLongEquityPct: number
+    grossShortEquityPct: number
+    grossAlphaExposurePct: number
+  } | null
 }
 
 type LetterGrade = 'A+' | 'A' | 'B+' | 'B' | 'C' | 'D'
@@ -264,6 +270,7 @@ export default function PresetPortfolioChart({
   showMaxDrawdown = true,
   weightedBeta = null,
   showScorecard = false,
+  exposureSummary = null,
 }: PresetPortfolioChartProps) {
   const pathname = usePathname()
   const hubBase: PortfolioUsEtfHubBase = useMemo(
@@ -457,24 +464,53 @@ export default function PresetPortfolioChart({
       />
       {showScorecard ? (
         <div className={styles.scorecard}>
-          <div className={styles.scorecardHeader}>
-            <strong>Portfolio score:</strong> {overallGrade ?? '—'}
+          <div className={styles.scorecardCols}>
+            <div>
+              <div className={styles.scorecardHeader}>
+                <strong>Portfolio score:</strong> {overallGrade ?? '—'}
+              </div>
+              {overallGrade != null && underOneYear ? (
+                <p className={styles.scorecardLine}>
+                  <strong>Adjustment:</strong> Portfolio history is under 1 year, so the overall score is
+                  downgraded by one letter.
+                </p>
+              ) : null}
+              <p className={styles.scorecardLine}>
+                <strong>Excess alpha:</strong> {alphaGrade ?? '—'}
+              </p>
+              <p className={styles.scorecardLine}>
+                <strong>Max drawdown:</strong> {drawdownGrade ?? '—'}
+              </p>
+              <p className={styles.scorecardLine}>
+                <strong>Beta:</strong> {betaGrade ?? '—'}
+              </p>
+            </div>
+            {exposureSummary ? (
+              <div>
+                <div className={styles.scorecardHeader}>
+                  <strong>Net leverage:</strong>{' '}
+                  {(
+                    exposureSummary.grossLongEquityPct -
+                    exposureSummary.grossShortEquityPct +
+                    exposureSummary.grossAlphaExposurePct
+                  ).toFixed(1)}
+                  %
+                </div>
+                <p className={styles.scorecardLine}>
+                  <strong>Gross longs:</strong>{' '}
+                  {exposureSummary.grossLongEquityPct.toFixed(1)}%
+                </p>
+                <p className={styles.scorecardLine}>
+                  <strong>Gross shorts:</strong>{' '}
+                  {exposureSummary.grossShortEquityPct.toFixed(1)}%
+                </p>
+                <p className={styles.scorecardLine}>
+                  <strong>Gross alpha & alts:</strong>{' '}
+                  {exposureSummary.grossAlphaExposurePct.toFixed(1)}%
+                </p>
+              </div>
+            ) : null}
           </div>
-          {overallGrade != null && underOneYear ? (
-            <p className={styles.scorecardLine}>
-              <strong>Adjustment:</strong> Portfolio history is under 1 year, so the overall score is
-              downgraded by one letter.
-            </p>
-          ) : null}
-          <p className={styles.scorecardLine}>
-            <strong>Excess alpha:</strong> {alphaGrade ?? '—'}
-          </p>
-          <p className={styles.scorecardLine}>
-            <strong>Max drawdown:</strong> {drawdownGrade ?? '—'}
-          </p>
-          <p className={styles.scorecardLine}>
-            <strong>Beta:</strong> {betaGrade ?? '—'}
-          </p>
         </div>
       ) : null}
       <div className={styles.chartFootnotes}>

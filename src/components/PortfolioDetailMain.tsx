@@ -39,6 +39,7 @@ import {
   usInternationalHoldings,
   weightedBeta,
 } from '@/lib/presets/usInternational'
+import { buildExposureSummaryFromPresetHoldings } from '@/lib/exposureSummary'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
 
 type LiveEntry = {
@@ -139,6 +140,7 @@ async function LiveLayout({
   }
 
   const wb = weightedBeta(live.holdings)
+  const exposureSummary = buildExposureSummaryFromPresetHoldings(live.holdings)
 
   return (
     <main className={styles.main}>
@@ -162,6 +164,7 @@ async function LiveLayout({
             initialPayload={chart}
             overlapInceptionYmd={chart.limitingFirstTradeDate}
             weightedBeta={wb}
+            exposureSummary={exposureSummary}
           />
         ) : (
           <p className={styles.pageChartDisclaimer}>

@@ -19,9 +19,6 @@ const OFFICIAL_ETF_HOME: Record<string, string> = {
   QQQ: 'https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Individual&ticker=QQQ',
   'VFV.TO': 'https://www.vanguard.ca/en/product/etf/series/vanguard-sp-500-index-etf',
   'HEQT.TO': 'https://www.globalx.ca/product/heqt',
-  'HEQL.TO': 'https://www.globalx.ca/product/heql',
-  'USSL.TO': 'https://www.globalx.ca/product/ussl',
-  'QQQL.TO': 'https://www.globalx.ca/product/qqql',
 }
 
 function slugFromUsRegistry(tickerUpper: string): string | null {

@@ -19,7 +19,7 @@ export const caInternationalHoldings: PresetHolding[] = [
     ticker: 'HEQL.TO',
     weightPct: 20,
     beta: 1.25,
-    blurb: 'Global equity (~1.25× HEQT.TO–style; charts proxy pre-history vs HEQT.TO).',
+    blurb: 'Global equity (~1.25× HEQT.TO–style).',
   },
   {
     ticker: 'PFLS.TO',

@@ -224,6 +224,18 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  gdmn: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'GDMN pairs global gold miners equity with a leveraged gold futures sleeve; equity-side efficiency reflects whether miners deliver enough return to justify a stacked implementation.'
+      ),
+    },
+    alpha: {
+      tooltip: alphaEfficiencyStackedTooltip(
+        'The alpha sleeve is gold futures exposure layered on top of miners equity. It is strongest in falling-real-yield or policy-stress tapes, but roll and leverage can drag in hostile rate regimes.'
+      ),
+    },
+  },
   flsp: {
     alpha: {
       tooltip: alphaEfficiencyUnstackedTooltip(
@@ -359,6 +371,13 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  attr: {
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
+        'ATTR combines U.S. large-cap exposure with a tactical tail-risk options overlay designed to mitigate deep left-tail events; carry cost and hedge timing drive realized efficiency versus hurdle rates.'
+      ),
+    },
+  },
 }
 
 export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> = {
@@ -423,6 +442,41 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
     footnotes: [EFFICIENCY_PROVISIONAL_FOOTNOTE],
+  },
+  hsu: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'HSU is a 2x daily S&P 500 leverage sleeve in CAD. Capital efficiency reflects realized excess return versus a broad U.S. equity benchmark after compounding drag and financing costs.'
+      ),
+    },
+  },
+  hqu: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'HQU is a 2x daily Nasdaq-100 leverage sleeve. Capital efficiency depends on trend persistence versus volatility drag from daily-reset leverage.'
+      ),
+    },
+  },
+  ussl: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'USSL targets about 1.25x S&P 500 exposure. Capital efficiency compares enhanced-beta delivery versus standard broad U.S. equity exposure net of leverage costs.'
+      ),
+    },
+  },
+  qqql: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'QQQL targets about 1.25x Nasdaq-100 exposure. Capital efficiency reflects whether enhanced growth beta offsets financing and compounding frictions over live periods.'
+      ),
+    },
+  },
+  heql: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'HEQL targets about 1.25x globally diversified equity exposure via a fund-of-funds structure. Capital efficiency reflects leveraged equity delivery net of financing and compounding drag.'
+      ),
+    },
   },
   btccb: {
     alpha: {

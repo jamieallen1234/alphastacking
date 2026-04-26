@@ -130,6 +130,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Large-cap U.S. equity stacked with a systematic futures yield (carry) sleeve.',
       '/us-etfs/rssy'
     ),
+    us(
+      'gdmn',
+      'GDMN — WisdomTree Efficient Gold Plus Gold Miners Strategy Fund',
+      'Stacks gold miners equity with a leveraged gold-futures sleeve for a concentrated precious-metals expression.',
+      usPath('gdmn')
+    ),
   ],
   'return-stacked-lt-2x': [
     us(
@@ -163,6 +169,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'CAOS — Alpha Architect Tail Risk ETF',
       'S&P 500 option structures designed as a tail-risk / convexity sleeve alongside equity beta.',
       usPath('caos')
+    ),
+    us(
+      'attr',
+      'ATTR — Arin Tactical Tail Risk ETF',
+      'Actively managed U.S. large-cap exposure with tactical tail-risk options overlays aimed at drawdown mitigation.',
+      usPath('attr')
     ),
   ],
   factor: [
@@ -358,7 +370,38 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       '/ca/etfs/arb'
     ),
   ],
-  'leveraged-equity': [],
+  'leveraged-equity': [
+    ca(
+      'hsu',
+      'HSU.TO — BetaPro S&P 500 2x Daily Bull ETF',
+      '2x daily S&P 500 exposure in CAD for tactical high-beta positioning.',
+      caPath('hsu')
+    ),
+    ca(
+      'hqu',
+      'HQU.TO — BetaPro NASDAQ-100 2x Daily Bull ETF',
+      '2x daily Nasdaq-100 exposure with daily reset leverage.',
+      caPath('hqu')
+    ),
+    ca(
+      'ussl',
+      'USSL.TO — Global X Enhanced S&P 500 Index ETF',
+      'Enhanced-beta S&P 500 sleeve targeting about 1.25x exposure.',
+      caPath('ussl')
+    ),
+    ca(
+      'qqql',
+      'QQQL.TO — Global X Enhanced NASDAQ-100 Index ETF',
+      'Enhanced-beta Nasdaq-100 sleeve targeting about 1.25x exposure.',
+      caPath('qqql')
+    ),
+    ca(
+      'heql',
+      'HEQL.TO — Global X Enhanced All-Equity Asset Allocation ETF',
+      'Enhanced all-equity allocation targeting about 1.25x exposure through a diversified global ETF mix.',
+      caPath('heql')
+    ),
+  ],
   crypto: [
     ca(
       'btccb',

@@ -16,12 +16,15 @@ interface PresetIntlChartPanelProps {
   initialPayload: PortfolioChartPayload
   /** First session where every holding overlaps (youngest listing), YYYY-MM-DD — not the first day of the current chart window. */
   overlapInceptionYmd: string
+  /** Weighted holdings beta used by scorecard in the chart panel. */
+  weightedBeta: number
 }
 
 export default function PresetIntlChartPanel({
   presetId,
   initialPayload,
   overlapInceptionYmd,
+  weightedBeta,
 }: PresetIntlChartPanelProps) {
   const [payload, setPayload] = useState(initialPayload)
   const [activeRange, setActiveRange] = useState<YahooRange>(initialPayload.range)
@@ -91,7 +94,7 @@ export default function PresetIntlChartPanel({
         })}
       </div>
       {error ? <p className={styles.rangeError}>{error}</p> : null}
-      <PresetPortfolioChart payload={payload} />
+      <PresetPortfolioChart payload={payload} weightedBeta={weightedBeta} showScorecard />
     </div>
   )
 }

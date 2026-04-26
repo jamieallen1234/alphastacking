@@ -50,6 +50,15 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     featured: true,
   },
   {
+    slug: 'us-gde-clse-blend',
+    region: 'us',
+    kind: 'live',
+    hubSection: 'buy-hold',
+    title: 'US Gold + Alt Blend',
+    description:
+      'Balanced U.S. mix across capital-efficient gold, long/short equity, merger arb, and selective growth beta.',
+  },
+  {
     slug: 'leveraged-premia',
     region: 'us',
     kind: 'placeholder',

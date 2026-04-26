@@ -26,6 +26,11 @@ import {
   usCoreBuyHoldWeights,
 } from '@/lib/presets/usBuyHold'
 import {
+  US_GDE_CLSE_BLEND_PRESET_ID,
+  usGdeClseBlendSymbols,
+  usGdeClseBlendWeights,
+} from '@/lib/presets/usGdeClseBlend'
+import {
   US_INTL_PRESET_ID,
   usInternationalSymbols,
   usInternationalWeights,
@@ -67,6 +72,12 @@ const PRESETS: Record<
     cadDenominated: false,
     rebalanceSchedule: 'none',
   },
+  [US_GDE_CLSE_BLEND_PRESET_ID]: {
+    symbols: usGdeClseBlendSymbols,
+    weights: usGdeClseBlendWeights,
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+  },
   [CA_CORE_BH_PRESET_ID]: {
     symbols: caCoreBuyHoldSymbols,
     weights: caCoreBuyHoldWeights,
@@ -81,7 +92,7 @@ const PRESETS: Record<
   },
 }
 
-const PRESET_HINT = `${US_INTL_PRESET_ID}, ${US_ADVANCED_PRESET_ID}, ${CA_INTL_PRESET_ID}, ${US_CORE_BH_PRESET_ID}, ${CA_CORE_BH_PRESET_ID}, ${CA_USSL_QQQL_HDGE_PRESET_ID}`
+const PRESET_HINT = `${US_INTL_PRESET_ID}, ${US_ADVANCED_PRESET_ID}, ${CA_INTL_PRESET_ID}, ${US_CORE_BH_PRESET_ID}, ${US_GDE_CLSE_BLEND_PRESET_ID}, ${CA_CORE_BH_PRESET_ID}, ${CA_USSL_QQQL_HDGE_PRESET_ID}`
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)

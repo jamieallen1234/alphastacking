@@ -10,6 +10,7 @@ import {
   getCachedCaUsslQqqlHdgeChart,
   getCachedUsAdvancedChart,
   getCachedUsCoreBuyHoldChart,
+  getCachedUsGdeClseBlendChart,
   getCachedUsInternationalChart,
 } from '@/lib/getCachedPresetChart'
 import {
@@ -22,6 +23,10 @@ import { CA_CORE_BH_PRESET_ID, caCoreBuyHoldHoldings } from '@/lib/presets/caBuy
 import { CA_USSL_QQQL_HDGE_PRESET_ID, caUsslQqqlHdgeHoldings } from '@/lib/presets/caBuyHoldHdge'
 import { CA_INTL_PRESET_ID, caInternationalHoldings } from '@/lib/presets/caInternational'
 import { US_CORE_BH_PRESET_ID, usCoreBuyHoldHoldings } from '@/lib/presets/usBuyHold'
+import {
+  US_GDE_CLSE_BLEND_PRESET_ID,
+  usGdeClseBlendHoldings,
+} from '@/lib/presets/usGdeClseBlend'
 import { US_ADVANCED_PRESET_ID, usAdvancedHoldings } from '@/lib/presets/usAdvanced'
 import {
   type PresetHolding,
@@ -52,6 +57,11 @@ const US_LIVE: Record<string, LiveEntry> = {
     presetId: US_CORE_BH_PRESET_ID,
     holdings: usCoreBuyHoldHoldings,
     load: getCachedUsCoreBuyHoldChart,
+  },
+  'us-gde-clse-blend': {
+    presetId: US_GDE_CLSE_BLEND_PRESET_ID,
+    holdings: usGdeClseBlendHoldings,
+    load: getCachedUsGdeClseBlendChart,
   },
 }
 
@@ -141,6 +151,7 @@ async function LiveLayout({
             presetId={live.presetId}
             initialPayload={chart}
             overlapInceptionYmd={chart.limitingFirstTradeDate}
+            weightedBeta={wb}
           />
         ) : (
           <p className={styles.pageChartDisclaimer}>

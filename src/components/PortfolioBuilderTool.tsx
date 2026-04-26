@@ -30,7 +30,7 @@ function newRow(id: number): BuilderRow {
   return {
     id: `row-${id}`,
     allocation: '',
-    efficiencyKind: 'capital',
+    efficiencyKind: 'all',
     category: 'all',
     symbol: '',
   }
@@ -38,7 +38,7 @@ function newRow(id: number): BuilderRow {
 
 function defaultRows(): BuilderRow[] {
   return [
-    { ...newRow(1), allocation: '50' },
+    { ...newRow(1), efficiencyKind: 'capital', allocation: '50' },
     { ...newRow(2), efficiencyKind: 'alpha', allocation: '50' },
   ]
 }
@@ -244,26 +244,25 @@ function formatRowBeta(row: BuilderRow, options: PortfolioBuilderEtfOption[]): s
   return formatBeta(o.beta)
 }
 
-/** Σ wᵢβᵢ when allocation is 100% and every row has a symbol with a known beta. */
+/** Σ wᵢβᵢ across any filled rows (weights entered as % of portfolio). */
 function weightedPortfolioBeta(
   rows: BuilderRow[],
-  options: PortfolioBuilderEtfOption[],
-  allocationValid: boolean,
-  hasIncompleteRow: boolean
+  options: PortfolioBuilderEtfOption[]
 ): number | null {
-  if (!allocationValid || hasIncompleteRow) return null
   let sum = 0
+  let usedAny = false
   for (const r of rows) {
     const pct = parseAllocation(r.allocation)
-    if (pct == null || pct <= 0 || !r.symbol.trim()) return null
+    if (pct == null || pct <= 0 || !r.symbol.trim()) continue
     const eligible = rowEligibleOptions(options, r)
     const o = eligible.find((x) => x.symbol === r.symbol)
-    if (!o || o.beta == null) return null
+    if (!o || o.beta == null) continue
     const b = typeof o.beta === 'number' ? o.beta : Number(o.beta)
-    if (!Number.isFinite(b)) return null
+    if (!Number.isFinite(b)) continue
+    usedAny = true
     sum += (pct / 100) * b
   }
-  return sum
+  return usedAny ? sum : null
 }
 
 export default function PortfolioBuilderTool({
@@ -298,8 +297,8 @@ export default function PortfolioBuilderTool({
   )
   const allocationValid = totalAllocation === 100
   const weightedBeta = useMemo(
-    () => weightedPortfolioBeta(rows, options, allocationValid, hasIncompleteRow),
-    [rows, options, allocationValid, hasIncompleteRow]
+    () => weightedPortfolioBeta(rows, options),
+    [rows, options]
   )
   const betaBlocksGenerate =
     allocationValid && !hasIncompleteRow && weightedBeta != null && weightedBeta > 2.5
@@ -562,7 +561,7 @@ export default function PortfolioBuilderTool({
                     aria-label={
                       weightedBeta != null
                         ? `Weighted portfolio beta ${weightedBeta.toFixed(2)}`
-                        : 'Weighted portfolio beta not shown; needs 100% allocation, each line filled, and beta available for every holding.'
+                        : 'Weighted portfolio beta not shown; add at least one line with allocation, ETF selection, and an available beta.'
                     }
                     aria-live="polite"
                     aria-atomic="true"

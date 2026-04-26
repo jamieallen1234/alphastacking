@@ -43,6 +43,9 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
 4. **`src/components/PortfolioDetailMain.tsx`**  
    - Add **`US_LIVE[slug]`** or **`CA_LIVE[slug]`** with `{ presetId, holdings, load }`.  
    - `presetId` must match **`/api/preset-chart`** key.
+   - Scorecard parity: pass the model’s weighted beta into `PresetIntlChartPanel`, and ensure
+     the panel renders `PresetPortfolioChart` with `showScorecard` enabled so model portfolios
+     use the same letter-grade scoring block as the builder.
 
 5. **`src/app/api/preset-chart/route.ts`**  
    - Register preset in **`PRESETS`**; append id to **`PRESET_HINT`**.
@@ -51,6 +54,7 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
    - `npx tsc --noEmit`  
    - Open the detail URL on the correct edition; exercise range tabs (preset refetch).  
    - Confirm the card appears on **`/portfolios`** or **`/ca/portfolios`** in the right section.
+   - Confirm scorecard appears on the detail chart and updates across ranges.
 
 ## Cache keys
 

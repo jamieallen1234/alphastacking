@@ -21,6 +21,11 @@ import {
   usCoreBuyHoldWeights,
 } from '@/lib/presets/usBuyHold'
 import {
+  US_GDE_CLSE_BLEND_PRESET_ID,
+  usGdeClseBlendSymbols,
+  usGdeClseBlendWeights,
+} from '@/lib/presets/usGdeClseBlend'
+import {
   US_ADVANCED_PRESET_ID,
   usAdvancedSymbols,
   usAdvancedWeights,
@@ -118,6 +123,26 @@ export const getCachedUsCoreBuyHoldChart = unstable_cache(
     'notional-10k',
     'default-1y',
     'buy-hold',
+  ],
+  { revalidate: DAY }
+)
+
+export const getCachedUsGdeClseBlendChart = unstable_cache(
+  async () =>
+    computePortfolioChart({
+      symbols: usGdeClseBlendSymbols(),
+      weights: usGdeClseBlendWeights(),
+      range: PRESET_CHART_RANGE,
+      rebalanceSchedule: 'none',
+    }),
+  [
+    'preset-chart',
+    US_GDE_CLSE_BLEND_PRESET_ID,
+    PRESET_CHART_RANGE,
+    'notional-10k',
+    'default-1y',
+    'buy-hold',
+    'gde-clse-qld-mrgr-rssy-vflo',
   ],
   { revalidate: DAY }
 )

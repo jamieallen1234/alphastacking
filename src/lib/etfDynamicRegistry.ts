@@ -370,6 +370,39 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'WisdomTree (GDE)',
   },
 
+  gdmn: {
+    yahooSymbol: 'GDMN',
+    hubCategoryId: 'return-stacked-ge-2x',
+    badge: 'Return Stacked - 2x',
+    h1Title: 'GDMN — WisdomTree Efficient Gold Plus Gold Miners Strategy Fund',
+    displayTicker: 'GDMN',
+    issuer: 'WisdomTree',
+    inception: 'Dec 16, 2021',
+    structure: 'Gold miners + gold futures stack',
+    capitalBucketExposurePct: 100,
+    alphaBucketExposurePct: 100,
+    mer: '0.45%',
+    aum: '~$232M',
+    pageTitle: 'GDMN ETF — Alpha Stacking',
+    description: 'WisdomTree Efficient Gold Plus Gold Miners Strategy Fund (GDMN).',
+    lede:
+      'GDMN stacks global gold miners equity exposure with a leveraged gold-futures sleeve to target a higher-conviction precious-metals expression in one ETF wrapper.',
+    strategyParas: [
+      'WisdomTree disclosures describe a two-sleeve construction: equity holdings in companies deriving substantial revenue from gold mining plus U.S.-listed gold futures collateralized with Treasury/cash instruments. The futures leg introduces leverage and can amplify both upside and downside versus a miners-only allocation.',
+      'The key implementation drivers are futures curve shape, collateral yield, and miners-equity sensitivity to operational/geographic shocks. In stress, miners can trade like cyclical equities while gold futures respond more directly to real rates and dollar moves—so sleeve interaction matters more than headline metals direction.',
+    ],
+    pedigreeParas: ped(
+      `WisdomTree’s capital-efficient lineup extends beyond broad equity stacks; GDMN shows the same derivatives-in-ETF engineering applied to precious metals, leveraging the firm’s long-standing commodity/futures infrastructure rather than treating futures as an afterthought.`,
+      `WisdomTree has reported roughly $143B in global ETP and tokenized assets (late-2025 disclosures), providing scale for collateral, operations, and market-making support while still running specialist sleeves like GDMN for investors who want a concentrated metals stack.`,
+    ),
+    outperfParas: [
+      'The setup tends to work best when gold and miners rally together—typically in falling-real-yield or policy-uncertainty regimes where bullion strength feeds earnings leverage in miners. In those windows, the futures sleeve can add convex upside to equity participation.',
+      'Challenging tapes include rising real yields, stronger dollar trends, or equity-led selloffs where miners de-rate faster than bullion. Favorable regimes are sustained precious-metals uptrends with functioning futures liquidity, not short, violent reversals that whipsaw both sleeves.',
+    ],
+    officialUrl: 'https://www.wisdomtree.com/investments/etfs/capital-efficient/gdmn',
+    officialLabel: 'WisdomTree (GDMN)',
+  },
+
   flsp: {
     yahooSymbol: 'FLSP',
     hubCategoryId: 'premia-systematic-alternatives',
@@ -939,6 +972,37 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'ProShares (MRGR)',
   },
 
+  attr: {
+    yahooSymbol: 'ATTR',
+    hubCategoryId: 'premia-systematic-alternatives',
+    badge: 'Premia and systematic alternatives',
+    h1Title: 'ATTR — Arin Tactical Tail Risk ETF',
+    displayTicker: 'ATTR',
+    issuer: 'ETF Architect / Arin Risk Advisors',
+    inception: 'Oct 27, 2025',
+    structure: 'Tail-risk equity overlay',
+    mer: '0.63%',
+    aum: '~$90M',
+    pageTitle: 'ATTR ETF — Alpha Stacking',
+    description: 'Arin Tactical Tail Risk ETF (ATTR): U.S. large-cap exposure with active tail-risk mitigation.',
+    lede:
+      'ATTR is an actively managed tail-risk sleeve that seeks U.S. large-cap participation while mitigating severe drawdowns through options structures and tactical overlays.',
+    strategyParas: [
+      'Issuer materials describe a blend of equity index exposure and options on large-cap benchmarks (notably S&P 500-linked structures), aiming to retain upside participation while dampening left-tail outcomes during stress regimes.',
+      'The trade-off is explicit carry cost: hedging and convexity overlays can lag in quiet bull markets, and implementation (strike selection, roll timing, collateral use, and ETF-of-ETF sleeves such as tail-risk allocations) drives realized outcomes versus a plain beta benchmark.',
+    ],
+    pedigreeParas: ped(
+      `ATTR sits on ETF Architect’s operating platform (Empowered Funds, LLC dba EA Advisers), with Arin Risk Advisors as sub-adviser; the structure is a specialist derivatives/risk-management stack rather than plain index replication.`,
+      `ETF Architect is a boutique ETF platform (sub-scale versus mega issuers), which often means differentiated exposures and tighter product focus, but also requires investors to monitor liquidity, spreads, and portfolio disclosures more actively than for broad core-beta funds.`,
+    ),
+    outperfParas: [
+      'The sleeve tends to add value in fast-volatility expansions, gap-down tapes, and correlation spikes where options convexity and explicit downside hedges can offset part of equity drawdown pressure.',
+      'Expect relative underperformance in smooth, low-volatility melt-ups when protection spend and hedge drag dominate. Favorable regimes are turbulent or regime-shifting markets where downside insurance reprices quickly and nonlinear hedges can monetize.',
+    ],
+    officialUrl: 'https://arinetfs.com/attr',
+    officialLabel: 'Arin ETFs (ATTR)',
+  },
+
   ...US_ETF_FEATURED_PART,
 }
 
@@ -1225,6 +1289,165 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     officialUrl: 'https://www.purposeinvest.com/funds/purpose-bitcoin-etf',
     officialLabel: 'Purpose Investments',
+  },
+
+  hsu: {
+    yahooSymbol: 'HSU.TO',
+    betaBenchmarkSymbol: 'SPY',
+    hubCategoryId: 'leveraged-equity',
+    badge: 'Leveraged equity ETFs (advanced)',
+    h1Title: 'HSU.TO — BetaPro S&P 500 2x Daily Bull ETF',
+    displayTicker: 'HSU',
+    issuer: 'Global X Investments Canada',
+    inception: 'Jun 17, 2008',
+    structure: '2x daily S&P 500 leverage',
+    mer: '~1.50%',
+    aum: '~$170M CAD',
+    pageTitle: 'HSU.TO ETF — Alpha Stacking',
+    description: 'BetaPro S&P 500 2x Daily Bull ETF (HSU.TO).',
+    lede:
+      'HSU is Global X Canada’s daily-reset leveraged S&P 500 sleeve, targeting about 2x the index’s one-day move before fees and hedging costs.',
+    strategyParas: [
+      'HSU uses derivatives and financing tools to target roughly 200% of the S&P 500 on a daily basis. The daily reset matters: multi-day outcomes can diverge materially from 2x simple index return, especially in volatile, mean-reverting tape.',
+      'The fund is CAD listed and historically includes currency-hedging mechanics in its structure; compounding drag, financing spread, and path dependence are the core drivers to monitor versus a plain broad-market ETF.',
+    ],
+    pedigreeParas: ped(
+      `Global X Investments Canada (formerly Horizons ETFs Management) is one of the larger Canadian ETF issuers and operates the long-running BetaPro lineup, which gives HSU more operational history than many newer leveraged wrappers.`,
+      `Global X Canada is part of Mirae Asset’s global platform, providing institutional derivatives infrastructure and distribution depth behind products that are explicitly designed for tactical, higher-risk exposure.`,
+    ),
+    outperfParas: [
+      'HSU tends to shine in persistent uptrends with contained volatility, when daily compounding can reinforce directional gains and 2x exposure captures strong beta regimes.',
+      'Choppy, high-volatility ranges are the hostile regime because path dependence and volatility drag accumulate quickly. Favorable conditions are sustained trend periods, not repeated reversal days.',
+    ],
+    officialUrl: 'https://www.globalx.ca/product/HSU',
+    officialLabel: 'Global X Canada (HSU)',
+  },
+
+  hqu: {
+    yahooSymbol: 'HQU.TO',
+    betaBenchmarkSymbol: 'QQQ',
+    hubCategoryId: 'leveraged-equity',
+    badge: 'Leveraged equity ETFs (advanced)',
+    h1Title: 'HQU.TO — BetaPro NASDAQ-100 2x Daily Bull ETF',
+    displayTicker: 'HQU',
+    issuer: 'Global X Investments Canada',
+    inception: 'Jan 8, 2010',
+    structure: '2x daily Nasdaq-100 leverage',
+    mer: '~1.44%',
+    aum: '~$400M CAD',
+    pageTitle: 'HQU.TO ETF — Alpha Stacking',
+    description: 'BetaPro NASDAQ-100 2x Daily Bull ETF (HQU.TO).',
+    lede:
+      'HQU is a daily-reset 2x Nasdaq-100 exposure sleeve in Canada, designed for tactical growth-beta positioning rather than long-horizon buy-and-hold allocation.',
+    strategyParas: [
+      'The mandate targets about two times the NASDAQ-100 daily return before fees. As with all daily leveraged ETFs, realized multi-day performance depends on sequence of returns, volatility, and rebalance math, not just start-to-end index change.',
+      'Because the index is tech-heavy and duration-sensitive, HQU’s risk profile is tightly linked to rates regime, mega-cap concentration, and momentum persistence. Position sizing and holding period discipline matter more than ticker selection alone.',
+    ],
+    pedigreeParas: ped(
+      `Global X Canada has managed leveraged BetaPro products for years, giving HQU a deeper live-history set for compounding behavior than many new-launch leveraged clones.`,
+      `The issuer’s integration with the Mirae Asset group supports derivative execution and product operations at scale, but that does not remove instrument-level leverage risk for end investors.`,
+    ),
+    outperfParas: [
+      'HQU tends to outperform in sustained risk-on growth phases where Nasdaq leadership is broad enough to offset daily leverage costs and volatility stays manageable.',
+      'It struggles in violent rotations and chop, where reversal-driven compounding drag can erode returns quickly. Favorable regimes are clean momentum markets, not two-way macro whipsaw.',
+    ],
+    officialUrl: 'https://www.globalx.ca/product/hqu',
+    officialLabel: 'Global X Canada (HQU)',
+  },
+
+  ussl: {
+    yahooSymbol: 'USSL.TO',
+    betaBenchmarkSymbol: 'SPY',
+    hubCategoryId: 'leveraged-equity',
+    badge: 'Leveraged equity ETFs (advanced)',
+    h1Title: 'USSL.TO — Global X Enhanced S&P 500 Index ETF',
+    displayTicker: 'USSL',
+    issuer: 'Global X Investments Canada',
+    inception: 'May 21, 2024',
+    structure: '1.25x S&P 500 enhanced beta',
+    mer: '~0.50%',
+    aum: '~$250M CAD',
+    pageTitle: 'USSL.TO ETF — Alpha Stacking',
+    description: 'Global X Enhanced S&P 500 Index ETF (USSL.TO).',
+    lede:
+      'USSL targets roughly 1.25x S&P 500 exposure in a Canadian-listed wrapper, aiming for enhanced beta with lower leverage than classic 2x daily products.',
+    strategyParas: [
+      'Global X materials frame USSL as an enhanced-index sleeve that uses leverage tools to seek about 125% of S&P 500 performance, net of expenses. The lower target multiple can reduce volatility drag versus 2x products, but compounding effects still matter.',
+      'Investors should still treat it as a leveraged instrument: financing cost, path dependence, and market-gap risk remain central. It sits between plain beta and high-octane tactical leverage in the implementation spectrum.',
+    ],
+    pedigreeParas: ped(
+      `Global X Canada’s scale in the domestic ETF market and long derivatives track record make USSL more institutionalized than many niche leverage wrappers.`,
+      `Backed by Mirae Asset’s global platform, the issuer has broad product infrastructure, but USSL’s outcome remains a function of S&P path and leverage mechanics rather than issuer size alone.`,
+    ),
+    outperfParas: [
+      'USSL generally works best in steady equity uptrends where enhanced beta compounds with limited volatility interruption, giving a cleaner participation profile than 2x leverage.',
+      'Sideways chop and abrupt drawdowns can still damage realized compounding. Favorable tape is trending broad-market strength with contained vol, not headline-driven reversal clusters.',
+    ],
+    officialUrl: 'https://www.globalx.ca/product/ussl',
+    officialLabel: 'Global X Canada (USSL)',
+  },
+
+  qqql: {
+    yahooSymbol: 'QQQL.TO',
+    betaBenchmarkSymbol: 'QQQ',
+    hubCategoryId: 'leveraged-equity',
+    badge: 'Leveraged equity ETFs (advanced)',
+    h1Title: 'QQQL.TO — Global X Enhanced NASDAQ-100 Index ETF',
+    displayTicker: 'QQQL',
+    issuer: 'Global X Investments Canada',
+    inception: 'May 21, 2024',
+    structure: '1.25x Nasdaq-100 enhanced beta',
+    mer: '~0.50%',
+    aum: '~$180M CAD',
+    pageTitle: 'QQQL.TO ETF — Alpha Stacking',
+    description: 'Global X Enhanced NASDAQ-100 Index ETF (QQQL.TO).',
+    lede:
+      'QQQL is a Canadian-listed enhanced-beta Nasdaq sleeve targeting about 1.25x index exposure, positioned between plain QQQ-style beta and 2x daily leverage.',
+    strategyParas: [
+      'The product seeks to replicate approximately 125% of NASDAQ-100 performance using permitted leverage tools. That lower multiplier can be more implementation-friendly than 2x structures, but it is still path-dependent leveraged exposure.',
+      'Given Nasdaq concentration, results are sensitive to mega-cap tech leadership, rates shocks, and momentum persistence. In practice, the main risk control is sizing and holding discipline, not the reduced leverage multiple alone.',
+    ],
+    pedigreeParas: ped(
+      `QQQL sits in Global X Canada’s enhanced-index lineup, leveraging the same issuer and derivatives plumbing used across BetaPro and other tactical products.`,
+      `Global X Canada’s parent ecosystem (Mirae Asset) provides scale and product support, while investors still bear the strategy-level realities of leveraged compounding and growth-factor concentration.`,
+    ),
+    outperfParas: [
+      'QQQL tends to add most when growth leadership trends persist and volatility remains moderate, allowing enhanced beta to compound on the right side of momentum.',
+      'It underperforms fastest in reversal-heavy markets or sharp risk-off rotations out of mega-cap tech. Favorable regimes are persistent trend markets, not macro whiplash.',
+    ],
+    officialUrl: 'https://www.globalx.ca/product/qqql',
+    officialLabel: 'Global X Canada (QQQL)',
+  },
+
+  heql: {
+    yahooSymbol: 'HEQL.TO',
+    hubCategoryId: 'leveraged-equity',
+    badge: 'Leveraged equity ETFs (advanced)',
+    h1Title: 'HEQL.TO — Global X Enhanced All-Equity Asset Allocation ETF',
+    displayTicker: 'HEQL',
+    issuer: 'Global X Investments Canada',
+    inception: 'Oct 10, 2023',
+    structure: '1.25x global all-equity allocation',
+    mer: '~0.45%',
+    aum: '~$19M CAD',
+    pageTitle: 'HEQL.TO ETF — Alpha Stacking',
+    description: 'Global X Enhanced All-Equity Asset Allocation ETF (HEQL.TO).',
+    lede:
+      'HEQL is a Canadian-listed enhanced all-equity allocation sleeve that targets roughly 125% exposure to a diversified global equity mix through a fund-of-funds structure.',
+    strategyParas: [
+      'Global X describes HEQL as an enhanced-growth wrapper that primarily holds diversified equity ETFs and employs cash borrowing to maintain a leverage ratio near 125% within prospectus limits. It is a practical middle ground between plain all-equity beta and higher-volatility daily-reset leverage products.',
+      'Because the engine is a leveraged fund-of-funds, realized outcomes depend on underlying regional allocations, financing cost, and equity volatility path. Monthly distributions and rebalancing inside underlying sleeves can also shape return cadence relative to a single-index benchmark.',
+    ],
+    pedigreeParas: ped(
+      `Global X Investments Canada is one of the larger domestic ETF issuers and operates broad lineup depth across core, covered-call, and leveraged products; HEQL benefits from that existing ETF plumbing rather than standing alone as a niche launch.`,
+      `Global X Canada is a Mirae Asset subsidiary, giving the sponsor institutional operating scale for borrowing facilities, portfolio implementation, and distribution while keeping the product targeted at Canadian investors who want enhanced global equity exposure in one TSX ticker.`,
+    ),
+    outperfParas: [
+      'HEQL tends to add value in steady, broad global equity uptrends where moderate leverage can compound without frequent volatility shocks. The structure is built to monetize persistent beta participation rather than short-term tactical timing.',
+      'It is less favorable in choppy, reversal-heavy markets where financing and compounding drag can erode excess return. Best conditions are durable risk-on tapes with healthy breadth across U.S., international, and emerging equity sleeves.',
+    ],
+    officialUrl: 'https://www.globalx.ca/product/heql',
+    officialLabel: 'Global X Canada (HEQL)',
   },
 
   ethxb: {

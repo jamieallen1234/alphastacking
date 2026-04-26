@@ -87,6 +87,14 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'SPY',
   },
+  gdmn: {
+    components: [
+      { name: 'Gold miners equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
+      { name: 'Gold futures', pct: 100, bucket: 'alpha', assetClass: 'commodity' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'GDX',
+  },
   rssx: {
     components: [
       { name: 'US equity', pct: 100, bucket: 'capital', assetClass: 'equity' },

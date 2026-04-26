@@ -54,7 +54,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'us',
     kind: 'live',
     hubSection: 'buy-hold',
-    title: 'US Gold + Alt Blend',
+    title: 'US + Gold & Alt Blend',
     description:
       'Balanced U.S. mix across capital-efficient gold, long/short equity, merger arb, and selective growth beta.',
   },
@@ -93,7 +93,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'us',
     kind: 'stub',
     hubSection: 'annual-rebalance',
-    title: 'Global macro blend',
+    title: 'Global Macro Blend',
     badge: 'Planned',
     description: 'Placeholder slot for an additional US model portfolio.',
   },
@@ -106,7 +106,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'ca',
     kind: 'live',
     hubSection: 'annual-rebalance',
-    title: 'Canadian international',
+    title: 'Global + Long/Short',
     description: 'CAD-diversified US and Canadian sleeves with intentional beta near 1.0.',
     featured: true,
   },
@@ -115,7 +115,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'ca',
     kind: 'live',
     hubSection: 'buy-hold',
-    title: 'US & Canada - Balanced beta',
+    title: 'US & Canada - Low Beta & Long/Short',
     description:
       'Levered US growth stack with Canadian low-vol equity and preferred income — modeled in CAD.',
     featured: true,
@@ -125,9 +125,18 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     region: 'ca',
     kind: 'live',
     hubSection: 'buy-hold',
-    title: 'US + hedge long/short',
+    title: 'US + Long/Short',
     description:
       'Concentrated levered US growth with a Canadian market-neutral long/short sleeve — three positions, buy and hold.',
+  },
+  {
+    slug: 'ca-sso-dglm-rgbm-arb',
+    region: 'ca',
+    kind: 'live',
+    hubSection: 'annual-rebalance',
+    title: 'S&P 500 + Macro Stack',
+    description:
+      'Concentrated U.S. leveraged beta blended with Canadian macro, return-stacked, and arbitrage diversifiers.',
   },
   {
     slug: 'ca-alpha-stack',

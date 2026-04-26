@@ -11,6 +11,11 @@ import {
   caUsslQqqlHdgeWeights,
 } from '@/lib/presets/caBuyHoldHdge'
 import {
+  CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
+  caSsoDglmRgbmArbSymbols,
+  caSsoDglmRgbmArbWeights,
+} from '@/lib/presets/caSsoDglmRgbmArb'
+import {
   CA_INTL_PRESET_ID,
   caInternationalSymbols,
   caInternationalWeights,
@@ -189,6 +194,28 @@ export const getCachedCaUsslQqqlHdgeChart = unstable_cache(
     'default-1y',
     'buy-hold',
     'ussl-qqql-hdge-60-15-25',
+  ],
+  { revalidate: DAY }
+)
+
+export const getCachedCaSsoDglmRgbmArbChart = unstable_cache(
+  async () =>
+    computePortfolioChart({
+      symbols: caSsoDglmRgbmArbSymbols(),
+      weights: caSsoDglmRgbmArbWeights(),
+      range: PRESET_CHART_RANGE,
+      cadDenominated: true,
+      rebalanceSchedule: 'annual',
+    }),
+  [
+    'preset-chart',
+    CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
+    PRESET_CHART_RANGE,
+    'notional-10k',
+    'cad-vfv-usdcad',
+    'default-1y',
+    'annual-rebal',
+    'sso-dglm-rgbm-arb-50-20-20-10',
   ],
   { revalidate: DAY }
 )

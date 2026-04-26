@@ -7,6 +7,7 @@ import PresetHoldingsTable from '@/components/PresetHoldingsTable'
 import {
   getCachedCaCoreBuyHoldChart,
   getCachedCaInternationalChart,
+  getCachedCaSsoDglmRgbmArbChart,
   getCachedCaUsslQqqlHdgeChart,
   getCachedUsAdvancedChart,
   getCachedUsCoreBuyHoldChart,
@@ -20,6 +21,10 @@ import {
   usPortfolioRoutes,
 } from '@/lib/portfolioRoutes'
 import { CA_CORE_BH_PRESET_ID, caCoreBuyHoldHoldings } from '@/lib/presets/caBuyHold'
+import {
+  CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
+  caSsoDglmRgbmArbHoldings,
+} from '@/lib/presets/caSsoDglmRgbmArb'
 import { CA_USSL_QQQL_HDGE_PRESET_ID, caUsslQqqlHdgeHoldings } from '@/lib/presets/caBuyHoldHdge'
 import { CA_INTL_PRESET_ID, caInternationalHoldings } from '@/lib/presets/caInternational'
 import { US_CORE_BH_PRESET_ID, usCoreBuyHoldHoldings } from '@/lib/presets/usBuyHold'
@@ -80,6 +85,11 @@ const CA_LIVE: Record<string, LiveEntry> = {
     presetId: CA_USSL_QQQL_HDGE_PRESET_ID,
     holdings: caUsslQqqlHdgeHoldings,
     load: getCachedCaUsslQqqlHdgeChart,
+  },
+  'ca-sso-dglm-rgbm-arb': {
+    presetId: CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
+    holdings: caSsoDglmRgbmArbHoldings,
+    load: getCachedCaSsoDglmRgbmArbChart,
   },
 }
 

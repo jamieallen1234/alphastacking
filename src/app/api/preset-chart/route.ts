@@ -6,6 +6,11 @@ import {
   caCoreBuyHoldWeights,
 } from '@/lib/presets/caBuyHold'
 import {
+  CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
+  caSsoDglmRgbmArbSymbols,
+  caSsoDglmRgbmArbWeights,
+} from '@/lib/presets/caSsoDglmRgbmArb'
+import {
   CA_USSL_QQQL_HDGE_PRESET_ID,
   caUsslQqqlHdgeSymbols,
   caUsslQqqlHdgeWeights,
@@ -90,9 +95,15 @@ const PRESETS: Record<
     cadDenominated: true,
     rebalanceSchedule: 'none',
   },
+  [CA_SSO_DGLM_RGBM_ARB_PRESET_ID]: {
+    symbols: caSsoDglmRgbmArbSymbols,
+    weights: caSsoDglmRgbmArbWeights,
+    cadDenominated: true,
+    rebalanceSchedule: 'annual',
+  },
 }
 
-const PRESET_HINT = `${US_INTL_PRESET_ID}, ${US_ADVANCED_PRESET_ID}, ${CA_INTL_PRESET_ID}, ${US_CORE_BH_PRESET_ID}, ${US_GDE_CLSE_BLEND_PRESET_ID}, ${CA_CORE_BH_PRESET_ID}, ${CA_USSL_QQQL_HDGE_PRESET_ID}`
+const PRESET_HINT = `${US_INTL_PRESET_ID}, ${US_ADVANCED_PRESET_ID}, ${CA_INTL_PRESET_ID}, ${US_CORE_BH_PRESET_ID}, ${US_GDE_CLSE_BLEND_PRESET_ID}, ${CA_CORE_BH_PRESET_ID}, ${CA_USSL_QQQL_HDGE_PRESET_ID}, ${CA_SSO_DGLM_RGBM_ARB_PRESET_ID}`
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)

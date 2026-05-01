@@ -22,6 +22,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/ca/learn',
     '/learn/return-stacking-vs-alpha-stacking',
     '/ca/learn/return-stacking-vs-alpha-stacking',
+    '/learn/etf-pages-and-portfolio-builder-101',
+    '/ca/learn/etf-pages-and-portfolio-builder-101',
     '/us-etfs/mate',
     '/us-etfs/rssy',
     '/us-etfs/hfgm',

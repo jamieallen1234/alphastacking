@@ -5,7 +5,7 @@ import ReturnStackingVsAlphaStackingArticle from '@/components/learn/ReturnStack
 export const metadata: Metadata = {
   title: 'Return Stacking vs. Alpha Stacking — Learn — Alpha Stacking',
   description:
-    'Return stacking is capital efficiency per dollar; alpha stacking is choosing and combining independent return premia. How they differ — and why it matters for portfolio construction.',
+    'Plain-language explanation for index investors: return stacking fits more exposure per dollar; alpha stacking is about which return sources you combine — and why that matters.',
 }
 
 export default function ReturnStackingVsAlphaStackingPage() {

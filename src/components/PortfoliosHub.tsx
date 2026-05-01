@@ -16,19 +16,46 @@ export type PortfoliosHubEdition = 'us' | 'ca'
 
 export interface PortfoliosHubProps {
   edition: PortfoliosHubEdition
+  /** 1Y excess return vs SPY (same window as preset charts); live hub slugs only. */
+  alphaBySlug: Record<string, number | null>
 }
 
-function portfolioGrid(routes: PortfolioRouteDef[], hrefFor: (slug: string) => string) {
+function formatHubAlpha(pct: number): string {
+  return `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`
+}
+
+function portfolioGrid(
+  routes: PortfolioRouteDef[],
+  hrefFor: (slug: string) => string,
+  alphaBySlug: Record<string, number | null>
+) {
   return (
     <div className={styles.grid}>
-      {routes.map((p) => (
-        <Link key={p.slug} href={hrefFor(p.slug)} className={styles.card}>
-          <span className={styles.cardBadge}>{p.badge}</span>
-          <h2 className={styles.cardTitle}>{p.title}</h2>
-          <p className={styles.cardDesc}>{p.description}</p>
-          <div className={styles.cardCta}>View portfolio →</div>
-        </Link>
-      ))}
+      {routes.map((p) => {
+        const alpha = alphaBySlug[p.slug]
+        return (
+          <Link key={p.slug} href={hrefFor(p.slug)} className={styles.card}>
+            {p.badge ? <span className={styles.cardBadge}>{p.badge}</span> : null}
+            <h2 className={styles.cardTitle}>{p.title}</h2>
+            <p className={styles.cardDesc}>{p.description}</p>
+            <div className={styles.cardAlphaRow} aria-label="One-year alpha versus S and P 500 total return">
+              {alpha != null ? (
+                <>
+                  <span
+                    className={`${styles.cardAlphaVal} ${alpha >= 0 ? styles.cardAlphaPos : styles.cardAlphaNeg}`}
+                  >
+                    {formatHubAlpha(alpha)}
+                  </span>
+                  <span className={styles.cardAlphaLab}>1Y alpha vs SPY</span>
+                </>
+              ) : (
+                <span className={styles.cardAlphaUnavailable}>1Y alpha —</span>
+              )}
+            </div>
+            <div className={styles.cardCta}>View portfolio →</div>
+          </Link>
+        )
+      })}
     </div>
   )
 }
@@ -41,6 +68,7 @@ function hubSections({
   betweenSections,
   extraBlurb,
   headingFontSize,
+  alphaBySlug,
 }: {
   portfolioRoutes: PortfolioRouteDef[]
   hrefFor: (slug: string) => string
@@ -49,6 +77,7 @@ function hubSections({
   betweenSections: string
   extraBlurb: string
   headingFontSize?: number
+  alphaBySlug: Record<string, number | null>
 }) {
   const bySection = (s: PortfolioHubSection) => portfolioRoutes.filter((r) => r.hubSection === s)
 
@@ -76,7 +105,7 @@ function hubSections({
                 {ledeText}
               </p>
             ) : null}
-            {portfolioGrid(routes, hrefFor)}
+            {portfolioGrid(routes, hrefFor, alphaBySlug)}
           </div>
         )
       })}
@@ -84,7 +113,7 @@ function hubSections({
   )
 }
 
-export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
+export default function PortfoliosHub({ edition, alphaBySlug }: PortfoliosHubProps) {
   if (edition === 'us') {
     return (
       <main className={styles.main}>
@@ -100,6 +129,7 @@ export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
             firstSectionMarginTop: 0,
             betweenSections: '2.75rem',
             extraBlurb: '',
+            alphaBySlug,
           })}
         </section>
         <Footer />
@@ -125,6 +155,7 @@ export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
           betweenSections: '2.25rem',
           extraBlurb: '',
           headingFontSize: 11,
+          alphaBySlug,
         })}
 
         <h2 className={styles.chartHeading} id="us-block" style={{ marginTop: '2.75rem' }}>
@@ -138,6 +169,7 @@ export default function PortfoliosHub({ edition }: PortfoliosHubProps) {
           betweenSections: '2.25rem',
           extraBlurb: '',
           headingFontSize: 11,
+          alphaBySlug,
         })}
       </section>
       <Footer />

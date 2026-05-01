@@ -88,6 +88,16 @@
   color: rgba(232, 228, 220, 0.9);
 }
 
+.inlineLink {
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.inlineLink:hover {
+  color: var(--color-gold-hover);
+}
+
 .principles {
   margin: 1.5rem 0 2rem;
   padding: 1.35rem 1.5rem 1.5rem;
@@ -199,6 +209,9 @@
 
 .ctaRow {
   margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.75rem;
 }
 
 .cta {

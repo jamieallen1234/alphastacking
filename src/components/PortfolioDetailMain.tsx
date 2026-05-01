@@ -165,6 +165,13 @@ async function LiveLayout({
             overlapInceptionYmd={chart.limitingFirstTradeDate}
             weightedBeta={wb}
             exposureSummary={exposureSummary}
+            footnote={def.slug === 'us-core-buy-hold' ? 'none' : 'default'}
+            compactMobileCapture={def.slug === 'us-core-buy-hold'}
+            makeupHoldings={
+              def.slug === 'us-core-buy-hold'
+                ? live.holdings.map((h) => ({ ticker: h.ticker, weightPct: h.weightPct }))
+                : []
+            }
           />
         ) : (
           <p className={styles.pageChartDisclaimer}>

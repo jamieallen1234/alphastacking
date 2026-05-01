@@ -217,6 +217,10 @@ interface PresetPortfolioChartProps {
     grossShortEquityPct: number
     grossAlphaExposurePct: number
   } | null
+  /** Mobile-only compact layout for screenshot capture on specific portfolio pages. */
+  compactMobileCapture?: boolean
+  /** Optional compact portfolio makeup list shown with scorecard in compact mode. */
+  makeupHoldings?: Array<{ ticker: string; weightPct: number }>
 }
 
 type LetterGrade = 'A+' | 'A' | 'B+' | 'B' | 'C' | 'D'
@@ -285,6 +289,8 @@ export default function PresetPortfolioChart({
   weightedBeta = null,
   showScorecard = false,
   exposureSummary = null,
+  compactMobileCapture = false,
+  makeupHoldings = [],
 }: PresetPortfolioChartProps) {
   const pathname = usePathname()
   const hubBase: PortfolioUsEtfHubBase = useMemo(
@@ -413,7 +419,7 @@ export default function PresetPortfolioChart({
     rawOverallGrade != null && underOneYear ? downgradeOneLetter(rawOverallGrade) : rawOverallGrade
 
   return (
-    <div className={styles.chartBlock}>
+    <div className={`${styles.chartBlock} ${compactMobileCapture ? styles.chartBlockCompact : ''}`}>
       <div className={styles.metricsRow}>
         <div>
           <div className={`${styles.metricBig} ${trClass}`}>
@@ -473,7 +479,7 @@ export default function PresetPortfolioChart({
       <ReturnLineChart
         series={chartSeries}
         timestampsSec={timestamps}
-        height={140}
+        height={compactMobileCapture ? 112 : 140}
         chartCurrency={chartCurrency}
       />
       {showScorecard ? (
@@ -483,23 +489,43 @@ export default function PresetPortfolioChart({
               <div className={styles.scorecardHeader}>
                 <strong>Portfolio score:</strong> {overallGrade ?? '—'}
               </div>
-              {overallGrade != null && underOneYear ? (
+              {compactMobileCapture ? (
                 <p className={styles.scorecardLine}>
-                  <strong>Adjustment:</strong> Portfolio history is under 1 year, so the overall score is
-                  downgraded by one letter.
+                  <strong>Weighted beta:</strong>{' '}
+                  {weightedBeta != null ? weightedBeta.toFixed(2) : '—'}
                 </p>
-              ) : null}
-              <p className={styles.scorecardLine}>
-                <strong>Excess alpha:</strong> {alphaGrade ?? '—'}
-              </p>
-              <p className={styles.scorecardLine}>
-                <strong>Max drawdown:</strong> {drawdownGrade ?? '—'}
-              </p>
-              <p className={styles.scorecardLine}>
-                <strong>Beta:</strong> {betaGrade ?? '—'}
-              </p>
+              ) : (
+                <>
+                  {overallGrade != null && underOneYear ? (
+                    <p className={styles.scorecardLine}>
+                      <strong>Adjustment:</strong> Portfolio history is under 1 year, so the overall score is
+                      downgraded by one letter.
+                    </p>
+                  ) : null}
+                  <p className={styles.scorecardLine}>
+                    <strong>Excess alpha:</strong> {alphaGrade ?? '—'}
+                  </p>
+                  <p className={styles.scorecardLine}>
+                    <strong>Max drawdown:</strong> {drawdownGrade ?? '—'}
+                  </p>
+                  <p className={styles.scorecardLine}>
+                    <strong>Beta:</strong> {betaGrade ?? '—'}
+                  </p>
+                </>
+              )}
             </div>
-            {exposureSummary ? (
+            {compactMobileCapture && makeupHoldings.length > 0 ? (
+              <div>
+                <div className={styles.scorecardHeader}>
+                  <strong>Portfolio makeup</strong>
+                </div>
+                {makeupHoldings.map((h) => (
+                  <p key={`${h.ticker}-${h.weightPct}`} className={styles.scorecardLine}>
+                    <strong>{h.ticker}:</strong> {h.weightPct}%
+                  </p>
+                ))}
+              </div>
+            ) : exposureSummary ? (
               <div>
                 <div className={styles.scorecardHeader}>
                   <strong>Net leverage:</strong>{' '}
@@ -527,7 +553,8 @@ export default function PresetPortfolioChart({
           </div>
         </div>
       ) : null}
-      <div className={styles.chartFootnotes}>
+      {!compactMobileCapture ? (
+        <div className={styles.chartFootnotes}>
         {footnote !== 'none' ? (
           <div className={styles.chartDisclaimerRow}>
             <span className={styles.footnoteMark} aria-hidden="true">
@@ -557,7 +584,8 @@ export default function PresetPortfolioChart({
         ) : (
           <p className={styles.disclaimerDetail}>{limitingFootnote}</p>
         )}
-      </div>
+        </div>
+      ) : null}
     </div>
   )
 }

@@ -23,6 +23,9 @@ interface PresetIntlChartPanelProps {
     grossShortEquityPct: number
     grossAlphaExposurePct: number
   } | null
+  footnote?: 'default' | 'minimal' | 'none'
+  compactMobileCapture?: boolean
+  makeupHoldings?: Array<{ ticker: string; weightPct: number }>
 }
 
 export default function PresetIntlChartPanel({
@@ -31,6 +34,9 @@ export default function PresetIntlChartPanel({
   overlapInceptionYmd,
   weightedBeta,
   exposureSummary = null,
+  footnote = 'default',
+  compactMobileCapture = false,
+  makeupHoldings = [],
 }: PresetIntlChartPanelProps) {
   const [payload, setPayload] = useState(initialPayload)
   const [activeRange, setActiveRange] = useState<YahooRange>(initialPayload.range)
@@ -102,9 +108,12 @@ export default function PresetIntlChartPanel({
       {error ? <p className={styles.rangeError}>{error}</p> : null}
       <PresetPortfolioChart
         payload={payload}
+        footnote={footnote}
         weightedBeta={weightedBeta}
         showScorecard
         exposureSummary={exposureSummary}
+        compactMobileCapture={compactMobileCapture}
+        makeupHoldings={makeupHoldings}
       />
     </div>
   )

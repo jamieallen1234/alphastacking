@@ -149,9 +149,49 @@
   color: rgba(232, 228, 220, 0.8);
 }
 
+.chartBlockCompact {
+  margin-top: 0;
+}
+
 @media (max-width: 700px) {
   .scorecardCols {
     grid-template-columns: 1fr;
+  }
+
+  .chartBlockCompact .metricsRow {
+    gap: 0.65rem 1.05rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .chartBlockCompact .metricBig {
+    font-size: 1.05rem;
+    line-height: 1.1;
+  }
+
+  .chartBlockCompact .metricSub {
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  .chartBlockCompact .legend {
+    margin-bottom: 0.3rem;
+    gap: 0.65rem 1rem;
+  }
+
+  .chartBlockCompact .scorecard {
+    margin-top: 0.45rem;
+    padding: 0.55rem 0.6rem;
+  }
+
+  .chartBlockCompact .scorecardLine {
+    margin: 0.12rem 0;
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .chartBlockCompact .scorecardHeader {
+    margin-bottom: 0.2rem;
+    font-size: 11px;
   }
 }
 

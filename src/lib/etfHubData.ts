@@ -230,6 +230,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Higher-turnover fundamental long/short global equity (Militia Investments).',
       usPath('orr')
     ),
+    us(
+      'mema',
+      'MEMA — Man Active Emerging Markets Alternative ETF',
+      'Actively managed emerging-markets long/short equity sleeve using systematic signals plus portfolio-manager discretion.',
+      usPath('mema')
+    ),
   ],
   'global-macro': [
     us(

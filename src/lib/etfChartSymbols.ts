@@ -30,6 +30,7 @@ export const ETF_CHART_SYMBOLS = [
   'CTA',
   'DBMF',
   'KMLM',
+  'MEMA',
   'CLSE',
   'MRGR',
   'ORR',

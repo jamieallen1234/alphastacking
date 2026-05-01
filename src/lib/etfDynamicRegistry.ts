@@ -820,6 +820,39 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'KraneShares (KMLM)',
   },
 
+  mema: {
+    yahooSymbol: 'MEMA',
+    betaBenchmarkSymbol: 'EEM',
+    hubCategoryId: 'long-short',
+    badge: 'Long/short',
+    h1Title: 'MEMA — Man Active Emerging Markets Alternative ETF',
+    displayTicker: 'MEMA',
+    issuer: 'Man Group',
+    inception: 'Dec 16, 2025',
+    structure: 'Active emerging-markets long/short equity',
+    mer: '0.85%',
+    aum: '~$10M',
+    pageTitle: 'MEMA ETF — Alpha Stacking',
+    description:
+      'Man Active Emerging Markets Alternative ETF (MEMA): active EM long/short equity combining systematic signals with discretionary portfolio management.',
+    lede:
+      'MEMA is Man Group’s actively managed emerging-markets long/short equity ETF: the portfolio can hold both longs and shorts across EM issuers, aiming to compound stock-selection alpha with lower market dependence than a plain long-only EM index sleeve.',
+    strategyParas: [
+      'Fund materials describe a process that blends quantitative screening with manager discretion, then expresses views through long and short positions in emerging-markets equities and equity-related instruments. The mandate is not benchmark hugging; net exposure can move as risk and opportunity sets change.',
+      'Implementation matters more than headline theme: short borrow costs, liquidity in local EM listings, and position sizing discipline can dominate realized returns in stress windows. Read the prospectus and holdings updates to monitor net/gross exposure drift rather than treating MEMA as static “EM beta.”',
+    ],
+    pedigreeParas: ped(
+      `Man Group is a long-standing listed alternatives manager with institutional roots in quantitative and discretionary investing; MEMA extends that research platform into an ETF wrapper for investors who want emerging-markets long/short exposure without a hedge-fund lockup.`,
+      `The ETF itself is still early in lifecycle and relatively small by AUM, so trading implementation and capacity management deserve attention alongside pure alpha claims—use limit orders and confirm current liquidity before sizing.`
+    ),
+    outperfParas: [
+      'The sleeve should be most constructive when country and sector dispersion inside emerging markets is wide and persistent—windows where security selection and relative-value shorts can add return independent of broad EM index direction.',
+      'It is a harder tape when correlations across EM jump toward one factor and short books get squeezed. Favorable regimes are fundamentally differentiated markets with orderly borrow and turnover, where long and short research can both monetize.',
+    ],
+    officialUrl: 'https://www.man.com/products/man-active-emerging-markets-alternative-etf',
+    officialLabel: 'Man Group (MEMA)',
+  },
+
   clse: {
     yahooSymbol: 'CLSE',
     hubCategoryId: 'long-short',

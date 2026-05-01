@@ -1,6 +1,6 @@
 import type { PresetHolding } from './usInternational'
 
-export const US_CORE_BH_PRESET_ID = 'us-core-bh-v3'
+export const US_CORE_BH_PRESET_ID = 'us-core-bh-v4'
 
 export const usCoreBuyHoldHoldings: PresetHolding[] = [
   {
@@ -10,10 +10,10 @@ export const usCoreBuyHoldHoldings: PresetHolding[] = [
     blurb: 'US large-cap cash cows (VictoryShares).',
   },
   {
-    ticker: 'AVUV',
+    ticker: 'CLSE',
     weightPct: 20,
-    beta: 1.15,
-    blurb: 'US small-cap value with profitability/value tilts (Avantis).',
+    beta: 0.6,
+    blurb: 'Net-long US long/short equity sleeve (Convergence).',
   },
   {
     ticker: 'QQQ',

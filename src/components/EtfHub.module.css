@@ -114,7 +114,15 @@ a.etfRow:focus-visible {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-text);
-  margin: 0 0 0.65rem;
+  margin: 0 0 0.5rem;
+}
+
+.categorySubtitle {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(232, 228, 220, 0.5);
+  max-width: 36rem;
+  margin: 0 0 0.75rem;
 }
 
 .comingSoon {

@@ -36,7 +36,7 @@ export const US_ETF_FEATURED_PART: Record<string, EtfDynamicDef> = {
     aum: '~$37M',
     pageTitle: 'MATE ETF — Alpha Stacking',
     description:
-      'Man Active Trend Enhanced ETF (MATE): 100% S&P 500 stacked with 100% managed futures, manager context.',
+      'Man Active Trend Enhanced ETF (MATE): 100% S&P 500 plus 100% Man-managed trend-following futures on the same capital. When it earns and how it fits in an alpha stacking portfolio.',
     contentFormat: 'html',
     lede: fb.MATE_LEDE_HTML,
     strategyParas: fb.MATE_STRATEGY_PARAS_HTML,

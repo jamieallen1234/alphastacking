@@ -60,7 +60,7 @@ Fixed-split stacked ETFs (sleeve ratios defined by fund mandate):
 - RSSY: 100% equity / 100% futures yield (carry)
 - GDE: 90% equity / 90% gold futures
 - RSSX: 100% equity / gold + bitcoin sleeve
-- BTGD, OOQB, OOSB, ISSB, ISBG, WTIB, BEGS: equity sleeve + crypto/commodity sleeve (use published fund mandate for split)
+- BTGD, OOQB, OOSB, ISSB, WTIB, BEGS: equity sleeve + crypto/commodity sleeve (use published fund mandate for split)
 
 Observable-split stacked ETFs (sleeve ratios estimated from published holdings — update when materially changed):
 

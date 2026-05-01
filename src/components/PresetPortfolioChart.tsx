@@ -180,6 +180,20 @@ function SyntheticModelingLine({
           daily returns, minus ~{(HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(1)}% annual drag.
         </p>
       )
+    case 'dglm_dbmf':
+      return (
+        <p key={`dglm-${m.firstRealNyDay}`} className={styles.disclaimerDetail}>
+          <ProxyLink ticker={m.slotSymbol} hubBase={hubBase}>
+            {m.slotSymbol}
+          </ProxyLink>
+          : before {when},{' '}
+          {m.slotSymbol} is proxied by{' '}
+          <ProxyLink ticker="DBMF" hubBase={hubBase}>
+            DBMF
+          </ProxyLink>{' '}
+          daily returns.
+        </p>
+      )
     default:
       return null
   }

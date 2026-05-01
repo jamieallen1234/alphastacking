@@ -1,4 +1,5 @@
 import type { EtfDynamicDef, EtfDynamicEfficiencyDef } from '@/lib/etfDynamicRegistryTypes'
+import { stackBucketExposureSplitPct } from '@/lib/etfStackExposureBySlug'
 import type {
   MonthlyEfficiencyGradePatch,
   MonthlyEfficiencySnapshot,
@@ -23,9 +24,18 @@ function pointsToLetter(points: number): string {
   return 'D'
 }
 
-function attachStackedEfficiency(def: EtfDynamicDef, eff: EtfDynamicEfficiencyDef): EtfDynamicEfficiencyDef {
-  const cp = def.capitalBucketExposurePct ?? 0
-  const ap = def.alphaBucketExposurePct ?? 0
+function attachStackedEfficiency(
+  def: EtfDynamicDef,
+  eff: EtfDynamicEfficiencyDef,
+  slug: string
+): EtfDynamicEfficiencyDef {
+  let cp = def.capitalBucketExposurePct ?? 0
+  let ap = def.alphaBucketExposurePct ?? 0
+  const stackSplit = stackBucketExposureSplitPct(slug)
+  if (stackSplit && stackSplit.capital > 0 && stackSplit.alpha > 0) {
+    cp = stackSplit.capital
+    ap = stackSplit.alpha
+  }
   // Stacked score applies only to blended equity+alpha products.
   if (cp <= 0 || ap <= 0 || def.allEquityStack) return eff
   if (!eff.capital || !eff.alpha) return eff
@@ -45,8 +55,8 @@ function attachStackedEfficiency(def: EtfDynamicDef, eff: EtfDynamicEfficiencyDe
       grade,
       gradeTone: grade === 'A+' ? 'gold' : 'muted',
       tooltip:
-        `Stacked Efficiency blends Equity and Alpha Efficiency using configured sleeve weights (${Math.round(wC * 100)}% equity / ${Math.round(wA * 100)}% alpha).` +
-        `\n\nThis line is only shown for portfolios with both an equity sleeve and a non-equity alpha sleeve.`,
+        `Stacked Efficiency blends Capital- and Alpha-bucket efficiency using configured sleeve weights (${Math.round(wC * 100)}% capital bucket / ${Math.round(wA * 100)}% alpha bucket).` +
+        `\n\nThis line is only shown when both bucket grades are available (e.g. equity + managed futures, or dual macro sleeves in one fund).`,
     },
   }
 }
@@ -140,18 +150,6 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     alpha: {
       tooltip: alphaEfficiencyStackedTooltip(
         'The sleeve beyond core equity-style beta here is the paired gold and bitcoin book plus implementation drag—futures curve and collateral mechanics drive incremental outcomes.'
-      ),
-    },
-  },
-  isbg: {
-    capital: {
-      tooltip: insufficientHistoryTooltip(
-        'ISBG combines bitcoin and gold beta with an options-income overlay per Quantify disclosures; capital-efficiency grading needs more overlapping live NAV history.'
-      ),
-    },
-    alpha: {
-      tooltip: insufficientHistoryTooltip(
-        'The income and volatility-selling sleeves sit on top of dual commodity/digital betas—alpha-style outcomes require more live data before assignment.'
       ),
     },
   },
@@ -511,7 +509,7 @@ export function mergeDynamicEtfEfficiency(
   if (!staticEff) return def
 
   const merged = applyMonthlyEfficiencyGradePatch(staticEff, patch, slug)
-  return { ...def, efficiency: attachStackedEfficiency(def, merged) }
+  return { ...def, efficiency: attachStackedEfficiency(def, merged, slug) }
 }
 
 /** Merge using a precomputed monthly patch (single-slug fetch path). */
@@ -525,5 +523,5 @@ export function mergeDynamicEtfEfficiencyWithPatch(
   const staticEff = def.efficiency ?? map[slug]
   if (!staticEff) return def
   const merged = applyMonthlyEfficiencyGradePatch(staticEff, patch, slug)
-  return { ...def, efficiency: attachStackedEfficiency(def, merged) }
+  return { ...def, efficiency: attachStackedEfficiency(def, merged, slug) }
 }

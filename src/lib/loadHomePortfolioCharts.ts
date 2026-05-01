@@ -54,7 +54,7 @@ export async function loadHomePortfolioChartSlots(
         href: `/portfolios/${intlDef.slug}`,
         title: intlDef.title,
         description: intlDef.description,
-        chartHeading: 'Total return vs SPY (all history)',
+        chartHeading: 'Total return vs SPY — all history',
         payload: intlPayload,
       },
       {
@@ -62,7 +62,7 @@ export async function loadHomePortfolioChartSlots(
         href: `/portfolios/${coreDef.slug}`,
         title: coreDef.title,
         description: coreDef.description,
-        chartHeading: 'Total return vs SPY (all history)',
+        chartHeading: 'Total return vs SPY — all history',
         payload: corePayload,
       },
     ]
@@ -86,15 +86,15 @@ export async function loadHomePortfolioChartSlots(
       href: `/ca/portfolios/${intlDef.slug}`,
       title: intlDef.title,
       description: intlDef.description,
-      chartHeading: 'Total return vs SPY (all history, CAD)',
-      payload: intlPayload,
-    },
-    {
-      slug: coreDef.slug,
-      href: `/ca/portfolios/${coreDef.slug}`,
-      title: coreDef.title,
-      description: coreDef.description,
-      chartHeading: 'Total return vs SPY (all history, CAD)',
+        chartHeading: 'Total return vs SPY — all history (CAD)',
+        payload: intlPayload,
+      },
+      {
+        slug: coreDef.slug,
+        href: `/ca/portfolios/${coreDef.slug}`,
+        title: coreDef.title,
+        description: coreDef.description,
+        chartHeading: 'Total return vs SPY — all history (CAD)',
       payload: corePayload,
     },
   ]

@@ -21,8 +21,9 @@ export default async function PortfolioBuilderPage({ edition }: { edition: 'us' 
         </div>
         <h1 className={styles.heading}>Portfolio builder</h1>
         <p className={styles.lede}>
-          Build a portfolio from tracked ETFs, set row allocations and efficiency sleeve, then generate
-          a portfolio chart.
+          Pick tickers, set weights to 100%, and generate a return chart. Use it to test a model
+          portfolio from the hub, experiment with different weights, or try your own mix. The chart shows
+          total return versus SPY and max drawdown for any date range with available history.
         </p>
         <PortfolioBuilderTool edition={edition} options={options} />
       </section>

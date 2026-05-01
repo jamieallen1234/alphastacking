@@ -19,18 +19,18 @@ const STATS: StatItem[] = [
     id: 'alpha-gen',
     kind: 'simple',
     num: 'α',
-    label: 'Alpha generating portfolios',
+    label: 'Model portfolios with live return charts',
   },
   {
     id: 'etf-stack',
     kind: 'triple',
-    lines: ['ETFs', 'Beyond return stacking', 'Hedge fund like strategies for all'],
+    lines: ['ETFs only', 'Multiple return sources', 'Listed — no private funds'],
   },
   {
     id: 'research',
     kind: 'simple',
     num: '∞',
-    label: 'Research alpha stacking ETF universe to discover infinite possibilities',
+    label: 'ETF universe to research, grade, and combine',
   },
 ]
 

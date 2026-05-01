@@ -13,7 +13,7 @@ export default function Hero({ variant = 'us' }: HeroProps) {
   return (
     <section className={styles.hero}>
       <div className={`${styles.label} animate animate-1`}>
-        {isCa ? 'Canadian edition' : 'A new framework for portfolio construction'}
+        {isCa ? 'Canadian edition' : 'A framework for portfolio construction'}
       </div>
 
       <h1 className={`${styles.heading} animate animate-2`}>
@@ -22,11 +22,10 @@ export default function Hero({ variant = 'us' }: HeroProps) {
 
       <p className={`${styles.sub} animate animate-3`}>
         <span className={styles.subHighlightWhite}>Alpha</span>
-        <span className={styles.subHighlightGold}> stacking</span> takes the strongest ideas from different proven strategies—long/short
-        equity, global macro, managed futures, risk premia, systematic alternatives—and combines them in
-        synergistic ways on top of a core book. The aim is a whole portfolio that can seek excess return
-        in bull, bear, and sideways or choppy markets alike, without treating “more equity beta” as the only
-        dial for performance.
+        <span className={styles.subHighlightGold}> stacking</span> takes the strongest ideas from different proven strategies&mdash;long/short
+        equity, global macro, managed futures, risk premia, systematic alternatives&mdash;and combines them
+        on top of equity. The aim is a whole portfolio that can seek excess return in bull, bear, and sideways
+        or choppy markets alike, without treating &ldquo;more equity beta&rdquo; as the only dial for performance.
       </p>
 
       <div className={`${styles.actions} animate animate-4`}>
@@ -36,7 +35,7 @@ export default function Hero({ variant = 'us' }: HeroProps) {
       </div>
 
       <p className={`${styles.legal} animate animate-5`}>
-        Educational only—not advice. Past performance does not guarantee future results. Leveraged ETFs involve substantial risk.
+        Educational only&mdash;not advice. Past performance does not guarantee future results. Leveraged ETFs involve substantial risk.
       </p>
     </section>
   )

@@ -4,11 +4,11 @@
  */
 
 export const MATE_LEDE_HTML =
-  'MATE is return-stacked: <strong>100% S&amp;P 500</strong> notional exposure alongside <strong>100%</strong> trend-following <strong>managed futures</strong>—core large-cap U.S. equity beta plus a diversifying macro sleeve in one fund.'
+  'MATE holds <strong>100% S&amp;P 500</strong> and <strong>100% managed futures</strong> simultaneously on the same dollar of capital — full equity beta plus a full trend-following sleeve, not a blend of the two.'
 
 export const MATE_STRATEGY_PARAS_HTML = [
-  'Fund disclosures describe that design: <strong>100% S&amp;P 500</strong> equity exposure paired with <strong>100%</strong> <strong>managed futures</strong>—trend-following across equities, rates, currencies, and commodities via derivatives. Collateral and cash management typically sit in Treasuries and cash equivalents.',
-  'In plain terms: full notional S&amp;P 500 equity exposure sits alongside a full notional managed-futures book—cash-efficient implementation, not an either/or trade-off between the two engines.',
+  'The fund uses futures and derivatives to run both engines in parallel. The equity sleeve tracks the S&amp;P 500; the managed-futures sleeve trend-follows across equities, rates, currencies, and commodities. Cash and Treasuries back the derivatives positions as collateral. The result is that you hold the equivalent of two full positions — equity <em>and</em> alternatives — without selling one to buy the other.',
+  'Man manages the managed-futures sleeve, which means the trend-following component reflects the firm\'s systematic process rather than a passive index replication. Unlike CTA-replication products, you\'re getting Man\'s active positioning across the futures universe — with all the discretion and tracking error that implies versus a pure rules-based approach.',
 ]
 
 export const MATE_PEDIGREE_PARAS_HTML = [
@@ -17,8 +17,8 @@ export const MATE_PEDIGREE_PARAS_HTML = [
 ]
 
 export const MATE_OUTPERF_PARAS_HTML = [
-  'The first sleeve targets <strong>S&amp;P 500</strong> beta; incremental edge vs. that benchmark comes from the <strong>managed-futures</strong> stack. Trend-following tends to shine when large, persistent trends run across macro: directional rate cycles, commodity runs, major FX moves, or equity stress—environments where the second sleeve can diverge from plain large-cap beta.',
-  'Man frames trend-following as historically additive in those regimes—including prolonged equity drawdowns—when the futures book has room to earn while the equity sleeve tracks its core exposure.',
+  'MATE performs best when equity is trending and managed futures are trending simultaneously — the classic alpha stacking scenario where both sleeves are earning at once. When equity is in a sustained bull market with low volatility, the equity sleeve drives return; when equity is in a prolonged decline with clear trends in rates, FX, or commodities, the managed-futures sleeve can partially offset or outright gain while the equity book tracks the index down.',
+  'It struggles in environments that are bad for both sleeves at once: a sharp equity sell-off that\'s too fast and disorderly for trend signals to develop (a crash rather than a bear market), or a choppy equity market with no clear macro trends. In 2022, MATE\'s managed-futures sleeve earned significantly as both equity and rates trended sharply — that is the portfolio construction argument for holding this type of sleeve alongside equity.',
 ]
 
 export const RSSY_LEDE_HTML =

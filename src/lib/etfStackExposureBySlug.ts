@@ -6,7 +6,6 @@ export type SleeveAssetClass =
   | 'commodity'
   | 'fixed-income'
   | 'alternatives'
-  | 'options-income'
 
 export type SleeveComponent = {
   name: string
@@ -33,8 +32,6 @@ export type EtfStackExposureConfig = {
   equityOnlyUsesCoreBlend?: boolean
   /** Explicitly force all-equity stack capital treatment. */
   allEquityStack?: boolean
-  /** If true, apply options-overlay adjustment: 20% gain haircut + 6% distribution assumption. */
-  optionsOverlayAssumption?: boolean
 }
 
 /**
@@ -167,16 +164,6 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
       { symbol: 'ETHA', weightPct: 25 },
     ],
   },
-  isbg: {
-    components: [
-      { name: 'Bitcoin', pct: 100, bucket: 'capital', assetClass: 'crypto' },
-      { name: 'Gold', pct: 100, bucket: 'alpha', assetClass: 'commodity' },
-      { name: 'Options-income overlay', pct: 100, bucket: 'alpha', assetClass: 'options-income' },
-    ],
-    capitalMarketBenchmarkSymbol: 'SPY',
-    coreBenchmarkSymbol: 'IBIT',
-    optionsOverlayAssumption: true,
-  },
   /** USCF: actively tilted WTI-style crude + bitcoin; no listed equity sleeve — alpha-only vs blend anchor. */
   wtib: {
     components: [
@@ -191,18 +178,48 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
   },
 }
 
-/** Sleeves with `assetClass === 'equity'` vs everything else (used for efficiency line + grade rules). */
+/** Sum of `pct` by sleeve `bucket` for a mapped stack (used for splits + stacked grade weights). */
+export function stackBucketExposureSplitPct(
+  slug: string
+): { capital: number; alpha: number } | null {
+  const m = ETF_STACK_EXPOSURE_BY_SLUG[slug]
+  if (!m) return null
+  let capitalBucket = 0
+  let alphaBucket = 0
+  for (const c of m.components) {
+    if (c.bucket === 'capital') capitalBucket += c.pct
+    else if (c.bucket === 'alpha') alphaBucket += c.pct
+  }
+  if (capitalBucket <= 0 && alphaBucket <= 0) return null
+  return { capital: capitalBucket, alpha: alphaBucket }
+}
+
+/** True if the mapped stack includes any `assetClass === 'equity'` sleeve (for UI labels vs scorecard exposure). */
+export function stackMappedHasEquityAssetClass(slug: string): boolean {
+  const m = ETF_STACK_EXPOSURE_BY_SLUG[slug]
+  if (!m) return false
+  return m.components.some((c) => c.assetClass === 'equity')
+}
+
+/** ETF page label for the `eff.capital` grade row: non-equity stacks (e.g. BTGD) use “Capital”, not “Equity”. */
+export function capitalEfficiencyMetaLabel(slug: string | undefined): 'Equity Efficiency:' | 'Capital Efficiency:' {
+  if (!slug || !ETF_STACK_EXPOSURE_BY_SLUG[slug]) return 'Equity Efficiency:'
+  return stackMappedHasEquityAssetClass(slug) ? 'Equity Efficiency:' : 'Capital Efficiency:'
+}
+
+/**
+ * Whether mapped stacks have capital-bucket vs alpha-bucket sleeves (grading rows).
+ * Uses `bucket` (not `assetClass`): e.g. BTGD’s bitcoin sleeve is capital-bucket but not equity.
+ * Field names remain `hasEquitySleeve` / `hasNonEquitySleeve` for call-site compatibility.
+ */
 export function stackExposureLineAvailability(
   slug: string
 ): { hasEquitySleeve: boolean; hasNonEquitySleeve: boolean } | null {
-  const m = ETF_STACK_EXPOSURE_BY_SLUG[slug]
-  if (!m) return null
-  let equity = 0
-  let nonEquity = 0
-  for (const c of m.components) {
-    if (c.assetClass === 'equity') equity += c.pct
-    else nonEquity += c.pct
+  const split = stackBucketExposureSplitPct(slug)
+  if (!split) return null
+  return {
+    hasEquitySleeve: split.capital > 0,
+    hasNonEquitySleeve: split.alpha > 0,
   }
-  return { hasEquitySleeve: equity > 0, hasNonEquitySleeve: nonEquity > 0 }
 }
 

@@ -6,7 +6,7 @@ import {
 /** Tooltip copy — keep aligned with `.cursor/skills/beta-efficiency-grades/SKILL.md` §7. */
 
 export const MATE_CAPITAL_EFFICIENCY_TOOLTIP = capitalEfficiencyTooltip(
-  "MATE's equity sleeve targets approximately 100% S&P 500 notional exposure (broad U.S. large-cap beta) as the core return engine."
+  "MATE's equity sleeve targets approximately 100% S&P 500 (broad U.S. large-cap beta) as the core return engine."
 )
 
 export const MATE_ALPHA_EFFICIENCY_TOOLTIP = alphaEfficiencyStackedTooltip(

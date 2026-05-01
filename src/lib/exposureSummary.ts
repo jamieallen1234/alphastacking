@@ -1,5 +1,11 @@
 import type { PresetHolding } from '@/lib/presets/usInternational'
 
+/**
+ * Portfolio scorecard exposure (model portfolios + builder). “Gross longs” / “Gross shorts” are
+ * **listed equity** notionals only. “Gross alpha & alts” is everything else in the model — including
+ * stacked non-equity sleeves. Example: ~100% bitcoin + ~100% gold and **no** equity sleeve →
+ * **0%** gross long equity, **200%** gross alpha & alts (both macro legs roll into that line).
+ */
 export type ExposureSummary = {
   grossLongEquityPct: number
   grossShortEquityPct: number
@@ -9,6 +15,7 @@ export type ExposureSummary = {
 type ExposureModel = {
   longEquityPct: number
   shortEquityPct: number
+  /** Non-equity / diversifying notional in the scorecard sense (incl. full dual-macro stacks). */
   alphaPct: number
 }
 
@@ -41,9 +48,9 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   OOQB: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
   OOSB: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
   RSSX: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
+  // Dual non-equity stacks (no listed equity sleeve): 0% equity, 100% + 100% → 200% gross alpha & alts.
   BTGD: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 200 },
   BEGS: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 200 },
-  ISBG: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 200 },
   WTIB: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 200 },
   'RGBM.TO': { longEquityPct: 50, shortEquityPct: 0, alphaPct: 100 },
 
@@ -51,8 +58,9 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   // ORR requested baseline by user in chat context.
   ORR: { longEquityPct: 150, shortEquityPct: 100, alphaPct: 0 },
   CLSE: { longEquityPct: 150, shortEquityPct: 50, alphaPct: 0 },
-  'HDGE.TO': { longEquityPct: 100, shortEquityPct: 100, alphaPct: 0 },
-  'PFLS.TO': { longEquityPct: 100, shortEquityPct: 50, alphaPct: 0 },
+  'HDGE.TO': { longEquityPct: 110, shortEquityPct: 50, alphaPct: 0 },
+  'PFLS.TO': { longEquityPct: 160, shortEquityPct: 100, alphaPct: 0 },
+  'PFMN.TO': { longEquityPct: 100, shortEquityPct: 100, alphaPct: 0 },
   'ATSX.TO': { longEquityPct: 150, shortEquityPct: 50, alphaPct: 0 },
   'TGAF.TO': { longEquityPct: 100, shortEquityPct: 40, alphaPct: 0 },
 

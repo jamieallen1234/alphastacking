@@ -4,8 +4,11 @@ import type { PriceSeries } from '@/lib/yahooFinance'
 /** Yahoo FX pair: CAD per 1 USD (adjusted close). */
 export const USDCAD_YAHOO_SYMBOL = 'USDCAD=X'
 
-/** CAD-listed S&P 500 ETF for benchmark vs Canadian-held models. */
-export const CAD_SPY_PROXY_SYMBOL = 'VFV.TO'
+/** CAD-listed, CAD-hedged S&P 500 ETF — benchmark line only for Canadian-denominated portfolio charts. */
+export const CAD_SPY_PROXY_SYMBOL = 'XSP.TO'
+
+/** Unhedged CAD-listed S&P 500 ETF — USSL 1.25× synthetic and related modeling (not the chart benchmark). */
+export const CAD_UNHEDGED_SP500_PROXY_SYMBOL = 'VFV.TO'
 
 export function isCadListedSymbol(symbol: string): boolean {
   return symbol.trim().toUpperCase().endsWith('.TO')

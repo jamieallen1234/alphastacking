@@ -32,9 +32,9 @@ export default function AlphaExample({ edition }: { edition: 'us' | 'ca' }) {
   return (
     <section className={styles.section}>
       <p className={styles.lede}>
-        Starting with $10k, how much could a stacked portfolio generating{' '}
+        $10k invested for ten years. One portfolio tracks SPY total return. The other adds a flat{' '}
         <strong>+3% alpha per year</strong>{' '}
-        over S&amp;P 500 yield after a decade?
+        on top of the same SPY path. The gap is what consistent excess return compounds to.
       </p>
       <div className={styles.grid}>
         <div className={styles.card}>
@@ -57,9 +57,8 @@ export default function AlphaExample({ edition }: { edition: 'us' | 'ca' }) {
         </p>
       ) : null}
       <p className={styles.learnLine}>
-        Learn how to build alpha stacked portfolios.{' '}
         <Link href={learnHref} className={styles.learnCta}>
-          Learn →
+          Learn how alpha stacking works →
         </Link>
       </p>
     </section>

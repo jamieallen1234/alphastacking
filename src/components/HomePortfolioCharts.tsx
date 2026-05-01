@@ -12,8 +12,8 @@ export default function HomePortfolioCharts({ variant, slots }: HomePortfolioCha
   const hubHref = variant === 'us' ? '/portfolios' : '/ca/portfolios'
   const lede =
     variant === 'us'
-      ? 'Two published US models from the hub—full overlapping history versus SPY (same baskets as the portfolio pages; detail views still offer range tabs).'
-      : 'Two CAD models from the Canadian hub—full overlapping history versus SPY, with TSX-heavy sleeves and the usual benchmark labeling on the detail pages.'
+      ? 'Two live US models from the hub. Full overlapping history vs SPY — same weights as the portfolio detail pages, which offer additional range tabs.'
+      : 'Two CAD hub models vs SPY — full history, TSX-heavy sleeves, modeled in CAD. Same weights as each portfolio detail page.'
 
   return (
     <section className={styles.section} aria-labelledby="home-portfolio-charts-heading">

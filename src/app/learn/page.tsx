@@ -3,7 +3,7 @@ import LearnPage from '@/components/LearnPage'
 export const metadata = {
   title: 'Learn — Alpha Stacking',
   description:
-    'Educational articles on portfolio construction: return stacking vs. alpha stacking, sleeves, and correlation — not personalized advice.',
+    'Articles on alpha stacking: how to build a portfolio, how it compares to index funds and other strategies, and what the efficiency grades on each ETF page measure.',
 }
 
 export default function UsLearnPage() {

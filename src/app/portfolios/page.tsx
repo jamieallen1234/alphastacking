@@ -3,7 +3,8 @@ import { loadPortfolioHubAlphaBySlug } from '@/lib/loadPortfolioHubAlpha'
 
 export const metadata = {
   title: 'Portfolios — Alpha Stacking',
-  description: 'Model portfolios with live total-return charts and holdings.',
+  description:
+    'US model portfolios with live total-return charts — leveraged multi-sleeve and buy-and-hold mixes, each with holdings, weights, and 1-year alpha vs SPY.',
 }
 
 export default async function PortfoliosHubPage() {

@@ -1,7 +1,11 @@
 import type { EtfDynamicDef, EtfDynamicEfficiencyDef } from '@/lib/etfDynamicRegistryTypes'
 import { isAllowedEtfChartSymbol } from '@/lib/etfChartSymbols'
 import { EFFICIENCY_PROVISIONAL_FOOTNOTE } from '@/lib/etfEfficiencyTooltipFraming'
-import { ETF_STACK_EXPOSURE_BY_SLUG, type EtfStackExposureConfig } from '@/lib/etfStackExposureBySlug'
+import {
+  ETF_STACK_EXPOSURE_BY_SLUG,
+  stackBucketExposureSplitPct,
+  type EtfStackExposureConfig,
+} from '@/lib/etfStackExposureBySlug'
 import { fetchDailySeries, type PriceSeries } from '@/lib/yahooFinance'
 
 /** Partial override merged onto static `efficiency` (grades + optional footnotes). */
@@ -197,16 +201,8 @@ function inferExposureSplitFromCopy(def: EtfDynamicDef): { capital: number; alph
 
 function inferExposureSplitPct(def: EtfDynamicDef, slug?: string): { capital: number; alpha: number } {
   if (slug) {
-    const mapped = ETF_STACK_EXPOSURE_BY_SLUG[slug]
-    if (mapped) {
-      let equity = 0
-      let nonEquity = 0
-      for (const c of mapped.components) {
-        if (c.assetClass === 'equity') equity += c.pct
-        else nonEquity += c.pct
-      }
-      if (equity > 0 || nonEquity > 0) return { capital: equity, alpha: nonEquity }
-    }
+    const fromStack = stackBucketExposureSplitPct(slug)
+    if (fromStack && (fromStack.capital > 0 || fromStack.alpha > 0)) return fromStack
   }
   if ((def.capitalBucketExposurePct ?? 0) > 0 && (def.alphaBucketExposurePct ?? 0) > 0) {
     return {
@@ -496,17 +492,12 @@ export async function computeMonthlyEfficiencyPatchForSlug(
 
   if (hasAlpha) {
     const alphaBeta = useResidualStackedAlpha && beta != null ? beta - 1 : beta
-    const optionsOverlayAssumption = slug ? ETF_STACK_EXPOSURE_BY_SLUG[slug]?.optionsOverlayAssumption : false
     let baseScorePp: number
     if (useResidualStackedAlpha) {
       const alphaSleeveReturn = etfCagr - benchmarkCagr
-      const adjustedAlphaSleeveReturn = optionsOverlayAssumption
-        ? alphaSleeveReturn * 0.7 + 0.06
-        : alphaSleeveReturn
-      baseScorePp = (adjustedAlphaSleeveReturn - (riskFreeAnnual + 0.0175)) * 100
+      baseScorePp = (alphaSleeveReturn - (riskFreeAnnual + 0.0175)) * 100
     } else {
-      const adjustedEtfCagr = optionsOverlayAssumption ? etfCagr * 0.7 + 0.06 : etfCagr
-      baseScorePp = (adjustedEtfCagr - riskFreeAnnual) * 100
+      baseScorePp = (etfCagr - riskFreeAnnual) * 100
     }
     const scorePp = alphaScorePpWithBetaBonus(baseScorePp, alphaBeta)
     patch.alpha = {

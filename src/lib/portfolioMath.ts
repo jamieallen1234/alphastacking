@@ -322,7 +322,7 @@ function upperBoundBenchDayIndex(benchDays: readonly string[], day: string): num
 /**
  * Align benchmark to portfolio **NY calendar days** (same order as portfolio series points).
  *
- * When the benchmark is a different listing calendar (e.g. `VFV.TO` vs. US-listed legs), some
+ * When the benchmark is a different listing calendar (e.g. `XSP.TO` vs. US-listed legs), some
  * portfolio NY sessions have no local benchmark bar. We use the **last benchmark close on or
  * before** that NY day (carry forward), so CAD charts stay aligned without dropping the line.
  */

@@ -78,12 +78,6 @@ const CRYPTO_HUB_LIST: EtfHubListItem[] = [
     usPath('btgd')
   ),
   us(
-    'isbg',
-    'ISBG — IncomeSTKd 1x Bitcoin & 1x Gold Premium ETF',
-    'Dual beta to bitcoin and gold with options-income overlay; weekly distribution focus (Quantify).',
-    usPath('isbg')
-  ),
-  us(
     'ooqb',
     'OOQB — One+One™ Nasdaq-100® and Bitcoin ETF',
     'Volatility Shares: ~100% Nasdaq-100 and ~100% bitcoin futures exposure in one capital-efficient sleeve (listed as OOQB; often discussed as “QQQ + BTC”).',

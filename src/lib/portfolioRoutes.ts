@@ -177,11 +177,11 @@ export const HUB_SECTION_LABEL: Record<
   'annual-rebalance': {
     heading: 'Leveraged — multi-sleeve',
     blurb:
-      'Models combine LETFs and alternative sleeves with deliberate sizing; open each portfolio for weights and methodology.',
+      'Leveraged equity as the core engine, sized alongside trend, long/short, and macro sleeves to keep total market sensitivity near 1.0. Rebalanced annually.',
   },
   'buy-hold': {
     heading: 'Buy & hold',
-    blurb: '',
+    blurb: 'Non-leveraged portfolios held without rebalancing — simpler construction, lower maintenance.',
   },
 }
 

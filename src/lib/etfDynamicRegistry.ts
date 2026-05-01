@@ -33,6 +33,8 @@ function cryptoLede(ticker: string, thesis: string): string {
 export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
   begs: {
     yahooSymbol: 'BEGS',
+    capitalBucketExposurePct: 100,
+    alphaBucketExposurePct: 100,
     hubCategoryId: 'crypto',
     badge: 'Crypto & digital assets',
     h1Title: 'BEGS — Rareview 2x Bull Cryptocurrency & Precious Metals ETF',
@@ -67,6 +69,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   btgd: {
     yahooSymbol: 'BTGD',
+    capitalBucketExposurePct: 100,
+    alphaBucketExposurePct: 100,
     hubCategoryId: 'crypto',
     badge: 'Crypto & digital assets',
     h1Title: 'BTGD — STKd 100% Bitcoin & 100% Gold ETF',
@@ -83,12 +87,12 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'seeks simultaneous ~100% bitcoin and ~100% gold exposure via futures and ETPs in a capital-efficient structure.'
     ),
     strategyParas: [
-      'Quantify’s “STKd” line is explicitly about stacking two sleeves of notional exposure per dollar invested—bitcoin futures/ETPs for digital scarcity beta and gold futures/ETPs for monetary-metal beta—so collateral, margin, and roll mechanics are the entire game versus holding physical coins and bars.',
+      'Quantify’s “STKd” line is explicitly about stacking two sleeves per dollar invested—bitcoin futures/ETPs for digital scarcity beta and gold futures/ETPs for monetary-metal beta—so collateral, margin, and roll mechanics are the entire game versus holding physical coins and bars.',
       'When both legs trend together, compounding can feel exhilarating; when they diverge violently (risk-on crypto vs. risk-off gold), the fund must rebalance risk budgets—read the supplement for how weights are reset and what happens around CME or exchange halts.',
     ],
     pedigreeParas: ped(
       `Quantify Funds is a California-based issuer that has leaned into branded “stacked” ETPs rather than broad passive lineups; it is not a top-ten sponsor by AUM, so operational resilience depends on a narrow product set and focused distribution—verify any firm-level metrics on quantifyfunds.com.`,
-      `Because BTGD sits in the same ecosystem as Quantify’s IncomeSTKd funds, compare fee stacks and options overlays across tickers so you are not accidentally doubling the same macro bet in multiple products.`,
+      `Several issuers now list stacked crypto and metals products with similar headlines—compare fee stacks, collateral policy, and exact sleeve notionals in each prospectus so you are not accidentally doubling the same macro bet in multiple tickers.`,
     ),
     outperfParas: [
       'You want regimes where bitcoin’s liquidity cycle and gold’s real-rate / FX sensitivity are both working—not necessarily in the same direction every day, but with clean trends that futures books can ride without constant whipsaw.',
@@ -98,41 +102,10 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'Quantify Funds (BTGD)',
   },
 
-  isbg: {
-    yahooSymbol: 'ISBG',
-    hubCategoryId: 'crypto',
-    badge: 'Crypto & digital assets',
-    h1Title: 'ISBG — IncomeSTKd 1x Bitcoin & 1x Gold Premium ETF',
-    displayTicker: 'ISBG',
-    issuer: 'Quantify Funds',
-    inception: 'Jan 20, 2026',
-    structure: 'Bitcoin + gold options-income',
-    mer: '1.14%',
-    aum: '~$28M',
-    pageTitle: 'ISBG ETF — Alpha Stacking',
-    description: 'IncomeSTKd bitcoin + gold premium ETF (ISBG).',
-    lede: cryptoLede(
-      'ISBG',
-      'combines bitcoin and gold beta with an options-income overlay aimed at periodic distributions.'
-    ),
-    strategyParas: [
-      'ISBG is not just dual beta: Quantify layers listed options (typically on equity or futures proxies) to harvest implied volatility while funding distributions—so you are long two macro sleeves and short convexity in specific strike zones; gap-through risk after earnings or macro prints is the trade-off for yield.',
-      'Distribution yield can mix ordinary income, short-term gains, and return of capital; tax character changes with option rolls—use ETF Facts and the Section 19 notices rather than assuming “bond-like coupon.”',
-    ],
-    pedigreeParas: ped(
-      `Quantify’s IncomeSTKd suite competes with yield-focused crypto ETPs from larger sponsors; its edge is packaging bespoke stacks for RIAs who want tickers instead of separately managed option books—scale is boutique, so monitoring capacity in the options markets matters more than for trillion-dollar complexes.`,
-      `Because ISBG shares sponsor DNA with BTGD, read each prospectus side by side: sleeve weights, fee breakpoints, and whether the same desk runs the option overlay for multiple tickers.`,
-    ),
-    outperfParas: [
-      'Premium harvesting works when implied vol is rich but realized paths stay range-bound—think gold grinding with upward skew and bitcoin oscillating inside a band rather than vertical melt-ups or liquidation cascades.',
-      'The constructive case is a “carry plus diversifier” window: both underlyings behave well enough that short options survive, yet not so explosively that wings blow through strikes—when either leg gaps, expect NAV to reflect option loss before the metals/crypto story even finishes printing.',
-    ],
-    officialUrl: 'https://quantifyfunds.com/isbg',
-    officialLabel: 'Quantify Funds (ISBG)',
-  },
-
   ooqb: {
     yahooSymbol: 'OOQB',
+    capitalBucketExposurePct: 100,
+    alphaBucketExposurePct: 100,
     hubCategoryId: 'crypto',
     badge: 'Crypto & digital assets',
     h1Title: 'OOQB — One+One™ Nasdaq-100® and Bitcoin ETF',
@@ -167,6 +140,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   oosb: {
     yahooSymbol: 'OOSB',
+    capitalBucketExposurePct: 100,
+    alphaBucketExposurePct: 100,
     hubCategoryId: 'crypto',
     badge: 'Crypto & digital assets',
     h1Title: 'OOSB — One+One™ S&P 500® and Bitcoin ETF',
@@ -235,6 +210,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   wtib: {
     yahooSymbol: 'WTIB',
+    capitalBucketExposurePct: 100,
+    alphaBucketExposurePct: 100,
     hubCategoryId: 'crypto',
     badge: 'Crypto & digital assets',
     h1Title: 'WTIB — USCF Oil Plus Bitcoin Strategy Fund',
@@ -509,20 +486,20 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     mer: '0.89%',
     aum: '~$7.5B',
     pageTitle: 'SSO ETF — Alpha Stacking',
-    description: 'ProShares Ultra S&P500 (SSO): 2x daily S&P 500 leverage.',
+    description: 'ProShares Ultra S&P500 (SSO): 2× daily S&P 500 leverage. How it works, when it earns, and how to size it as an equity sleeve in an alpha stacking portfolio.',
     lede:
-      'SSO seeks daily investment results, before fees and expenses, that correspond to two times the daily performance of the S&P 500.',
+      'SSO delivers 2× the daily return of the S&P 500, reset at the close of each session.',
     strategyParas: [
-      'SSO is a daily-reset leveraged ETF: futures, swaps, and cash collateral target about 2x of each day’s S&P 500 move, not a fixed long-horizon leverage multiple. Compounding makes multi-day outcomes path-dependent in volatile, mean-reverting tapes.',
-      'Because leverage is reset every session, implementation details (swap financing, derivative spreads, rebalancing at close) matter. Treat it as a tactical high-beta tool or an explicit sleeve in a risk budget, not a direct substitute for unlevered core equity.',
+      `SSO resets its leverage daily — each day's target is 2× the S&P 500's return for that day. That means the longer you hold it, the more its returns depend on the path the market takes, not just the start and end points. A market that grinds up steadily lets daily compounding work in your favor; a market that whipsaws — down 3%, up 3%, down 3% — bleeds the position even if it ends flat.`,
+      'This is not a flaw in the fund; it is the mathematical property of daily-reset leverage. The implication for portfolio construction is that SSO works best as a deliberate equity sleeve in a multi-sleeve portfolio, sized so the overall portfolio beta stays near 1.0, with other sleeves to pick up the slack in choppy or declining markets.',
     ],
     pedigreeParas: ped(
       `ProShares is one of the largest U.S. leveraged and inverse ETF sponsors, with long operating history in daily-reset index products and deep derivatives execution infrastructure.`,
       `The issuer’s parent complex is measured in the tens of billions in ETF assets in public league tables, giving SSO scale and secondary-market liquidity that many niche leveraged products lack.`
     ),
     outperfParas: [
-      'SSO tends to shine when U.S. large-cap momentum is persistent and drawdowns are shallow enough that daily compounding can work in your favor over holding windows longer than one session.',
-      'The most favorable regime is orderly trend-following risk-on where realized volatility stays contained; choppy sideways markets and sharp reversals are the classic drag profile for daily-reset leverage.',
+      'SSO performs best in sustained equity uptrends with relatively calm day-to-day moves — the kind of environment where the S&P 500 is trending higher over weeks and months without big reversals. Daily compounding works in your favor when volatility is low and direction is clear.',
+      'It struggles in choppy, directionless markets and takes outsized damage in sharp sell-offs, since losses compound the same way gains do. As an equity sleeve in an alpha stacking portfolio, SSO requires other sleeves to earn while equity is pausing or declining.',
     ],
     officialUrl: 'https://www.proshares.com/our-etfs/leveraged-and-inverse/sso',
     officialLabel: 'ProShares (SSO)',
@@ -792,20 +769,20 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     mer: '0.85%',
     aum: '~$1.1B',
     pageTitle: 'DBMF ETF — Alpha Stacking',
-    description: 'iMGP DBi Managed Futures Strategy ETF (DBMF).',
+    description: 'iMGP DBi Managed Futures Strategy ETF (DBMF): CTA replication via listed futures. How it works, what tape it earns in, and its role in an alpha stacking portfolio.',
     lede:
-      'DBMF seeks to replicate pre-fee managed-futures hedge fund exposures via a liquid, exchange-traded wrapper—macro trend and relative-value sleeves.',
+      'DBMF replicates the aggregate positioning of large managed-futures hedge funds in a listed ETF wrapper, using daily futures disclosures to reverse-engineer what the CTA universe is holding.',
     strategyParas: [
-      'DBi’s methodology reverse-engineers aggregate positioning of large CTAs using daily futures disclosures, then implements a liquid futures portfolio to mimic pre-fee hedge-fund beta—tracking error versus actual funds is the product risk you are buying.',
-      'Replication lag matters around inflection points: when CTAs de-gross simultaneously, DBMF may rebalance on a different clock than underlying funds—read how often weights reset.',
+      `Managed futures funds trend-follow across equities, bonds, currencies, and commodities simultaneously. DBMF captures this by inferring what the largest CTA hedge funds are positioned in, then running a liquid futures portfolio to match it. You're not paying for any single manager's alpha — you're getting the aggregate direction of the CTA industry at lower cost than accessing those funds directly.`,
+      'The trade-off is replication lag. When the CTA universe pivots — entering or exiting a trend — DBMF rebalances on a slightly different clock. In fast-moving markets this gap can matter; in sustained, slowly developing trends (which are the best environment for managed futures anyway), it matters less.',
     ],
     pedigreeParas: ped(
       `iMGP is a multi-boutique platform that packages specialist managers for mutual fund and ETF channels; DBi’s managed-futures research team sits inside that ecosystem with a published intellectual history on CTA replication.`,
       `Platform AUM is mid-market versus global banks, but DBMF’s ~$1.1B sleeve is one of the larger listed CTA proxies—liquidity and roll execution are materially better than sub-$50M peers.`,
     ),
     outperfParas: [
-      'You get paid when diversified CTA beta trends cleanly and listed futures can keep up with what opaque hedge funds do gross of fees—think sustained macro moves with low implementation slippage.',
-      'You lose when replication error spikes (CTA crowding, position limits) or when trends mean-revert faster than daily positioning data implies; favorable tape is transparent trend persistence, not secret sauce alpha.',
+      'DBMF earns in sustained, directional macro moves — rising rates, falling equities in a clear bear market, a persistent dollar trend — where the large CTA funds are clearly positioned and the trends last long enough for DBMF to track them. 2022 is the benchmark case: equity and bond markets both trended sharply, managed futures earned across the board, and DBMF captured most of that.',
+      'It struggles in choppy, range-bound markets where price moves reverse quickly before trends can develop. It also gives back gains when an established trend reverses sharply — managed futures are trend-followers, not trend-predictors, so they exit after the trend has broken. In a sideways equity market where nothing is trending, this sleeve is likely flat-to-negative.',
     ],
     officialUrl:
       'https://www.imgp.com/us/fund/us53700t8273-imgp-dbi-managed-futures-strategy-etf/',
@@ -856,20 +833,20 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     aum: '~$28M',
     pageTitle: 'CLSE ETF — Alpha Stacking',
     description:
-      'Convergence Long/Short Equity ETF (CLSE): net-long U.S. equity sleeve that pairs a proprietary dynamic quantitative model with discretionary flexibility—long “strong” franchises, short structurally challenged names.',
+      'Convergence Long/Short Equity ETF (CLSE): net-long U.S. long/short equity. Strategy, manager, when it earns, and its role in an alpha stacking portfolio.',
     lede:
-      'CLSE is Convergence’s listed long/short equity sleeve: the sponsor frames it as a net-long book that goes long fundamentally resilient businesses while shorting deteriorating models—implemented with a proprietary dynamic quantitative engine plus manager discretion rather than a passive factor basket.',
+      'CLSE is a net-long U.S. equity fund that goes long businesses Convergence expects to outperform and short businesses it expects to deteriorate — returns depend on individual stock selection, not on which way the market moves.',
     strategyParas: [
-      'CIP’s materials emphasize a dual toolkit—rules-based signals for timing and risk budgeting, overlaid with fundamental work on business quality, balance sheets, and catalyst paths. Gross, net, and short books shift with the model and manager judgment; fiscal quarter-end holdings files and exposure tables are the ground truth versus any one-sentence summary.',
-      'Shorting is structural to the thesis, so dividend pass-through on borrowed stock, borrow fees, and margin interest are real P&L lines—sponsor fee tables separate management fees from those variable costs. In violent short squeezes or rate spikes, the short book can hurt even when the long book is correct on fundamentals.',
+      'The fund uses a combination of quantitative signals and fundamental analysis: rules-based models for timing and risk sizing, overlaid with manager judgment on business quality and balance-sheet risk. The long book targets fundamentally resilient companies; the short book targets deteriorating ones. The net exposure is long-biased — this is not a market-neutral fund.',
+      'Shorting has real costs: borrow fees, dividend pass-through on short positions, and margin interest. These show up in the expense ratio and in the spread between the fund\'s performance and a simple long-only benchmark. In short squeezes or rate spikes, the short book can hurt even if the long book is right on fundamentals.',
     ],
     pedigreeParas: ped(
       `Convergence Investment Partners runs the strategy out of Florida with a long institutional pedigree in long/short equity; the ETF is the same mandate packaged for exchange liquidity, with published fact sheets, investor guides, and quarterly holdings downloads on investcip.com rather than a bare ticker stub.`,
       `Listed AUM is boutique versus mega issuers—expect wider median bid/ask and more days away from NAV than SPY-class funds—so implementation (limit orders, patience around rebalances) matters as much as the underlying stock calls.`,
     ),
     outperfParas: [
-      'The sleeve is built for stretches when U.S. dispersion reopens: earnings revisions diverge by sector, “quality” re-rates faster than junk, and single-name shorts pay for funding a net-long posture—classic stock-picker weather after a long stretch of macro-only correlations.',
-      'When every factor loads on the same liquidity trade or rates shock, long and short legs can move together; favorable environments are idiosyncratic earnings cycles and orderly securities lending, not every coordinated risk-off session.',
+      'CLSE earns when stocks diverge from each other — when good companies beat bad ones regardless of what the index does. Active stock dispersion environments, where earnings quality and balance-sheet differences drive divergence between longs and shorts, are the favorable tape. CLSE can compound in flat or sideways equity markets that kill pure index strategies.',
+      'It struggles when everything moves together: a sharp macro-driven risk-off where stocks correlate to 1.0 collapses the spread between long and short legs, and a short squeeze can hurt the short book independent of fundamentals. It also needs time — months or years for stock calls to play out — and underperforms in momentum-driven markets where cheap valuation is irrelevant.',
     ],
     officialUrl: 'https://www.investcip.com/etfstrategies.html',
     officialLabel: 'Convergence Investment Partners (CLSE)',
@@ -953,20 +930,20 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     mer: '0.75%',
     aum: '~$16M',
     pageTitle: 'MRGR ETF — Alpha Stacking',
-    description: 'ProShares Merger ETF (MRGR): S&P Merger Arbitrage Index exposure.',
+    description: 'ProShares Merger ETF (MRGR): rules-based merger arbitrage via the S&P Merger Arbitrage Index. How deal-spread harvesting works and when it earns.',
     lede:
-      'MRGR seeks investment results (before fees and expenses) that track the S&P Merger Arbitrage Index—an event-driven sleeve that owns announced deal targets and hedges acquirer risk rather than betting on equity factor tilts.',
+      'MRGR tracks the S&P Merger Arbitrage Index, which owns stocks of announced acquisition targets at their current trading price and hedges acquirer exposure — capturing the spread between where deals trade and the announced deal price.',
     strategyParas: [
-      'ProShares’ disclosures describe physical holdings of target and acquirer equities tied to eligible mergers, supplemented with swaps to obtain additional long exposure and short acquirer exposure, Treasury bills for residual cash, and USD hedging on foreign deals—net exposure is bounded per the index rules, so economics come from deal spreads and financing, not from loading equity beta factors.',
-      'Deal breaks, regulatory delays, and acquirer stock repricing are first-order risks; read the prospectus for concentration limits, rebalancing around deal closings, and tax treatment of merger consideration.',
+      'When a company announces it will acquire another at $50 per share and the target trades at $48, that $2 spread is what merger arbitrage captures. The fund holds a basket of these announced-deal positions across the current M&A calendar. The spread exists because deal completion takes time and there is always a chance the deal falls through — you are being paid to warehouse that completion risk.',
+      'The economics are driven by deal spreads and financing costs, not by equity beta. Net exposure to the broad market is low by design: the fund is long the target (which trades near the deal price regardless of market direction) and hedges the acquirer. The main risks are deal breaks, regulatory blocks, and acquirer repricing — read the prospectus for how the index handles each.',
     ],
     pedigreeParas: ped(
       `ProShares Advisors LLC advises the fund; ProShares is part of the broader ProFunds Group that pioneered listed leveraged and inverse products before expanding into strategic beta sleeves such as merger arbitrage. Industry league tables generally place ProShares’ complex in the tens of billions of USD in listed ETP assets (order of magnitude).`,
       `The underlying S&P Dow Jones Indices merger-arbitrage methodology is maintained independently of ProShares; that separation matters for investors who want rules-based event exposure rather than a single PM’s discretion.`
     ),
     outperfParas: [
-      'Merger arbitrage earns when announced deal spreads compensate you for completion and regulatory risk—think busy M&A calendars, friendly transactions, and financing markets that let arbitrageurs lever spreads without stress.',
-      'Deal breaks, antitrust surprises, or acquirer equity drawdowns can dominate returns—those are the risks you are paid to warehouse. When completions run on time and spreads mean-revert toward zero, the sleeve is doing what it was built for: harvesting event risk, not timing equity factor premia.',
+      'Merger arb earns steadily when deals close on schedule: active M&A calendars, friendly transactions where regulatory approval is likely, and financing markets that are calm enough for deal spreads to compress without interruption. Because the return is tied to deal completion rather than equity direction, this sleeve can earn in flat or declining equity markets as long as deals keep closing.',
+      'It underperforms when deals break or get blocked: an antitrust challenge that kills a deal, or a sharp drop in the acquirer\'s stock that reprices the economics, can turn a steady spread-earner into a loss. Broad risk-off episodes can also widen spreads faster than they close — the sleeve looks bad in the short run even when most deals eventually close.',
     ],
     officialUrl: 'https://www.proshares.com/our-etfs/strategic/mrgr',
     officialLabel: 'ProShares (MRGR)',

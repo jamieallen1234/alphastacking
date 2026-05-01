@@ -42,8 +42,8 @@ export default function EtfHub({ listing, edition }: EtfHubProps) {
         </h1>
         <p className={styles.lede}>
           {listing === 'ca'
-            ? 'Canadian-listed and we track for alpha stacking — grouped by strategy. Full write-ups are on the way.'
-            : 'US-listed funds we track for alpha stacking — grouped by strategy. Full write-ups are on the way.'}
+            ? 'Canadian-listed funds grouped by strategy. Each category below explains what these funds do and why they belong in an alpha stacking portfolio.'
+            : 'US-listed funds grouped by strategy. Each category below explains what these funds do and why they belong in an alpha stacking portfolio.'}
         </p>
 
         <div className={styles.categories}>
@@ -59,6 +59,9 @@ export default function EtfHub({ listing, edition }: EtfHubProps) {
                 <h2 id={`etf-cat-${cat.id}`} className={styles.categoryTitle}>
                   {cat.title}
                 </h2>
+                {cat.subtitle ? (
+                  <p className={styles.categorySubtitle}>{cat.subtitle}</p>
+                ) : null}
                 {items.length === 0 ? (
                   <p className={styles.comingSoon}>Coming soon</p>
                 ) : (

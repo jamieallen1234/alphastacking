@@ -23,7 +23,7 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'Alpha Stacking — Stack alpha, not beta',
   description:
-    'Alpha stacking combines the best parts of proven strategies in synergistic ways—seeking excess return in bull, bear, and choppy markets while keeping a deliberate core and risk budget.',
+    'Build portfolios from multiple return sources — equity, managed futures, long/short, macro, systematic alternatives — using listed ETFs and live total-return charts.',
 }
 
 export default function RootLayout({

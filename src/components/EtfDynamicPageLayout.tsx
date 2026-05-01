@@ -10,7 +10,7 @@ import {
   EtfEfficiencyPageFootnotes,
   type EtfEfficiencyGradeLine,
 } from '@/components/etfEfficiency/EtfEfficiencyGrades'
-import { stackExposureLineAvailability } from '@/lib/etfStackExposureBySlug'
+import { capitalEfficiencyMetaLabel, stackExposureLineAvailability } from '@/lib/etfStackExposureBySlug'
 
 function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, slug?: string): ReactNode {
   const eff = def.efficiency
@@ -39,7 +39,7 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, s
   } else {
     if (eff.capital && (!stackLines || stackLines.hasEquitySleeve)) {
       lines.push({
-        label: 'Equity Efficiency:',
+        label: capitalEfficiencyMetaLabel(slug),
         grade: eff.capital.grade ?? 'N/A',
         gradeTone: eff.capital.gradeTone,
         tooltip: eff.capital.tooltip,
@@ -71,7 +71,7 @@ export interface EtfDynamicPageLayoutProps {
   hubBase: EtfPageHubBase
   def: EtfDynamicDef
   chart: EtfChartPayload
-  /** Route slug for stack exposure rules (capital = equity sleeves only). */
+  /** Route slug for stack map (capital vs alpha buckets; equity label when stack has an equity sleeve). */
   slug?: string
   /** CSS module from `page.module.css` (same shape as MATE / HDGE ETF pages). */
   styles: Record<string, string>

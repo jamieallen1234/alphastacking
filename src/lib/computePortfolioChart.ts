@@ -34,6 +34,7 @@ import {
 } from '@/lib/syntheticProxyMerge'
 import {
   CAD_SPY_PROXY_SYMBOL,
+  CAD_UNHEDGED_SP500_PROXY_SYMBOL,
   convertUsdPricesToCad,
   isCadListedSymbol,
   USDCAD_YAHOO_SYMBOL,
@@ -53,6 +54,7 @@ export type SyntheticModelingKind =
   | 'mate_rsst'
   | 'ialt_flsp_dbmf'
   | 'hfgm_asgm'
+  | 'dglm_dbmf'
 
 export interface SyntheticModelingNote {
   /** Ticker as in the basket (e.g. HEQL.TO, MATE). */
@@ -85,8 +87,8 @@ export interface PortfolioChartPayload {
   /** Synthetic sleeves used in this basket (footnotes; may be outside the selected range window). */
   syntheticModeling: SyntheticModelingNote[]
   /**
-   * When CAD, US-listed legs are converted with USDCAD; benchmark **data** is VFV.TO
-   * (`benchmarkSymbol` in the payload is still labeled `SPY` for readability).
+   * When CAD, US-listed legs are converted with USDCAD; benchmark **data** is `CAD_SPY_PROXY_SYMBOL`
+   * (XSP.TO, CAD-hedged S&P 500; `benchmarkSymbol` in the payload stays `SPY` for readability).
    */
   chartCurrency?: 'USD' | 'CAD'
   /**
@@ -107,9 +109,9 @@ export async function computePortfolioChart(params: {
   symbols: string[]
   weights: number[]
   range: YahooRange
-  /** Yahoo symbol for benchmark prices (default SPY, or VFV.TO when `cadDenominated`). */
+  /** Yahoo symbol for benchmark prices (default SPY, or `CAD_SPY_PROXY_SYMBOL` when `cadDenominated`). */
   benchmarkSymbol?: string
-  /** US-listed legs → CAD via NY-aligned USDCAD; benchmark fetch defaults to VFV.TO; payload still labels it SPY. */
+  /** US-listed legs → CAD via NY-aligned USDCAD; benchmark fetch defaults to XSP.TO; payload still labels it SPY. */
   cadDenominated?: boolean
   rebalanceSchedule?: 'none' | 'quarterly' | 'annual'
 }): Promise<PortfolioChartPayload> {
@@ -118,7 +120,7 @@ export async function computePortfolioChart(params: {
   const cadDenominated = params.cadDenominated ?? false
   const benchmarkFetchSymbol =
     params.benchmarkSymbol ?? (cadDenominated ? CAD_SPY_PROXY_SYMBOL : DEFAULT_BENCHMARK)
-  /** CAD charts pull VFV.TO but present the line as SPY (S&P 500) to match user language. */
+  /** CAD charts pull XSP.TO (hedged) but present the line as SPY (S&P 500) to match user language. */
   const benchmarkSymbol = cadDenominated ? 'SPY' : benchmarkFetchSymbol
 
   if (symbols.length !== weights.length) {
@@ -136,8 +138,10 @@ export async function computePortfolioChart(params: {
   const dbmfIdx = upper.indexOf('DBMF')
   const hfgmIdx = upper.indexOf('HFGM')
   const asgmIdx = upper.indexOf('ASGM')
+  const dglmIdx = upper.indexOf('DGLM.TO')
   const needIaltFlspProxy = ialtIdx >= 0 && flspIdx < 0
   const needIaltDbmfProxy = ialtIdx >= 0 && dbmfIdx < 0
+  const needDglmDbmfProxy = dglmIdx >= 0 && dbmfIdx < 0
   const needHfgmAsgmProxy = hfgmIdx >= 0 && asgmIdx < 0
   const heqlIdx = symbols.findIndex((s) => s.toUpperCase() === 'HEQL.TO')
   const usslIdx = symbols.findIndex((s) => s.toUpperCase() === 'USSL.TO')
@@ -154,6 +158,8 @@ export async function computePortfolioChart(params: {
               ? ialtSyntheticOverlapFirstTradeSec()
               : hfgmIdx >= 0 && i === hfgmIdx
                 ? hfgmSyntheticOverlapFirstTradeSec()
+                : dglmIdx >= 0 && i === dglmIdx
+                  ? fetchFirstTradeDateSec('DBMF')
                 : heqlIdx >= 0 && i === heqlIdx
                   ? heqlSyntheticOverlapFirstTradeSec()
                   : usslIdx >= 0 && i === usslIdx
@@ -185,7 +191,12 @@ export async function computePortfolioChart(params: {
     () => (mateIdx >= 0 ? fetchDailySeries('RSST', range, maxWindow) : Promise.resolve(null)),
     () => (needIaltFlspProxy ? fetchDailySeries('FLSP', range, maxWindow) : Promise.resolve(null)),
     () => (needIaltDbmfProxy ? fetchDailySeries('DBMF', range, maxWindow) : Promise.resolve(null)),
+    () => (needDglmDbmfProxy ? fetchDailySeries('DBMF', range, maxWindow) : Promise.resolve(null)),
     () => (needHfgmAsgmProxy ? fetchDailySeries('ASGM', range, maxWindow) : Promise.resolve(null)),
+    () =>
+      usslIdx >= 0 && cadDenominated
+        ? fetchDailySeries(CAD_UNHEDGED_SP500_PROXY_SYMBOL, range, maxWindow)
+        : Promise.resolve(null),
     () => (cadDenominated ? fetchDailySeries(USDCAD_YAHOO_SYMBOL, range, maxWindow) : Promise.resolve(null)),
   ]
   const mergedSeriesResults = await runWithYahooGaps(seriesAndBenchTasks)
@@ -200,7 +211,9 @@ export async function computePortfolioChart(params: {
   const rsstExtra = mergedSeriesResults[r++] as PriceSeries | null
   const ialtFlspExtra = mergedSeriesResults[r++] as PriceSeries | null
   const ialtDbmfExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const dglmDbmfExtra = mergedSeriesResults[r++] as PriceSeries | null
   const hfgmAsgmExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const usslVfvExtra = mergedSeriesResults[r++] as PriceSeries | null
   const usdCadSeries = mergedSeriesResults[r++] as PriceSeries | null
 
   let seriesMut = series
@@ -210,6 +223,7 @@ export async function computePortfolioChart(params: {
   let qqqMut = qqqExtra
   let ialtFlspMut: typeof ialtFlspExtra = ialtFlspExtra
   let ialtDbmfMut: typeof ialtDbmfExtra = ialtDbmfExtra
+  let dglmDbmfMut: typeof dglmDbmfExtra = dglmDbmfExtra
   let hfgmAsgmMut: typeof hfgmAsgmExtra = hfgmAsgmExtra
 
   if (cadDenominated) {
@@ -225,6 +239,7 @@ export async function computePortfolioChart(params: {
     if (qqqMut != null) qqqMut = convertUsdPricesToCad(qqqMut, usdCadSeries)
     if (ialtFlspMut != null) ialtFlspMut = convertUsdPricesToCad(ialtFlspMut, usdCadSeries)
     if (ialtDbmfMut != null) ialtDbmfMut = convertUsdPricesToCad(ialtDbmfMut, usdCadSeries)
+    if (dglmDbmfMut != null) dglmDbmfMut = convertUsdPricesToCad(dglmDbmfMut, usdCadSeries)
     if (hfgmAsgmMut != null) hfgmAsgmMut = convertUsdPricesToCad(hfgmAsgmMut, usdCadSeries)
   }
 
@@ -290,6 +305,26 @@ export async function computePortfolioChart(params: {
     }
   }
 
+  if (dglmIdx >= 0) {
+    const dglmUnderlying = dbmfIdx >= 0 ? seriesMut[dbmfIdx]! : dglmDbmfMut
+    if (dglmUnderlying != null && dglmUnderlying.timestamps.length >= 2) {
+      const { series: mergedDglm, modeling } = buildLeveredUnderlyingMergeSeries(
+        seriesMut[dglmIdx]!,
+        dglmUnderlying,
+        1,
+        0
+      )
+      seriesMut[dglmIdx] = mergedDglm
+      if (modeling != null) {
+        syntheticModeling.push({
+          slotSymbol: symbols[dglmIdx]!,
+          firstRealNyDay: modeling.firstRealNyDay,
+          kind: 'dglm_dbmf',
+        })
+      }
+    }
+  }
+
   if (hfgmIdx >= 0) {
     const asgmUnderlying = asgmIdx >= 0 ? seriesMut[asgmIdx]! : hfgmAsgmMut
     if (asgmUnderlying != null && asgmUnderlying.timestamps.length >= 2) {
@@ -340,8 +375,14 @@ export async function computePortfolioChart(params: {
   }
 
   if (usslIdx >= 0) {
-    const usslUnderlyingLabel: 'VFV.TO' | 'SPY' = cadDenominated ? 'VFV.TO' : 'SPY'
-    pushCad125(usslIdx, benchSeries, USSL_FIRST_REAL_NY_DAY, usslUnderlyingLabel)
+    if (cadDenominated) {
+      if (usslVfvExtra == null || usslVfvExtra.timestamps.length < 2) {
+        throw new Error('VFV.TO series required for USSL.TO on CAD-denominated charts')
+      }
+      pushCad125(usslIdx, usslVfvExtra, USSL_FIRST_REAL_NY_DAY, 'VFV.TO')
+    } else {
+      pushCad125(usslIdx, benchSeries, USSL_FIRST_REAL_NY_DAY, 'SPY')
+    }
   }
 
   if (qqqlIdx >= 0) {

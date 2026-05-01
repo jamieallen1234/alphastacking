@@ -3,7 +3,7 @@ import EtfHub from '@/components/EtfHub'
 export const metadata = {
   title: 'US ETFs — Alpha Stacking (Canadian edition)',
   description:
-    'US-listed ETFs for return stacking, premia, managed futures, long/short, and global macro — from the Canadian site.',
+    'US-listed ETFs for alpha stacking portfolios — return stacked funds, managed futures, long/short equity, merger arb, and leveraged equity — viewed from the Canadian edition.',
 }
 
 export default function CaUsEtfHubPage() {

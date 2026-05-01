@@ -20,13 +20,13 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
       <header>
         <div className={styles.headerRow}>
           <span className={styles.eyebrow}>Getting started</span>
-          <span className={styles.readTime}>~6 min read</span>
+          <span className={styles.readTime}>~5 min read</span>
         </div>
-        <h1 className={styles.title}>ETF pages, sample portfolios, and the portfolio builder</h1>
+        <h1 className={styles.title}>ETF pages, model portfolios, and the portfolio builder</h1>
         <p className={styles.deck}>
-          If you are used to one or two broad index funds, this walkthrough shows how to use the ETF write-ups, the
-          sample portfolios (pre-built mixes), and the portfolio builder to explore other holdings and weights — step by
-          step. Nothing here is personalized advice.
+          Three sections, one workflow: read the ETF write-ups to understand each fund, use model portfolios to see how
+          funds combine into full mixes, then rebuild or modify any mix in the portfolio builder to stress-test weights
+          before making any real-money decision.
         </p>
       </header>
 

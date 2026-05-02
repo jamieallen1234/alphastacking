@@ -310,24 +310,29 @@ export default function PortfolioBuilderTool({
       .filter((r) => r.ticker.trim() !== '' && r.weightPct > 0)
     return buildExposureSummaryFromWeightedTickers(weightedTickers)
   }, [rows])
-  const betaBlocksGenerate =
-    allocationValid && !hasIncompleteRow && weightedBeta != null && weightedBeta > 2.5
-  const canGenerate =
-    !hasIncompleteRow && allocationValid && rows.length > 0 && !loading && !betaBlocksGenerate
+  const canGenerate = !hasIncompleteRow && allocationValid && rows.length > 0 && !loading
 
   const builderError = useMemo(() => {
     if (error) return error
     if (!allocationValid) return 'Allocation must total exactly 100% before generating.'
     if (hasIncompleteRow) return 'Each line needs a positive % and an ETF before generating.'
-    if (weightedBeta != null && weightedBeta > 2.5) {
-      return `Weighted portfolio beta is ${weightedBeta.toFixed(2)} (limit 2.5). Reduce leverage or add lower-beta sleeves before generating.`
-    }
     return null
-  }, [error, allocationValid, hasIncompleteRow, weightedBeta])
+  }, [error, allocationValid, hasIncompleteRow])
+
+  const noAlphaWarning = useMemo(() => {
+    if (!allocationValid || hasIncompleteRow) return null
+    if (exposureSummary == null) return null
+    if (exposureSummary.grossAlphaExposurePct > 0.5) return null
+    return 'This portfolio has no alpha & alts exposure. Consider adding a diversifying sleeve.'
+  }, [allocationValid, hasIncompleteRow, exposureSummary])
 
   const builderWarning = useMemo(() => {
     if (!allocationValid || hasIncompleteRow) return null
-    if (weightedBeta != null && weightedBeta > 1.5 && weightedBeta <= 2.5) {
+    if (weightedBeta == null) return null
+    if (weightedBeta > 2.5) {
+      return `Weighted portfolio beta is ${weightedBeta.toFixed(2)} — very high versus a market-like book.`
+    }
+    if (weightedBeta > 1.5) {
       return `Weighted portfolio beta is ${weightedBeta.toFixed(2)}. Above 1.5 increases drawdown risk versus a market-like book.`
     }
     return null
@@ -612,6 +617,7 @@ export default function PortfolioBuilderTool({
       </div>
 
       {builderError ? <p className={styles.error}>{builderError}</p> : null}
+      {noAlphaWarning ? <p className={styles.warning}>{noAlphaWarning}</p> : null}
       {builderWarning ? <p className={styles.warning}>{builderWarning}</p> : null}
 
       {payload ? (
@@ -649,6 +655,12 @@ export default function PortfolioBuilderTool({
             weightedBeta={weightedBeta}
             showScorecard
             exposureSummary={exposureSummary}
+            holdings={rows
+              .map((r) => ({
+                ticker: r.symbol.trim().toUpperCase(),
+                weightPct: parseAllocation(r.allocation) ?? 0,
+              }))
+              .filter((h) => h.ticker !== '' && h.weightPct > 0)}
           />
         </>
       ) : null}

@@ -126,8 +126,8 @@ export async function computePortfolioChart(params: {
   if (symbols.length !== weights.length) {
     throw new Error('Symbol count must match weight count')
   }
-  if (symbols.length < 2) {
-    throw new Error('At least two symbols required')
+  if (symbols.length < 1) {
+    throw new Error('At least one symbol required')
   }
 
   const upper = symbols.map((s) => s.toUpperCase())

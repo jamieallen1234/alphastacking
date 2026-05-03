@@ -22,9 +22,9 @@ export default function LearnPage({ edition }: { edition: LearnPageEdition }) {
     {
       href: learnArticlePath(isCa, WHAT_IS_ALPHA_SLUG),
       eyebrow: 'Concepts',
-      read: '~4 min read',
+      read: '~3 min read',
       title: 'What is alpha stacking',
-      deck: 'Equity plus return sources that earn when stocks don\u2019t. What the strategy is, how capital efficiency makes it possible, and why not all diversifiers qualify.',
+      deck: 'Equity plus return sources that earn when stocks don\u2019t. What the strategy is, how capital efficiency makes it possible, and definitions of the key terms.',
     },
     {
       href: learnArticlePath(isCa, ETF_PAGES_BUILDER_101_SLUG),

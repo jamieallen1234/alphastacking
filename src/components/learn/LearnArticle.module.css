@@ -2,10 +2,49 @@
   min-height: 100vh;
 }
 
+.shellTop {
+  max-width: 46rem;
+  margin-inline: auto;
+  padding: 1.1rem 3rem 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.shellBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem 0.4rem 0.55rem;
+  border: 0.5px solid var(--color-border-faint);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 220, 0.72);
+  text-decoration: none;
+}
+
+.shellBack:hover {
+  color: var(--color-gold-hover);
+  border-color: rgba(232, 228, 220, 0.22);
+}
+
+.shellBackArrow {
+  font-size: 13px;
+  line-height: 1;
+  color: rgba(232, 228, 220, 0.88);
+}
+
+.shellBack:hover .shellBackArrow {
+  color: var(--color-gold-hover);
+}
+
 .article {
   max-width: 46rem;
   margin-inline: auto;
-  padding: 2.75rem 3rem 4.5rem;
+  padding: 1.35rem 3rem 4.5rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -96,6 +135,59 @@
 
 .inlineLink:hover {
   color: var(--color-gold-hover);
+}
+
+.defChart {
+  margin: 0.25rem 0 0;
+  padding: 0;
+  border: 0.5px solid var(--color-border);
+  border-radius: 2px;
+  background: rgba(232, 228, 220, 0.03);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2) inset;
+}
+
+.defRow {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 8.5rem) 1fr;
+  gap: 0.65rem 1.25rem;
+  padding: 0.75rem 1.15rem;
+  border-bottom: 0.5px solid rgba(232, 228, 220, 0.08);
+  align-items: start;
+}
+
+.defRow:last-child {
+  border-bottom: none;
+}
+
+.defTerm {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  line-height: 1.45;
+  padding-top: 0.1rem;
+}
+
+.defDesc {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(232, 228, 220, 0.72);
+}
+
+@media (max-width: 520px) {
+  .defRow {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .defTerm {
+    padding-top: 0;
+  }
 }
 
 .principles {

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function CaEfficiencyGradesPage() {
   return (
-    <LearnArticleShell>
+    <LearnArticleShell edition="ca">
       <EfficiencyGradesArticle edition="ca" />
     </LearnArticleShell>
   )

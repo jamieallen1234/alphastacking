@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function CaHowToBuildAlphaStackingPage() {
   return (
-    <LearnArticleShell>
+    <LearnArticleShell edition="ca">
       <HowToBuildAlphaStackingArticle edition="ca" />
     </LearnArticleShell>
   )

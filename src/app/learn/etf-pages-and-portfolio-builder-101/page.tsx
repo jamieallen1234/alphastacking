@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function EtfPagesPortfolioBuilder101Page() {
   return (
-    <LearnArticleShell>
+    <LearnArticleShell edition="us">
       <EtfPagesPortfolioBuilder101Article edition="us" />
     </LearnArticleShell>
   )

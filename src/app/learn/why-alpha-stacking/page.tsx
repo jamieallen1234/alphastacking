@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function WhyAlphaStackingPage() {
   return (
-    <LearnArticleShell>
+    <LearnArticleShell edition="us">
       <WhyAlphaStackingArticle edition="us" />
     </LearnArticleShell>
   )

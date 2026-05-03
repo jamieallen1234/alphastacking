@@ -13,7 +13,7 @@ export default function WhatIsAlphaStackingArticle({ edition }: { edition: 'us' 
       <header>
         <div className={styles.headerRow}>
           <span className={styles.eyebrow}>Concepts</span>
-          <span className={styles.readTime}>~4 min read</span>
+          <span className={styles.readTime}>~3 min read</span>
         </div>
         <h1 className={styles.title}>What is alpha stacking</h1>
         <p className={styles.deck}>
@@ -72,68 +72,46 @@ export default function WhatIsAlphaStackingArticle({ edition }: { edition: 'us' 
 
       <section className={styles.section} aria-labelledby="s3">
         <h2 id="s3" className={styles.sectionTitle}>
-          Selection: why not all diversifiers qualify
+          Definitions
         </h2>
-        <p className={styles.body}>
-          Diversification alone isn&apos;t the goal. Bonds are negatively correlated to stocks in
-          some environments but fail in others (rising rates, stagflation). Gold reduces
-          correlation but earns close to nothing in real terms over long periods. Adding these
-          diversifiers reduces risk without meaningfully adding independent return.
-        </p>
-        <p className={styles.body}>
-          Alpha stacking is more selective. Each sleeve needs a structural edge that earns
-          independent of what stocks are doing:
-        </p>
-        <div className={styles.principles}>
-          <div className={styles.principle}>
-            <span className={styles.principleLabel}>Managed futures</span>
-            <p className={styles.principleText}>
-              Trend-following across equities, rates, currencies, and commodities. Earns when
-              markets trend, which tends to happen during prolonged bear markets. In 2022, managed
-              futures gained 20–30% while stocks and bonds both fell.
-            </p>
+        <dl className={styles.defChart} aria-label="Key terms">
+          <div className={styles.defRow}>
+            <dt className={styles.defTerm}>Alpha</dt>
+            <dd className={styles.defDesc}>
+              Return above what equity beta alone explains over a stretch of time. Here it means
+              sleeves whose payoff does not come from owning more of the same index.
+            </dd>
           </div>
-          <div className={styles.principle}>
-            <span className={styles.principleLabel}>Long/short equity</span>
-            <p className={styles.principleText}>
-              Long positions in favored stocks, short positions in weak ones. Returns come from
-              dispersion between winners and losers, which happens in bull, bear, and sideways
-              markets. Direction doesn&apos;t determine outcome; stock selection does.
-            </p>
+          <div className={styles.defRow}>
+            <dt className={styles.defTerm}>Stacking</dt>
+            <dd className={styles.defDesc}>
+              Running more than one sleeve on the same dollar of capital (leverage or return-stacked
+              funds), instead of selling equity to fund an alternative. The second sleeve is often a
+              diversifier relative to equity.
+            </dd>
           </div>
-          <div className={styles.principle}>
-            <span className={styles.principleLabel}>Merger arbitrage</span>
-            <p className={styles.principleText}>
-              Buys deal targets and hedges the acquirer. Earns when announced deals close at or
-              near the agreed price. The return comes from a structural spread between announcement
-              price and close price, largely independent of market direction.
-            </p>
+          <div className={styles.defRow}>
+            <dt className={styles.defTerm}>Alpha stacking</dt>
+            <dd className={styles.defDesc}>
+              Equity sleeve plus one or more alpha sleeves, sized together. You keep full equity
+              exposure and add sources that can earn when stocks are flat or down.
+            </dd>
           </div>
-          <div className={styles.principle}>
-            <span className={styles.principleLabel}>Systematic macro</span>
-            <p className={styles.principleText}>
-              Positions in rates, currencies, and commodities driven by macro signals. Often earns
-              during the same rate and currency moves that drive equity drawdowns, making it a
-              genuine complement to the equity sleeve.
-            </p>
+          <div className={styles.defRow}>
+            <dt className={styles.defTerm}>Alpha sleeve</dt>
+            <dd className={styles.defDesc}>
+              A sleeve with a structural edge (trend, dispersion, macro, deal spreads, and similar)
+              that can pay when direction or risk appetite is not helping plain equity.
+            </dd>
           </div>
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="s4">
-        <h2 id="s4" className={styles.sectionTitle}>
-          What the name means
-        </h2>
-        <p className={styles.body}>
-          Alpha is return above what equity alone delivers. Stacking is running multiple sources
-          of it on the same capital. You&apos;re not replacing equity, you&apos;re adding on top.
-        </p>
-        <p className={styles.body}>
-          The difference from generic diversification is the bar for inclusion. A diversifier just
-          needs low correlation. An alpha stack sleeve needs a structural reason to earn, not just
-          to soften drawdowns. The goal is a portfolio that compounds in multiple environments, not
-          one that dilutes equity with lower-returning assets.
-        </p>
+          <div className={styles.defRow}>
+            <dt className={styles.defTerm}>Diversifier</dt>
+            <dd className={styles.defDesc}>
+              Often added for lower correlation or smoother rides. Useful, but not the same bar as an
+              alpha sleeve, which needs a clear path to earn on its own, not only to dilute risk.
+            </dd>
+          </div>
+        </dl>
       </section>
 
       <div className={styles.ctaRow}>

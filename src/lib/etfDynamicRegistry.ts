@@ -279,7 +279,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     lede:
       'RSST targets roughly dollar-for-dollar large-cap U.S. equity alongside a systematic managed-futures sleeve—return stacking in a single ticker.',
     strategyParas: [
-      'RSST holds roughly a dollar of U.S. large-cap equity and a dollar of systematic managed-futures exposure per dollar invested: futures, swaps, and cash collateral bring both engines to the same capital before fees and roll costs.',
+      'RSST holds roughly a dollar of U.S. large-cap equity and a dollar of systematic managed-futures exposure per dollar invested: futures, swaps, and cash collateral bring both sleeves to the same capital before fees and roll costs.',
       'The CTA sleeve trend-follows across rates, FX, and commodities. When equity and trend signals disagree, the real question is whether trends are big enough to offset the financing and roll costs that come with leveraged futures.',
     ],
     pedigreeParas: ped(
@@ -850,7 +850,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       `KraneShares’ U.S.-listed ETF complex is typically quoted in the high single-digit billions USD in sponsor league tables (order of magnitude)—large enough for institutional trading infrastructure but still a specialist versus integrated mega banks.`
     ),
     outperfParas: [
-      'Outperforms when <strong>macro trends persist for months</strong> across FX, commodities, and rates, think sustained dollar moves, energy curves, or directional bond markets, while equities chop sideways. That is the classic “CTA diversification” window this sleeve is engineered for.',
+      'Outperforms when <strong>macro trends persist for months</strong> across FX, commodities, and rates, think sustained dollar moves, energy curves, or directional bond markets, while equities chop sideways. That is the classic “CTA diversification” window this sleeve is built for.',
       'Underperforms in <strong>fast mean-reversion</strong>, liquidity shocks that invert futures curves, or synchronized risk-off can still punish trend systems after fees, favorable environments are those where trends are clean enough that implementation costs stay small relative to signal strength.',
     ],
     officialUrl: 'https://www.kraneshares.com/kmlm',
@@ -971,7 +971,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     description:
       'Virtus AlphaSimplex Global Macro ETF (ASGM): systematic global macro sleeve that pairs dedicated equity risk with futures across rates, FX, and commodities—Virtus lists AlphaSimplex as sub-adviser.',
     lede:
-      'ASGM packages AlphaSimplex’s research-driven global macro engine inside Virtus’s ETF shelf: the mandate blends a strategic equity component with systematic futures sleeves designed to rotate macro risk—rates, currencies, commodities—rather than betting everything on a single equity factor.',
+      'ASGM packages AlphaSimplex’s research-driven global macro sleeve inside Virtus’s ETF shelf: the mandate blends a strategic equity component with systematic futures sleeves designed to rotate macro risk—rates, currencies, commodities—rather than betting everything on a single equity factor.',
     strategyParas: [
       'ASGM uses adaptive risk budgeting layered on trend and macro signals. Gross exposure expands and contracts with volatility targeting, so headline beta in any given month can look very different from a 60/40 proxy. Futures implementation, roll timing, and margin are central to understanding sleeve interaction.',
       'Because the process is model-driven, the failure mode is regime shift: models optimized on long histories can lag abrupt policy reversals or liquidity shocks. Stress tests against 2020 and 2022-style months matter more than a single backtested decade.',
@@ -1187,7 +1187,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     pedigreeParas: ped(
       `Return Stacked® Canada inherits the same intellectual lineage as the U.S. line—ReSolve / Newfound-style capital-efficiency research packaged for TSX investors via LongPoint as manager—narrow franchise, purpose-built slides, and advisor education rather than bank-branch distribution.`,
-      `Sponsor scale is modest next to RBC iShares or BMO, but that keeps the product honest about capacity: you are buying a sleeve engineered for stacking, not a closet indexer with a macro sticker.`,
+      `Sponsor scale is modest next to RBC iShares or BMO, but that keeps the product honest about capacity: you are buying a sleeve built for stacking, not a closet indexer with a macro sticker.`,
     ),
     outperfParas: [
       'Outperforms when global balanced beta grinds while futures sleeves harvest <strong>independent trends</strong>: dollar cycles, curve steepeners, or commodity shocks that do not move global equities in lockstep.',
@@ -1409,7 +1409,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     lede:
       'DGLM is a systematic global macro sleeve: equities, rates, commodities, and currencies, sub-advised by Graham Capital.',
     strategyParas: [
-      'DGLM pairs Desjardins’ Canadian distribution with Graham Capital’s systematic macro engine—futures and forwards across rates, FX, commodities, and selective equity beta—so sleeve weights can swing materially month to month as signals change.',
+      'DGLM pairs Desjardins’ Canadian distribution with Graham Capital’s systematic macro sleeve—futures and forwards across rates, FX, commodities, and selective equity beta—so sleeve weights can swing materially month to month as signals change.',
       'The fund uses leverage and short positions across macro instruments. Exposure bands and currency hedging defaults shift with macro signals.',
     ],
     pedigreeParas: ped(
@@ -1606,7 +1606,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'HEQL is a Canadian-listed enhanced all-equity allocation sleeve that targets roughly 125% exposure to a diversified global equity mix through a fund-of-funds structure.',
     strategyParas: [
       'HEQL primarily holds diversified equity ETFs and employs cash borrowing to maintain a leverage ratio near 125%. It sits between plain all-equity beta and higher-volatility daily-reset leverage products.',
-      'Because the engine is a leveraged fund-of-funds, realized outcomes depend on underlying regional allocations, financing cost, and equity volatility path. Monthly distributions and rebalancing inside underlying sleeves can also shape return cadence relative to a single-index benchmark.',
+      'Because the fund is a leveraged fund-of-funds, realized outcomes depend on underlying regional allocations, financing cost, and equity volatility path. Monthly distributions and rebalancing inside underlying sleeves can also shape return cadence relative to a single-index benchmark.',
     ],
     pedigreeParas: ped(
       `Global X Investments Canada is one of the larger domestic ETF issuers and operates broad lineup depth across core, covered-call, and leveraged products; HEQL benefits from that existing ETF plumbing rather than standing alone as a niche launch.`,

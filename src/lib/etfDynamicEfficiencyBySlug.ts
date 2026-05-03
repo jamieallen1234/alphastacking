@@ -169,7 +169,7 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     },
     alpha: {
       tooltip: alphaEfficiencyStackedTooltip(
-        'The non-core sleeve is bitcoin futures exposure engineered alongside Nasdaq beta. Implementation, margin, and roll dominate versus a single-index mental model.'
+        'The non-core sleeve is bitcoin futures exposure implemented alongside Nasdaq beta. Implementation, margin, and roll dominate versus a single-index mental model.'
       ),
     },
   },
@@ -329,7 +329,7 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
   dbmf: {
     alpha: {
       tooltip: alphaEfficiencyUnstackedTooltip(
-        'DBMF replicates hedge-fund managed-futures industry returns across rates, FX, commodities, and equity index futures via a dynamic beta engine.'
+        'DBMF replicates hedge-fund managed-futures industry returns across rates, FX, commodities, and equity index futures via a dynamic beta sleeve.'
       ),
     },
   },

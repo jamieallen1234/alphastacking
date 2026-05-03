@@ -52,7 +52,7 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
         </p>
         <div className={styles.principles}>
           <div className={styles.principle}>
-            <span className={styles.principleLabel}>1. Equity: the core engine</span>
+            <span className={styles.principleLabel}>1. Equity: the core sleeve</span>
             <p className={styles.principleText}>
               Equity beta drives the majority of long-run return. In leveraged alpha stacks the
               equity sleeve is often a 2&times; or 3&times; leveraged ETF (SSO, UPRO, SPXL), sized

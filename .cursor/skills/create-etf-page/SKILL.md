@@ -171,7 +171,7 @@ Do not rely on ticker aggregators alone. Build the **Strategy**, **Manager and I
 
 - **Alpha**, **risk-adjusted** returns, **correlation** to broad beta, **drawdown** / downside **risk management**
 - **Hedge-fund-style** or **alternatives** framing when the product is long/short, managed futures, multi-strategy, or explicitly absolute-return
-- **Quant / systematic / factor / trend** language when disclosures describe models, rules, or multi-factor engines
+- **Quant / systematic / factor / trend** language when disclosures describe models, rules, or multi-factor sleeves
 - **AUM**: **fund-level** figures belong in meta (`<ul className={styles.meta}>`) and ETF Facts; **issuer / group-level** total AUM belongs in **Manager and Issuer Pedigree** when you can source it (see §3e)
 - **Outperformance** as *when* the edge tends to appear (regimes, dispersion, trend persistence), not as a promise of results
 - **Competitive advantage**: what is hard to replicate—research depth, execution, data, organizational history, cost of replication—not generic “quality management”
@@ -212,7 +212,7 @@ Use this for the **issuer** half of **Manager and Issuer Pedigree** (firm pedigr
 - **Lead with favorable regimes**—when the process tends to add value: macro trends, dispersion, factor alignment, carry, curve shape, crisis correlation, etc. This section answers **“when does the edge show up?”**, not **“here is why you should be afraid.”**
 - **Do not** default to ending on a purely negative paragraph (risks, melt-ups, when it fails). Prospectus covers downside; here, keep the **last paragraph constructive**—reinforce **when conditions are good** for the strategy, or summarize the positive regime in one tight beat. Risks belong in **Strategy** or filings, not as the mandatory emotional closer.
 - **Return-stacked** funds (first sleeve ≈ benchmark beta, e.g. S&P 500 + a second sleeve): the **first sleeve** is the **beta** anchor; **incremental edge** vs. that benchmark typically comes from the **second sleeve**. Center **Outperformance** on **market conditions where the second sleeve shines** (e.g. managed futures: persistent macro trends, stress divergence; futures yield: favorable roll/carry, cross-asset setups). Name that split explicitly when it clarifies the story.
-- **Single-strategy / non-stacked** funds (e.g. long/short equity only): focus on regimes favorable to **both** books or the core alpha engine (dispersion, selection, factor spreads)—still avoid a **negative-only** final paragraph unless the user asks for balanced risk language.
+- **Single-strategy / non-stacked** funds (e.g. long/short equity only): focus on regimes favorable to **both** books or the core alpha sleeve (dispersion, selection, factor spreads)—still avoid a **negative-only** final paragraph unless the user asks for balanced risk language.
 
 ### 3e. Issuer (group) AUM in pedigree — when findable
 

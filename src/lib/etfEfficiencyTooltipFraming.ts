@@ -19,8 +19,8 @@ export function capitalEfficiencyTooltip(sleeveParagraph2: string): string {
   return `${CAPITAL_EFFICIENCY_FRAME_P1}\n\n${sleeveParagraph2}`
 }
 
-export function alphaEfficiencyUnstackedTooltip(engineParagraph2: string): string {
-  return `${ALPHA_EFFICIENCY_UNSTACKED_FRAME_P1}\n\n${engineParagraph2}`
+export function alphaEfficiencyUnstackedTooltip(sleeveParagraph2: string): string {
+  return `${ALPHA_EFFICIENCY_UNSTACKED_FRAME_P1}\n\n${sleeveParagraph2}`
 }
 
 export function alphaEfficiencyStackedTooltip(sleeveParagraph2: string): string {

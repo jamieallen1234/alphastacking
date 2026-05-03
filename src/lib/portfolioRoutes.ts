@@ -177,7 +177,7 @@ export const HUB_SECTION_LABEL: Record<
   'annual-rebalance': {
     heading: 'Leveraged — multi-sleeve',
     blurb:
-      'Leveraged equity as the core engine, sized alongside trend, long/short, and macro sleeves to keep total market sensitivity near 1.0. Rebalanced annually.',
+      'Leveraged equity as the core sleeve, sized alongside trend, long/short, and macro sleeves to keep total market sensitivity near 1.0. Rebalanced annually.',
   },
   'buy-hold': {
     heading: 'Buy & hold',

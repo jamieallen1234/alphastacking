@@ -99,7 +99,7 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
         </p>
         <p className={styles.body}>
           <strong>Alpha stacking wins when</strong> you want multiple genuinely independent return
-          engines and are willing to manage a multi-sleeve portfolio to get them.
+          sleeves and are willing to manage a multi-sleeve portfolio to get them.
         </p>
       </section>
 
@@ -144,7 +144,7 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           a major drawdown.
         </p>
         <p className={styles.body}>
-          Alpha stacking uses leveraged ETFs as the equity engine but sizes them alongside
+          Alpha stacking uses leveraged ETFs as the equity sleeve but sizes them alongside
           uncorrelated sleeves that can earn when equity falls or goes sideways, reducing
           concentration in a single levered bet.
         </p>

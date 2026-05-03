@@ -27,8 +27,8 @@ export default function EfficiencyGradesArticle({ edition }: { edition: 'us' | '
           Why two grades instead of one
         </h2>
         <p className={styles.body}>
-          ETFs on this site play different roles. Some provide equity exposure — they&apos;re the core
-          engine. Others provide diversifying return that doesn&apos;t depend on whether stocks go up.
+          ETFs on this site play different roles. Some sit in the equity sleeve of a stack. Others
+          provide diversifying return that doesn&apos;t depend on whether stocks go up.
           Grading both on the same scale misses the point.
         </p>
         <p className={styles.body}>

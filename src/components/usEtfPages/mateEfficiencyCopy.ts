@@ -6,7 +6,7 @@ import {
 /** Tooltip copy — keep aligned with `.cursor/skills/beta-efficiency-grades/SKILL.md` §7. */
 
 export const MATE_CAPITAL_EFFICIENCY_TOOLTIP = capitalEfficiencyTooltip(
-  "MATE's equity sleeve targets approximately 100% S&P 500 as the core return engine."
+  "MATE allocates roughly 100% S&P 500 notional to the equity sleeve of the stack."
 )
 
 export const MATE_ALPHA_EFFICIENCY_TOOLTIP = alphaEfficiencyStackedTooltip(

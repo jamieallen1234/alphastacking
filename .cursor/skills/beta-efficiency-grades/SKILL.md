@@ -291,13 +291,13 @@ Use **two paragraphs** in the bubble (render as two paragraphs; in CSS `white-sp
 
 > *"Capital Efficiency grades how well this ETF delivers equity-side returns relative to the capital and beta it consumes, compared to SPY (grade B). LETFs score higher by freeing capital for alpha sleeves. Long/short and factor ETFs score on excess return vs SPY net of costs."*
 >
-> *(Second paragraph: equity sleeve makeup — e.g. for MATE: ~100% S&P 500 notional exposure as the core equity engine.)*
+> *(Second paragraph: equity sleeve makeup — e.g. for MATE: ~100% S&P 500 notional exposure as the core equity sleeve.)*
 
 ### Alpha Efficiency tooltip (unstacked)
 
 > *"Alpha Efficiency grades how much return this ETF delivers above the risk-free rate, independent of equity markets. SPY is the B baseline for comparison. Higher grades mean more return per unit of non-equity risk taken."*
 >
-> *(Second paragraph: describe the fund’s alpha engine/mandate in plain English.)*
+> *(Second paragraph: describe the fund’s alpha sleeve/mandate in plain English.)*
 
 ### Alpha Efficiency tooltip (stacked sleeve)
 

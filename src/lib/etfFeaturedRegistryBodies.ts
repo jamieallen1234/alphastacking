@@ -7,7 +7,7 @@ export const MATE_LEDE_HTML =
   'MATE holds <strong>100% S&amp;P 500</strong> and <strong>100% managed futures</strong> simultaneously on the same dollar of capital: full equity beta plus a full trend-following allocation, not a blend of the two.'
 
 export const MATE_STRATEGY_PARAS_HTML = [
-  'The fund uses futures and derivatives to run both engines in parallel. The equity allocation tracks the S&amp;P 500; the managed-futures allocation trend-follows across equities, rates, currencies, and commodities. Cash and Treasuries back the derivatives as collateral. You hold the equivalent of two full positions, equity <em>and</em> alternatives, without selling one to buy the other.',
+  'The fund uses futures and derivatives to run both sleeves in parallel. The equity allocation tracks the S&amp;P 500; the managed-futures allocation trend-follows across equities, rates, currencies, and commodities. Cash and Treasuries back the derivatives as collateral. You hold the equivalent of two full positions, equity <em>and</em> alternatives, without selling one to buy the other.',
   'Man manages the managed-futures allocation, so the trend-following component reflects the firm\'s systematic process rather than passive index replication. Unlike CTA-replication products, you get Man\'s active positioning across the futures universe, with all the discretion and tracking error that implies versus a pure rules-based approach.',
 ]
 
@@ -30,7 +30,7 @@ export const RSSY_STRATEGY_PARAS_HTML = [
 ]
 
 export const RSSY_PEDIGREE_PARAS_HTML = [
-  '<strong>Tidal Investments LLC</strong> serves as investment adviser; <strong>Newfound Research LLC</strong> sub-advises; <strong>ReSolve Asset Management SEZC</strong> (Cayman) is futures trading advisor. Tidal and the Return Stacked® franchise are a multi-ETF platform far smaller than top-tier index complexes. The Return Stacked® brand packages systematic stacking for ETF investors: rules-based equity implementation plus the futures yield engine.',
+  '<strong>Tidal Investments LLC</strong> serves as investment adviser; <strong>Newfound Research LLC</strong> sub-advises; <strong>ReSolve Asset Management SEZC</strong> (Cayman) is futures trading advisor. Tidal and the Return Stacked® franchise are a multi-ETF platform far smaller than top-tier index complexes. The Return Stacked® brand packages systematic stacking for ETF investors: rules-based equity implementation plus the futures yield sleeve.',
 ]
 
 export const RSSY_OUTPERF_PARAS_HTML = [
@@ -97,7 +97,7 @@ export const ARB_LEDE_HTML =
 
 export const ARB_STRATEGY_PARAS_HTML = [
   'The fund buys securities of announced mergers, SPACs, and corporate actions, capturing the <strong>deal spread</strong> (the gap between current trading price and announced consideration) while shorting acquirers or related names when that reduces deal risk. Returns depend on closing probability, timing, and financing, not on equity direction.',
-  'The economic engine is deal spreads and event completion, not equity beta. Net exposure to broad markets is low by design: the fund earns when deals close, not when stocks go up.',
+  'Economics come from deal spreads and event completion, not equity beta. Net exposure to broad markets is low by design: the fund earns when deals close, not when stocks go up.',
 ]
 
 export const ARB_PEDIGREE_PARAS_HTML = [

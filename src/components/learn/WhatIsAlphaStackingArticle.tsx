@@ -17,14 +17,15 @@ export default function WhatIsAlphaStackingArticle({ edition }: { edition: 'us' 
         </div>
         <h1 className={styles.title}>What is alpha stacking</h1>
         <p className={styles.deck}>
-          An equity portfolio has one engine. Alpha stacking adds others: strategies that can earn
-          when stocks are flat or falling, held alongside equity on the same capital.
+          Most portfolios lean on equity for the bulk of long-run return. Alpha stacking adds other
+          return sources: strategies that can earn when stocks are flat or falling, held alongside
+          equity on the same capital.
         </p>
       </header>
 
       <section className={styles.section} aria-labelledby="s1">
         <h2 id="s1" className={styles.sectionTitle}>
-          Equity plus something else
+          Equity sleeve + Alpha sleeve
         </h2>
         <p className={styles.body}>
           Most portfolios are equity portfolios. Index funds, growth portfolios, even 60/40

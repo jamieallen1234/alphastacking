@@ -18,7 +18,7 @@ Three surfaces, three voices. These are drafts for the copy rewrite. Review and 
 
 > **Section: What you're solving for**
 >
-> A standard index portfolio bets on one thing: broad equity markets go up over time. That's a well-supported bet. The problem isn't the equity allocation — it's that the portfolio has no other return engine. In 2000–2002, in 2008, in 2022, equity took years to recover.
+> A standard index portfolio bets on one thing: broad equity markets go up over time. That's a well-supported bet. The problem isn't the equity allocation — it's that the portfolio has no other return sleeve. In 2000–2002, in 2008, in 2022, equity took years to recover.
 >
 > This is where alternative strategies earn their place. Managed futures trend-follow across asset classes — they made money in 2022 precisely because rising rates and falling equities produced clean, persistent trends to capture. Long/short equity strategies can profit from dispersion: stocks diverging from each other, winners pulling away from losers, regardless of which direction the index goes. Global macro funds can be positioned for the rate or currency moves that are causing the equity drawdown in the first place. None of these need equities to go up to generate returns.
 >

@@ -57,7 +57,7 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   // Long/short style assumptions
   // ORR requested baseline by user in chat context.
   ORR: { longEquityPct: 150, shortEquityPct: 100, alphaPct: 0 },
-  CLSE: { longEquityPct: 150, shortEquityPct: 50, alphaPct: 0 },
+  CLSE: { longEquityPct: 110, shortEquityPct: 50, alphaPct: 0 },
   'HDGE.TO': { longEquityPct: 110, shortEquityPct: 50, alphaPct: 0 },
   'PFLS.TO': { longEquityPct: 160, shortEquityPct: 100, alphaPct: 0 },
   'PFMN.TO': { longEquityPct: 100, shortEquityPct: 100, alphaPct: 0 },
@@ -78,6 +78,13 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
 
 function modelForTicker(ticker: string): ExposureModel | null {
   return EXPOSURE_BY_TICKER[ticker.toUpperCase()] ?? null
+}
+
+/** Net listed equity notional (long equity − short equity), portfolio-builder filter helper. */
+export function netListedEquityPctForTicker(ticker: string): number | null {
+  const m = modelForTicker(ticker)
+  if (!m) return null
+  return m.longEquityPct - m.shortEquityPct
 }
 
 export function buildExposureSummaryFromPresetHoldings(

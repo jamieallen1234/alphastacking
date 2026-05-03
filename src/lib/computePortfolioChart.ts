@@ -26,12 +26,19 @@ import {
 } from '@/lib/syntheticChartConstants'
 import {
   buildLeveredUnderlyingMergeSeries,
+  buildPreInceptionProductStackMerge,
   heqlSyntheticOverlapFirstTradeSec,
   hfgmSyntheticOverlapFirstTradeSec,
   mateSyntheticOverlapFirstTradeSec,
   qqqlSyntheticOverlapFirstTradeSec,
+  stackedProductProxyOverlapFirstTradeSec,
   usslSyntheticOverlapFirstTradeSec,
 } from '@/lib/syntheticProxyMerge'
+import {
+  findSlugByYahooSymbol,
+  grossExposureForChartProxy,
+  resolveChartProxyLegs,
+} from '@/lib/portfolioChartProxyLegs'
 import {
   CAD_SPY_PROXY_SYMBOL,
   CAD_UNHEDGED_SP500_PROXY_SYMBOL,
@@ -55,6 +62,8 @@ export type SyntheticModelingKind =
   | 'ialt_flsp_dbmf'
   | 'hfgm_asgm'
   | 'dglm_dbmf'
+  | 'stacked_product_proxy'
+  | 'stacked_product_proxy_preinception'
 
 export interface SyntheticModelingNote {
   /** Ticker as in the basket (e.g. HEQL.TO, MATE). */
@@ -102,6 +111,9 @@ export interface PortfolioChartPayload {
 
 const DEFAULT_BENCHMARK = 'SPY'
 
+/** Re-export for chart footnotes / PresetPortfolioChart. */
+export { CHART_STACK_PRODUCT_PROXY_LEGS } from '@/lib/portfolioChartProxyLegs'
+
 /**
  * Buy-and-hold portfolio vs benchmark (default SPY), inception-clipped to the newest holding’s listing.
  */
@@ -147,10 +159,14 @@ export async function computePortfolioChart(params: {
   const usslIdx = symbols.findIndex((s) => s.toUpperCase() === 'USSL.TO')
   const qqqlIdx = symbols.findIndex((s) => s.toUpperCase() === 'QQQL.TO')
 
-  const firstTradeSecs = await runWithYahooGaps(
+  const nowSec = Math.floor(Date.now() / 1000)
+
+  const initialFirstTrades = await runWithYahooGaps(
     symbols.map(
-      (s, i) => () =>
-        ntsdIdx >= 0 && i === ntsdIdx
+      (s, i) => () => {
+        const stackLegs = resolveChartProxyLegs(s)
+        if (stackLegs?.length) return stackedProductProxyOverlapFirstTradeSec(stackLegs)
+        return ntsdIdx >= 0 && i === ntsdIdx
           ? ntsdSyntheticOverlapFirstTradeSec()
           : mateIdx >= 0 && i === mateIdx
             ? mateSyntheticOverlapFirstTradeSec()
@@ -160,26 +176,26 @@ export async function computePortfolioChart(params: {
                 ? hfgmSyntheticOverlapFirstTradeSec()
                 : dglmIdx >= 0 && i === dglmIdx
                   ? fetchFirstTradeDateSec('DBMF')
-                : heqlIdx >= 0 && i === heqlIdx
-                  ? heqlSyntheticOverlapFirstTradeSec()
-                  : usslIdx >= 0 && i === usslIdx
-                    ? usslSyntheticOverlapFirstTradeSec(cadDenominated)
-                    : qqqlIdx >= 0 && i === qqqlIdx
-                      ? qqqlSyntheticOverlapFirstTradeSec()
-                      : fetchFirstTradeDateSec(s)
+                  : heqlIdx >= 0 && i === heqlIdx
+                    ? heqlSyntheticOverlapFirstTradeSec()
+                    : usslIdx >= 0 && i === usslIdx
+                      ? usslSyntheticOverlapFirstTradeSec(cadDenominated)
+                      : qqqlIdx >= 0 && i === qqqlIdx
+                        ? qqqlSyntheticOverlapFirstTradeSec()
+                        : fetchFirstTradeDateSec(s)
+      }
     )
   )
-  const effectiveStartSec = Math.max(...firstTradeSecs)
-  const limitingIdx = firstTradeSecs.indexOf(effectiveStartSec)
-  const limitingSymbol = symbols[limitingIdx]!
+  let slotFirstTradeSec = [...initialFirstTrades]
+  const portfolioOverlapStartSec = Math.max(...slotFirstTradeSec)
 
   const needExtraSpy = ntsdIdx >= 0 && benchmarkFetchSymbol.toUpperCase() !== 'SPY'
 
   const needHeqt = heqlIdx >= 0
   const needQqq = qqqlIdx >= 0
 
-  const nowSec = Math.floor(Date.now() / 1000)
-  const maxWindow = range === 'max' ? { fromSec: effectiveStartSec, toSec: nowSec } : undefined
+  const maxWindow =
+    range === 'max' ? { fromSec: portfolioOverlapStartSec, toSec: nowSec } : undefined
 
   const seriesAndBenchTasks: Array<() => Promise<PriceSeries | null>> = [
     ...symbols.map((s) => () => fetchDailySeries(s, range, maxWindow)),
@@ -243,7 +259,64 @@ export async function computePortfolioChart(params: {
     if (hfgmAsgmMut != null) hfgmAsgmMut = convertUsdPricesToCad(hfgmAsgmMut, usdCadSeries)
   }
 
+  const proxyLegSymsNeeded = new Set<string>()
+  for (const s of symbols) {
+    const legs = resolveChartProxyLegs(s)
+    if (legs) legs.forEach((L) => proxyLegSymsNeeded.add(L))
+  }
+  const proxyLegList = [...proxyLegSymsNeeded]
+
+  const proxyHistoryWindow =
+    range === 'max'
+      ? { fromSec: Math.floor(Date.UTC(2005, 0, 1) / 1000), toSec: nowSec }
+      : undefined
+
+  let proxyLegBySym = new Map<string, PriceSeries>()
+  if (proxyLegList.length > 0) {
+    const proxyFetched = await runWithYahooGaps(
+      proxyLegList.map((sym) => () => fetchDailySeries(sym, range, proxyHistoryWindow))
+    )
+    proxyLegList.forEach((sym, i) => proxyLegBySym.set(sym.toUpperCase(), proxyFetched[i]!))
+    if (cadDenominated && usdCadSeries != null) {
+      const next = new Map<string, PriceSeries>()
+      for (const sym of proxyLegList) {
+        let ser = proxyLegBySym.get(sym)!
+        if (!isCadListedSymbol(sym)) {
+          ser = convertUsdPricesToCad(ser, usdCadSeries)
+        }
+        next.set(sym, ser)
+      }
+      proxyLegBySym = next
+    }
+  }
+
   const syntheticModeling: SyntheticModelingNote[] = []
+
+  for (let i = 0; i < symbols.length; i++) {
+    const legs = resolveChartProxyLegs(symbols[i]!)
+    if (!legs?.length) continue
+    const legSeries: PriceSeries[] = []
+    for (const sym of legs) {
+      const se = proxyLegBySym.get(sym.toUpperCase())
+      if (se == null || se.timestamps.length < 2) continue
+      legSeries.push(se)
+    }
+    if (legSeries.length !== legs.length) continue
+    const slug = findSlugByYahooSymbol(symbols[i]!)
+    const gross = grossExposureForChartProxy(symbols[i]!, slug)
+    const pin = buildPreInceptionProductStackMerge(seriesMut[i]!, legSeries, {
+      grossExposurePct: gross,
+    })
+    if (pin.modeling != null && pin.series.timestamps.length >= 2) {
+      seriesMut[i] = pin.series
+      slotFirstTradeSec[i] = Math.min(slotFirstTradeSec[i]!, pin.series.timestamps[0]!)
+      syntheticModeling.push({
+        slotSymbol: symbols[i]!,
+        firstRealNyDay: pin.modeling.firstRealNyDay,
+        kind: 'stacked_product_proxy_preinception',
+      })
+    }
+  }
 
   if (ntsdIdx >= 0 && efaMut != null) {
     const spyForNtsd =
@@ -395,6 +468,10 @@ export async function computePortfolioChart(params: {
   if (heqlIdx >= 0 && heqtExtra != null) {
     pushCad125(heqlIdx, heqtExtra, HEQL_FIRST_REAL_NY_DAY, 'HEQT.TO')
   }
+
+  const effectiveStartSec = Math.max(...slotFirstTradeSec)
+  const limitingIdx = slotFirstTradeSec.indexOf(effectiveStartSec)
+  const limitingSymbol = symbols[limitingIdx]!
 
   const clipped = seriesMut.map((s) => clipSeriesFromTime(s, effectiveStartSec))
   const benchClipped = clipSeriesFromTime(benchSeries, effectiveStartSec)

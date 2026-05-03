@@ -1,5 +1,6 @@
 import { CAD_UNHEDGED_SP500_PROXY_SYMBOL } from '@/lib/cadUsdConversion'
-import { dayKeyToUtcNoonUnix, seriesToNyDayPriceMap } from '@/lib/portfolioMath'
+import { dayKeyToUtcNoonUnix, nyTradingDayKey, seriesToNyDayPriceMap } from '@/lib/portfolioMath'
+import { STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE } from '@/lib/syntheticChartConstants'
 import type { PriceSeries } from '@/lib/yahooFinance'
 import { fetchFirstTradeDateSec } from '@/lib/yahooFinance'
 
@@ -140,4 +141,92 @@ export async function usslSyntheticOverlapFirstTradeSec(cadDenominated: boolean)
 /** Nasdaq-100 anchor for pre-listing 1.25× simulation (QQQ adj. TR, then CAD in chart pipeline). */
 export async function qqqlSyntheticOverlapFirstTradeSec(): Promise<number> {
   return fetchFirstTradeDateSec('QQQ')
+}
+
+/** Joint start for multi-leg stacked-product chart proxies (IBIT+GLD, etc.): latest first listing among legs. */
+export async function stackedProductProxyOverlapFirstTradeSec(legSymbols: string[]): Promise<number> {
+  const secs = await Promise.all(legSymbols.map((s) => fetchFirstTradeDateSec(s)))
+  return Math.max(...secs)
+}
+
+export type PreInceptionStackMergeOptions = {
+  /**
+   * Sum of sleeve notionals % from `ETF_STACK_EXPOSURE_BY_SLUG` (e.g. 200 for a 100%+100% stack).
+   * Financing drag applies to **max(0, grossExposurePct − 100)** / 100 at `STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE` / 252.
+   */
+  grossExposurePct?: number
+}
+
+/**
+ * Pre-inception: multiply stacked-leg daily returns on sessions **before** the target’s first NY day;
+ * subtract wholesale financing on **gross exposure above 100%** (`grossExposurePct`); from first real session
+ * onward, scale the target’s actual TR to the synthetic anchor (same re-leveling as MATE/RSST).
+ */
+export function buildPreInceptionProductStackMerge(
+  target: PriceSeries,
+  legs: PriceSeries[],
+  options?: PreInceptionStackMergeOptions
+): { series: PriceSeries; modeling: SyntheticProxyModeling | null } {
+  if (legs.length < 1) return { series: target, modeling: null }
+  const tarM = seriesToNyDayPriceMap(target)
+  const tarDays = [...tarM.keys()].sort()
+  if (tarDays.length < 1) return { series: target, modeling: null }
+  const firstReal = tarDays[0]!
+  const rFirst = tarM.get(firstReal)!
+  if (rFirst <= 0) return { series: target, modeling: null }
+
+  const legMaps = legs.map((s) => seriesToNyDayPriceMap(s))
+  let inter = new Set(legMaps[0]!.keys())
+  for (let i = 1; i < legMaps.length; i++) {
+    inter = new Set([...inter].filter((d) => legMaps[i]!.has(d)))
+  }
+  const preDays = [...inter].filter((d) => d < firstReal).sort()
+  if (preDays.length < 1) {
+    return { series: target, modeling: null }
+  }
+
+  const gross = options?.grossExposurePct ?? 200
+  const excessPct = Math.max(0, gross - 100)
+  const borrowDragDaily =
+    (excessPct / 100) * (STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE / 252)
+
+  const mergedMap = new Map<string, number>()
+  let syn = 100
+  mergedMap.set(preDays[0]!, syn)
+  for (let i = 1; i < preDays.length; i++) {
+    const d0 = preDays[i - 1]!
+    const d1 = preDays[i]!
+    let factor = 1
+    for (const lm of legMaps) {
+      const p0 = lm.get(d0)!
+      const p1 = lm.get(d1)!
+      if (p0 <= 0 || p1 <= 0) return { series: target, modeling: null }
+      factor *= p1 / p0
+    }
+    syn *= factor - borrowDragDaily
+    mergedMap.set(d1, syn)
+  }
+  const synBeforeReal = syn
+
+  for (const d of tarDays) {
+    const r = tarM.get(d)!
+    mergedMap.set(d, synBeforeReal * (r / rFirst))
+  }
+
+  const sortedKeys = [...mergedMap.keys()].sort()
+  const timestamps: number[] = []
+  const prices: number[] = []
+  for (const d of sortedKeys) {
+    const p = mergedMap.get(d)
+    if (p != null && p > 0) {
+      timestamps.push(dayKeyToUtcNoonUnix(d))
+      prices.push(p)
+    }
+  }
+  if (timestamps.length < 2) return { series: target, modeling: null }
+
+  return {
+    series: { symbol: target.symbol, timestamps, prices },
+    modeling: { firstRealNyDay: nyTradingDayKey(target.timestamps[0]!) },
+  }
 }

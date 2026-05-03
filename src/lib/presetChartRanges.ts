@@ -18,6 +18,8 @@ export const PRESET_RANGE_MIN_DAYS = {
   /** Yahoo 1y window works with short overlap (clipped); do not require a full calendar year. */
   '1y': 21,
   '2y': 730,
+  /** Three calendar years of joint history (~3 × 365). */
+  '3y': 1095,
   '5y': 1825,
   /** All = full daily history from overlap (see period fetch in compute); always on. */
   max: 0,
@@ -28,6 +30,7 @@ const PRESET_TABS: { range: keyof typeof PRESET_RANGE_MIN_DAYS; label: string }[
   { range: 'ytd', label: 'YTD' },
   { range: '1y', label: '1Y' },
   { range: '2y', label: '2Y' },
+  { range: '3y', label: '3Y' },
   { range: '5y', label: '5Y' },
   { range: 'max', label: 'All' },
 ]

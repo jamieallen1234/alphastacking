@@ -8,6 +8,7 @@ const ALLOWED_RANGES: YahooRange[] = [
   '6mo',
   '1y',
   '2y',
+  '3y',
   '5y',
   'ytd',
   'max',

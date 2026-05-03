@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getCachedPortfolioBuilderChart } from '@/lib/getCachedPortfolioBuilderChart'
 import type { YahooRange } from '@/lib/yahooFinance'
 
-const ALLOWED_RANGES: YahooRange[] = ['1mo', 'ytd', '1y', '2y', '5y', 'max']
+const ALLOWED_RANGES: YahooRange[] = ['1mo', 'ytd', '1y', '2y', '3y', '5y', 'max']
 
 type BuilderChartRequest = {
   symbols?: string[]

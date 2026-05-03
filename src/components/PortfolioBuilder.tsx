@@ -5,7 +5,7 @@ import PresetPortfolioChart from './PresetPortfolioChart'
 import styles from './PortfolioBuilder.module.css'
 import type { PortfolioChartPayload } from '@/lib/computePortfolioChart'
 
-type Range = '1mo' | '3mo' | '6mo' | '1y' | '2y' | '5y' | 'ytd' | 'max'
+type Range = '1mo' | '3mo' | '6mo' | '1y' | '2y' | '3y' | '5y' | 'ytd' | 'max'
 
 const RANGES: { label: string; value: Range }[] = [
   { label: '1M', value: '1mo' },
@@ -13,6 +13,7 @@ const RANGES: { label: string; value: Range }[] = [
   { label: '6M', value: '6mo' },
   { label: '1Y', value: '1y' },
   { label: '2Y', value: '2y' },
+  { label: '3Y', value: '3y' },
   { label: '5Y', value: '5y' },
   { label: 'YTD', value: 'ytd' },
   { label: 'Max', value: 'max' },

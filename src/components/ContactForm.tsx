@@ -210,7 +210,9 @@ export default function ContactForm() {
                 onChange={(e) => setMessage(e.target.value)}
                 maxLength={8000}
               />
-              <p className={styles.hint}>Site feedback, feature requests, or corrections welcome.</p>
+              <p className={styles.hint}>
+                Site feedback, feature requests, corrections, or suggestions for portfolio-chart proxies welcome.
+              </p>
             </div>
 
             {needsTurnstile ? (

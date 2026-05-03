@@ -42,7 +42,7 @@ import {
 } from '@/lib/presets/usInternational'
 import type { YahooRange } from '@/lib/yahooFinance'
 
-const ALLOWED: YahooRange[] = ['1mo', 'ytd', '1y', '2y', '5y', 'max']
+const ALLOWED: YahooRange[] = ['1mo', 'ytd', '1y', '2y', '3y', '5y', 'max']
 
 const PRESETS: Record<
   string,

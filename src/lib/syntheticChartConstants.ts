@@ -38,3 +38,11 @@ export const HEQL_CAD_FINANCING_RATE_ON_EXCESS_NOTIONAL_ANNUAL = 0.045
 /** Total annual drag on simulated HEQL NAV from financing on the levered slice only. */
 export const HEQL_SYNTHETIC_ANNUAL_DRAG =
   HEQL_EXTRA_NOTIONAL * HEQL_CAD_FINANCING_RATE_ON_EXCESS_NOTIONAL_ANNUAL
+
+/**
+ * Portfolio / builder **stacked-product chart proxies** (`buildPreInceptionProductStackMerge`): wholesale-style
+ * financing on **gross exposure above 100%** (stack sleeve notionals from `ETF_STACK_EXPOSURE_BY_SLUG`).
+ * Daily drag: `(max(0, gross% − 100) / 100) × this / 252` in multiplier space with the leg product. Not
+ * fund-specific swap lines, MER, or tax drag.
+ */
+export const STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE = 0.04

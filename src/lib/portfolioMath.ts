@@ -401,3 +401,38 @@ export function maxDrawdownPercentFromLevels(levels: number[]): number | null {
   }
   return worst * 100
 }
+
+/**
+ * Dual/multi–notional stack proxy: chained daily total returns on common NY days (adj. closes).
+ * \(V_t = V_{t-1} \times \prod_i (p_{i,t}/p_{i,t-1})\). Labels the series as `slotSymbol` (e.g. BTGD).
+ */
+export function buildMultiplicativeStackSeries(slotSymbol: string, legs: PriceSeries[]): PriceSeries | null {
+  if (legs.length < 2) return null
+  const maps = legs.map((s) => seriesToNyDayPriceMap(s))
+  let common = new Set(maps[0]!.keys())
+  for (let i = 1; i < maps.length; i++) {
+    common = new Set([...common].filter((d) => maps[i]!.has(d)))
+  }
+  const days = [...common].sort()
+  if (days.length < 2) return null
+  const timestamps: number[] = []
+  const prices: number[] = []
+  let v = 100
+  timestamps.push(dayKeyToUtcNoonUnix(days[0]!))
+  prices.push(v)
+  for (let i = 1; i < days.length; i++) {
+    const d0 = days[i - 1]!
+    const d1 = days[i]!
+    let factor = 1
+    for (let j = 0; j < maps.length; j++) {
+      const p0 = maps[j]!.get(d0)!
+      const p1 = maps[j]!.get(d1)!
+      if (p0 <= 0 || p1 <= 0) return null
+      factor *= p1 / p0
+    }
+    v *= factor
+    timestamps.push(dayKeyToUtcNoonUnix(d1))
+    prices.push(v)
+  }
+  return { symbol: slotSymbol, timestamps, prices }
+}

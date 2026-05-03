@@ -12,6 +12,7 @@ const RANGES: { range: YahooRange; label: string }[] = [
   { range: 'ytd', label: 'YTD' },
   { range: '1y', label: '1Y' },
   { range: '2y', label: '2Y' },
+  { range: '3y', label: '3Y' },
   { range: '5y', label: '5Y' },
   { range: 'max', label: 'All' },
 ]
@@ -24,6 +25,7 @@ function rangeNotYetAvailable(range: YahooRange, firstListedTsSec: number | null
   const elapsed = Date.now() / 1000 - firstListedTsSec
   const slack = 14 * 86400
   if (range === '5y') return elapsed + slack < 5 * SEC_PER_CAL_YEAR
+  if (range === '3y') return elapsed + slack < 3 * SEC_PER_CAL_YEAR
   if (range === '2y') return elapsed + slack < 2 * SEC_PER_CAL_YEAR
   if (range === '1y') return elapsed + slack < 1 * SEC_PER_CAL_YEAR
   return false

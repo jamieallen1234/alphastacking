@@ -1,6 +1,11 @@
 import { unstable_cache } from 'next/cache'
 import { CA_ETF_DYNAMIC_REGISTRY, US_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
-import { stackExposureLineAvailability } from '@/lib/etfStackExposureBySlug'
+import { netListedEquityPctForTicker } from '@/lib/exposureSummary'
+import {
+  ETF_STACK_EXPOSURE_BY_SLUG,
+  stackExposureLineAvailability,
+  stackMappedHasPreciousMetalSleeve,
+} from '@/lib/etfStackExposureBySlug'
 import { mergeDynamicEtfEfficiencyWithPatch } from '@/lib/etfDynamicEfficiencyBySlug'
 import { getCachedMonthlyEfficiencyPatchForSlug } from '@/lib/getCachedMonthlyEtfEfficiencyGrades'
 import {
@@ -22,7 +27,19 @@ const LETF_SYMBOLS = new Set([
 ])
 
 function builderCategoryFor(def: { yahooSymbol: string; badge: string }): string {
-  return LETF_SYMBOLS.has(def.yahooSymbol.toUpperCase()) ? 'LETF' : def.badge
+  if (LETF_SYMBOLS.has(def.yahooSymbol.toUpperCase())) return 'LETF'
+  if (def.badge.startsWith('Return Stacked')) return 'Return Stacked'
+  return def.badge
+}
+
+function builderHasCryptoExposure(slug: string, hubCategoryId: string): boolean {
+  if (hubCategoryId === 'crypto') return true
+  const m = ETF_STACK_EXPOSURE_BY_SLUG[slug]
+  return Boolean(m?.components.some((c) => c.assetClass === 'crypto'))
+}
+
+function builderHasPreciousMetalsExposure(slug: string): boolean {
+  return stackMappedHasPreciousMetalSleeve(slug)
 }
 
 export type PortfolioBuilderEtfOption = {
@@ -44,6 +61,12 @@ export type PortfolioBuilderEtfOption = {
   stackedGrade: PortfolioBuilderEfficiencyGrade | null
   /** Same 1y regression beta as the ETF detail chart (listing benchmark). */
   beta: number | null
+  /** Net listed equity notional (long − short) for long/short sleeves; null if unknown. */
+  netEquityPct: number | null
+  /** Crypto sleeve or crypto hub — used to surface mixed funds in the Crypto category filter. */
+  hasCryptoExposure: boolean
+  /** Gold/silver sleeve per stack map — Precious metals category (alpha / all efficiency). */
+  hasPreciousMetalsExposure: boolean
 }
 
 function asGrade(v: string | undefined): PortfolioBuilderEfficiencyGrade | null {
@@ -89,6 +112,9 @@ async function buildOptionsForUniverse(universe: 'us' | 'ca'): Promise<Portfolio
       const capitalGrade = asGrade(merged.efficiency?.capital?.grade)
       const alphaGrade = asGrade(merged.efficiency?.alpha?.grade)
       const stackedGrade = asGrade(merged.efficiency?.stacked?.grade)
+      const netEquityPct = netListedEquityPctForTicker(def.yahooSymbol)
+      const hasCryptoExposure = builderHasCryptoExposure(slug, def.hubCategoryId)
+      const hasPreciousMetalsExposure = builderHasPreciousMetalsExposure(slug)
       return {
         slug,
         universe,
@@ -103,6 +129,9 @@ async function buildOptionsForUniverse(universe: 'us' | 'ca'): Promise<Portfolio
         alphaGrade,
         stackedGrade,
         beta,
+        netEquityPct,
+        hasCryptoExposure,
+        hasPreciousMetalsExposure,
       } satisfies PortfolioBuilderEtfOption
     })
   )
@@ -113,7 +142,7 @@ const DAY = 86400
 
 export const getCachedPortfolioBuilderOptionsUs = unstable_cache(
   async () => buildOptionsForUniverse('us'),
-  ['portfolio-builder-options-v10-stacked-efficiency', 'us'],
+  ['portfolio-builder-options-v12-precious-meta-bitoproxy', 'us'],
   { revalidate: DAY }
 )
 
@@ -125,7 +154,7 @@ export const getCachedPortfolioBuilderOptionsCa = unstable_cache(
     ])
     return [...ca, ...us].sort((a, b) => a.displayTicker.localeCompare(b.displayTicker))
   },
-  ['portfolio-builder-options-v10-stacked-efficiency', 'ca'],
+  ['portfolio-builder-options-v12-precious-meta-bitoproxy', 'ca'],
   { revalidate: DAY }
 )
 

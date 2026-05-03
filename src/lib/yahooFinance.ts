@@ -6,6 +6,7 @@ export type YahooRange =
   | '6mo'
   | '1y'
   | '2y'
+  | '3y'
   | '5y'
   | 'ytd'
   | 'max'
@@ -23,6 +24,9 @@ export interface PriceSeries {
 
 const YAHOO_UA =
   'Mozilla/5.0 (compatible; Alphastacking/1.0; +https://github.com/) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+
+/** Yahoo `range=` often omits `3y`; use explicit daily bounds (calendar years, NY-style horizon). */
+const THREE_CALENDAR_YEAR_SEC = Math.floor(3 * 365.25 * 86400)
 
 /** Drop bars before `minSec` (unix seconds, inclusive). */
 export function clipSeriesFromTime(s: PriceSeries, minSec: number): PriceSeries {
@@ -79,15 +83,22 @@ export async function fetchDailySeries(
   maxWindow?: { fromSec: number; toSec: number }
 ): Promise<PriceSeries> {
   const sym = symbol.trim()
-  const usePeriod =
+  const nowSec = Math.floor(Date.now() / 1000)
+  const maxPeriod =
     range === 'max' && maxWindow != null && maxWindow.toSec > maxWindow.fromSec
-  const url = usePeriod
-    ? `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
-        sym
-      )}?interval=1d&period1=${Math.floor(maxWindow.fromSec)}&period2=${Math.floor(maxWindow.toSec)}`
-    : `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
-        sym
-      )}?interval=1d&range=${range}`
+  const threeYearPeriod = range === '3y'
+  const url =
+    maxPeriod
+      ? `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+          sym
+        )}?interval=1d&period1=${Math.floor(maxWindow.fromSec)}&period2=${Math.floor(maxWindow.toSec)}`
+      : threeYearPeriod
+        ? `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+            sym
+          )}?interval=1d&period1=${nowSec - THREE_CALENDAR_YEAR_SEC}&period2=${nowSec}`
+        : `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+            sym
+          )}?interval=1d&range=${range}`
 
   const res = await fetch(url, {
     headers: { 'User-Agent': YAHOO_UA, Accept: 'application/json' },

@@ -3,7 +3,7 @@ import { getCachedEtfChart } from '@/lib/getCachedEtfChart'
 import { isAllowedEtfChartSymbol } from '@/lib/etfChartSymbols'
 import type { YahooRange } from '@/lib/yahooFinance'
 
-const ALLOWED: YahooRange[] = ['1mo', 'ytd', '1y', '2y', '5y', 'max']
+const ALLOWED: YahooRange[] = ['1mo', 'ytd', '1y', '2y', '3y', '5y', 'max']
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)

@@ -96,7 +96,7 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     components: [
       { name: 'US equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
       { name: 'Gold', pct: 50, bucket: 'alpha', assetClass: 'commodity' },
-      { name: 'Bitcoin', pct: 50, bucket: 'alpha', assetClass: 'crypto' },
+      { name: 'Bitcoin futures', pct: 50, bucket: 'alpha', assetClass: 'crypto' },
     ],
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'SPY',
@@ -129,7 +129,7 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
   },
   btgd: {
     components: [
-      { name: 'Bitcoin', pct: 100, bucket: 'capital', assetClass: 'crypto' },
+      { name: 'Bitcoin futures', pct: 100, bucket: 'capital', assetClass: 'crypto' },
       { name: 'Gold', pct: 100, bucket: 'alpha', assetClass: 'commodity' },
     ],
     capitalMarketBenchmarkSymbol: 'SPY',
@@ -138,7 +138,7 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
   ooqb: {
     components: [
       { name: 'Nasdaq-100 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
-      { name: 'Bitcoin', pct: 100, bucket: 'alpha', assetClass: 'crypto' },
+      { name: 'Bitcoin futures', pct: 100, bucket: 'alpha', assetClass: 'crypto' },
     ],
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'QQQ',
@@ -146,7 +146,7 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
   oosb: {
     components: [
       { name: 'S&P 500 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
-      { name: 'Bitcoin', pct: 100, bucket: 'alpha', assetClass: 'crypto' },
+      { name: 'Bitcoin futures', pct: 100, bucket: 'alpha', assetClass: 'crypto' },
     ],
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'SPY',
@@ -168,7 +168,7 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
   wtib: {
     components: [
       { name: 'Crude oil (WTI-linked)', pct: 100, bucket: 'capital', assetClass: 'commodity' },
-      { name: 'Bitcoin', pct: 100, bucket: 'alpha', assetClass: 'crypto' },
+      { name: 'Bitcoin futures', pct: 100, bucket: 'alpha', assetClass: 'crypto' },
     ],
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkBlend: [
@@ -199,6 +199,13 @@ export function stackMappedHasEquityAssetClass(slug: string): boolean {
   const m = ETF_STACK_EXPOSURE_BY_SLUG[slug]
   if (!m) return false
   return m.components.some((c) => c.assetClass === 'equity')
+}
+
+/** Gold/silver in sleeve name (miners, futures, or bullion commodity) — portfolio builder precious-metals filter. */
+export function stackMappedHasPreciousMetalSleeve(slug: string): boolean {
+  const m = ETF_STACK_EXPOSURE_BY_SLUG[slug]
+  if (!m) return false
+  return m.components.some((c) => /gold|silver/i.test(c.name))
 }
 
 /** ETF page label for the `eff.capital` grade row: non-equity stacks (e.g. BTGD) use “Capital”, not “Equity”. */

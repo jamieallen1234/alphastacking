@@ -9,6 +9,8 @@ description: >-
   constructive Outperformance framing (favorable regimes; return-stacked second sleeve).
   When adding multiple ETFs in one request, follow the batch workflow: verify every
   issuer URL early, then complete the full checklist per ticker—no thin copy on “the rest.”
+  If listing is young (~under 2 years) and chart proxies cannot be built for every sleeve,
+  ask the user for Yahoo proxy choices per §2c.
 ---
 
 # Create ETF page (Alpha Stacking)
@@ -38,6 +40,7 @@ For **each** ETF, complete **before** moving to the next (or explicitly parallel
 | Body depth | §3 + §4 (Strategy / Pedigree / Outperformance) | `lede`, 2× `strategyParas`, `ped(…)`, 2× `outperfParas` |
 | Chart | §2 chart steps + `ETF_CHART_SYMBOLS` / API | `yahooSymbol` in allowlist + same chart plumbing if new symbol |
 | Portfolio proxy links | §2b: add **`HAND_AUTHORED_US_SLUG`** entry for this uppercase ticker | §2b: if ticker is a chart proxy, **`yahooSymbol`** match supplies the hub link—else **`OFFICIAL_ETF_HOME`** |
+| Short history, no auto proxy | §2c: if listing is **under ~2 years** and **`resolveChartProxyLegs`** is still empty after **`ETF_STACK_EXPOSURE_BY_SLUG`** + manual maps, **ask the user** for Yahoo proxy tickers for **each sleeve/asset** you cannot map | Same—do not finish the pass without resolving or explicitly accepting “no preset/builder proxy until history grows” |
 | Checklist | Run §5 mentally for **this** ticker | Same §5 lines for **this** slug |
 
 **Per-ticker parity rule:** The *n*th ETF in the batch must meet the **same** research and URL standards as the first. If you are tired or running long, **finish one ticker completely** rather than shipping three half-done pages.
@@ -128,6 +131,37 @@ Resolution order is fixed: **hand-authored US slug** → **US dynamic registry**
 | You **later** add a write-up so the ticker is covered on-site | **Remove** that symbol from **`OFFICIAL_ETF_HOME`** if it was only a fallback, so the internal hub route wins. |
 
 **Hub base:** `getPortfolioProxyEtfNav` receives **`hubBaseUs`** (`/us-etfs` vs `/ca/us-etfs`); the component derives it from the pathname—no change needed for normal ETF page work unless you alter that convention.
+
+## 2c. Preset + builder chart proxies (not the on-page ETF price chart)
+
+**Scope:** `computePortfolioChart` drives **preset portfolio charts** and the **portfolio builder** only. The standalone **`EtfChartPanel`** on an ETF page is **not** extended with these synthetic paths.
+
+### Eligibility (actual proxies only)
+
+- Pre-inception **stack** modeling runs only when **`resolveChartProxyLegs`** returns Yahoo legs: **manual** `CHART_STACK_PRODUCT_PROXY_LEGS` **or** auto legs from **`ETF_STACK_EXPOSURE_BY_SLUG`** when the map lists sleeves we can proxy (**equity** `coreBenchmarkSymbol` / **SPY** plus mapped **alpha** sleeves).
+- **Mapped sleeves:** bitcoin → **IBIT** (spot / generic sleeve wording) or **BITO** when the sleeve or fund copy clearly refers to **bitcoin futures** (`bitcoinChartProxyYahooFromSleeveName` in **`portfolioChartProxyLegs.ts`**); ethereum → **ETHA**; gold → **GLD**; silver → **SLV**; oil / crude / WTI-style → **USO**. Sleeves such as **managed futures**, **generic futures yield**, or **macro** do **not** auto-map—those funds rely on dedicated merges elsewhere (e.g. **MATE** + **RSST**) or have **no** stack proxy until you add one. Keep **`ETF_STACK_EXPOSURE_BY_SLUG`** sleeve `name` strings honest (e.g. “Bitcoin futures” vs “Bitcoin”) so the chart picks the right leg.
+- **Dual-alpha only** (no equity sleeve), e.g. **bitcoin + gold**: ensure **`slugEligibleForAutoChartProxies`** is satisfied (≥2 mapped non-equity legs); **BTGD**-style rows must name sleeves so **`mapComponentToChartProxyLeg`** can resolve legs.
+- **Cheaper bitcoin ETF:** add **`TICKER: ['IBIT', …]`** (or the right legs) under **`CHART_STACK_PRODUCT_PROXY_LEGS`** so the chart uses **IBIT** as the spot-bitcoin TR proxy.
+- **MATE:** remains **`mate_rsst`** (RSST); optional future variant **SPY × DBMF** + borrow would be a separate explicit merge, not the auto stack map.
+
+### Young listing (under ~2 years) — ask when you cannot proxy
+
+When adding or completing a new ETF row:
+
+1. After **`ETF_STACK_EXPOSURE_BY_SLUG`** sleeve names / benchmarks and any **`CHART_STACK_PRODUCT_PROXY_LEGS`** override, check **`resolveChartProxyLegs(yahooSymbol)`** in **`portfolioChartProxyLegs.ts`** (and whether each material sleeve maps via **`mapComponentToChartProxyLeg`**).
+2. If **inception is under ~two calendar years** (short joint history on presets/builder) **and** you still **cannot** produce proxy legs—because a sleeve is **unmapped** (e.g. bespoke macro, “futures yield” without a chosen Yahoo series, or unclear bitcoin spot vs futures)—**stop and ask the user** whether they want:
+   - explicit **`CHART_STACK_PRODUCT_PROXY_LEGS['TICKER']`** Yahoo symbols for each missing asset, or
+   - sleeve **`name` / disclosure** updates so auto-mapping applies (e.g. “Bitcoin futures”), or
+   - a **one-off** engineering path (e.g. same pattern as **MATE**/**RSST**), or
+   - to leave **portfolio/builder** charts without pre-inception stack proxy until listing age suffices.
+
+List **by name** which sleeves or asset types still lack a proxy so the user can answer in one message.
+
+### Financing (gross exposure \> 100%)
+
+- **`buildPreInceptionProductStackMerge`** applies **`STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE`** (see **`syntheticChartConstants.ts`**) to **max(0, grossExposurePct − 100)** from **`ETF_STACK_EXPOSURE_BY_SLUG`** (`grossExposureForChartProxy` / **`grossExposurePctForSlug`**), or **`100 × leg count`** for manual-only tickers. Models wholesale financing on stacked **incremental** notional—not fund swap fees or MER.
+
+**Cache invalidation:** After changing proxy behavior, bump keys in **`getCachedPresetChart.ts`** and **`getCachedPortfolioBuilderChart.ts`**.
 
 ## 3. Research deep dives (before writing copy)
 
@@ -267,6 +301,7 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 - [ ] Section headings and “Official ETF page” opener match the shared template
 - [ ] Chart: getter + API branch + `EtfChartPanel` type + `chartCurrency` if non-USD (see HDGE)
 - [ ] **Portfolio proxies:** If this ticker (or `yahooSymbol`) appears in **`PresetPortfolioChart`** / synthetic preset copy, **`portfolioProxyEtfNav.ts`** is updated per §2b (hand slug, registry parity, or **`OFFICIAL_ETF_HOME`**; drop official-only row when an on-site page exists)
+- [ ] **§2c · Short history + no proxy:** If inception is **under ~2 years** and **`resolveChartProxyLegs`** is still empty or a sleeve is **unmapped**, you **asked the user** for proxy Yahoo symbols (or an explicit decision to defer)—per §2c “Young listing — ask when you cannot proxy”
 - [ ] Copy reflects deep reads of issuer ETF page, manager, and sponsor; regime/outperformance tied to strategy
 - [ ] **Dynamic registry (`etfDynamicRegistry.ts`):** `officialUrl` is a **verified, fund-specific** issuer/sponsor product page (or clearly labeled SEC/prospectus fallback per §3f)—**not** a generic aggregator default; `officialLabel` names the product/destination clearly
 - [ ] **Dynamic registry:** `lede` + two **`strategyParas`** + **`ped(...)`** (two pedigree paragraphs before verify) + two **`outperfParas`** match MATE-level depth (§3f); no Markdown in strings

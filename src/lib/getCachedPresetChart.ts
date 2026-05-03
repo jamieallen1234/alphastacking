@@ -45,7 +45,7 @@ const DAY = 86400
 
 /**
  * Default preset view: last ~1 calendar year of daily bars (good balance of recency vs window).
- * Users can switch to **2Y**, **5Y** (`5y`), or **All** (`max`) for longer inception-clipped windows.
+ * Users can switch to **2Y**, **3Y**, **5Y** (`5y`), or **All** (`max`) for longer inception-clipped windows.
  */
 const PRESET_CHART_RANGE = '1y' as const
 
@@ -59,6 +59,7 @@ export const getCachedUsInternationalChart = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     US_INTL_PRESET_ID,
     PRESET_CHART_RANGE,
     'synth-heql-mate-v1',
@@ -79,6 +80,7 @@ export const getCachedUsAdvancedChart = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     US_ADVANCED_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -100,6 +102,7 @@ export const getCachedCaInternationalChart = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     CA_INTL_PRESET_ID,
     PRESET_CHART_RANGE,
     'synth-heql-inception-2023-10-12',
@@ -123,6 +126,7 @@ export const getCachedUsCoreBuyHoldChart = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     US_CORE_BH_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -142,6 +146,7 @@ export const getCachedUsGdeClseBlendChart = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     US_GDE_CLSE_BLEND_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -163,6 +168,7 @@ export const getCachedCaCoreBuyHoldChart = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     CA_CORE_BH_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -187,6 +193,7 @@ export const getCachedCaUsslQqqlHdgeChart = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     CA_USSL_QQQL_HDGE_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -209,6 +216,7 @@ export const getCachedCaSsoDglmRgbmArbChart = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -234,6 +242,7 @@ export const getCachedUsInternationalChartMax = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     US_INTL_PRESET_ID,
     PRESET_CHART_RANGE_MAX,
     'synth-heql-mate-v1',
@@ -255,6 +264,7 @@ export const getCachedCaInternationalChartMax = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     CA_INTL_PRESET_ID,
     PRESET_CHART_RANGE_MAX,
     'synth-heql-inception-2023-10-12',
@@ -278,6 +288,7 @@ export const getCachedUsCoreBuyHoldChartMax = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     US_CORE_BH_PRESET_ID,
     PRESET_CHART_RANGE_MAX,
     'notional-10k',
@@ -297,6 +308,7 @@ export const getCachedUsAdvancedChartMax = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     US_ADVANCED_PRESET_ID,
     PRESET_CHART_RANGE_MAX,
     'notional-10k',
@@ -318,6 +330,7 @@ export const getCachedCaCoreBuyHoldChartMax = unstable_cache(
     }),
   [
     'preset-chart',
+    'chart-proxy-v9',
     CA_CORE_BH_PRESET_ID,
     PRESET_CHART_RANGE_MAX,
     'notional-10k',

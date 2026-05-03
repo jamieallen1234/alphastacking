@@ -64,6 +64,37 @@ function gradeSortKey(g: PortfolioBuilderEtfOption['capitalGrade']): number {
   return GRADE_RANK[g] ?? 99
 }
 
+/** Category filters that should also list long/short funds with net equity ≥ 80%. */
+const BUILDER_EQUITY_LIKE_CATEGORIES = new Set([
+  'Factor',
+  'LETF',
+  'Leveraged equity ETFs (advanced)',
+])
+
+const CRYPTO_CATEGORY_LABEL = 'Crypto & digital assets'
+
+const PRECIOUS_METALS_CATEGORY_LABEL = 'Precious metals'
+
+function rowCategoryMatches(o: PortfolioBuilderEtfOption, selected: string): boolean {
+  if (selected === 'all') return true
+  if (o.category === selected) return true
+  if (
+    BUILDER_EQUITY_LIKE_CATEGORIES.has(selected) &&
+    o.category === 'Long/short' &&
+    o.netEquityPct != null &&
+    o.netEquityPct >= 80
+  ) {
+    return true
+  }
+  if (selected === CRYPTO_CATEGORY_LABEL && o.hasCryptoExposure) {
+    return true
+  }
+  if (selected === PRECIOUS_METALS_CATEGORY_LABEL && o.hasPreciousMetalsExposure) {
+    return true
+  }
+  return false
+}
+
 type SelectOption = { value: string; label: string; searchText?: string }
 
 function BuilderThemedSelect({
@@ -189,12 +220,22 @@ function rowEligibleOptions(options: PortfolioBuilderEtfOption[], row: BuilderRo
         : row.efficiencyKind === 'capital'
           ? o.capitalEligible
           : o.alphaEligible
-    const categoryOk = row.category === 'all' || o.category === row.category
+    const categoryOk = rowCategoryMatches(o, row.category)
     return efficiencyOk && categoryOk
   })
   return eligible.sort((a, b) => {
-    const ag = row.efficiencyKind === 'capital' ? a.capitalGrade : a.alphaGrade
-    const bg = row.efficiencyKind === 'capital' ? b.capitalGrade : b.alphaGrade
+    const ag =
+      row.efficiencyKind === 'capital'
+        ? a.capitalGrade
+        : row.efficiencyKind === 'stacked'
+          ? a.stackedGrade
+          : a.alphaGrade
+    const bg =
+      row.efficiencyKind === 'capital'
+        ? b.capitalGrade
+        : row.efficiencyKind === 'stacked'
+          ? b.stackedGrade
+          : b.alphaGrade
     const r = gradeSortKey(ag) - gradeSortKey(bg)
     if (r !== 0) return r
     return a.displayTicker.localeCompare(b.displayTicker)
@@ -202,21 +243,23 @@ function rowEligibleOptions(options: PortfolioBuilderEtfOption[], row: BuilderRo
 }
 
 function rowCategoryOptions(options: PortfolioBuilderEtfOption[], row: BuilderRow): SelectOption[] {
-  const categories = Array.from(
-    new Set(
-      options
-        .filter((o) =>
-          row.efficiencyKind === 'all'
-            ? o.capitalEligible || o.alphaEligible || o.stackedEligible
-            : row.efficiencyKind === 'stacked'
-              ? o.stackedEligible
-            : row.efficiencyKind === 'capital'
-              ? o.capitalEligible
-              : o.alphaEligible
-        )
-        .map((o) => o.category)
-    )
-  ).sort((a, b) => a.localeCompare(b))
+  const effOk = (o: PortfolioBuilderEtfOption) =>
+    row.efficiencyKind === 'all'
+      ? o.capitalEligible || o.alphaEligible || o.stackedEligible
+      : row.efficiencyKind === 'stacked'
+        ? o.stackedEligible
+        : row.efficiencyKind === 'capital'
+          ? o.capitalEligible
+          : o.alphaEligible
+
+  const filtered = options.filter(effOk)
+  const categories = Array.from(new Set(filtered.map((o) => o.category)))
+  const showPrecious =
+    (row.efficiencyKind === 'alpha' || row.efficiencyKind === 'all') &&
+    filtered.some((o) => o.hasPreciousMetalsExposure)
+  if (showPrecious) categories.push(PRECIOUS_METALS_CATEGORY_LABEL)
+
+  categories.sort((a, b) => a.localeCompare(b))
   return [{ value: 'all', label: 'All' }, ...categories.map((c) => ({ value: c, label: c }))]
 }
 

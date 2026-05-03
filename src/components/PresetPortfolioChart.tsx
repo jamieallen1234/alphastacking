@@ -4,13 +4,22 @@ import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import ReturnLineChart from '@/components/ReturnLineChart'
-import type { PortfolioChartPayload, SyntheticModelingNote } from '@/lib/computePortfolioChart'
+import {
+  type PortfolioChartPayload,
+  type SyntheticModelingNote,
+} from '@/lib/computePortfolioChart'
+import {
+  findSlugByYahooSymbol,
+  grossExposureForChartProxy,
+  resolveChartProxyLegs,
+} from '@/lib/portfolioChartProxyLegs'
 import {
   HEQL_CAD_FINANCING_RATE_ON_EXCESS_NOTIONAL_ANNUAL,
   HEQL_SYNTHETIC_ANNUAL_DRAG,
   HEQL_SYNTHETIC_LEVERAGE,
   HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG,
   NTSD_SYNTHETIC_ANNUAL_DRAG,
+  STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE,
 } from '@/lib/syntheticChartConstants'
 import type { PortfolioUsEtfHubBase } from '@/lib/portfolioProxyEtfNav'
 import { getPortfolioProxyEtfNav } from '@/lib/portfolioProxyEtfNav'
@@ -194,6 +203,39 @@ function SyntheticModelingLine({
           daily returns.
         </p>
       )
+    case 'stacked_product_proxy':
+    case 'stacked_product_proxy_preinception': {
+      const legs = resolveChartProxyLegs(m.slotSymbol) ?? []
+      const legText = legs.length ? legs.join(' × ') : 'listed proxies'
+      const slug = findSlugByYahooSymbol(m.slotSymbol)
+      const gross = grossExposureForChartProxy(m.slotSymbol, slug)
+      const excessPct = Math.max(0, gross - 100)
+      const borrowNote =
+        excessPct > 0 ? (
+          <>
+            {' '}
+            Pre-inception path deducts ~{(STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE * 100).toFixed(0)}%/yr
+            wholesale financing on {(excessPct / 100).toFixed(2)}× incremental notional (gross ~{gross.toFixed(0)}% vs
+            100% cash), daily (~
+            {((excessPct / 100) * (STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE / 252)).toFixed(5)}) per
+            session—not this fund&apos;s actual swap lines or MER.
+          </>
+        ) : (
+          <> Modeled at ~100% gross notional; no incremental stacked-financing slice in this proxy.</>
+        )
+      return (
+        <p
+          key={`stack-${m.kind}-${m.slotSymbol}-${m.firstRealNyDay}`}
+          className={styles.disclaimerDetail}
+        >
+          <ProxyLink ticker={m.slotSymbol} hubBase={hubBase}>
+            {m.slotSymbol}
+          </ProxyLink>
+          : total-return path multiplies daily returns of {legText}.
+          {borrowNote}
+        </p>
+      )
+    }
     default:
       return null
   }
@@ -580,7 +622,11 @@ export default function PresetPortfolioChart({
                 </p>
               )}
               {syntheticModeling.map((m) => (
-                <SyntheticModelingLine key={`${m.kind}-${m.slotSymbol}-${m.firstRealNyDay}`} m={m} hubBase={hubBase} />
+                <SyntheticModelingLine
+                  key={`${m.kind}-${m.slotSymbol}-${m.firstRealNyDay}`}
+                  m={m}
+                  hubBase={hubBase}
+                />
               ))}
               <p className={styles.disclaimerDetail}>{limitingFootnote}</p>
             </div>

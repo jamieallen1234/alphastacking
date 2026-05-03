@@ -11,8 +11,8 @@ export default function ContactPage() {
         <p className={styles.kicker}>Site</p>
         <h1 className={styles.h1}>Feedback & requests</h1>
         <p className={styles.lede}>
-          Share corrections, ideas for the ETF pages or portfolio tools, or anything else that would make this site
-          more useful.
+          Share corrections, ideas for the ETF pages or portfolio tools, requests for chart proxies (e.g. portfolio
+          builder or preset back-tests), or anything else that would make this site more useful.
         </p>
         <ContactForm />
         <p className={styles.privacy}>

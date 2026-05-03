@@ -39,7 +39,17 @@
 - Each Outperformance section must end with an explicit **Favorable tape / Hostile tape** pair. Example:
   - *Favorable: sustained equity uptrend with positive carry in the futures book and low vol-of-vol.*
   - *Hostile: mean-reverting tape with frequent gap-reversals; financing costs erode the leverage edge.*
+- Bold the single concept that defines each environment: the favorable condition in the favorable paragraph, its opposite in the hostile paragraph. The two bolded phrases should mirror each other — a skimmer should be able to read just those two and understand the fund's whole bet. Example: **persistent trends** (favorable) and **no sustained macro theme** (hostile).
 - Pedigree section: cite the actual firm, key personnel if known, track record length, and any notable structural detail (sub-adviser, operating platform, fee type). Don't use "well-established" or "reputable" without facts.
+
+### Bold on ETF pages
+
+Bold exists to help a skimming reader find the one or two strongest concepts in each section. Pick the concept that most changes how someone thinks about the fund — not the most frequently repeated word, not a modifier, not a number stripped of its noun.
+
+- **Lede:** bold the fund's category name and the single most important structural fact (e.g. "100% S&P 500" and "100% managed futures"). Two or three maximum.
+- **Strategy, Pedigree, Outperformance:** one or two bolded phrases per section. Bold the concept that earns its place: a sector name, a structural fact, a firm name on first use. Everything else plain.
+- If you find yourself bolding more than one phrase per paragraph, remove all but the strongest. A paragraph with four bolded phrases has no emphasis at all.
+- Standalone test: if a skimmer sees only the bolded text, does it mean something on its own? "Global Macro" passes — it names the category. "10–30" fails — it's a number without its noun. "not" fails — it's a modifier with no referent. Bold the concept, not the decoration around it.
 
 ---
 

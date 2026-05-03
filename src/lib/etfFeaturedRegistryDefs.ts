@@ -104,7 +104,7 @@ export const US_ETF_FEATURED_PART: Record<string, EtfDynamicDef> = {
     aum: '~$35M',
     pageTitle: 'HFGM ETF — Alpha Stacking',
     description:
-      'Unlimited HFGM Global Macro ETF (HFGM): global macro replication, Unlimited pedigree, and regime context.',
+      'HFGM replicates hedge fund Global Macro sector returns in an ETF wrapper: long and short positions in ETFs and listed futures, 1% fee, daily liquidity. When it earns and what kills it.',
     contentFormat: 'html',
     belowChart: HFGM_PROXY_NOTE_HTML,
     lede: fb.HFGM_LEDE_HTML,

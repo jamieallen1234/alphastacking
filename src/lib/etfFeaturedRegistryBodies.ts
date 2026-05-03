@@ -39,21 +39,21 @@ export const RSSY_OUTPERF_PARAS_HTML = [
 ]
 
 export const HFGM_LEDE_HTML =
-  'HFGM is an actively managed <strong>global macro</strong> ETF: it aims to mirror <strong>return characteristics</strong> of the hedge fund industry’s <strong>Global Macro</strong> sector (gross-of-fees style), with long and short positions in <strong>underlying ETFs</strong> and <strong>futures</strong>—listed <strong>alternatives</strong> exposure to macro themes.'
+  'HFGM is an actively managed <strong>global macro</strong> ETF. It holds long and short positions in ETFs and futures, targeting the return profile of the hedge fund industry’s Global Macro sector at ETF fees and daily liquidity.'
 
 export const HFGM_STRATEGY_PARAS_HTML = [
-  'Disclosures frame the fund as targeting a portfolio whose performance characteristics resemble the <strong>hedge fund Global Macro</strong> sector’s recent gross returns and volatility—often with <strong>roughly twice</strong> the sector’s volatility budget—using roughly <strong>10–30</strong> long and short positions in <strong>ETFs</strong> and <strong>exchange-listed futures</strong>. It is <strong>not</strong> a hedge fund and does not invest in hedge funds; it implements a <strong>macro trading</strong> idea set in a regulated ETF wrapper with <strong>risk management</strong> via diversification and derivatives.',
-  'That design is built for <strong>cross-asset</strong> opportunity: rates, equities, commodities, currencies, and related themes—where <strong>quant</strong> and discretionary macro processes historically hunt for <strong>alpha</strong> outside single-index beta.',
+  'The fund runs roughly 10–30 long and short positions in ETFs and exchange-listed futures, targeting performance that resembles the hedge fund <strong>Global Macro</strong> sector’s gross returns—typically at roughly twice the sector’s volatility. It is not a hedge fund and does not invest in hedge funds. It is a regulated ETF that implements a macro trading strategy through listed instruments.',
+  'The mandate is explicitly cross-asset: rates, equities, commodities, and currencies. Alongside the long/short macro book, HFGM holds an estimated ~50% global equity position via futures—so equity beta is part of the portfolio, not replaced by it.',
 ]
 
 export const HFGM_PEDIGREE_PARAS_HTML = [
-  'Unlimited Funds and Unlimited ETFs are a focused liquid-alts franchise; consolidated group AUM is not marketed at global megabank scale—verify the latest figures on Unlimited disclosures. <strong>Unlimited ETFs</strong> packages hedge-industry return <strong>analytics</strong> into transparent ETFs—lower fees and daily liquidity versus private funds, with <strong>Unlimited Funds, Inc.</strong> driving sub-advised portfolio construction. The lineup sits in the same “democratize <strong>alternatives</strong>” lane as other <strong>liquid alts</strong> sponsors: research-led process, institutional <strong>execution</strong>, and ongoing oversight.',
-  'For HFGM, the differentiated offer is translating <strong>sector-level</strong> Global Macro behavior into a diversified ETF portfolio—where <strong>research</strong> depth and <strong>execution</strong> quality matter as much as any single trade idea.',
+  '<strong>Unlimited ETFs</strong> is a focused liquid-alts sponsor. The goal is to give investors access to hedge-fund Global Macro return patterns through a regulated ETF: daily liquidity, disclosed holdings, and a 1% fee rather than the 2-and-20 structure typical of the funds it tracks. <strong>Unlimited Funds, Inc.</strong> drives portfolio construction as sub-adviser.',
+  'The edge claimed is analytics: Unlimited publishes research on how hedge-fund macro positioning can be replicated with liquid instruments. Whether that replication holds through different market conditions is the open question for any investor sizing this position.',
 ]
 
 export const HFGM_OUTPERF_PARAS_HTML = [
-  '<strong>Global macro</strong> sleeves tend to add most when <strong>macro regimes</strong> shift clearly—<strong>rates</strong> repricing, <strong>FX</strong> breakouts, commodity cycles, or policy shocks—creating dispersion across countries and asset classes.',
-  'The richest stretches are often multi-quarter <strong>trends</strong> and <strong>cross-market</strong> stress: environments where macro traders earn from directional and relative trades rather than passive equity beta alone.',
+  'Global macro strategies earn most when there are clear, sustained moves across asset classes: rates repricing over multiple quarters, a dollar breakout, a commodity cycle. 2022 was a strong year for macro funds broadly—the Fed’s rate hike cycle produced <strong>persistent trends</strong> in rates and FX that directional positioning could capture.',
+  'The hostile environment is the opposite: a fast undifferentiated equity sell-off, or a year with <strong>no sustained macro theme</strong> where positions get stopped out before trends develop. 2023–2024 tested many macro managers as the anticipated recession did not materialize and markets moved on idiosyncratic factors rather than macro fundamentals.',
 ]
 
 export const HDGE_LEDE_HTML =

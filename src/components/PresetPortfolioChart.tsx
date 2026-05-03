@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import ReturnLineChart from '@/components/ReturnLineChart'
 import type { PortfolioChartPayload, SyntheticModelingNote } from '@/lib/computePortfolioChart'
@@ -288,6 +288,7 @@ export default function PresetPortfolioChart({
   exposureSummary = null,
   holdings = [],
 }: PresetPortfolioChartProps) {
+  const [asOfMs] = useState(() => Date.now())
   const pathname = usePathname()
   const hubBase: PortfolioUsEtfHubBase = useMemo(
     () => (pathname.startsWith('/ca') ? '/ca/us-etfs' : '/us-etfs'),
@@ -408,7 +409,7 @@ export default function PresetPortfolioChart({
   const underOneYear = (() => {
     const ts = Date.parse(`${limitingFirstTradeDate}T00:00:00Z`)
     if (!Number.isFinite(ts)) return false
-    const days = (Date.now() - ts) / (1000 * 60 * 60 * 24)
+    const days = (asOfMs - ts) / (1000 * 60 * 60 * 24)
     return days < 365
   })()
   const overallGrade =

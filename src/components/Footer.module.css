@@ -27,6 +27,27 @@
   background: var(--color-bg-footer);
 }
 
+.stripLeft {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footerContact {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footerContact:hover {
+  color: var(--color-gold);
+}
+
 .logo {
   font-family: var(--font-mono);
   font-size: 13px;
@@ -71,6 +92,11 @@
     gap: 1.2rem;
     padding: 1.5rem;
     text-align: center;
+  }
+
+  .stripLeft {
+    flex-direction: column;
+    gap: 0.85rem;
   }
 
   .legalBlock {

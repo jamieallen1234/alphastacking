@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next'
 import { CA_ETF_DYNAMIC_REGISTRY, US_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
 import { caPortfolioRoutes, usPortfolioRoutes } from '@/lib/portfolioRoutes'
+import { getSiteUrl } from '@/lib/siteUrl'
 
-const SITE = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://alphastacking.co').replace(/\/$/, '')
+const SITE = getSiteUrl()
 
 function abs(path: string): string {
   const p = path.startsWith('/') ? path : `/${path}`
@@ -18,6 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/us-etfs',
     '/ca/etfs',
     '/ca/us-etfs',
+    '/contact',
+    '/ca/contact',
     '/learn',
     '/ca/learn',
     '/learn/return-stacking-vs-alpha-stacking',

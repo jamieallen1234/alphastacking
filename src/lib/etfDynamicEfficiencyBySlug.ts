@@ -382,12 +382,12 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
   rgbm: {
     capital: {
       tooltip: capitalEfficiencyTooltip(
-        'RGBM stacks a global balanced core (equities and investment-grade-style bonds) with a systematic managed-futures sleeve per Canadian offering documents.'
+        'RGBM’s capital bucket is the global equity sleeve (~50% notional); efficiency grades that sleeve versus a broad Canadian equity benchmark after stack scaling.'
       ),
     },
     alpha: {
       tooltip: alphaEfficiencyStackedTooltip(
-        'The macro sleeve trades rates, FX, and commodities via derivatives—Return Stacked® Canada mandate with performance-fee mechanics per prospectus.'
+        'The alpha bucket bundles investment-grade-style bonds and the systematic managed-futures sleeve (~150% combined notional vs ~50% equity)—rates, FX, and commodities per Return Stacked® Canada disclosures.'
       ),
     },
   },

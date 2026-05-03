@@ -1,3 +1,4 @@
+import FeedbackInlineLink from '@/components/FeedbackInlineLink'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
@@ -78,6 +79,11 @@ export default function EtfHub({ listing, edition }: EtfHubProps) {
           })}
         </div>
       </section>
+      <div className={styles.hubFeedbackSlot}>
+        <div className={styles.hubFeedbackInner}>
+          <FeedbackInlineLink isCa={edition === 'ca'} context="etf" />
+        </div>
+      </div>
       <Footer />
     </main>
   )

@@ -104,11 +104,11 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
   rgbm: {
     components: [
       { name: 'Global equity', pct: 50, bucket: 'capital', assetClass: 'equity' },
-      { name: 'Investment-grade bonds', pct: 50, bucket: 'capital', assetClass: 'fixed-income' },
+      { name: 'Investment-grade bonds', pct: 50, bucket: 'alpha', assetClass: 'fixed-income' },
       { name: 'Macro futures', pct: 100, bucket: 'alpha', assetClass: 'alternatives' },
     ],
     capitalMarketBenchmarkSymbol: 'VFV.TO',
-    /** Capital efficiency uses equity sleeve only; bonds + macro are alpha-side. */
+    /** Capital bucket = equity sleeve only (~50% notional); bonds roll into alpha with macro → 50 / 150 bucket split. */
     equityCoreBenchmarkSymbol: 'VEQT.TO',
   },
   asgm: {

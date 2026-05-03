@@ -24,3 +24,7 @@ export function usEtfHubPath(isCa: boolean): string {
 export function learnPath(isCa: boolean): string {
   return isCa ? '/ca/learn' : '/learn'
 }
+
+export function contactPath(isCa: boolean): string {
+  return isCa ? '/ca/contact' : '/contact'
+}

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { REGION_COOKIE, type SiteRegion } from '@/lib/siteRegion'
+import { REGION_COOKIE, contactPath, type SiteRegion } from '@/lib/siteRegion'
 import styles from './Footer.module.css'
 
 function setRegionCookie(region: SiteRegion) {
@@ -13,6 +13,7 @@ function setRegionCookie(region: SiteRegion) {
 export default function Footer() {
   const pathname = usePathname()
   const isCa = pathname === '/ca' || pathname.startsWith('/ca/')
+  const contact = contactPath(isCa)
 
   return (
     <footer>
@@ -34,8 +35,13 @@ export default function Footer() {
       </div>
 
       <div className={styles.strip}>
-        <div className={styles.logo}>
-          alpha<span>stacking</span>.co
+        <div className={styles.stripLeft}>
+          <div className={styles.logo}>
+            alpha<span>stacking</span>.co
+          </div>
+          <Link href={contact} className={styles.footerContact}>
+            Contact
+          </Link>
         </div>
 
         <div className={styles.regionToggle}>

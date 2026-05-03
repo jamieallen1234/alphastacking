@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
+import { getSiteUrl } from '@/lib/siteUrl'
 
-const SITE = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://alphastacking.co').replace(/\/$/, '')
+const SITE = getSiteUrl()
 
 export default function robots(): MetadataRoute.Robots {
   return {

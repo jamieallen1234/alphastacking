@@ -491,10 +491,14 @@ export async function computeMonthlyEfficiencyPatchForSlug(
   }
 
   if (hasAlpha) {
-    const alphaBeta = useResidualStackedAlpha && beta != null ? beta - 1 : beta
+    /** Equity sleeve notional as % of NAV (components use ~100 = full NAV in one sleeve). Scales core benchmark return so we do not treat partial-equity stacks as 100% equity. */
+    const equityNotionalScale =
+      useResidualStackedAlpha && mapped ? Math.min(1, Math.max(0, equityN / 100)) : 1
+    const alphaBeta =
+      useResidualStackedAlpha && beta != null ? beta - equityNotionalScale : beta
     let baseScorePp: number
     if (useResidualStackedAlpha) {
-      const alphaSleeveReturn = etfCagr - benchmarkCagr
+      const alphaSleeveReturn = etfCagr - equityNotionalScale * benchmarkCagr
       baseScorePp = (alphaSleeveReturn - (riskFreeAnnual + 0.0175)) * 100
     } else {
       baseScorePp = (etfCagr - riskFreeAnnual) * 100

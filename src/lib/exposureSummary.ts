@@ -52,7 +52,7 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   BTGD: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 200 },
   BEGS: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 200 },
   WTIB: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 200 },
-  'RGBM.TO': { longEquityPct: 50, shortEquityPct: 0, alphaPct: 100 },
+  'RGBM.TO': { longEquityPct: 50, shortEquityPct: 0, alphaPct: 150 },
 
   // Long/short style assumptions
   // ORR requested baseline by user in chat context.

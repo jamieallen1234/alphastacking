@@ -1,0 +1,54 @@
+.main {
+  min-height: 100vh;
+}
+
+.inner {
+  max-width: var(--home-content-max);
+  margin-inline: auto;
+  padding: 3rem 3rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 0.75rem;
+}
+
+.h1 {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.lede {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  max-width: 38rem;
+}
+
+.privacy {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--color-text-faint);
+  margin-top: 2rem;
+  max-width: 28rem;
+}
+
+@media (max-width: 768px) {
+  .inner {
+    padding: 2rem 1.5rem 3rem;
+  }
+}

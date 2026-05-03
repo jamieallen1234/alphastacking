@@ -43,6 +43,21 @@
   max-width: 40rem;
 }
 
+/* Feedback sits below listing; padding matches `.section` so cards and CTA share one left edge */
+.hubFeedbackSlot {
+  padding: 0 3rem;
+}
+
+.hubFeedbackInner {
+  max-width: 40rem;
+}
+
+@media (max-width: 900px) {
+  .hubFeedbackSlot {
+    padding: 0 1.5rem;
+  }
+}
+
 .etfList {
   margin: 0.1rem 0 0;
   padding: 0;

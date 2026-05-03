@@ -1,0 +1,45 @@
+/* Portfolio builder — sits under the tool */
+.wrapBuilder {
+  margin-top: 2.25rem;
+  padding-top: 1.75rem;
+  border-top: 0.5px solid var(--color-border-faint);
+  max-width: 40rem;
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(232, 228, 220, 0.55);
+}
+
+/* ETF detail — band above site footer (outside elevated section so it stays visible) */
+.etfPreFooterShell {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: 1.75rem 3rem 2.25rem;
+  border-top: 0.5px solid var(--color-border-faint);
+  box-sizing: border-box;
+}
+
+.etfPreFooterText {
+  max-width: 52rem;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(232, 228, 220, 0.78);
+}
+
+@media (max-width: 900px) {
+  .etfPreFooterShell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.link {
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link:hover {
+  color: var(--color-gold-hover);
+}

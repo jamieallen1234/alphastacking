@@ -1,3 +1,4 @@
+import FeedbackInlineLink from '@/components/FeedbackInlineLink'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import PortfolioBuilderTool from '@/components/PortfolioBuilderTool'
@@ -26,6 +27,7 @@ export default async function PortfolioBuilderPage({ edition }: { edition: 'us' 
           total return versus SPY and max drawdown for any date range with available history.
         </p>
         <PortfolioBuilderTool edition={edition} options={options} />
+        <FeedbackInlineLink isCa={edition === 'ca'} context="builder" />
       </section>
       <Footer />
     </main>

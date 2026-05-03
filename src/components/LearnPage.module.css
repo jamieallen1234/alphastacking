@@ -51,6 +51,16 @@
   margin: 0 0 2.5rem;
   padding: 0;
   max-width: 44rem;
+  counter-reset: none;
+}
+
+.articleStep {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: rgba(232, 228, 220, 0.25);
+  margin-right: 0.6rem;
 }
 
 .articleCard {

@@ -3,11 +3,11 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import { homePath } from '@/lib/siteRegion'
 import {
+  WHAT_IS_ALPHA_SLUG,
   ETF_PAGES_BUILDER_101_SLUG,
   EFFICIENCY_GRADES_SLUG,
   HOW_TO_BUILD_SLUG,
   learnArticlePath,
-  RETURN_STACKING_VS_ALPHA_SLUG,
   WHY_ALPHA_STACKING_SLUG,
 } from '@/lib/learnArticles'
 import styles from './LearnPage.module.css'
@@ -17,11 +17,44 @@ export type LearnPageEdition = 'us' | 'ca'
 export default function LearnPage({ edition }: { edition: LearnPageEdition }) {
   const isCa = edition === 'ca'
   const home = homePath(isCa)
-  const rsVsAlphaHref = learnArticlePath(isCa, RETURN_STACKING_VS_ALPHA_SLUG)
-  const etf101Href = learnArticlePath(isCa, ETF_PAGES_BUILDER_101_SLUG)
-  const howToBuildHref = learnArticlePath(isCa, HOW_TO_BUILD_SLUG)
-  const whyAlphaHref = learnArticlePath(isCa, WHY_ALPHA_STACKING_SLUG)
-  const gradesHref = learnArticlePath(isCa, EFFICIENCY_GRADES_SLUG)
+
+  const articles = [
+    {
+      href: learnArticlePath(isCa, WHAT_IS_ALPHA_SLUG),
+      eyebrow: 'Concepts',
+      read: '~4 min read',
+      title: 'What is alpha stacking',
+      deck: 'Equity plus return sources that earn when stocks don\u2019t. What the strategy is, how capital efficiency makes it possible, and why not all diversifiers qualify.',
+    },
+    {
+      href: learnArticlePath(isCa, ETF_PAGES_BUILDER_101_SLUG),
+      eyebrow: 'Site guide',
+      read: '~5 min read',
+      title: 'ETF pages, model portfolios, and the portfolio builder',
+      deck: 'How to read each section of the site and move from ETF research to model weights to builder stress-tests.',
+    },
+    {
+      href: learnArticlePath(isCa, HOW_TO_BUILD_SLUG),
+      eyebrow: 'Portfolio construction',
+      read: '~6 min read',
+      title: 'How to build an alpha stacking portfolio',
+      deck: 'The four sleeve types, how total beta works, and a worked example using the US Alpha Stack model portfolio.',
+    },
+    {
+      href: learnArticlePath(isCa, WHY_ALPHA_STACKING_SLUG),
+      eyebrow: 'Strategy comparison',
+      read: '~7 min read',
+      title: 'Why alpha stacking',
+      deck: 'How alpha stacking compares to index funds, return stacking, all-weather portfolios, and leveraged ETFs — with a clear \u201cwhen each wins\u201d for every comparison.',
+    },
+    {
+      href: learnArticlePath(isCa, EFFICIENCY_GRADES_SLUG),
+      eyebrow: 'Reference',
+      read: '~5 min read',
+      title: 'Capital, Alpha, and Stacked Efficiency grades explained',
+      deck: 'What the letter grades on each ETF page measure, how they\u2019re calculated, and what they do not tell you.',
+    },
+  ]
 
   return (
     <main className={styles.main}>
@@ -30,84 +63,27 @@ export default function LearnPage({ edition }: { edition: LearnPageEdition }) {
         <p className={styles.kicker}>Educational</p>
         <h1 className={styles.h1}>Learn</h1>
         <p className={styles.lede}>
-          How alpha stacking works, how it compares to other strategies, and how to use the ETF pages and portfolio
-          builder to put a portfolio together.
+          Five articles, start to finish. Read them in order or jump to the one you need.
         </p>
 
-        <ul className={styles.articleList}>
-          <li>
-            <Link href={howToBuildHref} className={styles.articleCard}>
-              <div className={styles.articleCardMeta}>
-                <span className={styles.articleEyebrow}>Portfolio construction</span>
-                <span className={styles.articleRead}>~8 min read</span>
-              </div>
-              <h2 className={styles.articleCardTitle}>How to build an alpha stacking portfolio</h2>
-              <p className={styles.articleCardDeck}>
-                A walkthrough from sleeve selection to position sizing, using a model portfolio as a worked example.
-                Covers why each layer is there and how they fit together.
-              </p>
-              <span className={styles.articleCta}>Read article →</span>
-            </Link>
-          </li>
-          <li>
-            <Link href={whyAlphaHref} className={styles.articleCard}>
-              <div className={styles.articleCardMeta}>
-                <span className={styles.articleEyebrow}>Strategy comparison</span>
-                <span className={styles.articleRead}>~7 min read</span>
-              </div>
-              <h2 className={styles.articleCardTitle}>Why alpha stacking — and when it might not be right for you</h2>
-              <p className={styles.articleCardDeck}>
-                How alpha stacking compares to index funds, all-weather, return stacking, leveraged ETFs, and
-                covered-call funds. One honest section per comparison, including when each alternative wins.
-              </p>
-              <span className={styles.articleCta}>Read article →</span>
-            </Link>
-          </li>
-          <li>
-            <Link href={rsVsAlphaHref} className={styles.articleCard}>
-              <div className={styles.articleCardMeta}>
-                <span className={styles.articleEyebrow}>Concepts</span>
-                <span className={styles.articleRead}>~6 min read</span>
-              </div>
-              <h2 className={styles.articleCardTitle}>
-                Return stacking vs. alpha stacking
-              </h2>
-              <p className={styles.articleCardDeck}>
-                Return stacking is the mechanism — fitting more exposure into each dollar. Alpha stacking is the
-                philosophy — which exposures to combine and why. The difference matters for portfolio construction.
-              </p>
-              <span className={styles.articleCta}>Read article →</span>
-            </Link>
-          </li>
-          <li>
-            <Link href={gradesHref} className={styles.articleCard}>
-              <div className={styles.articleCardMeta}>
-                <span className={styles.articleEyebrow}>Reference</span>
-                <span className={styles.articleRead}>~5 min read</span>
-              </div>
-              <h2 className={styles.articleCardTitle}>Capital, Alpha, and Stacked Efficiency grades explained</h2>
-              <p className={styles.articleCardDeck}>
-                What the letter grades on each ETF page measure, how they&apos;re calculated, and what they do
-                not tell you.
-              </p>
-              <span className={styles.articleCta}>Read article →</span>
-            </Link>
-          </li>
-          <li>
-            <Link href={etf101Href} className={styles.articleCard}>
-              <div className={styles.articleCardMeta}>
-                <span className={styles.articleEyebrow}>Site guide</span>
-                <span className={styles.articleRead}>~5 min read</span>
-              </div>
-              <h2 className={styles.articleCardTitle}>ETF pages, model portfolios, and the portfolio builder</h2>
-              <p className={styles.articleCardDeck}>
-                How to read each section of the site and move from ETF research to model weights to builder
-                stress-tests — without leaving the site.
-              </p>
-              <span className={styles.articleCta}>Read article →</span>
-            </Link>
-          </li>
-        </ul>
+        <ol className={styles.articleList}>
+          {articles.map((a, i) => (
+            <li key={a.href}>
+              <Link href={a.href} className={styles.articleCard}>
+                <div className={styles.articleCardMeta}>
+                  <span className={styles.articleStep}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className={styles.articleEyebrow}>{a.eyebrow}</span>
+                  <span className={styles.articleRead}>{a.read}</span>
+                </div>
+                <h2 className={styles.articleCardTitle}>{a.title}</h2>
+                <p className={styles.articleCardDeck}>{a.deck}</p>
+                <span className={styles.articleCta}>Read article →</span>
+              </Link>
+            </li>
+          ))}
+        </ol>
 
         <Link href={home} className={styles.back}>
           ← Back to home

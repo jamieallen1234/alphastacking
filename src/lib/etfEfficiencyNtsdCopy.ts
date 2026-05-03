@@ -4,7 +4,7 @@ import {
 } from '@/lib/etfEfficiencyTooltipFraming'
 
 const NTSD_CAPITAL_SLEEVE_P2 =
-  'NTSD targets a capital-efficient blend of U.S. large-cap equity exposure with additional developed international equity notional via futures and related instruments (a 90/60-style equity stack—not an uncorrelated managed-futures alpha sleeve).'
+  'NTSD targets a capital-efficient blend of U.S. large-cap equity with additional developed international equity notional via futures and related instruments. It\u2019s a 90/60-style equity stack, not an uncorrelated managed-futures alpha sleeve.'
 
 /** NTSD efficiency tooltip copy — align with `.cursor/skills/beta-efficiency-grades/SKILL.md` (NTSD special case). */
 

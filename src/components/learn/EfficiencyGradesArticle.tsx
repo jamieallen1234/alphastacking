@@ -27,10 +27,9 @@ export default function EfficiencyGradesArticle({ edition }: { edition: 'us' | '
           Why two grades instead of one
         </h2>
         <p className={styles.body}>
-          ETFs on this site play different roles in a portfolio. Some provide equity exposure — they&apos;re
-          the core engine. Others provide diversifying return that has little to do with whether the stock
-          market goes up or down. Grading both types on the same scale would be like comparing a truck and
-          a sports car on top speed: it misses the point.
+          ETFs on this site play different roles. Some provide equity exposure — they&apos;re the core
+          engine. Others provide diversifying return that doesn&apos;t depend on whether stocks go up.
+          Grading both on the same scale misses the point.
         </p>
         <p className={styles.body}>
           <strong>Capital Efficiency</strong> applies to equity-side ETFs: standard index funds, leveraged
@@ -88,10 +87,9 @@ export default function EfficiencyGradesArticle({ edition }: { edition: 'us' | '
           </div>
         </div>
         <p className={styles.body}>
-          An A+ Capital Efficiency grade (like UPRO) means the fund delivers exceptional capital liberation
-          — freeing two-thirds of your invested capital for other sleeves — and its historical excess return
-          has more than covered its borrowing costs. A B means SPY-equivalent. A C or D means the ETF has
-          either high costs, poor return, or both relative to simply holding SPY.
+          An A+ grade (like UPRO) means the fund frees two-thirds of your capital for other sleeves and
+          its historical excess return has more than covered borrowing costs. A B means SPY-equivalent.
+          C or D means high costs, poor return, or both.
         </p>
       </section>
 
@@ -128,22 +126,20 @@ export default function EfficiencyGradesArticle({ edition }: { edition: 'us' | '
           What the grades don&apos;t tell you
         </h2>
         <p className={styles.body}>
-          Grades are based on historical returns — typically the last one to five years of live NAV data.
-          They capture what happened, not what will happen. A fund with an A+ grade today could have
-          a rough next three years, and a fund sitting at C might be in the early stages of recovering.
+          Grades are based on historical returns — typically one to five years of live NAV data. They
+          capture what happened. An A+ today could have a rough next three years; a C might be early
+          in a recovery.
         </p>
         <p className={styles.body}>
-          Grades also don&apos;t capture everything relevant about a fund. They don&apos;t measure
-          whether a strategy has a sound structural reason to earn (that&apos;s in the ETF write-up).
-          They don&apos;t tell you whether a fund is appropriate for your portfolio — a D-grade alpha
-          fund might still be a useful tail-risk hedge even if it earns less than its cost. And they
-          don&apos;t account for how funds interact: two B-grade funds with genuinely different return
-          profiles may combine into something better than two A-grade funds that move together.
+          They don&apos;t measure whether a strategy has a structural reason to earn (that&apos;s in the
+          ETF write-up), whether a fund is appropriate for your portfolio, or how funds interact with
+          each other. A D-grade alpha fund might still be a useful tail-risk hedge. Two B-grade funds
+          with genuinely different return profiles can combine better than two A-grade funds that move
+          together.
         </p>
         <p className={styles.body}>
-          Think of grades as a filter, not a ranking. They help screen out funds that look interesting
-          but have delivered poorly relative to their cost. They don&apos;t replace reading the write-ups
-          and understanding what each fund is actually doing.
+          Think of grades as a filter, not a ranking. They screen out funds that look interesting but
+          have delivered poorly relative to their cost. They don&apos;t replace reading the write-ups.
         </p>
       </section>
 
@@ -152,17 +148,14 @@ export default function EfficiencyGradesArticle({ edition }: { edition: 'us' | '
           N/A and provisional grades
         </h2>
         <p className={styles.body}>
-          New funds with less than four months of live history show N/A. Grades require enough live data
-          to be meaningful — there&apos;s no way to calculate a reliable score from a few weeks of NAV.
+          Funds with less than four months of live history show N/A. Grades need enough data to mean
+          something.
         </p>
         <p className={styles.body}>
-          Funds with four to eleven months of history show a calculated grade, but it&apos;s treated as
-          provisional: a note at the bottom of the page explains that the period is too short to have
-          tested the fund across different market conditions. Grades become standard once a fund has at
-          least a year of history.
-        </p>
-        <p className={styles.body}>
-          Grades are recalculated annually each January using data through December of the prior year.
+          Funds with four to eleven months show a calculated grade marked provisional — the period is
+          too short to have tested the fund across different market conditions. Grades become standard
+          after a full year of history. They&apos;re recalculated each January using data through
+          December.
         </p>
       </section>
 

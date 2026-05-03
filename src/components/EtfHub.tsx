@@ -4,6 +4,7 @@ import Footer from '@/components/Footer'
 import Link from 'next/link'
 import { getEtfHubCategoryRows } from '@/lib/etfCategories'
 import { getEtfHubItems, type EtfHubListItem } from '@/lib/etfHubData'
+import EtfPageHubNav from '@/components/EtfPageHubNav'
 import styles from './EtfHub.module.css'
 
 export interface EtfHubProps {
@@ -34,6 +35,9 @@ export default function EtfHub({ listing, edition }: EtfHubProps) {
   return (
     <main className={styles.main}>
       <Nav />
+      <div className={styles.hubNavTop}>
+        <EtfPageHubNav variant={listing} compact />
+      </div>
       <section className={styles.section} aria-labelledby="etf-hub-heading">
         <div className={styles.sectionLabel}>
           {edition === 'ca' ? 'Canadian edition' : 'United States'}

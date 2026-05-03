@@ -549,7 +549,7 @@ export default function PresetPortfolioChart({
             </div>
             <div>
               <div className={styles.scorecardHeader}>
-                <strong>Net leverage</strong>
+                <strong>Net leverage:</strong>
               </div>
               {exposureSummary ? (
                 <>
@@ -581,7 +581,7 @@ export default function PresetPortfolioChart({
             </div>
             <div>
               <div className={styles.scorecardHeader}>
-                <strong>Portfolio</strong>
+                <strong>Portfolio weights:</strong>
               </div>
               {holdings.length > 0 ? (
                 <div className={styles.makeupGrid}>

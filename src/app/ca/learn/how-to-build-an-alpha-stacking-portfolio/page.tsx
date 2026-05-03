@@ -5,7 +5,7 @@ import HowToBuildAlphaStackingArticle from '@/components/learn/HowToBuildAlphaSt
 export const metadata: Metadata = {
   title: 'How to build an alpha stacking portfolio | Learn | Alpha Stacking (Canadian edition)',
   description:
-    'Layering alpha on an all-equity core (trend, long/short, macro), the logic behind building an alpha stacking portfolio, and how a model portfolio was constructed.',
+    'How the four sleeve types fit together, how to target total beta near 1.0, and a worked example using the US Alpha Stack model portfolio.',
 }
 
 export default function CaHowToBuildAlphaStackingPage() {

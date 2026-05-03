@@ -24,9 +24,8 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
         </div>
         <h1 className={styles.title}>ETF pages, model portfolios, and the portfolio builder</h1>
         <p className={styles.deck}>
-          Three sections, one workflow: read the ETF write-ups to understand each fund, use model portfolios to see how
-          funds combine into full mixes, then rebuild or modify any mix in the portfolio builder to stress-test weights
-          before making any real-money decision.
+          Read the ETF write-ups to understand each fund, browse the model portfolios to see how they combine, then
+          rebuild or modify any mix in the portfolio builder before committing real capital.
         </p>
       </header>
 
@@ -35,26 +34,21 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
           Start from the ETF hubs
         </h2>
         <p className={styles.body}>
-          The ETF hubs list funds we have written up with live price history. On the US site, open{' '}
+          The ETF hubs list every fund we&apos;ve written up with live price history.{' '}
           <Link href="/us-etfs" className={styles.inlineLink}>
             US ETFs
-          </Link>
-          . On the Canadian edition, Canadian listings live under{' '}
+          </Link>{' '}
+          covers US-listed names on both editions.{' '}
           <Link href={caEtfHubHref} className={styles.inlineLink}>
             CA ETFs
-          </Link>
-          , while US-listed names stay under{' '}
-          <Link href={usEtfHubHref} className={styles.inlineLink}>
-            US ETFs
           </Link>{' '}
-          so navigation stays in your chosen region.
+          covers Canadian-listed funds on the Canadian edition.
         </p>
         <p className={styles.body}>
-          Each ETF page explains what the fund tries to do, who runs it, and how we think about it — plus a
-          total-return chart you can switch between time ranges (for example 1 year vs longer). Where we show letter
-          grades, they summarize how capital-efficient or return-stacked a fund is; tooltips on those pages spell out
-          the idea in more detail. Footnotes mention when a chart starts late because the fund is new or when we extend
-          history with a modeled proxy.
+          Each page covers what the fund does, who runs it, and when it tends to earn — plus a
+          total-return chart switchable across time ranges. Letter grades summarize capital efficiency
+          or return-stacking; tooltips on each page explain how they&apos;re calculated. Footnotes
+          flag when history is extended with a modeled proxy.
         </p>
       </section>
 
@@ -72,8 +66,8 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
           behind the scenes), and a holdings table you can read next to the ETF pages.
         </p>
         <p className={styles.body}>
-          Pick a sample portfolio that matches what you want to learn about. Write down each ticker and its percent. If
-          a name is unfamiliar, open its ETF page from the hub or from links in the table when we provide them.
+          Pick one that fits what you want to understand. Note the tickers and weights, then open each ETF page from
+          the hub to read the write-up before touching the builder.
         </p>
       </section>
 
@@ -86,15 +80,14 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
           <Link href={builderHref} className={styles.inlineLink}>
             portfolio builder
           </Link>
-          . Add one row per position, choose tickers from the searchable dropdown, and enter whole-number allocation
-          percentages. Optional filters narrow the list by the same efficiency grades you see on ETF pages, if you want
-          to stay in that framework.
+          . Add one row per position, choose tickers from the dropdown, and enter allocation percentages.
+          Optional filters narrow the list by efficiency grade if you want to stay in that framework.
         </p>
         <p className={styles.body}>
-          When the percentages add up to 100%, the tool draws a portfolio chart like the model portfolio pages: change
-          the time range, compare your line to the benchmark, and read total return, how much you beat or trailed the
-          benchmark, and drawdowns for that period. Try small changes (fewer funds, different weights) to see how
-          sensitive the line is — before any real-money decision.
+          Once the percentages add to 100%, the tool draws a portfolio chart: switch time ranges, compare
+          your line to the benchmark, and read total return and drawdown for the period. Try small changes
+          — fewer funds, different weights — to see how sensitive the outcome is before putting real money
+          behind it.
         </p>
       </section>
 
@@ -103,10 +96,10 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
           Keep the limitations in view
         </h2>
         <p className={styles.body}>
-          Charts are educational backtests and live history, not forecasts. They ignore taxes, transaction costs,
-          rebalancing frictions, and funding costs except where explicitly modeled in footnotes. Leveraged and
-          alternative funds can fail or change behavior in ways history does not repeat. Treat the builder as a way to
-          clarify trade-offs, not as a signal service.
+          Charts are backtests and live history, not forecasts. They ignore taxes, transaction costs, rebalancing
+          friction, and funding costs except where explicitly modeled in footnotes. Leveraged and alternative funds
+          can fail or change behavior in ways history doesn&apos;t capture. Use the builder to clarify trade-offs,
+          not to predict outcomes.
         </p>
       </section>
 

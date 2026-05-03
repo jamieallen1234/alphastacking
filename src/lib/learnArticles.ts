@@ -1,5 +1,5 @@
 /** Slug segments under `/learn/[slug]` and `/ca/learn/[slug]`. */
-export const RETURN_STACKING_VS_ALPHA_SLUG = 'return-stacking-vs-alpha-stacking'
+export const WHAT_IS_ALPHA_SLUG = 'what-is-alpha-stacking'
 
 export const ETF_PAGES_BUILDER_101_SLUG = 'etf-pages-and-portfolio-builder-101'
 

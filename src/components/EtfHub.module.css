@@ -2,10 +2,16 @@
   min-height: 100vh;
 }
 
+.hubNavTop {
+  padding: 0.65rem 3rem;
+  border-top: 0.5px solid var(--color-border-faint);
+  background: var(--color-bg-elevated);
+}
+
 .section {
   background: var(--color-bg-elevated);
-  padding: 4rem 3rem 5rem;
-  border-top: 0.5px solid var(--color-border-faint);
+  padding: 1.25rem 3rem 5rem;
+  border-top: none;
 }
 
 .sectionLabel {
@@ -15,7 +21,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-text-faint);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .heading {
@@ -149,7 +155,11 @@ a.etfRow:focus-visible {
 }
 
 @media (max-width: 768px) {
+  .hubNavTop {
+    padding: 0.65rem 1.5rem;
+  }
+
   .section {
-    padding: 3rem 1.5rem;
+    padding: 1.25rem 1.5rem 3rem;
   }
 }

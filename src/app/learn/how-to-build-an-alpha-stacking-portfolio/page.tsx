@@ -3,9 +3,9 @@ import LearnArticleShell from '@/components/learn/LearnArticleShell'
 import HowToBuildAlphaStackingArticle from '@/components/learn/HowToBuildAlphaStackingArticle'
 
 export const metadata: Metadata = {
-  title: 'How to build an alpha stacking portfolio — Learn — Alpha Stacking',
+  title: 'How to build an alpha stacking portfolio | Learn | Alpha Stacking',
   description:
-    'A walkthrough of alpha stacking portfolio construction: the four sleeve types, how they interact, beta targeting, and a worked example using the US Alpha Stack model.',
+    'Layering alpha on an all-equity core (trend, long/short, macro), the logic behind building an alpha stacking portfolio, and how a model portfolio was constructed.',
 }
 
 export default function HowToBuildAlphaStackingPage() {

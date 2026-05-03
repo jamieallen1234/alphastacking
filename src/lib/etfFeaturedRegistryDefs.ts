@@ -46,7 +46,6 @@ export const US_ETF_FEATURED_PART: Record<string, EtfDynamicDef> = {
     officialLabel: 'MATE official page',
     efficiency: {
       capital: {
-        gradeTone: 'gold',
         tooltip: MATE_CAPITAL_EFFICIENCY_TOOLTIP,
       },
       alpha: { tooltip: MATE_ALPHA_EFFICIENCY_TOOLTIP },

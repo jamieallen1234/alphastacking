@@ -18,9 +18,13 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
         </div>
         <h1 className={styles.title}>How to build an alpha stacking portfolio</h1>
         <p className={styles.deck}>
-          Alpha stacking is a way to combine multiple return sources — equity, trend-following, long/short, macro —
-          so the portfolio has more than one engine. This walkthrough explains the design logic, then works
-          through a real example using one of the model portfolios.
+          Alpha stacking is a way to take an all-equity portfolio and layer on top additional sources of alpha
+          such as trend-following, long/short, macro, and alternative strategies to generate additional sources of returns through the
+          different stages of market cycles.
+        </p>
+        <p className={styles.deck}>
+          This walkthrough explains the logic behind constructing an alpha stacking portfolio, then works through
+          how a model portfolio was constructed.
         </p>
       </header>
 
@@ -30,12 +34,12 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
         </h2>
         <p className={styles.body}>
           A standard index fund portfolio has one engine: equity beta. It does well when stocks go up and
-          does poorly when they don&apos;t. There&apos;s nothing wrong with that — most of the time stocks
+          does poorly when they don&apos;t. There&apos;s nothing wrong with that. Most of the time stocks
           do go up, and index funds capture that cleanly. But equity has long stretches where it delivers
           nothing. The S&amp;P 500 was flat for a decade from 2000–2010. It fell 50% twice in that window.
         </p>
         <p className={styles.body}>
-          Alpha stacking is about owning equity <em>and</em> carrying other return sources alongside it —
+          Alpha stacking is about owning equity <em>and</em> carrying other return sources alongside it:
           sources that can earn when equity isn&apos;t. The goal is a portfolio that compounds more
           consistently, not a portfolio that takes more risk to chase higher highs.
         </p>
@@ -57,20 +61,20 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
         </p>
         <div className={styles.principles}>
           <div className={styles.principle}>
-            <span className={styles.principleLabel}>1. Equity — the core engine</span>
+            <span className={styles.principleLabel}>1. Equity: the core engine</span>
             <p className={styles.principleText}>
               Equity beta drives the majority of long-run return. The market goes up more than it goes down
               over time, and you want to own that. In leveraged alpha stacks, this sleeve is often a 2× or
-              3× leveraged equity ETF (SSO, UPRO, SPXL) — sized smaller so the overall portfolio still
+              3× leveraged equity ETF (SSO, UPRO, SPXL), sized smaller so the overall portfolio still
               behaves roughly like owning the S&amp;P 500. In non-leveraged builds, this is SPY, QQQ, or
               a factor ETF like AVUV or SPMO.
             </p>
           </div>
           <div className={styles.principle}>
-            <span className={styles.principleLabel}>2. Trend-following — the drawdown buffer</span>
+            <span className={styles.principleLabel}>2. Trend-following: the drawdown buffer</span>
             <p className={styles.principleText}>
               Managed futures funds like DBMF, KMLM, and MATE trend-follow across asset classes: equities,
-              bonds, currencies, commodities. When equity is in a sustained decline — like 2022 — falling
+              bonds, currencies, commodities. When equity is in a sustained decline, like in 2022, falling
               rates and rising volatility create trends in rates and FX that managed futures can capture.
               These funds don&apos;t consistently profit in crashes, but they tend to do well in prolonged
               bear markets where the trends are clear. They&apos;re the sleeve most likely to be earning
@@ -78,22 +82,22 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
             </p>
           </div>
           <div className={styles.principle}>
-            <span className={styles.principleLabel}>3. Long/short equity — the dispersion play</span>
+            <span className={styles.principleLabel}>3. Long/short equity: the dispersion play</span>
             <p className={styles.principleText}>
               Long/short equity funds (CLSE, ORR) hold long positions in stocks they like and short
               positions in stocks they don&apos;t. Their returns depend less on whether the market goes up
-              or down and more on whether good stocks beat bad ones — which tends to happen regardless of
+              or down and more on whether good stocks beat bad ones, which tends to happen regardless of
               direction. In choppy, sideways markets where the index goes nowhere, a strong long/short fund
               can still compound.
             </p>
           </div>
           <div className={styles.principle}>
-            <span className={styles.principleLabel}>4. Macro &amp; alternatives — the regime diversifier</span>
+            <span className={styles.principleLabel}>4. Macro &amp; alternatives: the regime diversifier</span>
             <p className={styles.principleText}>
               Systematic macro (HFGM), style premia (FLSP), and merger arbitrage (MRGR) each have return
               profiles with low correlation to the other sleeves. Merger arb earns when deal spreads tighten,
               independent of market direction. Style premia exploit persistent factors (value, carry,
-              momentum) across many markets. These sleeves earn in different environments — they&apos;re
+              momentum) across many markets. These sleeves earn in different environments; they&apos;re
               the portfolio&apos;s coverage in regimes the other sleeves don&apos;t address.
             </p>
           </div>
@@ -107,17 +111,17 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
         <p className={styles.body}>
           Before the numbers: <strong>beta</strong> is a measure of how much a portfolio moves with the
           stock market. A beta of 1.0 means the portfolio rises and falls roughly in line with the S&amp;P 500.
-          A beta of 2.0 means it moves twice as much — double the gains, double the losses. A beta of 0 means
+          A beta of 2.0 means it moves twice as much: double the gains, double the losses. A beta of 0 means
           it has no relationship to the stock market at all.
         </p>
         <p className={styles.body}>
           The key constraint when building an alpha stacking portfolio is <strong>total beta</strong>. If you
           add multiple leveraged sleeves without accounting for how they interact, you can end up with a
-          portfolio that behaves like 3× the S&amp;P 500 — more volatile than you intended, with outsized
+          portfolio that behaves like 3× the S&amp;P 500, more volatile than you intended, with outsized
           drawdowns in bad years.
         </p>
         <p className={styles.body}>
-          The target is usually a total beta near 1.0 — roughly equivalent to owning the index — with the
+          The target is usually a total beta near 1.0, roughly equivalent to owning the index, with the
           sources of return spread across multiple sleeves. That means if the equity sleeve is 2× levered,
           you hold a smaller dollar allocation to it to bring total beta back to 1.0.
         </p>
@@ -140,7 +144,7 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
           </Link>{' '}
           model portfolio illustrates how these principles translate into actual weights. It uses a
           leveraged equity sleeve as the core, sized to keep total beta near 1.0, then layers in
-          managed futures, long/short equity, and systematic alternatives — each chosen for its independent
+          managed futures, long/short equity, and systematic alternatives, each chosen for its independent
           edge and sized for how it interacts with the other sleeves.
         </p>
         <p className={styles.body}>
@@ -173,7 +177,7 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
             <p className={styles.principleText}>
               Most diversifying sleeves look good in backtests. The test is what they do in sharp
               drawdowns: do they hold their value, or do they sell off alongside equity? Managed futures
-              have a reasonable track record in sustained bear markets. Long/short equity is more variable —
+              have a reasonable track record in sustained bear markets. Long/short equity is more variable;
               some managers hold up, others don&apos;t. Tail-risk funds like CAOS will gain in crashes but
               drag in calm markets. Know what you&apos;re buying before adding it.
             </p>
@@ -183,7 +187,7 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
             <p className={styles.principleText}>
               Leveraged ETFs have embedded borrowing costs. SSO costs more to run than SPY, and that cost
               shows up as a modest drag versus 2× the index. The Capital Efficiency grade on each ETF page
-              accounts for this — higher-grade LETFs are delivering enough return per unit of beta to
+              accounts for this: higher-grade LETFs are delivering enough return per unit of beta to
               justify the cost. Lower-grade ones may not be.
             </p>
           </div>
@@ -233,7 +237,7 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
       </Link>
 
       <p className={styles.legal}>
-        Educational content only — not investment advice, not a recommendation to buy or sell any security. Past
+        Educational content only; not investment advice, not a recommendation to buy or sell any security. Past
         performance does not guarantee future results. Leveraged and alternative funds involve substantial risk.
       </p>
     </article>

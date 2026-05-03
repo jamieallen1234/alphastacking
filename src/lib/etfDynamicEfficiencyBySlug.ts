@@ -110,12 +110,20 @@ export function applyMonthlyEfficiencyGradePatch(
         gradeTone: patch.capital.grade === 'A+' ? 'gold' : out.capital.gradeTone,
       }
     } else {
-      out.capital = { ...out.capital, grade: patch.capital.grade }
+      out.capital = {
+        ...out.capital,
+        grade: patch.capital.grade,
+        gradeTone: patch.capital.grade === 'A+' ? 'gold' : 'muted',
+      }
     }
   }
 
   if (patch.alpha && out.alpha) {
-    out.alpha = { ...out.alpha, grade: patch.alpha.grade }
+    out.alpha = {
+      ...out.alpha,
+      grade: patch.alpha.grade,
+      gradeTone: patch.alpha.grade === 'A+' ? 'gold' : 'muted',
+    }
   }
 
   if (patch.footnotes != null && patch.footnotes.length > 0) {

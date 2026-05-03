@@ -12,6 +12,12 @@ import {
 } from '@/components/etfEfficiency/EtfEfficiencyGrades'
 import { capitalEfficiencyMetaLabel, stackExposureLineAvailability } from '@/lib/etfStackExposureBySlug'
 
+function efficiencyGradeToShow(grade: string | null | undefined): string | null {
+  const g = grade?.trim()
+  if (!g || g === 'N/A') return null
+  return g
+}
+
 function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, slug?: string): ReactNode {
   const eff = def.efficiency
   if (!eff) return undefined
@@ -22,33 +28,41 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, s
     const beta = chart.beta1y
     const useAlpha = beta != null && beta < 0.8
     if (useAlpha && eff.alpha) {
-      lines.push({
-        label: 'Alpha Efficiency:',
-        grade: eff.alpha.grade ?? 'N/A',
-        gradeTone: eff.alpha.gradeTone,
-        tooltip: eff.alpha.tooltip,
-      })
+      const alphaGrade = efficiencyGradeToShow(eff.alpha.grade)
+      if (alphaGrade != null) {
+        lines.push({
+          label: 'Alpha Efficiency:',
+          grade: alphaGrade,
+          gradeTone: eff.alpha.gradeTone,
+          tooltip: eff.alpha.tooltip,
+        })
+      }
     } else if (!useAlpha && eff.capital) {
-      lines.push({
-        label: 'Equity Efficiency:',
-        grade: eff.capital.grade ?? 'N/A',
-        gradeTone: eff.capital.gradeTone,
-        tooltip: eff.capital.tooltip,
-      })
+      const capGrade = efficiencyGradeToShow(eff.capital.grade)
+      if (capGrade != null) {
+        lines.push({
+          label: 'Equity Efficiency:',
+          grade: capGrade,
+          gradeTone: eff.capital.gradeTone,
+          tooltip: eff.capital.tooltip,
+        })
+      }
     }
   } else {
-    if (eff.capital && (!stackLines || stackLines.hasEquitySleeve)) {
+    const capGrade = eff.capital ? efficiencyGradeToShow(eff.capital.grade) : null
+    if (capGrade != null && eff.capital && (!stackLines || stackLines.hasEquitySleeve)) {
       lines.push({
         label: capitalEfficiencyMetaLabel(slug),
-        grade: eff.capital.grade ?? 'N/A',
+        grade: capGrade,
         gradeTone: eff.capital.gradeTone,
         tooltip: eff.capital.tooltip,
       })
     }
-    if (eff.alpha && (!stackLines || stackLines.hasNonEquitySleeve)) {
+    const alphaGrade = eff.alpha ? efficiencyGradeToShow(eff.alpha.grade) : null
+    if (alphaGrade != null && eff.alpha && (!stackLines || stackLines.hasNonEquitySleeve)) {
       lines.push({
         label: 'Alpha Efficiency:',
-        grade: eff.alpha.grade ?? 'N/A',
+        grade: alphaGrade,
         gradeTone: eff.alpha.gradeTone,
         tooltip: eff.alpha.tooltip,
       })

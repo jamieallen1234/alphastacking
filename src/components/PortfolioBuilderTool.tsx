@@ -9,6 +9,8 @@ import {
   PRESET_RANGE_MIN_DAYS,
 } from '@/lib/presetChartRanges'
 import type { PortfolioBuilderEtfOption } from '@/lib/portfolioBuilderEtfOptions'
+import type { PortfolioPrefillHolding } from '@/lib/portfolioBuilderPrefill'
+import { portfolioHasMeaningfulAlphaOrAltsExposure } from '@/lib/portfolioBuilderHasAlphaAltsExposure'
 import { buildExposureSummaryFromWeightedTickers } from '@/lib/exposureSummary'
 import type { YahooRange } from '@/lib/yahooFinance'
 import styles from './PortfolioBuilderTool.module.css'
@@ -42,6 +44,16 @@ function defaultRows(): BuilderRow[] {
     { ...newRow(1), efficiencyKind: 'capital', allocation: '50' },
     { ...newRow(2), efficiencyKind: 'alpha', allocation: '50' },
   ]
+}
+
+function prefillRowsFromHoldings(holdings: PortfolioPrefillHolding[]): BuilderRow[] {
+  return holdings.map((h, i) => ({
+    ...newRow(i + 1),
+    symbol: h.ticker.trim(),
+    allocation: String(Math.round(h.weightPct)),
+    efficiencyKind: 'all',
+    category: 'all',
+  }))
 }
 
 /** Integer % only: strips non-digits; if user typed or pasted a decimal, keeps the whole part. */
@@ -312,12 +324,24 @@ function weightedPortfolioBeta(
 export default function PortfolioBuilderTool({
   edition,
   options,
+  initialPrefill,
 }: {
   edition: BuilderEdition
   options: PortfolioBuilderEtfOption[]
+  initialPrefill?: PortfolioPrefillHolding[] | null
 }) {
-  const [rows, setRows] = useState<BuilderRow[]>(defaultRows)
-  const [nextId, setNextId] = useState(3)
+  const [rows, setRows] = useState<BuilderRow[]>(() => {
+    if (initialPrefill && initialPrefill.length > 0) {
+      return prefillRowsFromHoldings(initialPrefill)
+    }
+    return defaultRows()
+  })
+  const [nextId, setNextId] = useState(() => {
+    if (initialPrefill && initialPrefill.length > 0) {
+      return initialPrefill.length + 1
+    }
+    return 3
+  })
   const [payload, setPayload] = useState<PortfolioChartPayload | null>(null)
   const [activeRange, setActiveRange] = useState<YahooRange>('1y')
   const [loading, setLoading] = useState(false)
@@ -364,10 +388,9 @@ export default function PortfolioBuilderTool({
 
   const noAlphaWarning = useMemo(() => {
     if (!allocationValid || hasIncompleteRow) return null
-    if (exposureSummary == null) return null
-    if (exposureSummary.grossAlphaExposurePct > 0.5) return null
+    if (portfolioHasMeaningfulAlphaOrAltsExposure(rows, options, exposureSummary)) return null
     return 'This portfolio has no alpha & alts exposure. Consider adding a diversifying sleeve.'
-  }, [allocationValid, hasIncompleteRow, exposureSummary])
+  }, [allocationValid, hasIncompleteRow, rows, options, exposureSummary])
 
   const builderWarning = useMemo(() => {
     if (!allocationValid || hasIncompleteRow) return null

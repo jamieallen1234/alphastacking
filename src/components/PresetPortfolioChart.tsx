@@ -544,7 +544,7 @@ export default function PresetPortfolioChart({
                 <strong>Beta score:</strong> {betaGrade ?? '—'}
               </p>
               <p className={styles.scorecardLine}>
-                Beta: {weightedBeta != null ? weightedBeta.toFixed(2) : '—'}
+                <strong>Beta:</strong> {weightedBeta != null ? weightedBeta.toFixed(2) : '—'}
               </p>
             </div>
             <div>

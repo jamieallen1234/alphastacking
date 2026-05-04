@@ -1,12 +1,19 @@
+import Link from 'next/link'
 import type { PresetHolding } from '@/lib/presets/usInternational'
 import styles from './PresetHoldingsTable.module.css'
 
 interface PresetHoldingsTableProps {
   holdings: PresetHolding[]
   weightedBeta: number
+  /** When set, shows “Copy portfolio to builder” on the same row as weighted beta, right-aligned. */
+  copyBuilderHref?: string
 }
 
-export default function PresetHoldingsTable({ holdings, weightedBeta }: PresetHoldingsTableProps) {
+export default function PresetHoldingsTable({
+  holdings,
+  weightedBeta,
+  copyBuilderHref,
+}: PresetHoldingsTableProps) {
   return (
     <div className={styles.wrap}>
       <table className={styles.table}>
@@ -29,9 +36,16 @@ export default function PresetHoldingsTable({ holdings, weightedBeta }: PresetHo
           ))}
         </tbody>
       </table>
-      <p className={styles.betaLine}>
-        Weighted portfolio beta (approx.): <strong>{weightedBeta.toFixed(2)}</strong>
-      </p>
+      <div className={styles.betaRow}>
+        <p className={styles.betaRowText}>
+          Weighted portfolio beta (approx.): <strong>{weightedBeta.toFixed(2)}</strong>
+        </p>
+        {copyBuilderHref ? (
+          <Link className={styles.copyBuilderLink} href={copyBuilderHref}>
+            Copy portfolio to builder →
+          </Link>
+        ) : null}
+      </div>
     </div>
   )
 }

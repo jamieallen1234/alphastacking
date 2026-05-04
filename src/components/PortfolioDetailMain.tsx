@@ -40,6 +40,8 @@ import {
   weightedBeta,
 } from '@/lib/presets/usInternational'
 import { buildExposureSummaryFromPresetHoldings } from '@/lib/exposureSummary'
+import { buildPortfolioBuilderPrefillHref } from '@/lib/portfolioBuilderPrefill'
+import { portfolioBuilderPath } from '@/lib/siteRegion'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
 
 type LiveEntry = {
@@ -141,6 +143,11 @@ async function LiveLayout({
 
   const wb = weightedBeta(live.holdings)
   const exposureSummary = buildExposureSummaryFromPresetHoldings(live.holdings)
+  const siteIsCa = backHref.startsWith('/ca/')
+  const builderCopyHref = buildPortfolioBuilderPrefillHref(
+    portfolioBuilderPath(siteIsCa),
+    live.holdings
+  )
 
   return (
     <main className={styles.main}>
@@ -153,7 +160,11 @@ async function LiveLayout({
         <h1 className={styles.detailTitle}>{def.title}</h1>
         <p className={styles.detailLede}>{def.description}</p>
 
-        <PresetHoldingsTable holdings={live.holdings} weightedBeta={wb} />
+        <PresetHoldingsTable
+          holdings={live.holdings}
+          weightedBeta={wb}
+          copyBuilderHref={builderCopyHref}
+        />
 
         <h2 className={styles.chartHeading}>{chartHeading}</h2>
 

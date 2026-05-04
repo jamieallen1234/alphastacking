@@ -6,9 +6,16 @@ import {
   getCachedPortfolioBuilderOptionsCa,
   getCachedPortfolioBuilderOptionsUs,
 } from '@/lib/portfolioBuilderEtfOptions'
+import type { PortfolioPrefillHolding } from '@/lib/portfolioBuilderPrefill'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
 
-export default async function PortfolioBuilderPage({ edition }: { edition: 'us' | 'ca' }) {
+export default async function PortfolioBuilderPage({
+  edition,
+  initialPrefill,
+}: {
+  edition: 'us' | 'ca'
+  initialPrefill?: PortfolioPrefillHolding[] | null
+}) {
   const options =
     edition === 'ca'
       ? await getCachedPortfolioBuilderOptionsCa()
@@ -26,7 +33,7 @@ export default async function PortfolioBuilderPage({ edition }: { edition: 'us' 
           portfolio from the hub, experiment with different weights, or try your own mix. The chart shows
           total return versus SPY and max drawdown for any date range with available history.
         </p>
-        <PortfolioBuilderTool edition={edition} options={options} />
+        <PortfolioBuilderTool edition={edition} options={options} initialPrefill={initialPrefill ?? null} />
         <FeedbackInlineLink isCa={edition === 'ca'} context="builder" />
       </section>
       <Footer />

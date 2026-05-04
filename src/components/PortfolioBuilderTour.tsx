@@ -411,7 +411,7 @@ function PortfolioBuilderFollowUpHints({
     activeHint === 'add-row'
       ? 'Add more rows with + if you need several holdings.'
       : activeHint === 'alpha-sleeve'
-        ? 'New rows default to Alpha efficiency — pick an alpha diversifier here (alternatives, managed futures, long/short, etc.) to complement your equity sleeve.'
+        ? 'Use Alpha efficiency on this row when you want a diversifying sleeve, then pick funds here (alternatives, managed futures, long/short, etc.) to complement your equity sleeve.'
         : 'When allocations are valid, Generate loads total return vs SPY, drawdowns, and range controls for your mix.'
 
   const overlay = (

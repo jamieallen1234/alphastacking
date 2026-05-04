@@ -275,13 +275,16 @@ function rowCategoryOptions(options: PortfolioBuilderEtfOption[], row: BuilderRo
 }
 
 function optionGradeLabel(row: BuilderRow, o: PortfolioBuilderEtfOption): string {
-  if (row.efficiencyKind === 'capital') return o.capitalGrade ?? 'N/A'
-  if (row.efficiencyKind === 'alpha') return o.alphaGrade ?? 'N/A'
-  if (row.efficiencyKind === 'stacked') return o.stackedGrade ?? 'N/A'
-  if (o.stackedEligible) return `Stacked ${o.stackedGrade ?? 'N/A'}`
-  const c = o.capitalGrade ?? 'N/A'
-  const a = o.alphaGrade ?? 'N/A'
-  return `Eq ${c} / Alpha ${a}`
+  if (row.efficiencyKind === 'capital') return o.capitalGrade != null ? o.capitalGrade : ''
+  if (row.efficiencyKind === 'alpha') return o.alphaGrade != null ? o.alphaGrade : ''
+  if (row.efficiencyKind === 'stacked') return o.stackedGrade != null ? o.stackedGrade : ''
+  if (o.stackedEligible) return o.stackedGrade != null ? `Stacked ${o.stackedGrade}` : ''
+  const eqPart = o.capitalGrade != null ? `Eq ${o.capitalGrade}` : ''
+  const alPart = o.alphaGrade != null ? `Alpha ${o.alphaGrade}` : ''
+  if (eqPart && alPart) return `${eqPart} / ${alPart}`
+  if (eqPart) return eqPart
+  if (alPart) return alPart
+  return ''
 }
 
 function formatBeta(b: number | string | null | undefined): string {
@@ -358,7 +361,9 @@ export default function PortfolioBuilderTool({
     () =>
       rows.some((r) => {
         const alloc = parseAllocation(r.allocation)
-        return alloc == null || alloc <= 0 || !r.symbol
+        if (alloc == null) return true
+        if (alloc === 0) return false
+        return !r.symbol.trim()
       }),
     [rows]
   )
@@ -387,7 +392,8 @@ export default function PortfolioBuilderTool({
   const builderError = useMemo(() => {
     if (error) return error
     if (!allocationValid) return 'Allocation must total exactly 100% before generating.'
-    if (hasIncompleteRow) return 'Each line needs a positive % and an ETF before generating.'
+    if (hasIncompleteRow)
+      return 'Each line with a weight above 0% needs an ETF ticker before generating.'
     return null
   }, [error, allocationValid, hasIncompleteRow])
 
@@ -418,15 +424,20 @@ export default function PortfolioBuilderTool({
   )
   const rangeOptions = useMemo(() => availablePresetChartRanges(overlapDays), [overlapDays])
 
-  const buildRequestBody = useCallback(
-    (range: YahooRange) => ({
+  const buildRequestBody = useCallback((range: YahooRange) => {
+    const legs = rows
+      .map((r) => ({
+        sym: r.symbol.trim().toUpperCase(),
+        w: (parseAllocation(r.allocation) ?? 0) / 100,
+      }))
+      .filter((x) => x.sym !== '' && x.w > 0)
+    return {
       edition,
       range,
-      symbols: rows.map((r) => r.symbol),
-      weights: rows.map((r) => (parseAllocation(r.allocation) ?? 0) / 100),
-    }),
-    [edition, rows]
-  )
+      symbols: legs.map((x) => x.sym),
+      weights: legs.map((x) => x.w),
+    }
+  }, [edition, rows])
 
   const loadChart = useCallback(
     async (range: YahooRange) => {
@@ -458,11 +469,12 @@ export default function PortfolioBuilderTool({
   const addRow = useCallback(() => {
     setRows((prev) => {
       if (prev.length >= MAX_ROWS) return prev
-      const allocation = shouldPrefillNewRowWeightForPortfolioTutorial(edition) ? '50' : ''
-      /** Additional lines default to Alpha efficiency — alpha-sleeve tip after + */
+      const tourPrefill = shouldPrefillNewRowWeightForPortfolioTutorial(edition)
+      const allocation = tourPrefill ? '50' : '0'
+      const efficiencyKind: EfficiencyKind = tourPrefill ? 'alpha' : 'all'
       return [
         ...prev,
-        { ...newRow(nextId), allocation, efficiencyKind: 'alpha', category: 'all', symbol: '' },
+        { ...newRow(nextId), allocation, efficiencyKind, category: 'all', symbol: '' },
       ]
     })
     setNextId((n) => n + 1)
@@ -611,7 +623,7 @@ export default function PortfolioBuilderTool({
                                 const gradeLabel = optionGradeLabel(row, o)
                                 return {
                                   value: o.symbol,
-                                  label: `${o.title} (${gradeLabel})`,
+                                  label: gradeLabel ? `${o.title} (${gradeLabel})` : o.title,
                                   searchText: `${o.displayTicker} ${o.symbol} ${o.title}`,
                                 }
                               }),

@@ -162,18 +162,25 @@ export type PreInceptionStackMergeOptions = {
  * subtract wholesale financing on **gross exposure above 100%** (`grossExposurePct`); from first real session
  * onward, scale the target’s actual TR to the synthetic anchor (same re-leveling as MATE/RSST).
  */
+export type PreInceptionStackMergeResult = {
+  series: PriceSeries
+  modeling: SyntheticProxyModeling | null
+  /** True when proxy-leg returns were spliced before the target’s first listed session. */
+  spliced: boolean
+}
+
 export function buildPreInceptionProductStackMerge(
   target: PriceSeries,
   legs: PriceSeries[],
   options?: PreInceptionStackMergeOptions
-): { series: PriceSeries; modeling: SyntheticProxyModeling | null } {
-  if (legs.length < 1) return { series: target, modeling: null }
+): PreInceptionStackMergeResult {
+  if (legs.length < 1) return { series: target, modeling: null, spliced: false }
   const tarM = seriesToNyDayPriceMap(target)
   const tarDays = [...tarM.keys()].sort()
-  if (tarDays.length < 1) return { series: target, modeling: null }
+  if (tarDays.length < 1) return { series: target, modeling: null, spliced: false }
   const firstReal = tarDays[0]!
   const rFirst = tarM.get(firstReal)!
-  if (rFirst <= 0) return { series: target, modeling: null }
+  if (rFirst <= 0) return { series: target, modeling: null, spliced: false }
 
   const legMaps = legs.map((s) => seriesToNyDayPriceMap(s))
   let inter = new Set(legMaps[0]!.keys())
@@ -182,7 +189,11 @@ export function buildPreInceptionProductStackMerge(
   }
   const preDays = [...inter].filter((d) => d < firstReal).sort()
   if (preDays.length < 1) {
-    return { series: target, modeling: null }
+    return {
+      series: target,
+      modeling: { firstRealNyDay: firstReal },
+      spliced: false,
+    }
   }
 
   const gross = options?.grossExposurePct ?? 200
@@ -200,7 +211,7 @@ export function buildPreInceptionProductStackMerge(
     for (const lm of legMaps) {
       const p0 = lm.get(d0)!
       const p1 = lm.get(d1)!
-      if (p0 <= 0 || p1 <= 0) return { series: target, modeling: null }
+      if (p0 <= 0 || p1 <= 0) return { series: target, modeling: null, spliced: false }
       factor *= p1 / p0
     }
     syn *= factor - borrowDragDaily
@@ -223,10 +234,11 @@ export function buildPreInceptionProductStackMerge(
       prices.push(p)
     }
   }
-  if (timestamps.length < 2) return { series: target, modeling: null }
+  if (timestamps.length < 2) return { series: target, modeling: null, spliced: false }
 
   return {
     series: { symbol: target.symbol, timestamps, prices },
-    modeling: { firstRealNyDay: nyTradingDayKey(target.timestamps[0]!) },
+    modeling: { firstRealNyDay: firstReal },
+    spliced: true,
   }
 }

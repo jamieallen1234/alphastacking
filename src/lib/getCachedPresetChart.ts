@@ -152,7 +152,7 @@ export const getCachedUsGdeClseBlendChart = unstable_cache(
     'notional-10k',
     'default-1y',
     'buy-hold',
-    'gde-clse-qld-mrgr-rssy-vflo',
+    'gde-clse-sso-flsp-vflo-spmo-v3',
   ],
   { revalidate: DAY }
 )
@@ -294,6 +294,27 @@ export const getCachedUsCoreBuyHoldChartMax = unstable_cache(
     'notional-10k',
     'home-max',
     'buy-hold',
+  ],
+  { revalidate: DAY }
+)
+
+export const getCachedUsGdeClseBlendChartMax = unstable_cache(
+  async () =>
+    computePortfolioChart({
+      symbols: usGdeClseBlendSymbols(),
+      weights: usGdeClseBlendWeights(),
+      range: PRESET_CHART_RANGE_MAX,
+      rebalanceSchedule: 'none',
+    }),
+  [
+    'preset-chart',
+    'chart-proxy-v10',
+    US_GDE_CLSE_BLEND_PRESET_ID,
+    PRESET_CHART_RANGE_MAX,
+    'notional-10k',
+    'home-max',
+    'buy-hold',
+    'gde-clse-sso-flsp-vflo-spmo-v3',
   ],
   { revalidate: DAY }
 )

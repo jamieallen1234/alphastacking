@@ -72,6 +72,12 @@ export interface SyntheticModelingNote {
   kind: SyntheticModelingKind
   /** 1.25× CAD levered sleeve: which index TR is scaled (QQQ is converted to CAD in the pipeline). */
   cadLeveredUnderlying?: 'HEQT.TO' | 'QQQ' | 'VFV.TO' | 'SPY'
+  /**
+   * Stacked manual chart proxies (`stacked_product_proxy*`): false when proxy legs are configured but
+   * this Yahoo window had no calendar days before the fund’s first session to splice (footnote still
+   * discloses methodology). Omitted/true when pre-inception returns were merged.
+   */
+  stackedProxySpliced?: boolean
 }
 
 export interface PortfolioChartPayload {
@@ -308,12 +314,15 @@ export async function computePortfolioChart(params: {
       grossExposurePct: gross,
     })
     if (pin.modeling != null && pin.series.timestamps.length >= 2) {
-      seriesMut[i] = pin.series
-      slotFirstTradeSec[i] = Math.min(slotFirstTradeSec[i]!, pin.series.timestamps[0]!)
+      if (pin.spliced) {
+        seriesMut[i] = pin.series
+        slotFirstTradeSec[i] = Math.min(slotFirstTradeSec[i]!, pin.series.timestamps[0]!)
+      }
       syntheticModeling.push({
         slotSymbol: symbols[i]!,
         firstRealNyDay: pin.modeling.firstRealNyDay,
         kind: 'stacked_product_proxy_preinception',
+        stackedProxySpliced: pin.spliced,
       })
     }
   }

@@ -56,7 +56,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     hubSection: 'buy-hold',
     title: 'US + Gold & Alt Blend',
     description:
-      'Balanced U.S. mix across capital-efficient gold, long/short equity, merger arb, and selective growth beta.',
+      'Gold-plus-equity core with long/short equity, S&P 500 leverage, style premia, free-cash-flow tilt, and S&P momentum.',
   },
   {
     slug: 'leveraged-premia',

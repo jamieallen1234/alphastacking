@@ -1,5 +1,8 @@
 import { emptyPortfolioChartPayload, type PortfolioChartPayload } from '@/lib/computePortfolioChart'
-import { getCachedCaInternationalChartMax, getCachedUsCoreBuyHoldChartMax } from '@/lib/getCachedPresetChart'
+import {
+  getCachedCaInternationalChartMax,
+  getCachedUsGdeClseBlendChartMax,
+} from '@/lib/getCachedPresetChart'
 import { caPortfolioRoutes, usPortfolioRoutes } from '@/lib/portfolioRoutes'
 
 export type HomePortfolioChartSlot = {
@@ -61,25 +64,25 @@ async function loadHomePresetChartMax(
   return empty()
 }
 
-/** Home page model charts (full history `max` range; detail pages still default to 1Y). US: barbell only; CA: Global + Long/Short only. */
+/** Home page model charts (full history `max` range; detail pages still default to 1Y). US: Gold & Alt blend; CA: Global + Long/Short only. */
 export async function loadHomePortfolioChartSlots(
   variant: 'us' | 'ca'
 ): Promise<HomePortfolioChartSlot[]> {
   if (variant === 'us') {
     const empty = () => emptyPortfolioChartPayload('USD')
-    const barbellPayload = await loadHomePresetChartMax(() => getCachedUsCoreBuyHoldChartMax(), empty)
-    const barbellDef = usPortfolioRoutes.find((r) => r.slug === 'us-core-buy-hold')
-    if (!barbellDef) {
-      throw new Error('loadHomePortfolioChartSlots: missing US core buy-hold route def')
+    const gdeBlendPayload = await loadHomePresetChartMax(() => getCachedUsGdeClseBlendChartMax(), empty)
+    const gdeBlendDef = usPortfolioRoutes.find((r) => r.slug === 'us-gde-clse-blend')
+    if (!gdeBlendDef) {
+      throw new Error('loadHomePortfolioChartSlots: missing US + Gold & Alt Blend route def')
     }
     return [
       {
-        slug: barbellDef.slug,
-        href: `/portfolios/${barbellDef.slug}`,
-        title: barbellDef.title,
-        description: barbellDef.description,
+        slug: gdeBlendDef.slug,
+        href: `/portfolios/${gdeBlendDef.slug}`,
+        title: gdeBlendDef.title,
+        description: gdeBlendDef.description,
         chartHeading: 'Total return vs S&P 500 index — all history',
-        payload: barbellPayload,
+        payload: gdeBlendPayload,
       },
     ]
   }

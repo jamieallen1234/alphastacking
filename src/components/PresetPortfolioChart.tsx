@@ -210,19 +210,31 @@ function SyntheticModelingLine({
       const slug = findSlugByYahooSymbol(m.slotSymbol)
       const gross = grossExposureForChartProxy(m.slotSymbol, slug)
       const excessPct = Math.max(0, gross - 100)
+      const spliced = m.stackedProxySpliced !== false
       const borrowNote =
         excessPct > 0 ? (
           <>
             {' '}
             Pre-inception path deducts ~{(STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE * 100).toFixed(0)}%/yr
             wholesale financing on {(excessPct / 100).toFixed(2)}× incremental notional (gross ~{gross.toFixed(0)}% vs
-            100% cash), daily (~
-            {((excessPct / 100) * (STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE / 252)).toFixed(5)}) per
-            session—not this fund&apos;s actual swap lines or MER.
+            100% cash).
           </>
-        ) : (
-          <> Modeled at ~100% gross notional; no incremental stacked-financing slice in this proxy.</>
+        ) : null
+      if (!spliced) {
+        return (
+          <p
+            key={`stack-${m.kind}-${m.slotSymbol}-${m.firstRealNyDay}`}
+            className={styles.disclaimerDetail}
+          >
+            <ProxyLink ticker={m.slotSymbol} hubBase={hubBase}>
+              {m.slotSymbol}
+            </ProxyLink>
+            : methodology lists {legText} as Yahoo proxies for joint history before live listing when
+            calendar overlap allows. In this chart&apos;s Yahoo range there was no separate pre-listing window to
+            splice—line shows the fund&apos;s reported adjusted closes only.
+          </p>
         )
+      }
       return (
         <p
           key={`stack-${m.kind}-${m.slotSymbol}-${m.firstRealNyDay}`}
@@ -617,9 +629,8 @@ export default function PresetPortfolioChart({
                 </p>
               ) : (
                 <p className={styles.disclaimerLead}>
-                  Educational model only — not investment advice. Portfolio betas in the holdings table
-                  are weighted to the listed names and weights; they are intended to be accurate to that
-                  model and may be updated if holdings, listings, or methodology change.
+                  Educational model only — not investment advice. Portfolio betas in the holdings table are
+                  weighted to the listed names and weights.
                 </p>
               )}
               {syntheticModeling.map((m) => (

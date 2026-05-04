@@ -12,7 +12,7 @@ export default function HomePortfolioCharts({ variant, slots }: HomePortfolioCha
   const hubHref = variant === 'us' ? '/portfolios' : '/ca/portfolios'
   const lede =
     variant === 'us'
-      ? 'Growth & value barbell from the hub. Full overlapping history vs the S&P 500 index — same weights as the portfolio detail page, which offers additional range tabs.'
+      ? 'US + Gold & Alt Blend from the hub. Full overlapping history vs the S&P 500 index — same weights as the portfolio detail page, which offers additional range tabs.'
       : 'Global + Long/Short from the CAD hub. Full history vs the S&P 500 index, modeled in CAD — same weights as the portfolio detail page, which offers additional range tabs.'
 
   return (

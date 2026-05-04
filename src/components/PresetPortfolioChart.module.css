@@ -1,27 +1,44 @@
 .chartBlock {
   border-top: 0.5px solid var(--color-border-faint);
-  padding-top: 1rem;
-  margin-top: 0.25rem;
+  padding-top: 0.45rem;
+  margin-top: 0.2rem;
 }
 
 .metricsRow {
   display: flex;
   flex-wrap: wrap;
   gap: 1.25rem 2rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
   align-items: baseline;
 }
 
+.legendChartWrap {
+  position: relative;
+}
+
 .legend {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem 1.5rem;
-  margin-bottom: 0.5rem;
+  margin: 0;
+  max-width: min(100%, 28rem);
+  padding: 0.2rem 0.65rem 0.35rem 0;
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(232, 228, 220, 0.45);
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-bg-elevated) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-bg-elevated) 45%, transparent) 72%,
+    transparent 100%
+  );
 }
 
 .legendItem {
@@ -117,7 +134,7 @@
 }
 
 .scorecard {
-  margin-top: 0.7rem;
+  margin-top: 0;
   border: 0.5px solid var(--color-border);
   border-radius: 3px;
   background: rgba(232, 228, 220, 0.02);

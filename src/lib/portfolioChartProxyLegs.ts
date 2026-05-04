@@ -16,8 +16,6 @@ export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, string[]> = {
   OOSB: ['SPY', 'BITO'],
   RSSX: ['SPY', 'BITO', 'GLD'],
   WTIB: ['USO', 'BITO'],
-  /** Pre-listing: similar cash-flow / “cash cows” equity sleeve; extends joint history before VFLO’s inception. */
-  VFLO: ['COWZ'],
 }
 
 /** CME-style bitcoin futures exposure → BITO; otherwise spot-style proxy → IBIT (see sleeve `name` in stack map). */

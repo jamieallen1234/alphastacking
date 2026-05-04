@@ -6,23 +6,25 @@
   box-sizing: border-box;
 }
 
+/* Title + lede: match `HomePortfolioCharts` / `HomeLearnSection` home sections. */
 .label {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-faint);
-  margin-bottom: 0.75rem;
+  margin: 0 0 0.75rem;
+  line-height: 1.4;
 }
 
 .lede {
   font-family: var(--font-serif);
-  font-size: 1.125rem;
+  font-size: 1.1rem;
   font-weight: 400;
   color: var(--color-text);
   line-height: 1.5;
-  margin-bottom: 1.25rem;
+  margin: 0 0 1.25rem;
 }
 
 .grid {
@@ -95,7 +97,7 @@
   font-family: var(--font-mono);
   font-size: 1.1rem;
   font-weight: 500;
-  color: var(--color-gold);
+  color: var(--color-green);
 }
 
 .learnLine {

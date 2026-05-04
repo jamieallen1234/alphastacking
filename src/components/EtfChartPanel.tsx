@@ -103,17 +103,17 @@ export default function EtfChartPanel({ symbol, initialPayload }: EtfChartPanelP
         </div>
       </div>
 
-      <div className={chartStyles.legend}>
-        <span className={chartStyles.legendSwatch} aria-hidden="true" />
-        {payload.symbol}
+      <div className={chartStyles.legendChartWrap}>
+        <div className={chartStyles.legend}>
+          <span className={chartStyles.legendSwatch} aria-hidden="true" />
+          {payload.symbol}
+        </div>
+        <ReturnLineChart
+          series={[{ values: payload.values, color: 'var(--color-gold)', label: payload.symbol }]}
+          timestampsSec={payload.timestamps}
+          chartCurrency={symbol.toUpperCase().endsWith('.TO') ? 'CAD' : 'USD'}
+        />
       </div>
-
-      <ReturnLineChart
-        series={[{ values: payload.values, color: 'var(--color-gold)', label: payload.symbol }]}
-        timestampsSec={payload.timestamps}
-        height={140}
-        chartCurrency={symbol.toUpperCase().endsWith('.TO') ? 'CAD' : 'USD'}
-      />
 
       <p className={chartStyles.disclaimer}>
         Total return (Yahoo adjusted close—dividends and splits per Yahoo), normalized to $10,000 at first

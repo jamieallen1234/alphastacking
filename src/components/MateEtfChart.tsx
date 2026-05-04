@@ -26,17 +26,17 @@ export default async function MateEtfChart() {
         </div>
       </div>
 
-      <div className={styles.legend}>
-        <span className={styles.legendSwatch} aria-hidden="true" />
-        {payload.symbol}
+      <div className={styles.legendChartWrap}>
+        <div className={styles.legend}>
+          <span className={styles.legendSwatch} aria-hidden="true" />
+          {payload.symbol}
+        </div>
+        <ReturnLineChart
+          series={[{ values: payload.values, color: 'var(--color-gold)', label: payload.symbol }]}
+          timestampsSec={payload.timestamps}
+          chartCurrency="USD"
+        />
       </div>
-
-      <ReturnLineChart
-        series={[{ values: payload.values, color: 'var(--color-gold)', label: payload.symbol }]}
-        timestampsSec={payload.timestamps}
-        height={140}
-        chartCurrency="USD"
-      />
 
       <p className={styles.disclaimer}>
         Total return (Yahoo adjusted close—dividends and splits per Yahoo), normalized to $10,000 at first

@@ -14,14 +14,23 @@ interface ReturnLineChartProps {
   series: ChartSeriesLine[]
   /** Unix seconds, same length as each series values */
   timestampsSec: number[]
+  /** Plot height in CSS px (default +40% vs legacy 140 for clearer return separation). */
   height?: number
   /** Tooltip / display currency for large notionals (default USD). */
   chartCurrency?: 'USD' | 'CAD'
 }
 
+/** Default chart height in px (140 × 1.4). */
+export const RETURN_LINE_CHART_HEIGHT = 196
+
 const W = 400
 const H = 60
-const PAD = 2
+/** Horizontal inset for plot area (viewBox units). */
+const PAD_X = 2
+/** Tighter top inset so lines sit closer to the top edge (less empty band above the peak). */
+const PAD_TOP = 0.5
+/** Bottom inset; keeps a little floor for the area fill. */
+const PAD_BOTTOM = 2
 
 function formatTooltipValue(v: number, chartCurrency: 'USD' | 'CAD'): string {
   if (Math.abs(v) >= 100) {
@@ -48,7 +57,7 @@ function formatPointDate(tsSec: number): string {
 export default function ReturnLineChart({
   series,
   timestampsSec,
-  height = 120,
+  height = RETURN_LINE_CHART_HEIGHT,
   chartCurrency = 'USD',
 }: ReturnLineChartProps) {
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -113,10 +122,13 @@ export default function ReturnLineChart({
   const min = Math.min(...allValues)
   const max = Math.max(...allValues)
   const span = max - min || 1
+  const plotTop = PAD_TOP
+  const plotBottom = H - PAD_BOTTOM
+  const plotH = plotBottom - plotTop
 
   function xyForIndex(vals: number[], i: number): { x: number; y: number } {
-    const x = PAD + (i / (vals.length - 1)) * (W - PAD * 2)
-    const y = H - PAD - ((vals[i]! - min) / span) * (H - PAD * 2)
+    const x = PAD_X + (i / (vals.length - 1)) * (W - PAD_X * 2)
+    const y = plotBottom - ((vals[i]! - min) / span) * plotH
     return { x, y }
   }
 
@@ -158,7 +170,7 @@ export default function ReturnLineChart({
         aria-label="Portfolio and benchmark over time"
       >
         <polyline
-          points={`${firstPoints} ${W - PAD},${H} ${PAD},${H}`}
+          points={`${firstPoints} ${W - PAD_X},${plotBottom} ${PAD_X},${plotBottom}`}
           fill={valid[0]!.color}
           fillOpacity={0.1}
           stroke="none"
@@ -167,9 +179,9 @@ export default function ReturnLineChart({
           <line
             className={styles.reticleLine}
             x1={reticleX}
-            y1={PAD}
+            y1={plotTop}
             x2={reticleX}
-            y2={H - PAD}
+            y2={plotBottom}
           />
         ) : null}
         {valid.map((s, i) => (
@@ -178,8 +190,9 @@ export default function ReturnLineChart({
             points={buildPoints(s.values)}
             fill="none"
             stroke={s.color}
-            strokeWidth="1.75"
+            strokeWidth={1}
             strokeLinejoin="round"
+            vectorEffect="nonScalingStroke"
           />
         ))}
         {hi != null &&

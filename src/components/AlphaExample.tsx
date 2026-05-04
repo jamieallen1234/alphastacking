@@ -30,14 +30,14 @@ function fmtTrPct(x: number): string {
 export default function AlphaExample({ edition }: { edition: 'us' | 'ca' }) {
   const learnHref = learnPath(edition === 'ca')
   return (
-    <section className={styles.section}>
+    <section className={styles.section} aria-labelledby="home-alpha-example-heading">
+      <h2 id="home-alpha-example-heading" className={styles.label}>
+        Illustrative Example
+      </h2>
       <p className={styles.lede}>
         $10k invested for ten years. One portfolio tracks the S&P 500 index total return. The other adds a
-        flat <strong>+3% alpha per year</strong>
-        {' '}
-        on top of the same S&P 500 index path. Through compounding the small incremental amounts turn
-        into big
-        outperformance.
+        flat +3% alpha per year on top of the same S&P 500 index path. Through compounding the small incremental
+        amounts turn into big outperformance.
       </p>
       <div className={styles.grid}>
         <div className={styles.card}>

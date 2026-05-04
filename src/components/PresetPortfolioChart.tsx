@@ -505,22 +505,23 @@ export default function PresetPortfolioChart({
           </>
         ) : null}
       </div>
-      <div className={styles.legend}>
-        <span className={styles.legendItem}>
-          <span className={styles.legendSwatch} style={{ background: 'var(--color-gold)' }} />
-          {portfolioLabel}
-        </span>
-        <span className={styles.legendItem}>
-          <span className={styles.legendSwatch} style={{ background: 'var(--color-blue)' }} />
-          {benchmarkSymbol}
-        </span>
+      <div className={styles.legendChartWrap}>
+        <div className={styles.legend}>
+          <span className={styles.legendItem}>
+            <span className={styles.legendSwatch} style={{ background: 'var(--color-gold)' }} />
+            {portfolioLabel}
+          </span>
+          <span className={styles.legendItem}>
+            <span className={styles.legendSwatch} style={{ background: 'var(--color-blue)' }} />
+            {benchmarkSymbol}
+          </span>
+        </div>
+        <ReturnLineChart
+          series={chartSeries}
+          timestampsSec={timestamps}
+          chartCurrency={chartCurrency}
+        />
       </div>
-      <ReturnLineChart
-        series={chartSeries}
-        timestampsSec={timestamps}
-        height={140}
-        chartCurrency={chartCurrency}
-      />
       {showScorecard ? (
         <div className={styles.scorecard}>
           <div className={styles.scorecardCols}>

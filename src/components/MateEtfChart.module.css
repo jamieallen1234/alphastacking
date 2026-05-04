@@ -13,7 +13,7 @@
   display: flex;
   gap: 1rem 2rem;
   flex-wrap: wrap;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.45rem;
 }
 
 .metricBig {
@@ -36,14 +36,31 @@
   color: var(--color-text-faint);
 }
 
+.legendChartWrap {
+  position: relative;
+}
+
 .legend {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin: 0.4rem 0 0.7rem;
+  margin: 0;
+  max-width: min(100%, 20rem);
+  padding: 0.2rem 0.65rem 0.35rem 0;
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--color-text-muted);
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-bg-elevated) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-bg-elevated) 45%, transparent) 72%,
+    transparent 100%
+  );
 }
 
 .legendSwatch {

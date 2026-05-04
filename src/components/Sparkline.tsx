@@ -16,8 +16,9 @@ export default function Sparkline({ points, color }: SparklineProps) {
         points={points}
         fill="none"
         stroke={color}
-        strokeWidth="1.5"
+        strokeWidth={1}
         strokeLinejoin="round"
+        vectorEffect="nonScalingStroke"
       />
       <polyline
         points={`${points} 200,60 0,60`}

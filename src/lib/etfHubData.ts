@@ -124,12 +124,6 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Large-cap U.S. equity stacked with a systematic futures yield (carry) sleeve.',
       '/us-etfs/rssy'
     ),
-    us(
-      'gdmn',
-      'GDMN — WisdomTree Efficient Gold Plus Gold Miners Strategy Fund',
-      'Stacks gold miners equity with a leveraged gold-futures sleeve for a concentrated precious-metals expression.',
-      usPath('gdmn')
-    ),
   ],
   'return-stacked-lt-2x': [
     us(
@@ -143,6 +137,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'GDE — WisdomTree Efficient Gold Plus Equity Strategy Fund',
       'Capital-efficient sleeve: large-cap U.S. equities with a layered gold futures overlay (~90/90 notional).',
       usPath('gde')
+    ),
+    us(
+      'gdmn',
+      'GDMN — WisdomTree Efficient Gold Plus Gold Miners Strategy Fund',
+      'Stacks gold miners equity with a leveraged gold-futures sleeve for a concentrated precious-metals expression.',
+      usPath('gdmn')
     ),
   ],
   'premia-systematic-alternatives': [

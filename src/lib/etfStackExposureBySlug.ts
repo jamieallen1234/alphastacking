@@ -86,8 +86,8 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
   },
   gdmn: {
     components: [
-      { name: 'Gold miners equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
-      { name: 'Gold futures', pct: 100, bucket: 'alpha', assetClass: 'commodity' },
+      { name: 'Gold miners equity', pct: 90, bucket: 'capital', assetClass: 'equity' },
+      { name: 'Gold futures', pct: 90, bucket: 'alpha', assetClass: 'commodity' },
     ],
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'GDX',

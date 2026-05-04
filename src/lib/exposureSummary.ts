@@ -41,7 +41,7 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   // Stacked / capital-efficient
   NTSD: { longEquityPct: 150, shortEquityPct: 0, alphaPct: 0 },
   GDE: { longEquityPct: 80, shortEquityPct: 0, alphaPct: 80 },
-  GDMN: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
+  GDMN: { longEquityPct: 90, shortEquityPct: 0, alphaPct: 90 },
   MATE: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
   RSST: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
   RSSY: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },

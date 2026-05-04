@@ -45,7 +45,7 @@ export default function LearnPage({ edition }: { edition: LearnPageEdition }) {
       eyebrow: 'Strategy comparison',
       read: '~7 min read',
       title: 'Why alpha stacking',
-      deck: 'How alpha stacking compares to index funds, return stacking, all-weather portfolios, and leveraged ETFs — with a clear \u201cwhen each wins\u201d for every comparison.',
+      deck: 'How alpha stacking compares to index funds, return stacking, all-weather portfolios, and leveraged ETFs, with a plain language read on when each option tends to fit.',
     },
     {
       href: learnArticlePath(isCa, EFFICIENCY_GRADES_SLUG),

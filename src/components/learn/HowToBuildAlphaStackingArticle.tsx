@@ -18,9 +18,9 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
         </div>
         <h1 className={styles.title}>How to build an alpha stacking portfolio</h1>
         <p className={styles.deck}>
-          Equity is the core. Everything else is sized around it: trend-following, long/short, and
-          macro strategies that can earn when stocks aren&apos;t. Construction logic first, then a
-          worked portfolio example.
+          Equity is the core. Everything else is sized around it: trend-following, long/short, and macro
+          sleeves that can earn when stocks aren&apos;t. Construction logic first, then a worked portfolio
+          example.
         </p>
       </header>
 
@@ -54,10 +54,10 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
           <div className={styles.principle}>
             <span className={styles.principleLabel}>1. Equity: the core sleeve</span>
             <p className={styles.principleText}>
-              Equity beta drives the majority of long-run return. In leveraged alpha stacks the
-              equity sleeve is often a 2&times; or 3&times; leveraged ETF (SSO, UPRO, SPXL), sized
-              smaller so the portfolio still behaves roughly like owning the S&amp;P 500. In
-              non-leveraged builds, it&apos;s SPY, QQQ, or a factor ETF like AVUV or SPMO.
+              Equity beta drives the majority of long-run return. In leveraged alpha stacks the equity
+              sleeve is often a 2&times; or 3&times; leveraged ETF (SSO, UPRO, SPXL), sized smaller so the
+              portfolio still behaves roughly like owning the S&amp;P 500. In non-leveraged builds, it&apos;s
+              SPY, QQQ, or a factor ETF like AVUV or SPMO.
             </p>
           </div>
           <div className={styles.principle}>
@@ -126,8 +126,8 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
           independent edge.
         </p>
         <p className={styles.body}>
-          The model rebalances annually. Daily-resetting leverage drifts over time, and annual
-          rebalancing keeps the beta target intact. Use it as a starting point in the{' '}
+          The model rebalances annually. Daily-resetting leverage drifts over time, and annual rebalancing
+          keeps the beta target intact. Use it as a starting point in the{' '}
           <Link href={builderHref} className={styles.inlineLink}>
             portfolio builder
           </Link>
@@ -138,10 +138,11 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
 
       <section className={styles.section} aria-labelledby="s5">
         <h2 id="s5" className={styles.sectionTitle}>
-          Alpha stacking vs. the index
+          Alpha stacking vs the index
         </h2>
         <p className={styles.body}>
-          Both approaches have real arguments. Here&apos;s where each one wins.
+          Neither choice dominates every situation. The split is mostly horizon and how much complexity
+          you will run.
         </p>
         <div className={styles.principles}>
           <div className={styles.principle}>
@@ -149,7 +150,7 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
             <p className={styles.principleText}>
               An index fund needs stocks to go up. Alpha stacking carries sleeves that can earn
               when they don&apos;t. In 2022, when the S&amp;P 500 fell 18% and bonds fell 13%,
-              managed futures ETFs gained 20–30%. In the lost decade of 2000–2010, systematic macro
+              managed futures ETFs gained about 20% to 30%. In the lost decade from 2000 to 2010, systematic macro
               and long/short outperformed. A multi-sleeve portfolio doesn&apos;t need any single
               regime to cooperate.
             </p>
@@ -164,12 +165,12 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
             </p>
           </div>
           <div className={styles.principle}>
-            <span className={styles.principleLabel}>Who the tradeoff favors</span>
+            <span className={styles.principleLabel}>Who the trade-off favors</span>
             <p className={styles.principleText}>
-              Alpha stacking makes the most sense over medium-term horizons (10–20 years), or when
-              sequence-of-return risk is real: near retirement, in distribution phase, or when a
-              major drawdown would change your plan. An index fund makes the most sense when your
-              horizon is genuinely long and you can afford to ignore the ride.
+              Alpha stacking makes the most sense over medium-term horizons (about 10 to 20 years), or when
+              sequence-of-return risk matters: near retirement, in distribution phase, or when a major
+              drawdown would change your plan. An index fund makes the most sense when your horizon is long
+              and you can ignore the ride.
             </p>
           </div>
         </div>
@@ -184,12 +185,12 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
           <Link href={etfHref} className={styles.inlineLink}>
             ETF pages
           </Link>{' '}
-          for each holding, and rebuild it in the portfolio builder to see the historical numbers.
-          That process makes the construction logic real in a way reading about it doesn&apos;t.
+          for each holding, and rebuild it in the portfolio builder to see the historical numbers. Typing
+          the weights turns the story into a chart you can inspect.
         </p>
         <p className={styles.body}>
-          The Capital and Alpha Efficiency grades on each ETF page are a useful filter: they show
-          whether a fund is actually delivering on its role after costs.
+          The Capital and Alpha Efficiency grades on each ETF page are a useful filter: they show whether a
+          fund is delivering on its role after costs.
         </p>
       </section>
 

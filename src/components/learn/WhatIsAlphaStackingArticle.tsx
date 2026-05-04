@@ -38,12 +38,10 @@ export default function WhatIsAlphaStackingArticle({ edition }: { edition: 'us' 
           capital.
         </p>
         <p className={styles.body}>
-          The strategies that qualify are the ones whose returns genuinely don&apos;t depend on
-          stocks going up: managed futures, which trend-follows across rates, currencies, and
-          commodities; long/short equity, which earns from winners beating losers regardless of
-          market direction; systematic macro, which trades rate and currency movements; merger
-          arbitrage, which earns from deal spreads closing. Each earns from something equity
-          doesn&apos;t.
+          Examples include managed futures, which follow trends across rates, currencies, and
+          commodities; long/short equity, which earns when winners beat losers regardless of market
+          direction; systematic macro, which trades rate and currency moves; merger arbitrage,
+          which earns as deal spreads close. Each can pay when plain equity does not.
         </p>
       </section>
 
@@ -52,8 +50,8 @@ export default function WhatIsAlphaStackingArticle({ edition }: { edition: 'us' 
           How the same capital holds multiple exposures
         </h2>
         <p className={styles.body}>
-          Normally, adding an alternative sleeve means selling equity to make room. That trade-off
-          is real: every dollar in managed futures is a dollar not in stocks. Alpha stacking avoids
+          Normally, adding an alternative sleeve means selling equity to make room. That trade-off is
+          real: every dollar in managed futures is a dollar not in stocks. Alpha stacking avoids
           it through <strong>capital efficiency</strong>: leveraged ETFs and return-stacked funds
           use derivatives to hold more than one exposure on the same dollar of capital.
         </p>

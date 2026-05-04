@@ -16,8 +16,8 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
         </div>
         <h1 className={styles.title}>Why alpha stacking</h1>
         <p className={styles.deck}>
-          Four comparisons: index funds, return stacking, all-weather portfolios, and leveraged
-          ETFs alone. Each one covers where each approach has the edge.
+          Four comparisons: index funds, return stacking, all-weather portfolios, and leveraged ETFs
+          on their own. Each section spells out when that option tends to fit.
         </p>
       </header>
 
@@ -31,18 +31,17 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           can hold through anything, it&apos;s the right call.
         </p>
         <p className={styles.body}>
-          Alpha stacking has an edge when the horizon is shorter, sequence-of-return risk is real,
-          or a major drawdown would change the plan. A 25% max drawdown is easier to hold through
-          than 50%, regardless of what the long-run averages say.
+          Alpha stacking has an edge when the horizon is shorter, sequence-of-return risk is material,
+          or a major drawdown would change the plan. A 25% max drawdown is easier to hold through than
+          50%, regardless of what long-run averages say.
         </p>
         <p className={styles.body}>
           <strong>Index funds win when</strong> you have decades, can hold through anything, and
           want the lowest possible cost and complexity.
         </p>
         <p className={styles.body}>
-          <strong>Alpha stacking wins when</strong> consistent compounding matters more than
-          maximum long-run return: shorter horizons, near retirement, or when a major drawdown
-          would change your plan.
+          <strong>Alpha stacking wins when</strong> consistent compounding matters more than maximum
+          long-run return: shorter horizons, near retirement, or when a major drawdown would change your plan.
         </p>
       </section>
 
@@ -57,15 +56,15 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           futures for every $1 invested. That&apos;s the mechanism.
         </p>
         <p className={styles.body}>
-          But a single return-stacked fund isn&apos;t the same as an alpha stacking portfolio.
-          Most stack one thing on top of equity beta: usually trend or bonds. If that sleeve goes
-          quiet for a few years (managed futures earned nothing 2012–2019), you&apos;re holding a
-          more expensive version of SPY. With one stacked sleeve, equity still dominates.
+          But a single return-stacked fund isn&apos;t the same as an alpha stacking portfolio. Most stack one
+          thing on top of equity beta: usually trend or bonds. If that sleeve goes quiet for a few years
+          (managed futures earned nothing from 2012 to 2019), you&apos;re holding a more expensive version of
+          SPY. With one stacked sleeve, equity still dominates.
         </p>
         <p className={styles.body}>
-          Alpha stacking uses the same capital-efficiency technique but asks the harder question:
-          which return sources have genuine independent edges when equity doesn&apos;t earn? It uses
-          multiple sleeves so no single one going quiet kills the thesis.
+          Alpha stacking uses the same capital-efficiency technique but asks which return sources have
+          independent edges when equity does not earn. It uses multiple sleeves so one quiet stretch does
+          not end the thesis.
         </p>
         <div className={styles.compareGrid}>
           <div className={styles.compareCard}>
@@ -98,8 +97,8 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           stacked fund is a meaningful improvement over holding SPY alone.
         </p>
         <p className={styles.body}>
-          <strong>Alpha stacking wins when</strong> you want multiple genuinely independent return
-          sleeves and are willing to manage a multi-sleeve portfolio to get them.
+          <strong>Alpha stacking wins when</strong> you want several independent return sleeves and will
+          run a portfolio with more than one moving part.
         </p>
       </section>
 
@@ -108,9 +107,9 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           vs. all-weather portfolios
         </h2>
         <p className={styles.body}>
-          All-weather portfolios (Dalio&apos;s original and its derivatives) hold equities, long
-          bonds, gold, and commodities weighted so something works in every economic regime. You
-          don&apos;t need to predict the environment.
+          All-weather portfolios (Dalio&apos;s original and its derivatives) hold equities, long bonds,
+          gold, and commodities weighted so something works in every economic regime. You do not need to
+          predict the environment.
         </p>
         <p className={styles.body}>
           The trade-off is return. All-weather holds a lot of bonds and gold relative to equity.
@@ -119,12 +118,12 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           in bull markets.
         </p>
         <p className={styles.body}>
-          <strong>All-weather wins when</strong> maximum downside protection matters more than
-          growth, and an investor is willing to give up most of the upside to get it.
+          <strong>All-weather wins when</strong> maximum downside protection matters more than growth,
+          and an investor is willing to give up most of the upside to get it.
         </p>
         <p className={styles.body}>
-          <strong>Alpha stacking wins when</strong> the goal is equity-like returns with better
-          drawdown management, not sacrificing the majority of the upside to limit the downside.
+          <strong>Alpha stacking wins when</strong> the goal is returns in line with a broad equity index,
+          with better drawdown management, without giving up most of the upside to cap the downside.
         </p>
       </section>
 
@@ -138,10 +137,9 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           the drawdown you had to survive to participate in the recovery.
         </p>
         <p className={styles.body}>
-          LETFs also have daily-reset mechanics that create volatility drag in choppy markets: a
-          fund that falls 10% then rises 10% ends about 1% below where it started. They work best
-          in sustained, low-volatility uptrends, and require conviction you won&apos;t sell during
-          a major drawdown.
+          LETFs also have daily-reset mechanics that create volatility drag in choppy markets. A fund that
+          falls 10% then rises 10% ends about 1% below where it started. They work best in sustained,
+          low-volatility uptrends, and require conviction you won&apos;t sell during a major drawdown.
         </p>
         <p className={styles.body}>
           Alpha stacking uses leveraged ETFs as the equity sleeve but sizes them alongside
@@ -153,8 +151,8 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           tolerance, and conviction that equity bull markets will continue.
         </p>
         <p className={styles.body}>
-          <strong>Alpha stacking wins when</strong> you want the return-boosting benefits of
-          leverage without concentrating all your risk in one levered equity bet.
+          <strong>Alpha stacking wins when</strong> you want more return from leverage without concentrating
+          all your risk in one levered equity bet.
         </p>
       </section>
 

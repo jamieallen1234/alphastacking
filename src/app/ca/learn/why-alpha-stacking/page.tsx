@@ -5,7 +5,7 @@ import WhyAlphaStackingArticle from '@/components/learn/WhyAlphaStackingArticle'
 export const metadata: Metadata = {
   title: 'Why alpha stacking | Learn | Alpha Stacking (Canadian edition)',
   description:
-    'How alpha stacking compares to index funds, return stacking, all-weather portfolios, and leveraged ETFs. One clear "when each wins" for every comparison.',
+    'How alpha stacking compares to index funds, return stacking, all-weather portfolios, and leveraged ETFs, with a plain language read on when each option tends to fit.',
 }
 
 export default function CaWhyAlphaStackingPage() {

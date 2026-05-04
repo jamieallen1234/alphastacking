@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import PresetPortfolioChart from '@/components/PresetPortfolioChart'
-import type { HomePortfolioChartSlot } from '@/lib/loadHomePortfolioCharts'
+import { homeChartPayloadIsRenderable, type HomePortfolioChartSlot } from '@/lib/loadHomePortfolioCharts'
 import styles from './HomePortfolioCharts.module.css'
 
 export interface HomePortfolioChartsProps {
@@ -12,8 +12,8 @@ export default function HomePortfolioCharts({ variant, slots }: HomePortfolioCha
   const hubHref = variant === 'us' ? '/portfolios' : '/ca/portfolios'
   const lede =
     variant === 'us'
-      ? 'Two live US models from the hub. Full overlapping history vs SPY — same weights as the portfolio detail pages, which offer additional range tabs.'
-      : 'Two CAD hub models vs SPY — full history, TSX-heavy sleeves, modeled in CAD. Same weights as each portfolio detail page.'
+      ? 'Growth & value barbell from the hub. Full overlapping history vs the S&P 500 index — same weights as the portfolio detail page, which offers additional range tabs.'
+      : 'Global + Long/Short from the CAD hub. Full history vs the S&P 500 index, modeled in CAD — same weights as the portfolio detail page, which offers additional range tabs.'
 
   return (
     <section className={styles.section} aria-labelledby="home-portfolio-charts-heading">
@@ -21,7 +21,7 @@ export default function HomePortfolioCharts({ variant, slots }: HomePortfolioCha
         Model portfolios
       </h2>
       <p className={styles.lede}>{lede}</p>
-      <div className={styles.chartGrid}>
+      <div className={`${styles.chartGrid}${slots.length === 1 ? ` ${styles.chartGridSingle}` : ''}`}>
         {slots.map((slot) => (
           <article key={slot.slug} className={styles.card}>
             <div className={styles.cardHeader}>
@@ -33,7 +33,7 @@ export default function HomePortfolioCharts({ variant, slots }: HomePortfolioCha
               <p className={styles.cardDesc}>{slot.description}</p>
             </div>
             <h4 className={styles.chartHeading}>{slot.chartHeading}</h4>
-            {slot.payload.chartStartDate ? (
+            {homeChartPayloadIsRenderable(slot.payload) ? (
               <PresetPortfolioChart
                 payload={slot.payload}
                 portfolioLabel={slot.title}

@@ -22,7 +22,9 @@ export default function Hero({ variant = 'us' }: HeroProps) {
 
       <p className={`${styles.sub} animate animate-3`}>
         <span className={styles.subHighlightWhite}>Alpha</span>
-        <span className={styles.subHighlightGold}> stacking</span> takes the strongest ideas from different proven strategies&mdash;long/short
+        <span className={styles.subHighlightGold}> stacking</span>
+        {' '}
+        takes the strongest ideas from different proven strategies&mdash;long/short
         equity, global macro, managed futures, risk premia, systematic alternatives&mdash;and combines them
         on top of equity. The aim is a whole portfolio that can seek excess return in bull, bear, and sideways
         or choppy markets alike, without treating &ldquo;more equity beta&rdquo; as the only dial for performance.

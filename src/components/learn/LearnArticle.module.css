@@ -10,6 +10,51 @@
   box-sizing: border-box;
 }
 
+.shellNav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+}
+
+.shellSeries {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.65rem;
+  max-width: 26rem;
+  justify-content: flex-end;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.shellSeriesLink {
+  color: rgba(232, 228, 220, 0.72);
+  text-decoration: none;
+  line-height: 1.35;
+}
+
+.shellSeriesLink:hover {
+  color: var(--color-gold-hover);
+}
+
+.shellSeriesMuted {
+  color: rgba(232, 228, 220, 0.32);
+}
+
+.shellSeriesSep {
+  color: rgba(232, 228, 220, 0.22);
+  user-select: none;
+}
+
+.shellSeriesDir {
+  font-size: 11px;
+}
+
 .shellBack {
   display: inline-flex;
   align-items: center;

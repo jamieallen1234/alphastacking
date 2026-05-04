@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import LearnArticleShell from '@/components/learn/LearnArticleShell'
 import EtfPagesPortfolioBuilder101Article from '@/components/learn/EtfPagesPortfolioBuilder101Article'
+import { ETF_PAGES_BUILDER_101_SLUG } from '@/lib/learnArticles'
 
 export const metadata: Metadata = {
   title: 'ETF pages & portfolio builder | Learn | Alpha Stacking (Canadian edition)',
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function CaEtfPagesPortfolioBuilder101Page() {
   return (
-    <LearnArticleShell edition="ca">
+    <LearnArticleShell edition="ca" currentSlug={ETF_PAGES_BUILDER_101_SLUG}>
       <EtfPagesPortfolioBuilder101Article edition="ca" />
     </LearnArticleShell>
   )

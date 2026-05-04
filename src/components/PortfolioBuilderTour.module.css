@@ -1,0 +1,213 @@
+/** Fills document scroll height so absolute backdrop + popover sit in page space (scroll with content). */
+.tourMount {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 12000;
+  pointer-events: none;
+}
+
+.tourMount > * {
+  pointer-events: auto;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(8, 8, 10, 0.55);
+  border: none;
+  padding: 0;
+  cursor: default;
+}
+
+.popover {
+  --tour-popover-edge: rgba(232, 228, 220, 0.18);
+  --tour-arrow-stroke: rgba(232, 228, 220, 0.22);
+  --tour-arrow-half: 16px;
+  position: absolute;
+  z-index: 1;
+  width: min(20rem, calc(100vw - 2rem));
+  padding: 1rem 1.1rem 1.05rem;
+  background: var(--color-bg-elevated, #141416);
+  border: none;
+  border-radius: 4px;
+  /* Hairline + depth — no stroke gap at the arrow; pointer sits cleanly on one continuous shape. */
+  box-shadow:
+    0 0 0 0.5px var(--tour-popover-edge),
+    0 12px 40px rgba(0, 0, 0, 0.45);
+  overflow: visible;
+  box-sizing: border-box;
+  isolation: isolate;
+}
+
+/** Welcome step: same chrome as popover, no pointer. */
+.popoverNoArrow {
+  border: none;
+}
+
+/* Pointer triangles toward the highlighted element (border + fill); above panel stacking */
+.popoverArrowOuter,
+.popoverArrowInner {
+  position: absolute;
+  left: var(--tour-arrow-left, 160px);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.popoverPlacementBelow .popoverArrowOuter {
+  top: 0;
+  transform: translate(-50%, -100%);
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-bottom: 16px solid var(--tour-arrow-stroke);
+}
+
+.popoverPlacementBelow .popoverArrowInner {
+  top: 1px;
+  transform: translate(-50%, -100%);
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 14px solid var(--color-bg-elevated, #141416);
+}
+
+.popoverPlacementAbove .popoverArrowOuter {
+  bottom: 0;
+  transform: translate(-50%, 100%);
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 16px solid var(--tour-arrow-stroke);
+}
+
+.popoverPlacementAbove .popoverArrowInner {
+  bottom: 1px;
+  transform: translate(-50%, 100%);
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 14px solid var(--color-bg-elevated, #141416);
+}
+
+.popover:focus {
+  outline: 2px solid rgba(232, 228, 220, 0.35);
+  outline-offset: 2px;
+}
+
+.popoverTitle {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin: 0 0 0.5rem;
+}
+
+.popoverBody {
+  position: relative;
+  z-index: 2;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+  margin: 0 0 1rem;
+}
+
+.popoverHint {
+  position: relative;
+  z-index: 2;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(232, 228, 220, 0.45);
+  margin: -0.35rem 0 1rem;
+}
+
+.popoverActions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.popoverBtn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.85rem;
+  border-radius: 2px;
+  border: 0.5px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.popoverBtn:hover {
+  color: var(--color-text);
+  border-color: rgba(232, 228, 220, 0.28);
+}
+
+.popoverBtnPrimary {
+  background: var(--color-gold);
+  color: var(--color-bg);
+  border-color: transparent;
+}
+
+.popoverBtnPrimary:hover {
+  background: var(--color-gold-hover);
+  color: var(--color-bg);
+}
+
+.popoverBtnPrimary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.popoverLearn {
+  position: relative;
+  z-index: 2;
+  font-size: 12px;
+  margin-top: 0.75rem;
+}
+
+.popoverLearn a {
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.popoverLearn a:hover {
+  color: var(--color-gold-hover);
+}
+
+.helperRow {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.helperLink {
+  color: rgba(232, 228, 220, 0.55);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.helperLink:hover {
+  color: var(--color-gold-hover);
+}

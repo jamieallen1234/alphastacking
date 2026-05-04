@@ -35,7 +35,26 @@
   color: rgba(232, 228, 220, 0.78);
   max-width: 40rem;
   line-height: 1.65;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.builderCue {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(232, 228, 220, 0.58);
+  max-width: 42rem;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+}
+
+.builderCue a {
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.builderCue a:hover {
+  color: var(--color-gold-hover);
 }
 
 .grid {
@@ -206,6 +225,22 @@
   line-height: 1.65;
   max-width: 40rem;
   margin-bottom: 0.5rem;
+}
+
+.detailLearnCue {
+  font-size: 13px;
+  margin: 0 0 1.25rem;
+  max-width: 40rem;
+}
+
+.detailLearnCue a {
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.detailLearnCue a:hover {
+  color: var(--color-gold-hover);
 }
 
 .chartHeading {

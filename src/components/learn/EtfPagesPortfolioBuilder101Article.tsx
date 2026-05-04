@@ -19,7 +19,7 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
     <article className={styles.article}>
       <header>
         <div className={styles.headerRow}>
-          <span className={styles.eyebrow}>Getting started</span>
+          <span className={styles.eyebrow}>Site guide</span>
           <span className={styles.readTime}>~5 min read</span>
         </div>
         <h1 className={styles.title}>ETF pages, model portfolios, and the portfolio builder</h1>
@@ -34,15 +34,22 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
           Start from the ETF hubs
         </h2>
         <p className={styles.body}>
+          If you&apos;re new to ETFs: a <strong>ticker</strong> (SPY, VFV, etc.) is the symbol for a fund on an
+          exchange. Our write-ups describe what each fund does — they are educational only, not a recommendation to
+          buy or sell anything.
+        </p>
+        <p className={styles.body}>
           The ETF hubs list every fund we&apos;ve written up with live price history.{' '}
-          <Link href="/us-etfs" className={styles.inlineLink}>
+          <Link href={usEtfHubHref} className={styles.inlineLink}>
             US ETFs
           </Link>{' '}
           covers US-listed names on both editions.{' '}
           <Link href={caEtfHubHref} className={styles.inlineLink}>
             CA ETFs
           </Link>{' '}
-          covers Canadian-listed funds on the Canadian edition.
+          covers Canadian-listed funds on the Canadian edition. Use CA ETFs when you care about
+          Canadian-listed products and quotes; use US ETFs when you hold or research US-listed funds (many
+          investors use both).
         </p>
         <p className={styles.body}>
           Each page covers what the fund does, who runs it, and when it tends to earn, plus a total-return

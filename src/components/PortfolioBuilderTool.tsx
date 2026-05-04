@@ -13,6 +13,8 @@ import type { PortfolioPrefillHolding } from '@/lib/portfolioBuilderPrefill'
 import { portfolioHasMeaningfulAlphaOrAltsExposure } from '@/lib/portfolioBuilderHasAlphaAltsExposure'
 import { buildExposureSummaryFromWeightedTickers } from '@/lib/exposureSummary'
 import type { YahooRange } from '@/lib/yahooFinance'
+import { shouldPrefillNewRowWeightForPortfolioTutorial } from '@/lib/portfolioBuilderTutorialNewRow'
+import PortfolioBuilderTour from '@/components/PortfolioBuilderTour'
 import styles from './PortfolioBuilderTool.module.css'
 
 type EfficiencyKind = 'capital' | 'alpha' | 'stacked' | 'all'
@@ -40,10 +42,7 @@ function newRow(id: number): BuilderRow {
 }
 
 function defaultRows(): BuilderRow[] {
-  return [
-    { ...newRow(1), efficiencyKind: 'capital', allocation: '50' },
-    { ...newRow(2), efficiencyKind: 'alpha', allocation: '50' },
-  ]
+  return [{ ...newRow(1), efficiencyKind: 'capital', allocation: '50' }]
 }
 
 function prefillRowsFromHoldings(holdings: PortfolioPrefillHolding[]): BuilderRow[] {
@@ -340,7 +339,7 @@ export default function PortfolioBuilderTool({
     if (initialPrefill && initialPrefill.length > 0) {
       return initialPrefill.length + 1
     }
-    return 3
+    return 2
   })
   const [payload, setPayload] = useState<PortfolioChartPayload | null>(null)
   const [activeRange, setActiveRange] = useState<YahooRange>('1y')
@@ -364,6 +363,12 @@ export default function PortfolioBuilderTool({
     [rows]
   )
   const allocationValid = totalAllocation === 100
+  const firstRowComplete = useMemo(() => {
+    const r = rows[0]
+    if (!r) return false
+    const pct = parseAllocation(r.allocation)
+    return pct != null && pct > 0 && Boolean(r.symbol?.trim())
+  }, [rows])
   const weightedBeta = useMemo(
     () => weightedPortfolioBeta(rows, options),
     [rows, options]
@@ -453,10 +458,15 @@ export default function PortfolioBuilderTool({
   const addRow = useCallback(() => {
     setRows((prev) => {
       if (prev.length >= MAX_ROWS) return prev
-      return [...prev, newRow(nextId)]
+      const allocation = shouldPrefillNewRowWeightForPortfolioTutorial(edition) ? '50' : ''
+      /** Additional lines default to Alpha efficiency — alpha-sleeve tip after + */
+      return [
+        ...prev,
+        { ...newRow(nextId), allocation, efficiencyKind: 'alpha', category: 'all', symbol: '' },
+      ]
     })
     setNextId((n) => n + 1)
-  }, [nextId])
+  }, [edition, nextId])
 
   const updateRow = useCallback((id: string, patch: Partial<BuilderRow>) => {
     setRows((prev) => prev.map((r) => (r.id === id ? { ...r, ...patch } : r)))
@@ -468,7 +478,7 @@ export default function PortfolioBuilderTool({
 
   const resetAll = useCallback(() => {
     setRows(defaultRows())
-    setNextId(3)
+    setNextId(2)
     setPayload(null)
     setError(null)
     setActiveRange('1y')
@@ -481,17 +491,20 @@ export default function PortfolioBuilderTool({
       </div>
 
       <div className={styles.rowList}>
+        <div id="portfolio-builder-tour-intro" className={styles.tourIntroAnchor} aria-hidden="true" />
         <div className={styles.holdingHeadWrap}>
           <div className={styles.holdingHeadInner}>
             <div className={styles.holdingRow}>
               <div className={styles.colHead} id="portfolio-builder-h-alloc">
-                Portfolio %
+                WEIGHT
               </div>
-              <div className={styles.colHead} id="portfolio-builder-h-eff">
-                Efficiency
-              </div>
-              <div className={styles.colHead} id="portfolio-builder-h-category">
-                Category
+              <div className={styles.filterHeadPair} id="portfolio-builder-tour-filters">
+                <div className={styles.colHead} id="portfolio-builder-h-eff">
+                  Efficiency
+                </div>
+                <div className={styles.colHead} id="portfolio-builder-h-category">
+                  Category
+                </div>
               </div>
               <div className={styles.colHead} id="portfolio-builder-h-etf">
                 ETF
@@ -504,20 +517,57 @@ export default function PortfolioBuilderTool({
           <div className={styles.holdingSideRail} aria-hidden="true" />
         </div>
 
-        {rows.map((row) => {
+        {rows.map((row, rowIndex) => {
+          const isFirstRow = rowIndex === 0
           const categoryOptions = rowCategoryOptions(options, row)
           const isCategoryStillValid = row.category === 'all' || categoryOptions.some((o) => o.value === row.category)
           const eligible = rowEligibleOptions(options, row)
           const isSymbolStillValid = row.symbol && eligible.some((o) => o.symbol === row.symbol)
           const rowBetaText = formatRowBeta(row, options)
           const rowBetaMuted = rowBetaText === ''
+          const efficiencyCategoryCells = (
+            <>
+              <div className={styles.holdingCell}>
+                <BuilderThemedSelect
+                  id={
+                    rowIndex === rows.length - 1 && rowIndex > 0
+                      ? 'portfolio-builder-tour-new-row-eff'
+                      : `${row.id}-eff`
+                  }
+                  ariaLabelledBy="portfolio-builder-h-eff"
+                  value={row.efficiencyKind}
+                  options={[
+                    { value: 'all', label: 'All' },
+                    { value: 'capital', label: 'Equity' },
+                    { value: 'alpha', label: 'Alpha' },
+                    { value: 'stacked', label: 'Stacked' },
+                  ]}
+                  placeholder="All"
+                  onChange={(v) =>
+                    updateRow(row.id, { efficiencyKind: v as EfficiencyKind, category: 'all', symbol: '' })
+                  }
+                />
+              </div>
+
+              <div className={styles.holdingCell}>
+                <BuilderThemedSelect
+                  id={`${row.id}-category`}
+                  ariaLabelledBy="portfolio-builder-h-category"
+                  value={isCategoryStillValid ? row.category : 'all'}
+                  options={categoryOptions}
+                  placeholder="All"
+                  onChange={(category) => updateRow(row.id, { category, symbol: '' })}
+                />
+              </div>
+            </>
+          )
           return (
             <div key={row.id} className={styles.holdingWrap}>
               <fieldset className={styles.holding} aria-label="Portfolio line">
                 <div className={styles.holdingRow}>
                   <div className={styles.holdingCell}>
                     <input
-                      id={`${row.id}-alloc`}
+                      id={isFirstRow ? 'portfolio-builder-tour-first-alloc' : `${row.id}-alloc`}
                       className={styles.input}
                       inputMode="numeric"
                       pattern="[0-9]*"
@@ -530,37 +580,17 @@ export default function PortfolioBuilderTool({
                     />
                   </div>
 
-                  <div className={styles.holdingCell}>
-                    <BuilderThemedSelect
-                      id={`${row.id}-eff`}
-                      ariaLabelledBy="portfolio-builder-h-eff"
-                      value={row.efficiencyKind}
-                      options={[
-                        { value: 'all', label: 'All' },
-                        { value: 'capital', label: 'Equity' },
-                        { value: 'alpha', label: 'Alpha' },
-                        { value: 'stacked', label: 'Stacked' },
-                      ]}
-                      placeholder="All"
-                      onChange={(v) =>
-                        updateRow(row.id, { efficiencyKind: v as EfficiencyKind, category: 'all', symbol: '' })
-                      }
-                    />
-                  </div>
-
-                  <div className={styles.holdingCell}>
-                    <BuilderThemedSelect
-                      id={`${row.id}-category`}
-                      ariaLabelledBy="portfolio-builder-h-category"
-                      value={isCategoryStillValid ? row.category : 'all'}
-                      options={categoryOptions}
-                      placeholder="All"
-                      onChange={(category) => updateRow(row.id, { category, symbol: '' })}
-                    />
-                  </div>
+                  {isFirstRow ? (
+                    <div className={styles.firstRowFilterPair} id="portfolio-builder-tour-first-filters">
+                      {efficiencyCategoryCells}
+                    </div>
+                  ) : (
+                    efficiencyCategoryCells
+                  )}
 
                   <div
                     className={`${styles.holdingCell} ${styles.holdingCellGrow} ${styles.holdingCellSleeve}`}
+                    id={isFirstRow ? 'portfolio-builder-tour-first-etf' : undefined}
                   >
                     <span id={`${row.id}-sleeve-ctx`} className={styles.srOnly}>
                       {row.efficiencyKind} sleeve
@@ -654,6 +684,7 @@ export default function PortfolioBuilderTool({
             </fieldset>
             <div className={styles.holdingSideRail}>
               <button
+                id="portfolio-builder-tour-add-row"
                 type="button"
                 className={`${styles.btn} ${styles.btnSquareIcon}`}
                 onClick={addRow}
@@ -670,6 +701,7 @@ export default function PortfolioBuilderTool({
 
       <div className={styles.controls}>
         <button
+          id="portfolio-builder-tour-generate"
           type="button"
           className={`${styles.btn} ${styles.btnPrimary}`}
           disabled={!canGenerate}
@@ -730,6 +762,14 @@ export default function PortfolioBuilderTool({
           />
         </>
       ) : null}
+
+      <PortfolioBuilderTour
+        edition={edition}
+        suppressAutoTour={Boolean(initialPrefill && initialPrefill.length > 0)}
+        firstRowComplete={firstRowComplete}
+        canGenerate={canGenerate}
+        rowCount={rows.length}
+      />
     </div>
   )
 }

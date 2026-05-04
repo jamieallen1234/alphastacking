@@ -3,7 +3,7 @@ import LearnPage from '@/components/LearnPage'
 export const metadata = {
   title: 'Learn | Alpha Stacking (Canadian edition)',
   description:
-    'Articles on alpha stacking for Canadian investors: how to build a portfolio, how it compares to index funds and other strategies, and what the efficiency grades measure.',
+    'ETF-focused guides for Canadian investors: alpha stacking concepts, strategy comparisons, ETF pages and portfolio builder, construction basics, and efficiency grades.',
 }
 
 export default function CaLearnPage() {

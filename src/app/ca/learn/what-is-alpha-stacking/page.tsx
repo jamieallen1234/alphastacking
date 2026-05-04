@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import LearnArticleShell from '@/components/learn/LearnArticleShell'
 import WhatIsAlphaStackingArticle from '@/components/learn/WhatIsAlphaStackingArticle'
+import { WHAT_IS_ALPHA_SLUG } from '@/lib/learnArticles'
 
 export const metadata: Metadata = {
   title: 'What is alpha stacking | Learn | Alpha Stacking (Canadian edition)',
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function CaWhatIsAlphaStackingPage() {
   return (
-    <LearnArticleShell edition="ca">
+    <LearnArticleShell edition="ca" currentSlug={WHAT_IS_ALPHA_SLUG}>
       <WhatIsAlphaStackingArticle edition="ca" />
     </LearnArticleShell>
   )

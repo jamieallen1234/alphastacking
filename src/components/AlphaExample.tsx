@@ -32,18 +32,21 @@ export default function AlphaExample({ edition }: { edition: 'us' | 'ca' }) {
   return (
     <section className={styles.section}>
       <p className={styles.lede}>
-        $10k invested for ten years. One portfolio tracks SPY total return. The other adds a flat{' '}
-        <strong>+3% alpha per year</strong>{' '}
-        on top of the same SPY path. The gap is what consistent excess return compounds to.
+        $10k invested for ten years. One portfolio tracks the S&P 500 index total return. The other adds a
+        flat <strong>+3% alpha per year</strong>
+        {' '}
+        on top of the same S&P 500 index path. Through compounding the small incremental amounts turn
+        into big
+        outperformance.
       </p>
       <div className={styles.grid}>
         <div className={styles.card}>
-          <div className={styles.cardLabel}>S&amp;P 500 (SPY total return)</div>
+          <div className={styles.cardLabel}>S&P 500 index (total return)</div>
           <div className={styles.cardValue}>{fmtUsd(SPY_END_10K)}</div>
         </div>
         <div className={styles.card}>
           <div className={styles.cardLabel}>
-            Illustrative stacked portfolio (+3% alpha/yr vs S&amp;P 500)
+            Illustrative stacked portfolio (+3% alpha/yr vs S&P 500 index)
           </div>
           <div className={`${styles.cardValue} ${styles.cardValueHighlight}`}>
             {fmtUsd(SPY_PLUS_3PCT_ALPHA_END)}
@@ -52,7 +55,7 @@ export default function AlphaExample({ edition }: { edition: 'us' | 'ca' }) {
       </div>
       {EXCESS_ALPHA_PCT != null ? (
         <p className={styles.excessLine}>
-          <span className={styles.excessLabel}>Excess α vs S&amp;P 500</span>
+          <span className={styles.excessLabel}>Excess α vs S&P 500 index</span>
           <strong className={styles.excessVal}>{fmtTrPct(EXCESS_ALPHA_PCT)}</strong>
         </p>
       ) : null}

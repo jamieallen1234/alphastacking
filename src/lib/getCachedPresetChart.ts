@@ -59,7 +59,7 @@ export const getCachedUsInternationalChart = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     US_INTL_PRESET_ID,
     PRESET_CHART_RANGE,
     'synth-heql-mate-v1',
@@ -80,7 +80,7 @@ export const getCachedUsAdvancedChart = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     US_ADVANCED_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -102,7 +102,7 @@ export const getCachedCaInternationalChart = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     CA_INTL_PRESET_ID,
     PRESET_CHART_RANGE,
     'synth-heql-inception-2023-10-12',
@@ -126,7 +126,7 @@ export const getCachedUsCoreBuyHoldChart = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     US_CORE_BH_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -146,7 +146,7 @@ export const getCachedUsGdeClseBlendChart = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     US_GDE_CLSE_BLEND_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -168,7 +168,7 @@ export const getCachedCaCoreBuyHoldChart = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     CA_CORE_BH_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -193,7 +193,7 @@ export const getCachedCaUsslQqqlHdgeChart = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     CA_USSL_QQQL_HDGE_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -216,7 +216,7 @@ export const getCachedCaSsoDglmRgbmArbChart = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
     PRESET_CHART_RANGE,
     'notional-10k',
@@ -242,7 +242,7 @@ export const getCachedUsInternationalChartMax = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     US_INTL_PRESET_ID,
     PRESET_CHART_RANGE_MAX,
     'synth-heql-mate-v1',
@@ -264,7 +264,7 @@ export const getCachedCaInternationalChartMax = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     CA_INTL_PRESET_ID,
     PRESET_CHART_RANGE_MAX,
     'synth-heql-inception-2023-10-12',
@@ -288,7 +288,7 @@ export const getCachedUsCoreBuyHoldChartMax = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     US_CORE_BH_PRESET_ID,
     PRESET_CHART_RANGE_MAX,
     'notional-10k',
@@ -308,7 +308,7 @@ export const getCachedUsAdvancedChartMax = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     US_ADVANCED_PRESET_ID,
     PRESET_CHART_RANGE_MAX,
     'notional-10k',
@@ -330,7 +330,7 @@ export const getCachedCaCoreBuyHoldChartMax = unstable_cache(
     }),
   [
     'preset-chart',
-    'chart-proxy-v9',
+    'chart-proxy-v10',
     CA_CORE_BH_PRESET_ID,
     PRESET_CHART_RANGE_MAX,
     'notional-10k',

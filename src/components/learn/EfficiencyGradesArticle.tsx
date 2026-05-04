@@ -27,6 +27,10 @@ export default function EfficiencyGradesArticle({ edition }: { edition: 'us' | '
           Why two grades instead of one
         </h2>
         <p className={styles.body}>
+          Best after you&apos;ve skimmed at least one or two ETF pages — grades make more sense once you&apos;ve
+          seen them next to a fund&apos;s chart and write-up.
+        </p>
+        <p className={styles.body}>
           ETFs on this site play different roles. Some sit in the equity sleeve of a stack. Others
           provide diversifying return that doesn&apos;t depend on whether stocks go up.
           Grading both on the same scale misses the point.

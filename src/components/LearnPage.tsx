@@ -2,14 +2,7 @@ import Link from 'next/link'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import { homePath } from '@/lib/siteRegion'
-import {
-  WHAT_IS_ALPHA_SLUG,
-  ETF_PAGES_BUILDER_101_SLUG,
-  EFFICIENCY_GRADES_SLUG,
-  HOW_TO_BUILD_SLUG,
-  learnArticlePath,
-  WHY_ALPHA_STACKING_SLUG,
-} from '@/lib/learnArticles'
+import { LEARN_ARTICLES, learnArticlePath } from '@/lib/learnArticles'
 import styles from './LearnPage.module.css'
 
 export type LearnPageEdition = 'us' | 'ca'
@@ -18,43 +11,14 @@ export default function LearnPage({ edition }: { edition: LearnPageEdition }) {
   const isCa = edition === 'ca'
   const home = homePath(isCa)
 
-  const articles = [
-    {
-      href: learnArticlePath(isCa, WHAT_IS_ALPHA_SLUG),
-      eyebrow: 'Concepts',
-      read: '~3 min read',
-      title: 'What is alpha stacking',
-      deck: 'Equity plus return sources that earn when stocks don\u2019t. What the strategy is, how capital efficiency makes it possible, and definitions of the key terms.',
-    },
-    {
-      href: learnArticlePath(isCa, ETF_PAGES_BUILDER_101_SLUG),
-      eyebrow: 'Site guide',
-      read: '~5 min read',
-      title: 'ETF pages, model portfolios, and the portfolio builder',
-      deck: 'How to read each section of the site and move from ETF research to model weights to builder stress-tests.',
-    },
-    {
-      href: learnArticlePath(isCa, HOW_TO_BUILD_SLUG),
-      eyebrow: 'Portfolio construction',
-      read: '~6 min read',
-      title: 'How to build an alpha stacking portfolio',
-      deck: 'The four sleeve types, how total beta works, and a worked example using the US Alpha Stack model portfolio.',
-    },
-    {
-      href: learnArticlePath(isCa, WHY_ALPHA_STACKING_SLUG),
-      eyebrow: 'Strategy comparison',
-      read: '~7 min read',
-      title: 'Why alpha stacking',
-      deck: 'How alpha stacking compares to index funds, return stacking, all-weather portfolios, and leveraged ETFs, with a plain language read on when each option tends to fit.',
-    },
-    {
-      href: learnArticlePath(isCa, EFFICIENCY_GRADES_SLUG),
-      eyebrow: 'Reference',
-      read: '~5 min read',
-      title: 'Capital, Alpha, and Stacked Efficiency grades explained',
-      deck: 'What the letter grades on each ETF page measure, how they\u2019re calculated, and what they do not tell you.',
-    },
-  ]
+  const articles = LEARN_ARTICLES.map((a) => ({
+    ...a,
+    href: learnArticlePath(isCa, a.slug),
+  }))
+
+  const first = articles[0]
+  const second = articles[1]
+  const third = articles[2]
 
   return (
     <main className={styles.main}>
@@ -63,8 +27,30 @@ export default function LearnPage({ edition }: { edition: LearnPageEdition }) {
         <p className={styles.kicker}>Educational</p>
         <h1 className={styles.h1}>Learn</h1>
         <p className={styles.lede}>
-          Five articles, start to finish. Read them in order or jump to the one you need.
+          Five articles in a suggested order, or open any topic you need—for any investor, with ETFs as the
+          shared implementation lens across this site.
         </p>
+
+        {first && second && third ? (
+          <div className={styles.suggestedBox} role="note" aria-label="Suggested reading path">
+            <p className={styles.suggestedTitle}>Suggested start</p>
+            <p className={styles.suggestedBody}>
+              Start with{' '}
+              <Link href={first.href} className={styles.suggestedLink}>
+                {first.title}
+              </Link>
+              , then{' '}
+              <Link href={second.href} className={styles.suggestedLink}>
+                {second.title}
+              </Link>
+              , then{' '}
+              <Link href={third.href} className={styles.suggestedLink}>
+                {third.title}
+              </Link>
+              <span className={styles.suggestedTime}> (~15 min total)</span>.
+            </p>
+          </div>
+        ) : null}
 
         <ol className={styles.articleList}>
           {articles.map((a, i) => (

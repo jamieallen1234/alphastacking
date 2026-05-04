@@ -1,10 +1,5 @@
 import { emptyPortfolioChartPayload, type PortfolioChartPayload } from '@/lib/computePortfolioChart'
-import {
-  getCachedCaCoreBuyHoldChartMax,
-  getCachedCaInternationalChartMax,
-  getCachedUsCoreBuyHoldChartMax,
-  getCachedUsInternationalChartMax,
-} from '@/lib/getCachedPresetChart'
+import { getCachedCaInternationalChartMax, getCachedUsCoreBuyHoldChartMax } from '@/lib/getCachedPresetChart'
 import { caPortfolioRoutes, usPortfolioRoutes } from '@/lib/portfolioRoutes'
 
 export type HomePortfolioChartSlot = {
@@ -16,7 +11,8 @@ export type HomePortfolioChartSlot = {
   payload: PortfolioChartPayload
 }
 
-const HOME_CHART_TIMEOUT_MS = 2200
+/** First attempt budget — cold cache + Yahoo can exceed a short deadline and blank the home charts. */
+const HOME_CHART_TIMEOUT_MS = 14_000
 
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T | null> {
   let timer: ReturnType<typeof setTimeout> | undefined
@@ -31,71 +27,77 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T | null> {
   })
 }
 
-/** Two live model portfolios for the home page (full history `max` range; detail pages still default to 1Y). */
+/** Mirrors PresetPortfolioChart’s gate (used on the home page to match chart vs fallback). */
+export function homeChartPayloadIsRenderable(p: PortfolioChartPayload | null | undefined): boolean {
+  if (!p?.chartStartDate || !p.limitingSymbol || !p.limitingFirstTradeDate) return false
+  const { values, benchmarkValues, timestamps } = p
+  return (
+    !!values &&
+    !!benchmarkValues &&
+    !!timestamps &&
+    values.length >= 2 &&
+    values.length === benchmarkValues.length &&
+    values.length === timestamps.length
+  )
+}
+
+/**
+ * Race the first fetch so ISR stays responsive; if it times out or isn’t chart-ready, await the same
+ * cached loader once without a cap so slow cold fills still land after unstable_cache warms.
+ */
+async function loadHomePresetChartMax(
+  load: () => Promise<PortfolioChartPayload>,
+  empty: () => PortfolioChartPayload
+): Promise<PortfolioChartPayload> {
+  const raced = await withTimeout(load(), HOME_CHART_TIMEOUT_MS)
+  if (raced && homeChartPayloadIsRenderable(raced)) return raced
+
+  try {
+    const waited = await load()
+    if (homeChartPayloadIsRenderable(waited)) return waited
+  } catch {
+    /* empty fallback below */
+  }
+  return empty()
+}
+
+/** Home page model charts (full history `max` range; detail pages still default to 1Y). US: barbell only; CA: Global + Long/Short only. */
 export async function loadHomePortfolioChartSlots(
   variant: 'us' | 'ca'
 ): Promise<HomePortfolioChartSlot[]> {
   if (variant === 'us') {
     const empty = () => emptyPortfolioChartPayload('USD')
-    const [intlMaybe, coreMaybe] = await Promise.all([
-      withTimeout(getCachedUsInternationalChartMax(), HOME_CHART_TIMEOUT_MS),
-      withTimeout(getCachedUsCoreBuyHoldChartMax(), HOME_CHART_TIMEOUT_MS),
-    ])
-    const intlPayload = intlMaybe ?? empty()
-    const corePayload = coreMaybe ?? empty()
-    const intlDef = usPortfolioRoutes.find((r) => r.slug === 'us-international')
-    const coreDef = usPortfolioRoutes.find((r) => r.slug === 'us-core-buy-hold')
-    if (!intlDef || !coreDef) {
-      throw new Error('loadHomePortfolioChartSlots: missing US route defs')
+    const barbellPayload = await loadHomePresetChartMax(() => getCachedUsCoreBuyHoldChartMax(), empty)
+    const barbellDef = usPortfolioRoutes.find((r) => r.slug === 'us-core-buy-hold')
+    if (!barbellDef) {
+      throw new Error('loadHomePortfolioChartSlots: missing US core buy-hold route def')
     }
     return [
       {
-        slug: intlDef.slug,
-        href: `/portfolios/${intlDef.slug}`,
-        title: intlDef.title,
-        description: intlDef.description,
-        chartHeading: 'Total return vs SPY — all history',
-        payload: intlPayload,
-      },
-      {
-        slug: coreDef.slug,
-        href: `/portfolios/${coreDef.slug}`,
-        title: coreDef.title,
-        description: coreDef.description,
-        chartHeading: 'Total return vs SPY — all history',
-        payload: corePayload,
+        slug: barbellDef.slug,
+        href: `/portfolios/${barbellDef.slug}`,
+        title: barbellDef.title,
+        description: barbellDef.description,
+        chartHeading: 'Total return vs S&P 500 index — all history',
+        payload: barbellPayload,
       },
     ]
   }
 
   const empty = () => emptyPortfolioChartPayload('CAD')
-  const [intlMaybe, coreMaybe] = await Promise.all([
-    withTimeout(getCachedCaInternationalChartMax(), HOME_CHART_TIMEOUT_MS),
-    withTimeout(getCachedCaCoreBuyHoldChartMax(), HOME_CHART_TIMEOUT_MS),
-  ])
-  const intlPayload = intlMaybe ?? empty()
-  const corePayload = coreMaybe ?? empty()
-  const intlDef = caPortfolioRoutes.find((r) => r.slug === 'ca-international')
-  const coreDef = caPortfolioRoutes.find((r) => r.slug === 'ca-core-buy-hold')
-  if (!intlDef || !coreDef) {
-    throw new Error('loadHomePortfolioChartSlots: missing CA route defs')
+  const globalLsPayload = await loadHomePresetChartMax(() => getCachedCaInternationalChartMax(), empty)
+  const globalLsDef = caPortfolioRoutes.find((r) => r.slug === 'ca-international')
+  if (!globalLsDef) {
+    throw new Error('loadHomePortfolioChartSlots: missing CA international route def')
   }
   return [
     {
-      slug: intlDef.slug,
-      href: `/ca/portfolios/${intlDef.slug}`,
-      title: intlDef.title,
-      description: intlDef.description,
-        chartHeading: 'Total return vs SPY — all history (CAD)',
-        payload: intlPayload,
-      },
-      {
-        slug: coreDef.slug,
-        href: `/ca/portfolios/${coreDef.slug}`,
-        title: coreDef.title,
-        description: coreDef.description,
-        chartHeading: 'Total return vs SPY — all history (CAD)',
-      payload: corePayload,
+      slug: globalLsDef.slug,
+      href: `/ca/portfolios/${globalLsDef.slug}`,
+      title: globalLsDef.title,
+      description: globalLsDef.description,
+      chartHeading: 'Total return vs S&P 500 index — all history (CAD)',
+      payload: globalLsPayload,
     },
   ]
 }

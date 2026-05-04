@@ -600,8 +600,8 @@ export default function PresetPortfolioChart({
           </div>
         </div>
       ) : null}
-      <div className={styles.chartFootnotes}>
-        {footnote !== 'none' ? (
+      {footnote !== 'none' ? (
+        <div className={styles.chartFootnotes}>
           <div className={styles.chartDisclaimerRow}>
             <span className={styles.footnoteMark} aria-hidden="true">
               *
@@ -631,10 +631,8 @@ export default function PresetPortfolioChart({
               <p className={styles.disclaimerDetail}>{limitingFootnote}</p>
             </div>
           </div>
-        ) : (
-          <p className={styles.disclaimerDetail}>{limitingFootnote}</p>
-        )}
-      </div>
+        </div>
+      ) : null}
     </div>
   )
 }

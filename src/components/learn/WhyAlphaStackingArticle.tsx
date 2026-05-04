@@ -12,7 +12,7 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
       <header>
         <div className={styles.headerRow}>
           <span className={styles.eyebrow}>Strategy comparison</span>
-          <span className={styles.readTime}>~5 min read</span>
+          <span className={styles.readTime}>~7 min read</span>
         </div>
         <h1 className={styles.title}>Why alpha stacking</h1>
         <p className={styles.deck}>

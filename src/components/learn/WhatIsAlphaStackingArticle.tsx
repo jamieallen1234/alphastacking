@@ -109,6 +109,28 @@ export default function WhatIsAlphaStackingArticle({ edition }: { edition: 'us' 
               alpha sleeve, which needs a clear path to earn on its own, not only to dilute risk.
             </dd>
           </div>
+          <div className={styles.defRow}>
+            <dt className={styles.defTerm}>Beta (equity)</dt>
+            <dd className={styles.defDesc}>
+              How much a fund or portfolio tends to move with the broad stock market. A beta near 1.0
+              behaves roughly like the market; higher beta means more sensitivity to equity swings.
+            </dd>
+          </div>
+          <div className={styles.defRow}>
+            <dt className={styles.defTerm}>Leveraged ETF (daily reset)</dt>
+            <dd className={styles.defDesc}>
+              Targets a multiple (for example 2&times;) of each day&apos;s index return, then resets the
+              next session. Long-run returns depend on the path markets take, not only start and end
+              prices.
+            </dd>
+          </div>
+          <div className={styles.defRow}>
+            <dt className={styles.defTerm}>Backtest</dt>
+            <dd className={styles.defDesc}>
+              Applying today&apos;s weights to past prices to see how a mix would have behaved. Useful for
+              trade-offs; not a prediction of future results.
+            </dd>
+          </div>
         </dl>
       </section>
 

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { portfoliosPath, learnPath, usEtfHubPath, portfolioBuilderPath } from '@/lib/siteRegion'
+import { WHAT_IS_ALPHA_SLUG, learnArticlePath } from '@/lib/learnArticles'
 import styles from './LearnArticle.module.css'
 
 export default function HowToBuildAlphaStackingArticle({ edition }: { edition: 'us' | 'ca' }) {
@@ -8,6 +9,7 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
   const learnHref = learnPath(isCa)
   const builderHref = portfolioBuilderPath(isCa)
   const etfHref = usEtfHubPath(isCa)
+  const definitionsHref = `${learnArticlePath(isCa, WHAT_IS_ALPHA_SLUG)}#s3`
 
   return (
     <article className={styles.article}>
@@ -29,17 +31,31 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
           What you&apos;re solving for
         </h2>
         <p className={styles.body}>
-          Index funds work. The S&amp;P 500 has compounded at roughly 10% annually for the past
-          century, and a simple index fund captures that without effort or fees. Most people with
-          a 30-year horizon and the discipline to hold through drawdowns will do fine with one.
+          A standard index portfolio bets on one thing: broad equity markets go up over time.
+          That&apos;s a well-supported bet. The problem isn&apos;t the equity allocation — it&apos;s that the
+          portfolio has no other return sleeve. In 2000–2002, in 2008, in 2022, equity took years to
+          recover.
         </p>
         <p className={styles.body}>
-          The case for alpha stacking is narrower: equity has long dead zones, and they tend to
-          arrive at the worst times. The S&amp;P 500 was flat from 2000 to 2010, fell 50% twice in
-          that decade. In 2022, equities and bonds fell together for the first time in decades.
-          Alpha stacking carries return sources that earn in those regimes, funded not by selling
-          stocks but by the same capital through derivatives. You keep the equity exposure and add
-          something on top.
+          This is where alternative strategies earn their place. Managed futures trend-follow across
+          asset classes — they made money in 2022 precisely because rising rates and falling equities
+          produced clean, persistent trends to capture. Long/short equity strategies can profit from
+          dispersion: stocks diverging from each other, winners pulling away from losers, regardless of
+          which direction the index goes. Global macro funds can be positioned for the rate or currency
+          moves that are causing the equity drawdown in the first place. None of these need equities to
+          go up to generate returns.
+        </p>
+        <p className={styles.body}>
+          Stacking these on top of an equity core isn&apos;t just diversification. It&apos;s owning return
+          sources that are structurally likely to be working when equity isn&apos;t — which is what
+          actually produces alpha over a full cycle, not just lower volatility.
+        </p>
+        <p className={styles.body}>
+          For plain-language definitions of <strong>beta</strong>, <strong>stacking</strong>, and related terms, see{' '}
+          <Link href={definitionsHref} className={styles.inlineLink}>
+            Definitions in &ldquo;What is alpha stacking&rdquo;
+          </Link>
+          .
         </p>
       </section>
 
@@ -96,10 +112,13 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
           How the sleeves fit together
         </h2>
         <p className={styles.body}>
-          The key constraint is <strong>total beta</strong>: how much the portfolio moves with the
-          stock market. A beta of 1.0 tracks the S&amp;P 500 roughly in line. Add multiple leveraged
-          sleeves without accounting for how they interact and you can end up with something that
-          behaves like 3&times; the index, far more volatile than intended.
+          The key constraint is{' '}
+          <Link href={definitionsHref} className={styles.inlineLink}>
+            total beta
+          </Link>
+          : how much the portfolio moves with the broad stock market. A beta of 1.0 tracks the S&amp;P 500
+          roughly in line. Add multiple leveraged sleeves without accounting for how they interact and you
+          can end up with something that behaves like 3&times; the index, far more volatile than intended.
         </p>
         <p className={styles.body}>
           The target is usually a total beta near 1.0 with the return sources spread across multiple

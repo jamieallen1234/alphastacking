@@ -25,6 +25,22 @@
   padding-inline: 0.95rem;
 }
 
+/** Tour anchor above column headers (non-zero hit box for popover positioning). */
+.tourIntroAnchor {
+  width: 100%;
+  height: 2px;
+  margin: 0 0 0.15rem;
+  flex-shrink: 0;
+  border-radius: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(201, 162, 39, 0.35) 20%,
+    rgba(201, 162, 39, 0.35) 80%,
+    transparent 100%
+  );
+}
+
 .holdingHeadWrap {
   display: flex;
   align-items: flex-end;
@@ -35,6 +51,26 @@
 
 .holdingHeadInner {
   flex: 1;
+  min-width: 0;
+}
+
+/** Header only: spans efficiency + category columns so tour can target one rect. */
+.filterHeadPair {
+  grid-column: 2 / 4;
+  display: grid;
+  grid-template-columns: 6rem 10rem;
+  column-gap: 0.65rem;
+  align-items: end;
+  min-width: 0;
+}
+
+/** First data row: same span as filterHeadPair; tour targets the actual filter controls. */
+.firstRowFilterPair {
+  grid-column: 2 / 4;
+  display: grid;
+  grid-template-columns: 6rem 10rem;
+  column-gap: 0.65rem;
+  align-items: center;
   min-width: 0;
 }
 

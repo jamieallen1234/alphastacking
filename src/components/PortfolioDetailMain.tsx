@@ -41,8 +41,18 @@ import {
 } from '@/lib/presets/usInternational'
 import { buildExposureSummaryFromPresetHoldings } from '@/lib/exposureSummary'
 import { buildPortfolioBuilderPrefillHref } from '@/lib/portfolioBuilderPrefill'
+import { HOW_TO_BUILD_SLUG, learnArticlePath } from '@/lib/learnArticles'
 import { portfolioBuilderPath } from '@/lib/siteRegion'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
+
+function PortfolioLearnCue({ backHref }: { backHref: string }) {
+  const href = learnArticlePath(backHref.startsWith('/ca/'), HOW_TO_BUILD_SLUG)
+  return (
+    <p className={styles.detailLearnCue}>
+      <Link href={href}>How to read sleeves and model portfolios →</Link>
+    </p>
+  )
+}
 
 type LiveEntry = {
   presetId: string
@@ -113,6 +123,7 @@ function StubLayout({
         {def.badge ? <span className={styles.detailBadge}>{def.badge}</span> : null}
         <h1 className={styles.detailTitle}>{def.title}</h1>
         <p className={styles.detailLede}>{def.description}</p>
+        <PortfolioLearnCue backHref={backHref} />
         <p className={styles.stubNote}>
           Full holdings breakdown and live performance chart are not available for this model yet.
         </p>
@@ -159,6 +170,7 @@ async function LiveLayout({
         {def.badge ? <span className={styles.detailBadge}>{def.badge}</span> : null}
         <h1 className={styles.detailTitle}>{def.title}</h1>
         <p className={styles.detailLede}>{def.description}</p>
+        <PortfolioLearnCue backHref={backHref} />
 
         <PresetHoldingsTable
           holdings={live.holdings}
@@ -223,6 +235,7 @@ export default async function PortfolioDetailMain({ slug, backHref, routeSet }: 
             <span className={styles.detailBadge}>{card.badge}</span>
             <h1 className={styles.detailTitle}>{card.name}</h1>
             <p className={styles.detailLede}>{card.description}</p>
+            <PortfolioLearnCue backHref={backHref} />
 
             <p className={styles.stubNote}>
               Live weighted chart and full position-level weights will be published here — same

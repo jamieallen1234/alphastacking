@@ -31,8 +31,13 @@
   gap: 1.5rem;
 }
 
+.chartGridSingle {
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
 @media (min-width: 900px) {
-  .chartGrid {
+  .chartGrid:not(.chartGridSingle) {
     grid-template-columns: 1fr 1fr;
   }
 }

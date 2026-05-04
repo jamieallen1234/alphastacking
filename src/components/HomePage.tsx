@@ -4,6 +4,7 @@ import EtfRetailMission from '@/components/EtfRetailMission'
 import Stats from '@/components/Stats'
 import AlphaExample from '@/components/AlphaExample'
 import HomePortfolioCharts from '@/components/HomePortfolioCharts'
+import HomeLearnSection from '@/components/HomeLearnSection'
 import Footer from '@/components/Footer'
 import type { HomePortfolioChartSlot } from '@/lib/loadHomePortfolioCharts'
 
@@ -21,6 +22,8 @@ export default function HomePage({ variant, homePortfolioChartSlots }: HomePageP
       <EtfRetailMission variant={variant} />
       <div className="divider" />
       <Stats />
+      <div className="divider" />
+      <HomeLearnSection variant={variant} />
       <div className="divider" />
       <HomePortfolioCharts variant={variant} slots={homePortfolioChartSlots} />
       <div className="divider" />

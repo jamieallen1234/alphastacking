@@ -18,10 +18,10 @@
 
 .lede {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-size: 1.125rem;
   font-weight: 400;
   color: var(--color-text);
-  line-height: 1.45;
+  line-height: 1.5;
   margin-bottom: 1.25rem;
 }
 

@@ -39,10 +39,6 @@ export default function Hero({ variant = 'us' }: HeroProps) {
           Explore portfolios
         </Link>
       </div>
-
-      <p className={`${styles.legal} animate animate-6`}>
-        Educational only. Not advice. Past performance does not guarantee future results. Leveraged ETFs involve substantial risk.
-      </p>
     </section>
   )
 }

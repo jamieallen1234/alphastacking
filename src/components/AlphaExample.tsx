@@ -32,7 +32,7 @@ export default function AlphaExample({ edition }: { edition: 'us' | 'ca' }) {
   return (
     <section className={styles.section} aria-labelledby="home-alpha-example-heading">
       <h2 id="home-alpha-example-heading" className={styles.label}>
-        Illustrative Example
+        Illustrative example
       </h2>
       <p className={styles.lede}>
         Take $10k invested ten years ago. The left portfolio tracks the S&P 500 index total return. The right portfolio

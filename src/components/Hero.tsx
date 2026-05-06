@@ -24,7 +24,7 @@ export default function Hero({ variant = 'us' }: HeroProps) {
         <span className={styles.subHighlightWhite}>Alpha</span>
         <span className={styles.subHighlightGold}> stacking</span>
         {' '}
-        takes the strongest ideas from different proven strategies (long/short equity, global macro, managed futures,
+        takes the strongest ideas from proven strategies (long/short equity, global macro, managed futures,
         risk premia, systematic alternatives) and layers them
         on top of equity. The aim is to create portfolios that can seek excess total returns in bull, bear and sideways
         markets.

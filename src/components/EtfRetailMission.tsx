@@ -13,12 +13,12 @@ export default function EtfRetailMission({ variant = 'us' }: EtfRetailMissionPro
   return (
     <section className={styles.section} aria-labelledby="etf-mission-heading">
       <h2 id="etf-mission-heading" className={styles.heading}>
-        ETFs, for every investor
+        For every investor
       </h2>
       <p className={styles.body}>
-        The <strong>portfolio</strong> ideas on this site are made up of <strong>ETFs</strong> exclusively.
-        ETFs are known for low fees and are available to the public, unlike hedge funds, private equity, and venture capital, which are typically limited to institutions and accredited investors.
-        We believe that alpha stacking should be accessible to everyone.
+        Alpha stacking brings institutional portfolio construction within reach of any investor, built entirely from
+        low-cost, publicly listed ETFs. These strategies are no longer exclusive to hedge funds, private equity, and
+        venture capital. No minimums or accreditation required.
       </p>
       <Link href={etfHref} className={styles.etfButton}>
         Explore ETFs

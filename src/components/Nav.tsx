@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
+  disclaimersPath,
   homePath,
   learnPath,
   portfolioBuilderPath,
@@ -19,12 +20,19 @@ export default function Nav() {
   const portfolioBuilder = portfolioBuilderPath(isCa)
   const learn = learnPath(isCa)
   const usEtfHub = usEtfHubPath(isCa)
+  const disclaimers = disclaimersPath(isCa)
 
   return (
     <>
       <div className={styles.disclaimerBanner}>
         <p>
-          For informational and educational purposes only. Nothing on this site constitutes investment advice.
+          For educational purposes only. Nothing on this site constitutes investment advice.
+          <span className={styles.disclaimerBannerTail}>
+            {' '}
+            <Link href={disclaimers} className={styles.disclaimerBannerLink}>
+              Disclaimers
+            </Link>
+          </span>
         </p>
       </div>
 

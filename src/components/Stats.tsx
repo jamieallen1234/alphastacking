@@ -27,7 +27,7 @@ const STATS: StatItem[] = [
     id: 'alpha-gen',
     kind: 'simple',
     num: 'α',
-    label: 'Model portfolios with live return charts',
+    label: 'Model portfolios graded and charted, showing excess alpha.',
   },
   {
     id: 'etf-stack',
@@ -44,7 +44,8 @@ const STATS: StatItem[] = [
     id: 'research',
     kind: 'simple',
     num: '∞',
-    label: 'ETF universe to research, grade, and combine',
+    label:
+      'Multitude of ETFs graded and charted. Use them to build your own model portfolios.',
   },
 ]
 

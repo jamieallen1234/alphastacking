@@ -17,6 +17,18 @@
   text-align: center;
 }
 
+.disclaimerBannerTail {
+  white-space: nowrap;
+}
+
+.disclaimerBannerLink {
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .nav {
   display: flex;
   flex-wrap: wrap;

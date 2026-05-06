@@ -28,3 +28,7 @@ export function learnPath(isCa: boolean): string {
 export function contactPath(isCa: boolean): string {
   return isCa ? '/ca/contact' : '/contact'
 }
+
+export function disclaimersPath(isCa: boolean): string {
+  return isCa ? '/ca/disclaimers' : '/disclaimers'
+}

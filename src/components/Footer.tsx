@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { REGION_COOKIE, contactPath, type SiteRegion } from '@/lib/siteRegion'
+import { REGION_COOKIE, contactPath, disclaimersPath, type SiteRegion } from '@/lib/siteRegion'
 import styles from './Footer.module.css'
 
 function setRegionCookie(region: SiteRegion) {
@@ -14,34 +14,23 @@ export default function Footer() {
   const pathname = usePathname()
   const isCa = pathname === '/ca' || pathname.startsWith('/ca/')
   const contact = contactPath(isCa)
+  const disclaimers = disclaimersPath(isCa)
 
   return (
     <footer>
-      <div className={styles.legalBlock}>
-        <p className="legalFooterCopy">
-          alphastacking.co is an independent educational website. Nothing on this
-          site constitutes financial, investment, legal, or tax advice. All content
-          is provided for informational purposes only. Model portfolios are
-          for educational purposes and do not represent actual investment results. Past
-          performance is not indicative of future results.
-        </p>
-        <p className="legalFooterCopy">
-          Leveraged and inverse ETFs are complex instruments that use financial
-          derivatives and debt to amplify returns. They are subject to volatility
-          decay and are designed for short-term trading by definition of their
-          structure. They may not be suitable for long-term investors or investors
-          who are not able to withstand the risk of significant loss.
-        </p>
-      </div>
-
       <div className={styles.strip}>
         <div className={styles.stripLeft}>
           <div className={styles.logo}>
             alpha<span>stacking</span>.co
           </div>
-          <Link href={contact} className={styles.footerContact}>
-            Contact
-          </Link>
+          <div className={styles.stripLinks}>
+            <Link href={contact} className={styles.footerContact}>
+              Contact
+            </Link>
+            <Link href={disclaimers} className={styles.footerContact}>
+              Disclaimers
+            </Link>
+          </div>
         </div>
 
         <div className={styles.regionToggle}>

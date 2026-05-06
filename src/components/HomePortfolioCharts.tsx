@@ -11,7 +11,7 @@ export interface HomePortfolioChartsProps {
 export default function HomePortfolioCharts({ variant, slots }: HomePortfolioChartsProps) {
   const hubHref = variant === 'us' ? '/portfolios' : '/ca/portfolios'
   const lede =
-    'See how alpha stacked portfolios have performed historically against the S&P 500.'
+    "Model portfolios target S&P 500-level beta. See how they've performed historically."
 
   return (
     <section className={styles.section} aria-labelledby="home-portfolio-charts-heading">

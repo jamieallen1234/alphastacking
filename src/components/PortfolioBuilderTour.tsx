@@ -17,7 +17,7 @@ import styles from './PortfolioBuilderTour.module.css'
 
 /** Bump when the 4-step tutorial flow changes. Single key for US + CA builders — avoids v7 per-edition drift (CA dismissed while US still showed). */
 const MAIN_TOUR_COMPLETED_KEY = 'alphastacking:portfolio-builder-tour:v8:completed'
-/** v7 per-edition keys — cleared by “Show builder tour again”; completion reads only v8. */
+/** v7 per-edition keys retained for migration; completion reads only v8. */
 const LEGACY_MAIN_TOUR_KEYS = [
   'alphastacking:portfolio-builder-tour:v7:us',
   'alphastacking:portfolio-builder-tour:v7:ca',
@@ -567,28 +567,13 @@ export default function PortfolioBuilderTour({
 
   if (storedDismissed) {
     return (
-      <>
-        <div className={styles.helperRow}>
-          <button
-            type="button"
-            className={styles.helperLink}
-            onClick={() => {
-              clearPortfolioBuilderTourLocalStorage()
-              window.dispatchEvent(new Event('local-storage'))
-              window.location.reload()
-            }}
-          >
-            Show builder tour again
-          </button>
-        </div>
-        <PortfolioBuilderFollowUpHints
-          edition={edition}
-          suppressAutoTour={suppressAutoTour}
-          firstRowComplete={firstRowComplete}
-          canGenerate={canGenerate}
-          rowCount={rowCount}
-        />
-      </>
+      <PortfolioBuilderFollowUpHints
+        edition={edition}
+        suppressAutoTour={suppressAutoTour}
+        firstRowComplete={firstRowComplete}
+        canGenerate={canGenerate}
+        rowCount={rowCount}
+      />
     )
   }
 

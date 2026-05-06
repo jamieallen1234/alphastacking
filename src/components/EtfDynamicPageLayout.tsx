@@ -19,6 +19,11 @@ function efficiencyGradeToShow(grade: string | null | undefined): string | null 
   return g
 }
 
+function similarEtfDisplayName(title: string): string {
+  const m = title.match(/^[A-Z0-9.+-]+\s(?:—|-)\s(.+)$/)
+  return m?.[1] ?? title
+}
+
 function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, slug?: string): ReactNode {
   const eff = def.efficiency
   if (!eff) return undefined
@@ -192,23 +197,47 @@ export default function EtfDynamicPageLayout({
       {similarEtfs != null && similarEtfs.length > 0 ? (
         <div className={styles.bodySection}>
           <h2>Similar ETFs</h2>
-          {primarySimilarityHeadline != null ? (
-            <p>
-              {primarySimilarityHeadline.shortTicker} {primarySimilarityHeadline.scoreLabel}:{' '}
-              <strong>{primarySimilarityHeadline.grade}</strong>
-            </p>
-          ) : null}
-          <ul className={styles.similarEtfList}>
-            {similarEtfs.map((item) => (
-              <li key={item.slug}>
-                <a href={`${hubBase}/${item.slug}`}>{item.ticker}</a>
-                {': '}
-                <span>{item.name}</span>
-                {' | '}
-                <strong>{item.displayScore}</strong>
-              </li>
-            ))}
-          </ul>
+          <div className={styles.similarEtfTableWrap}>
+            <table className={styles.similarEtfTable}>
+              <thead>
+                <tr>
+                  <th>Ticker</th>
+                  <th>Name</th>
+                  <th>Score</th>
+                  <th>MER</th>
+                  <th>AUM</th>
+                </tr>
+              </thead>
+              <tbody>
+                {primarySimilarityHeadline != null ? (
+                  <tr>
+                    <td>
+                      <strong>{primarySimilarityHeadline.shortTicker}</strong>
+                    </td>
+                    <td>{similarEtfDisplayName(def.h1Title)}</td>
+                    <td>
+                      <strong>{primarySimilarityHeadline.grade}</strong>
+                    </td>
+                    <td>{def.mer}</td>
+                    <td>{def.aum}</td>
+                  </tr>
+                ) : null}
+                {similarEtfs.map((item) => (
+                  <tr key={item.slug}>
+                    <td>
+                      <a href={`${hubBase}/${item.slug}`}>{item.ticker}</a>
+                    </td>
+                    <td>{similarEtfDisplayName(item.name)}</td>
+                    <td>
+                      <strong>{item.displayScore}</strong>
+                    </td>
+                    <td>{item.mer}</td>
+                    <td>{item.aum}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : null}
 

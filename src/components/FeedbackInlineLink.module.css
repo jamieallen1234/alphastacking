@@ -9,6 +9,16 @@
   color: rgba(232, 228, 220, 0.55);
 }
 
+.wrapBuilderNoDivider {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+  max-width: 40rem;
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(232, 228, 220, 0.55);
+}
+
 /* ETF detail — band above site footer (outside elevated section so it stays visible) */
 .etfPreFooterShell {
   width: 100%;

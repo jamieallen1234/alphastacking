@@ -16,42 +16,12 @@ export default function LearnPage({ edition }: { edition: LearnPageEdition }) {
     href: learnArticlePath(isCa, a.slug),
   }))
 
-  const first = articles[0]
-  const second = articles[1]
-  const third = articles[2]
-
   return (
     <main className={styles.main}>
       <Nav />
       <section className={styles.inner}>
         <p className={styles.kicker}>Educational</p>
         <h1 className={styles.h1}>Learn</h1>
-        <p className={styles.lede}>
-          Five articles in a suggested order, or open any topic you need—for any investor, with ETFs as the
-          shared implementation lens across this site.
-        </p>
-
-        {first && second && third ? (
-          <div className={styles.suggestedBox} role="note" aria-label="Suggested reading path">
-            <p className={styles.suggestedTitle}>Suggested start</p>
-            <p className={styles.suggestedBody}>
-              Start with{' '}
-              <Link href={first.href} className={styles.suggestedLink}>
-                {first.title}
-              </Link>
-              , then{' '}
-              <Link href={second.href} className={styles.suggestedLink}>
-                {second.title}
-              </Link>
-              , then{' '}
-              <Link href={third.href} className={styles.suggestedLink}>
-                {third.title}
-              </Link>
-              <span className={styles.suggestedTime}> (~15 min total)</span>.
-            </p>
-          </div>
-        ) : null}
-
         <ol className={styles.articleList}>
           {articles.map((a, i) => (
             <li key={a.href}>

@@ -44,7 +44,20 @@
   color: rgba(232, 228, 220, 0.58);
   max-width: 42rem;
   line-height: 1.65;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
+}
+
+.builderPostToolDivider {
+  margin-top: 2.25rem;
+  border-top: 0.5px solid var(--color-border-faint);
+}
+
+.builderPostToolBlock {
+  padding-top: 1rem;
+}
+
+.builderFeedbackRow {
+  margin-top: 1rem;
 }
 
 .builderCue a {

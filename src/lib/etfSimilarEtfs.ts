@@ -9,6 +9,8 @@ export type SimilarEtfRow = {
   ticker: string
   name: string
   displayScore: string
+  mer: string
+  aum: string
 }
 
 export type PrimarySimilarityHeadline = {
@@ -91,6 +93,8 @@ export async function loadSimilarEtfRows(
         ticker: merged.displayTicker.split('/')[0]!.trim(),
         name: merged.h1Title,
         displayScore: selectSimilarityDisplayGrade(merged.efficiency),
+        mer: merged.mer,
+        aum: merged.aum,
       } satisfies SimilarEtfRow
     })
   )

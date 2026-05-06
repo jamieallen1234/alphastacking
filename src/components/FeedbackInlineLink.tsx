@@ -5,15 +5,17 @@ import styles from './FeedbackInlineLink.module.css'
 export default function FeedbackInlineLink({
   isCa,
   context,
+  showDivider = true,
 }: {
   isCa: boolean
   context: 'builder' | 'etf'
+  showDivider?: boolean
 }) {
   const href = contactPath(isCa)
 
   if (context === 'builder') {
     return (
-      <p className={styles.wrapBuilder}>
+      <p className={showDivider ? styles.wrapBuilder : styles.wrapBuilderNoDivider}>
         Want a ticker in the builder or have a feature idea?{' '}
         <Link href={href} className={styles.link}>
           Send feedback

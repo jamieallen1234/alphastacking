@@ -39,18 +39,22 @@ export default async function PortfolioBuilderPage({
         </div>
         <h1 className={styles.heading}>Portfolio builder</h1>
         <p className={styles.lede}>
-          Pick tickers, set weights to 100%, and generate a return chart. Use it to test a model
-          portfolio from the hub, experiment with different weights, or try your own mix. The chart shows
-          total return versus SPY and max drawdown for any date range with available history.
-        </p>
-        <p className={styles.builderCue}>
-          Charts are historical simulations only. Read{' '}
-          <Link href={learn101}>ETF pages, model portfolios, and the portfolio builder</Link> for a full
-          walkthrough and limitations.{' '}
-          <Link href={learnGrades}>Efficiency grades</Link> explain what the Equity / Alpha filters refer to.
+          Pick tickers, set weights to 100%, and generate a return chart. The chart shows total return
+          versus SPY and max drawdown for any date range with available history.
         </p>
         <PortfolioBuilderTool edition={edition} options={options} initialPrefill={initialPrefill ?? null} />
-        <FeedbackInlineLink isCa={edition === 'ca'} context="builder" />
+        <div className={styles.builderPostToolDivider} aria-hidden />
+        <div className={styles.builderPostToolBlock}>
+          <p className={styles.builderCue}>
+            Charts are historical simulations only. Read{' '}
+            <Link href={learn101}>ETF pages, model portfolios, and the portfolio builder</Link> for a full
+            walkthrough and limitations.{' '}
+            <Link href={learnGrades}>Efficiency grades</Link> explain what the Equity / Alpha filters refer to.
+          </p>
+          <div className={styles.builderFeedbackRow}>
+            <FeedbackInlineLink isCa={edition === 'ca'} context="builder" showDivider={false} />
+          </div>
+        </div>
       </section>
       <Footer />
     </main>

@@ -153,6 +153,44 @@
   color: rgba(232, 228, 220, 0.75);
 }
 
+.similarEtfTableWrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 0.5px solid var(--color-border-faint);
+  border-radius: 4px;
+}
+
+.similarEtfTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+  background: rgba(232, 228, 220, 0.015);
+}
+
+.similarEtfTable th,
+.similarEtfTable td {
+  padding: 0.6rem 0.7rem;
+  text-align: left;
+  border-bottom: 0.5px solid var(--color-border-faint);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(232, 228, 220, 0.78);
+  vertical-align: top;
+}
+
+.similarEtfTable th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: rgba(232, 228, 220, 0.03);
+}
+
+.similarEtfTable tr:last-child td {
+  border-bottom: 0;
+}
+
 @media (max-width: 900px) {
   .section {
     padding: 3rem 1.5rem 3.5rem;

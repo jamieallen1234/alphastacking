@@ -1,0 +1,31 @@
+---
+description: Ban em dashes in user-facing copy; use commas, periods, or parentheses instead
+alwaysApply: true
+---
+
+# No em dashes in user-facing text
+
+Do **not** use the **em dash** (`—`) or `&mdash;` in any copy a reader sees on the site or in outbound user-facing channels.
+
+## Where this applies
+
+- Visible strings in React/TSX (headings, paragraphs, buttons, labels, `aria-label` when it reads as prose)
+- Page metadata users see: `title`, `description`, Open Graph fields
+- Learn articles, ETF strategy/pedigree/outperformance paragraphs, hub ledes, home sections
+- User-visible emails or API copy returned to the client
+
+## What to use instead
+
+- **Comma** or **which/that** clause: `strategies, which include…` not `strategies—which include…`
+- **Period** and a short follow-up sentence
+- **Parentheses** for a tight aside: `proven strategies (long/short equity, …) and combines`
+- **Colon** when introducing a list is natural
+
+## Exceptions
+
+- **Verbatim** regulatory or third-party legal text: do not alter punctuation that must match the source.
+- **Numeric ranges** may use a hyphen or en dash (`10–30`, `20-25`); that is not an em-dash aside.
+
+## Quick check
+
+If you type `—` or `&mdash;` in new user-facing copy, rewrite the sentence without it.

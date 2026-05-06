@@ -17,8 +17,7 @@ export default function EtfRetailMission({ variant = 'us' }: EtfRetailMissionPro
       </h2>
       <p className={styles.body}>
         The portfolio ideas on this site are made up of <strong>ETFs</strong> exclusively.
-        ETFs are known for low fees and are available to the public —
-        unlike hedge funds, private equity, and closed-ended funds that wall off retail investors.
+        ETFs are known for low fees and are available to the public, unlike hedge funds, private equity, and venture capital, which are typically limited to institutions and accredited investors.
         We believe that alpha stacking should be accessible to everyone.
       </p>
       <Link href={etfHref} className={styles.etfButton}>

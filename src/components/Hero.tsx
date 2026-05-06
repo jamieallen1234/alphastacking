@@ -20,24 +20,28 @@ export default function Hero({ variant = 'us' }: HeroProps) {
         Stack <em>alpha</em>, not beta
       </h1>
 
-      <p className={`${styles.sub} animate animate-3`}>
+      <p className={`${styles.tagline} animate animate-3`}>
+        Hedge fund strategies open to <span className={styles.taglineGold}>anyone</span>
+      </p>
+
+      <p className={`${styles.sub} animate animate-4`}>
         <span className={styles.subHighlightWhite}>Alpha</span>
         <span className={styles.subHighlightGold}> stacking</span>
         {' '}
-        takes the strongest ideas from different proven strategies&mdash;long/short
-        equity, global macro, managed futures, risk premia, systematic alternatives&mdash;and combines them
-        on top of equity. The aim is a whole portfolio that can seek excess return in bull, bear, and sideways
-        or choppy markets alike, without treating &ldquo;more equity beta&rdquo; as the only dial for performance.
+        takes the strongest ideas from different proven strategies (long/short equity, global macro, managed futures,
+        risk premia, systematic alternatives) and layers them
+        on top of equity. The aim is to create portfolios that can seek excess total returns in bull, bear and sideways
+        markets.
       </p>
 
-      <div className={`${styles.actions} animate animate-4`}>
+      <div className={`${styles.actions} animate animate-5`}>
         <Link href={portfolioHref} className={styles.btnPrimary}>
           Explore portfolios
         </Link>
       </div>
 
-      <p className={`${styles.legal} animate animate-5`}>
-        Educational only&mdash;not advice. Past performance does not guarantee future results. Leveraged ETFs involve substantial risk.
+      <p className={`${styles.legal} animate animate-6`}>
+        Educational only. Not advice. Past performance does not guarantee future results. Leveraged ETFs involve substantial risk.
       </p>
     </section>
   )

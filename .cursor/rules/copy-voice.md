@@ -18,7 +18,7 @@
 
 - Short declarative sentences. Say the thing. Don't soften the claim.
 - Max one adjective per noun.
-- No em-dash asides used as a way to smuggle in a qualification.
+- No em-dash asides used as a way to smuggle in a qualification. (See project rule **no-em-dashes**: never ship `—` / `&mdash;` in user-facing text; use commas, periods, or parentheses.)
 - No "here's why…" / "it's worth noting that…" setups.
 - Fine to name technical concepts (carry, dispersion, managed futures) without definition — this is the intro, not a glossary.
 - A pure index investor should understand the first paragraph. A sophisticated investor shouldn't feel talked down to.

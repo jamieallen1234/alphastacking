@@ -54,9 +54,7 @@ function attachStackedEfficiency(
     stacked: {
       grade,
       gradeTone: grade === 'A+' ? 'gold' : 'muted',
-      tooltip:
-        `Stacked Efficiency blends Capital- and Alpha-bucket grades using the configured sleeve weights (${Math.round(wC * 100)}% capital / ${Math.round(wA * 100)}% alpha).` +
-        `\n\nOnly shown when both bucket grades are available, e.g. equity plus managed futures in one fund.`,
+      tooltip: `Stacked Efficiency blends Capital- and Alpha-bucket grades using the configured sleeve weights (${Math.round(wC * 100)}% capital / ${Math.round(wA * 100)}% alpha).`,
     },
   }
 }
@@ -188,7 +186,7 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
   rssx: {
     capital: {
       tooltip: capitalEfficiencyTooltip(
-        'RSSX layers a U.S. large-cap equity sleeve with gold and bitcoin exposure (Return Stacked® mandate; see the prospectus for current notional weights).'
+        'RSSX layers a U.S. large-cap equity sleeve with gold and bitcoin exposure (Return Stacked® design; see the prospectus for current notional weights).'
       ),
     },
     alpha: {
@@ -395,7 +393,7 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     },
     alpha: {
       tooltip: alphaEfficiencyStackedTooltip(
-        'The alpha bucket bundles investment-grade-style bonds and the systematic managed-futures sleeve (~150% combined notional vs ~50% equity): rates, FX, and commodities per the Return Stacked® Canada mandate.'
+        'The alpha bucket bundles investment-grade-style bonds and the systematic managed-futures sleeve (~150% combined notional vs ~50% equity): rates, FX, and commodities per the Return Stacked® Canada sleeve design.'
       ),
     },
   },
@@ -423,7 +421,14 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
   atsx: {
     capital: {
       tooltip: capitalEfficiencyTooltip(
-        'ATSX runs a ~150% long / 50% short systematic book versus the S&P/TSX 60. It’s Canadian long/short equity with leverage.'
+        'ATSX runs a ~150% long / 50% short systematic book versus the S&P/TSX 60. On this site the listed beta and capital-efficiency line use a CAD-hedged S&P 500 proxy (XSP.TO) as the hurdle benchmark.'
+      ),
+    },
+  },
+  pfae: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'PFAE runs a ~130% long / 30% short Canadian equity book with roughly full-market net exposure. The capital line scores that sleeve versus a CAD-hedged S&P 500 proxy (XSP.TO).'
       ),
     },
   },

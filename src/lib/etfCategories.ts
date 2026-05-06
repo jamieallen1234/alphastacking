@@ -67,7 +67,11 @@ export type EtfCategoryRow = { id: string; title: string; subtitle?: string }
 /** Hub section list: US keeps "Return Stacked - 2x" and "Lower Leverage"; CA shows a single Return Stacked block. */
 export function getEtfHubCategoryRows(variant: 'us' | 'ca'): EtfCategoryRow[] {
   if (variant === 'us') {
-    return ETF_CATEGORY_ROWS.map((r) => ({ id: r.id, title: r.title, subtitle: r.subtitle }))
+    return ETF_CATEGORY_ROWS.map((r) =>
+      r.id === 'crypto'
+        ? { id: r.id, title: 'Return Stacked - Crypto', subtitle: r.subtitle }
+        : { id: r.id, title: r.title, subtitle: r.subtitle }
+    )
   }
   return [
     {

@@ -141,6 +141,18 @@
   color: var(--color-gold-hover);
 }
 
+.similarEtfList {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.similarEtfList li {
+  margin: 0 0 0.45rem;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(232, 228, 220, 0.75);
+}
+
 @media (max-width: 900px) {
   .section {
     padding: 3rem 1.5rem 3.5rem;

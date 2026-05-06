@@ -11,6 +11,7 @@ import {
   type EtfEfficiencyGradeLine,
 } from '@/components/etfEfficiency/EtfEfficiencyGrades'
 import { capitalEfficiencyMetaLabel, stackExposureLineAvailability } from '@/lib/etfStackExposureBySlug'
+import type { PrimarySimilarityHeadline, SimilarEtfRow } from '@/lib/etfSimilarEtfs'
 
 function efficiencyGradeToShow(grade: string | null | undefined): string | null {
   const g = grade?.trim()
@@ -37,7 +38,8 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, s
           tooltip: eff.alpha.tooltip,
         })
       }
-    } else if (!useAlpha && eff.capital) {
+    }
+    if (lines.length === 0 && eff.capital) {
       const capGrade = efficiencyGradeToShow(eff.capital.grade)
       if (capGrade != null) {
         lines.push({
@@ -45,6 +47,17 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, s
           grade: capGrade,
           gradeTone: eff.capital.gradeTone,
           tooltip: eff.capital.tooltip,
+        })
+      }
+    }
+    if (lines.length === 0 && eff.alpha) {
+      const alphaGrade = efficiencyGradeToShow(eff.alpha.grade)
+      if (alphaGrade != null) {
+        lines.push({
+          label: 'Alpha Efficiency:',
+          grade: alphaGrade,
+          gradeTone: eff.alpha.gradeTone,
+          tooltip: eff.alpha.tooltip,
         })
       }
     }
@@ -89,6 +102,10 @@ export interface EtfDynamicPageLayoutProps {
   slug?: string
   /** CSS module from `page.module.css` (same shape as MATE / HDGE ETF pages). */
   styles: Record<string, string>
+  /** Tag-derived similar ETF peers (current ETF score line above, peers below). */
+  similarEtfs?: SimilarEtfRow[]
+  /** Primary ETF efficiency line (same score priority as peer rows) shown above the list. */
+  primarySimilarityHeadline?: PrimarySimilarityHeadline
 }
 
 export default function EtfDynamicPageLayout({
@@ -98,6 +115,8 @@ export default function EtfDynamicPageLayout({
   chart,
   slug,
   styles,
+  similarEtfs,
+  primarySimilarityHeadline,
 }: EtfDynamicPageLayoutProps) {
   const categoryValue = def.structure ?? def.badge
 
@@ -170,6 +189,28 @@ export default function EtfDynamicPageLayout({
           )
         )}
       </div>
+      {similarEtfs != null && similarEtfs.length > 0 ? (
+        <div className={styles.bodySection}>
+          <h2>Similar ETFs</h2>
+          {primarySimilarityHeadline != null ? (
+            <p>
+              {primarySimilarityHeadline.shortTicker} {primarySimilarityHeadline.scoreLabel}:{' '}
+              <strong>{primarySimilarityHeadline.grade}</strong>
+            </p>
+          ) : null}
+          <ul className={styles.similarEtfList}>
+            {similarEtfs.map((item) => (
+              <li key={item.slug}>
+                <a href={`${hubBase}/${item.slug}`}>{item.ticker}</a>
+                {': '}
+                <span>{item.name}</span>
+                {' | '}
+                <strong>{item.displayScore}</strong>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       <div className={styles.bodySection}>
         <h2>Official ETF page</h2>

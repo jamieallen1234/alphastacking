@@ -39,6 +39,7 @@ For **each** ETF, complete **before** moving to the next (or explicitly parallel
 | Official link | §2 “Official ETF page” + verified `href` | `officialUrl` + `officialLabel` (§3f); not issuer root |
 | Body depth | §3 + §4 (Strategy / Pedigree / Outperformance) | `lede`, 2× `strategyParas`, `ped(…)`, 2× `outperfParas` |
 | Chart | §2 chart steps + `ETF_CHART_SYMBOLS` / API | `yahooSymbol` in allowlist + same chart plumbing if new symbol |
+| Similar ETFs (tags) | N/A unless hand page later opts in | §2d: **`etfSimilarityTags.ts`** bundle for US or CA universe (`equityTags` / `alphaTags`, provenance) |
 | Portfolio proxy links | §2b: add **`HAND_AUTHORED_US_SLUG`** entry for this uppercase ticker | §2b: if ticker is a chart proxy, **`yahooSymbol`** match supplies the hub link—else **`OFFICIAL_ETF_HOME`** |
 | Short history, no auto proxy | §2c: if listing is **under ~2 years** and **`resolveChartProxyLegs`** is still empty after **`ETF_STACK_EXPOSURE_BY_SLUG`** + manual maps, **ask the user** for Yahoo proxy tickers for **each sleeve/asset** you cannot map | Same—do not finish the pass without resolving or explicitly accepting “no preset/builder proxy until history grows” |
 | Checklist | Run §5 mentally for **this** ticker | Same §5 lines for **this** slug |
@@ -90,7 +91,7 @@ Register the ETF on the hub: add an entry to `src/lib/etfHubData.ts` under the c
      - Row 1 (`<ul className={styles.meta}>`): **ticker**, **issuer/manager**, **inception**
      - Row 2 (`<ul className={styles.meta}>`): **Category** (from `def.structure`), then **Beta**, **MER**, **AUM**
      - Keep **Beta → MER → AUM** order and never put MER/AUM inside `<EtfChartPanel />`.
-     - **Beta benchmark rule:** do not force SPY globally. Use market-appropriate benchmark defaults (**US tickers → SPY**, **`.TO` tickers → XIU.TO**) unless a specific ETF needs an explicit override (`betaBenchmarkSymbol`).
+     - **Beta benchmark rule:** do not force SPY globally. Use market-appropriate benchmark defaults (**US tickers → SPY**, **`.TO` tickers → `XSP.TO`**, the CAD-hedged S&P 500 proxy — same as `CAD_SPY_PROXY_SYMBOL` in `cadUsdConversion.ts`) unless a specific ETF needs an explicit override (`betaBenchmarkSymbol`).
    - `<h2 className={styles.chartHeading}>` — `{TICKER} price history` (use the primary ticker string, e.g. `HDGE.TO` or `MATE`)
    - `<EtfChartPanel symbol="…" initialPayload={…} />` — range controls + chart only (below); **no** `mer` / `aum` props
    - Four `<div className={styles.bodySection}>` blocks with `<h2>` headings in this exact order:
@@ -162,6 +163,31 @@ List **by name** which sleeves or asset types still lack a proxy so the user can
 - **`buildPreInceptionProductStackMerge`** applies **`STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE`** (see **`syntheticChartConstants.ts`**) to **max(0, grossExposurePct − 100)** from **`ETF_STACK_EXPOSURE_BY_SLUG`** (`grossExposureForChartProxy` / **`grossExposurePctForSlug`**), or **`100 × leg count`** for manual-only tickers. Models wholesale financing on stacked **incremental** notional—not fund swap fees or MER.
 
 **Cache invalidation:** After changing proxy behavior, bump keys in **`getCachedPresetChart.ts`** and **`getCachedPortfolioBuilderChart.ts`**.
+
+## 2d. Similar ETFs — asset tags (`etfSimilarityTags.ts`)
+
+The **Similar ETFs** block on dynamic ETF pages (`EtfDynamicPageLayout`) is **tag-driven**, not hub-category-driven and **never** hand-listed per ticker in `page.tsx`.
+
+### What to add for every new ETF
+
+1. **`src/lib/etfSimilarityTags.ts`** — add a bundle for the slug:
+   - **`ETF_SIMILARITY_TAGS_BY_SLUG_US`** for US-listed rows in `US_ETF_DYNAMIC_REGISTRY`
+   - **`ETF_SIMILARITY_TAGS_BY_SLUG_CA`** for Canadian hub rows in `CA_ETF_DYNAMIC_REGISTRY` (even if the slug string matches a US name, CA listings are a **separate** universe for peer matching)
+2. Each bundle has **`equityTags`** and **`alphaTags`** (both can be multi-valued), plus **`provenance`**: **`sleeve`** when tags are anchored in **`ETF_STACK_EXPOSURE_BY_SLUG`** / sleeve mechanics, **`seeded`** when inferred from registry copy (`h1Title`, `structure`, `lede`, strategy) **only where sleeves do not define the story**, **`manual`** for editorial fixes.
+
+### Precedence (do not skip)
+
+1. **Structured sleeves first** — if the ETF is in **`ETF_STACK_EXPOSURE_BY_SLUG`**, align tags with those sleeves and benchmarks before using prose.
+2. **Text seeding second** — only for missing or incomplete sleeve signals.
+3. **Manual review** — adjust seeded tags when peers are wrong; do **not** let marketing copy override a clear stack map.
+
+### Runtime behavior (do not duplicate in routes)
+
+- Peer resolution: **`similarEtfSlugsFor`** + **`loadSimilarEtfRows`** (`src/lib/etfSimilarEtfs.ts`). Dynamic routes already call these; **do not** add slug-specific peer arrays.
+- **Listing scope:** **`/us-etfs`** and **`/ca/us-etfs`** compare against **`US_ETF_DYNAMIC_REGISTRY`**. **`/ca/etfs`** compares against **`CA_ETF_DYNAMIC_REGISTRY`** only.
+- **Structure isolation:** peers never cross **equity-only** (only `equityTags`), **alpha-only** (only `alphaTags`, e.g. standalone managed futures), and **dual / stacked** (both dimensions). Tag bundles must reflect that shape so pure alpha sleeves are not compared to return-stacked equity+overlay funds.
+- **Precious metals / major crypto (granular):** use **`pm_gold`**, **`pm_silver`**, **`pm_platinum`**, **`pm_palladium`** so any two funds that each carry at least one pm tag can match within that family. Use **`crypto_bitcoin`** and **`crypto_ethereum`** (plus optional umbrella **`crypto_major`**) so spot BTC and spot ETH listings pair; matching is implemented in **`etfSimilarityTags.ts`** (`preciousMetalAssetPeers` / `cryptoMajorAssetPeers`).
+- Display score on each row: **stacked** grade if present, else **capital (equity)** grade, else **alpha**, else **N/A** — same priority for the **current ETF** line above the list.
 
 ## 3. Research deep dives (before writing copy)
 
@@ -250,14 +276,18 @@ When the write-up is a registry row (`US_ETF_DYNAMIC_REGISTRY` / `CA_ETF_DYNAMIC
 
 - **`lede`:** One clear thesis (respect §4 word budget when rendered).
 - **`strategyParas`:** Typically **two** strings—mechanics, sleeves, leverage/rebalance, risks, what to read in the prospectus—mirroring **Strategy** depth.
-- **`pedigreeParas`:** Prefer **`ped(p1, p2)`** with **two** substantive paragraphs (manager/process + issuer scale or boutique honesty per §3e), then the automatic **`PED_VERIFY`** footer—mirroring **Manager and Issuer Pedigree**.
+- **`pedigreeParas`:** Prefer **`ped(p1, p2)`** with **two** substantive paragraphs (manager/process + issuer scale or boutique honesty per §3e). Do **not** append a redundant “verify holdings / educational only” footer; shared legal and educational notes belong in **`<EtfPageDisclaimers />`** on the page template.
 - **`outperfParas`:** **Two** strings following §3d (favorable regimes; product-specific; closing paragraph not purely negative). Do **not** rely on generic `outf()`-style boilerplate.
 - **`inception` / `mer` / `aum`:** Use **ETF Facts / prospectus** when stating numbers; use `—` or “see ETF Facts” if unknown—**do not invent**.
 - **MER + performance fee:** When the fund charges a **performance fee** on top of management, set registry `mer` to **`<management>% + perf fee`** (e.g. `0.85% + perf fee`, `0% + perf fee`). Spell out hurdles, crystallization, and “see prospectus” detail in **Strategy** / pedigree / ETF Facts notes—not in the meta line (keeps the stat row scannable and matches `parseMerAnnual` picking the first `x%`).
 
-**Rendering note**
+**HTML copy — no Markdown emphasis**
 
-- Registry strings are shown as **plain text** in the dynamic template—**no Markdown** (`**bold**`, etc.); write in normal sentences.
+- Registry rows use **`contentFormat: 'html'`** (all current US/CA dynamic ETFs do). `lede`, each `strategyParas` / `pedigreeParas` / `outperfParas` string, and **`belowChart`** are rendered with **`dangerouslySetInnerHTML`** (`EtfDynamicPageLayout` → `EtfPageTemplate`). **`etfFeaturedRegistryBodies.ts`** is the same idea: HTML fragments, not Markdown.
+- **Never use Markdown bold/italic** (`**like this**`, `*like this*`) in those fields. The browser does not parse Markdown—readers see **literal asterisks** and broken emphasis.
+- For emphasis, use **HTML**: `<strong>…</strong>` (and `<em>…</em>` only if you truly need italics). Follow §4 for `</strong>{' '}` before the next word so phrases do not smush.
+- In HTML strings, use **`&amp;`** for an ampersand when it is part of a name or token (e.g. **`S&amp;P 500`**) so markup stays unambiguous.
+- **No em dashes (—)** in **user-visible** copy: dynamic registry HTML strings (`lede`, strategy, pedigree, outperformance, `description`), featured-body HTML, and hub blurbs shown on `/us-etfs` / `/ca/etfs`. Use a comma, period, colon, or parentheses. (Code comments, JSDoc, and non-rendered strings are not the priority.) Ticker–title separators in `h1Title` / `pageTitle` may use ` - ` or your site’s chosen title pattern.
 
 **Do not confuse**
 
@@ -297,7 +327,7 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 - [ ] **Batch:** Phase C integration sweep (hub `href`s, chart allowlist for **all** new symbols)
 - [ ] Category `id` matches back-link hash; badge matches category **title**
 - [ ] Meta rows follow the standard: row 1 = **Ticker/Issuer/Inception**, row 2 = **Category/Beta/MER/AUM** (Beta → MER → AUM order); not inside the chart panel
-- [ ] Beta uses market benchmark defaults (US→SPY, `.TO`→XIU.TO) or an intentional `betaBenchmarkSymbol` override; do not hardcode SPY for Canadian ETFs
+- [ ] Beta uses market benchmark defaults (US→SPY, `.TO`→`XSP.TO` / `CAD_SPY_PROXY_SYMBOL`) or an intentional `betaBenchmarkSymbol` override; do not assume TSX cap-weight (`XIU`) for Canadian ETF charts unless the sleeve is explicitly TSX-tracked and you document why
 - [ ] Hub lists the new ETF with correct `href`
 - [ ] Section headings and “Official ETF page” opener match the shared template
 - [ ] Chart: getter + API branch + `EtfChartPanel` type + `chartCurrency` if non-USD (see HDGE)
@@ -305,8 +335,9 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 - [ ] **§2c · Short history + no proxy:** If inception is **under ~2 years** and **`resolveChartProxyLegs`** is still empty or a sleeve is **unmapped**, you **asked the user** for proxy Yahoo symbols (or an explicit decision to defer)—per §2c “Young listing — ask when you cannot proxy”
 - [ ] Copy reflects deep reads of issuer ETF page, manager, and sponsor; regime/outperformance tied to strategy
 - [ ] **Dynamic registry (`etfDynamicRegistry.ts`):** `officialUrl` is a **verified, fund-specific** issuer/sponsor product page (or clearly labeled SEC/prospectus fallback per §3f)—**not** a generic aggregator default; `officialLabel` names the product/destination clearly
-- [ ] **Dynamic registry:** `lede` + two **`strategyParas`** + **`ped(...)`** (two pedigree paragraphs before verify) + two **`outperfParas`** match MATE-level depth (§3f); no Markdown in strings
+- [ ] **Dynamic registry:** `lede` + two **`strategyParas`** + **`ped(...)`** (two pedigree paragraphs) + two **`outperfParas`** match MATE-level depth (§3f); **HTML only** for emphasis (`<strong>`), never Markdown `**` (§3f “HTML copy”)
 - [ ] **Stacked sleeves:** add / update `src/lib/etfStackExposureBySlug.ts` with `components` (each: `pct`, `bucket`, **`assetClass`** — `equity` vs non-equity sets **capital vs alpha** lines and notionals) plus benchmark fields (`equityCoreBenchmarkSymbol` / blend when needed, `coreBenchmarkSymbol` / blend for non-equity-only funds) so grading does not use legacy inference
+- [ ] **Similar ETFs (§2d):** new slug has **`equityTags` / `alphaTags`** in `etfSimilarityTags.ts` for the correct map (US vs CA); sleeve-derived tags when **`ETF_STACK_EXPOSURE_BY_SLUG`** exists; no hard-coded peer lists in route files
 - [ ] **Pedigree** includes **issuer / group-level AUM** when findable (source + period); if not findable, states boutique / undisclosed scale (§3e). Dynamic pages: `ped(issuer, groupAum?)` or equivalent in custom `pedigreeParas`
 - [ ] **Outperformance** emphasizes favorable regimes; closing paragraph is not purely negative; return-stacked pages stress the **second sleeve** when the first tracks the benchmark (§3d)
 - [ ] Lede and each body `<p>` respect word budgets (§4); no paragraph runs past **100 words**

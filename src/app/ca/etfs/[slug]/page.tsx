@@ -6,6 +6,7 @@ import {
 import { getCachedMonthlyEfficiencyPatchForSlug } from '@/lib/getCachedMonthlyEtfEfficiencyGrades'
 import { CA_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
 import { getCachedEtfChart } from '@/lib/getCachedEtfChart'
+import { buildPrimarySimilarityHeadline, loadSimilarEtfRows } from '@/lib/etfSimilarEtfs'
 import styles from '../hdge/page.module.css'
 
 export function generateStaticParams() {
@@ -39,6 +40,9 @@ export default async function CaEtfDynamicPage({
   }
   const def = mergeDynamicEtfEfficiencyWithPatch(raw, slug, 'ca', monthlyPatch)
   const chart = await getCachedEtfChart(def.yahooSymbol, '1y', def.betaBenchmarkSymbol)
+  const similarEtfs = await loadSimilarEtfRows(slug, 'ca')
+  const primarySimilarityHeadline =
+    similarEtfs.length > 0 ? buildPrimarySimilarityHeadline(def) : undefined
   return (
     <EtfDynamicPageLayout
       variant="ca"
@@ -47,6 +51,8 @@ export default async function CaEtfDynamicPage({
       chart={chart}
       slug={slug}
       styles={styles}
+      similarEtfs={similarEtfs}
+      primarySimilarityHeadline={primarySimilarityHeadline}
     />
   )
 }

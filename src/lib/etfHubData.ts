@@ -119,10 +119,22 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('rsst')
     ),
     us(
+      'ctap',
+      'CTAP — Simplify US Equity PLUS Managed Futures Strategy ETF',
+      '100% U.S. large-cap equity plus 100% systematic managed futures in one return-stacked wrapper.',
+      usPath('ctap')
+    ),
+    us(
       'rssy',
       'RSSY — Return Stacked U.S. Stocks & Futures Yield ETF',
       'Large-cap U.S. equity stacked with a systematic futures yield (carry) sleeve.',
       '/us-etfs/rssy'
+    ),
+    us(
+      'rssb',
+      'RSSB — Return Stacked® Global Stocks & Bonds ETF',
+      'Global equities stacked with a Treasury bond sleeve in one capital-efficient wrapper.',
+      usPath('rssb')
     ),
   ],
   'return-stacked-lt-2x': [
@@ -143,6 +155,36 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'GDMN — WisdomTree Efficient Gold Plus Gold Miners Strategy Fund',
       'Stacks gold miners equity with a leveraged gold-futures sleeve for a concentrated precious-metals expression.',
       usPath('gdmn')
+    ),
+    us(
+      'gdt',
+      'GDT — WisdomTree Efficient TIPS Plus Gold Fund',
+      'Inflation-linked Treasuries with a gold futures overlay in a lower-leverage efficient structure.',
+      usPath('gdt')
+    ),
+    us(
+      'ntsx',
+      'NTSX — WisdomTree U.S. Efficient Core Fund',
+      '90/60 structure: U.S. equity core plus Treasury futures overlay.',
+      usPath('ntsx')
+    ),
+    us(
+      'ntsi',
+      'NTSI — WisdomTree International Efficient Core Fund',
+      '90/60 structure: developed ex-U.S. equity core plus Treasury futures overlay.',
+      usPath('ntsi')
+    ),
+    us(
+      'ntse',
+      'NTSE — WisdomTree Emerging Markets Efficient Core Fund',
+      '90/60 structure: emerging-markets equity core plus Treasury futures overlay.',
+      usPath('ntse')
+    ),
+    us(
+      'hold',
+      'HOLD — Harbor Alpha Layering ETF',
+      'Large-cap U.S. equity layered with a trend-following managed-futures sleeve.',
+      usPath('hold')
     ),
   ],
   'premia-systematic-alternatives': [
@@ -195,6 +237,24 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'SASS — M.D. Sass Concentrated Value ETF',
       'Active, high-conviction U.S. large/mid value—roughly 20–25 names from Russell value universes, out-of-favor and misunderstood stories.',
       usPath('sass')
+    ),
+    us(
+      'avdv',
+      'AVDV — Avantis International Small Cap Value ETF',
+      'Systematic international small-cap value with profitability screens.',
+      usPath('avdv')
+    ),
+    us(
+      'cowz',
+      'COWZ — Pacer U.S. Cash Cows 100 ETF',
+      'Rules-based U.S. large-cap free-cash-flow yield factor sleeve.',
+      usPath('cowz')
+    ),
+    us(
+      'ptf',
+      'PTF — Invesco Dorsey Wright Technology Momentum ETF',
+      'Technology sector momentum strategy using Dorsey Wright relative-strength rules.',
+      usPath('ptf')
     ),
   ],
   'managed-futures': [
@@ -250,6 +310,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Active global macro sleeve targeting hedge-fund-sector return dynamics with ETFs and futures.',
       '/us-etfs/hfgm'
     ),
+    us(
+      'hard',
+      'HARD — Simplify Commodities Strategy No K-1 ETF',
+      'Systematic long/short hard-assets and commodity futures strategy in an ETF wrapper.',
+      usPath('hard')
+    ),
   ],
   arbitrage: [
     us(
@@ -293,7 +359,7 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   'return-stacked-ge-2x': [
     ca(
       'rgbm',
-      'RGBM.TO — Return Stacked® Global Balanced & Macro ETF',
+      'RGBM.TO - Return Stacked® Global Balanced & Macro ETF',
       'Canadian Return Stacked® line: ~$1 global balanced sleeve plus ~$1 systematic macro per dollar (USD share class RGBM.U).',
       caPath('rgbm')
     ),
@@ -302,13 +368,13 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   'premia-systematic-alternatives': [
     ca(
       'onec',
-      'ONEC.TO — Accelerate OneChoice Alternative Multi-Asset Fund',
-      'Single-ticket mix of alt sleeves—absolute return, credit, real assets, macro, and directional long/short equity.',
+      'ONEC.TO - Accelerate OneChoice Alternative Multi-Asset Fund',
+      'Single-ticket mix of alt sleeves: absolute return, credit, real assets, macro, and directional long/short equity.',
       caPath('onec')
     ),
     ca(
       'pfaa',
-      'PFAA.TO — Picton Multi-Strategy Alpha Alternative Fund ETF',
+      'PFAA.TO - Picton Multi-Strategy Alpha Alternative Fund ETF',
       'Picton Mahoney multi-strategy alpha alternatives in an ETF structure.',
       caPath('pfaa')
     ),
@@ -316,7 +382,7 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   factor: [
     ca(
       'zlb',
-      'ZLB.TO — BMO Low Volatility Canadian Equity ETF',
+      'ZLB.TO - BMO Low Volatility Canadian Equity ETF',
       'Rules-based Canadian equity sleeve tilted toward historically lower-beta names (low-volatility factor).',
       caPath('zlb')
     ),
@@ -325,39 +391,45 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   'long-short': [
     ca(
       'atsx',
-      'ATSX.TO — Accelerate Canadian Long Short Equity Fund',
-      'Quantitative 150/50 Canadian long/short equity vs. S&P/TSX 60—directional hedge-fund-style ETF.',
+      'ATSX.TO - Accelerate Canadian Long Short Equity Fund',
+      'Quantitative 150/50 Canadian long/short equity vs. S&P/TSX 60, directional hedge-fund-style ETF.',
       caPath('atsx')
     ),
     ca(
+      'pfae',
+      'PFAE.TO - Picton Mahoney Fortified Enhanced Canadian Equity Alternative Fund ETF',
+      '130/30 Canadian equity long/short, ~100% net exposure, Fortified / Authentic Hedge® process.',
+      caPath('pfae')
+    ),
+    ca(
       'hdge',
-      'HDGE.TO — Accelerate Absolute Return Fund',
+      'HDGE.TO - Accelerate Absolute Return Fund',
       'Quantitative long/short North American equity strategy in an ETF wrapper.',
       '/ca/etfs/hdge'
     ),
     ca(
       'pfls',
-      'PFLS.TO — Picton Mahoney Fortified Long Short Alternative Fund ETF',
-      'Global long/short equity with moderate net equity exposure—Authentic Hedge®-style process.',
+      'PFLS.TO - Picton Mahoney Fortified Long Short Alternative Fund ETF',
+      'Global long/short equity with moderate net equity exposure: Authentic Hedge®-style process.',
       caPath('pfls')
     ),
     ca(
       'pfmn',
-      'PFMN.TO — Picton Mahoney Fortified Market Neutral Alternative Fund ETF',
-      'Actively managed market-neutral long/short equity—Authentic Hedge® style in an ETF.',
+      'PFMN.TO - Picton Mahoney Fortified Market Neutral Alternative Fund ETF',
+      'Actively managed market-neutral long/short equity: Authentic Hedge® style in an ETF.',
       '/ca/etfs/pfmn'
     ),
     ca(
       'tgaf',
-      'TGAF.TO — Tralucent Global Alt (Long/Short) Equity Fund ETF',
-      'Global long/short equity (~100% long / ~40% short) across 200+ names—active alt sleeve vs. MSCI ACWI NR (CAD).',
+      'TGAF.TO - Tralucent Global Alt (Long/Short) Equity Fund ETF',
+      'Global long/short equity (~100% long / ~40% short) across 200+ names, active alt sleeve vs. MSCI ACWI NR (CAD).',
       caPath('tgaf')
     ),
   ],
   'global-macro': [
     ca(
       'dglm',
-      'DGLM.TO — Desjardins Global Macro ETF',
+      'DGLM.TO - Desjardins Global Macro ETF',
       'Alternative ETF: long/short global macro across equities, rates, commodities, and currencies (Graham Capital sub-advisor).',
       caPath('dglm')
     ),
@@ -365,39 +437,39 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   arbitrage: [
     ca(
       'arb',
-      'ARB.TO — Accelerate Arbitrage Fund',
-      'Merger and SPAC arbitrage—targets and acquirers—with a low-volatility, event-driven profile.',
+      'ARB.TO - Accelerate Arbitrage Fund',
+      'Merger and SPAC arbitrage (targets and acquirers) with a low-volatility, event-driven profile.',
       '/ca/etfs/arb'
     ),
   ],
   'leveraged-equity': [
     ca(
       'hsu',
-      'HSU.TO — BetaPro S&P 500 2x Daily Bull ETF',
+      'HSU.TO - BetaPro S&P 500 2x Daily Bull ETF',
       '2x daily S&P 500 exposure in CAD for tactical high-beta positioning.',
       caPath('hsu')
     ),
     ca(
       'hqu',
-      'HQU.TO — BetaPro NASDAQ-100 2x Daily Bull ETF',
+      'HQU.TO - BetaPro NASDAQ-100 2x Daily Bull ETF',
       '2x daily Nasdaq-100 exposure with daily reset leverage.',
       caPath('hqu')
     ),
     ca(
       'ussl',
-      'USSL.TO — Global X Enhanced S&P 500 Index ETF',
+      'USSL.TO - Global X Enhanced S&P 500 Index ETF',
       'Enhanced-beta S&P 500 sleeve targeting about 1.25x exposure.',
       caPath('ussl')
     ),
     ca(
       'qqql',
-      'QQQL.TO — Global X Enhanced NASDAQ-100 Index ETF',
+      'QQQL.TO - Global X Enhanced NASDAQ-100 Index ETF',
       'Enhanced-beta Nasdaq-100 sleeve targeting about 1.25x exposure.',
       caPath('qqql')
     ),
     ca(
       'heql',
-      'HEQL.TO — Global X Enhanced All-Equity Asset Allocation ETF',
+      'HEQL.TO - Global X Enhanced All-Equity Asset Allocation ETF',
       'Enhanced all-equity allocation targeting about 1.25x exposure through a diversified global ETF mix.',
       caPath('heql')
     ),
@@ -405,14 +477,14 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   crypto: [
     ca(
       'btccb',
-      'BTCC-B.TO — Purpose Bitcoin ETF (CAD, unhedged)',
-      'Spot Bitcoin in cold storage—Purpose’s flagship Canadian physical BTC sleeve (competes with CI Galaxy and Fidelity for top AUM).',
+      'BTCC-B.TO - Purpose Bitcoin ETF (CAD, unhedged)',
+      'Spot Bitcoin in cold storage: Purpose’s flagship Canadian physical BTC sleeve (competes with CI Galaxy and Fidelity for top AUM).',
       caPath('btccb')
     ),
     ca(
       'ethxb',
-      'ETHX-B.TO — CI Galaxy Ethereum ETF (CAD, unhedged)',
-      'Spot Ether held in custody—CI / Galaxy’s large-capacity Canadian ETH ETF (low fee vs. many peers).',
+      'ETHX-B.TO - CI Galaxy Ethereum ETF (CAD, unhedged)',
+      'Spot Ether held in custody: CI / Galaxy’s large-capacity Canadian ETH ETF (low fee vs. many peers).',
       caPath('ethxb')
     ),
   ],

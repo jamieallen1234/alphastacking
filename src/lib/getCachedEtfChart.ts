@@ -5,6 +5,7 @@ import {
   type PriceSeries,
   type YahooRange,
 } from '@/lib/yahooFinance'
+import { CAD_SPY_PROXY_SYMBOL } from '@/lib/cadUsdConversion'
 import { isAllowedEtfChartSymbol, type EtfChartYahooSymbol } from '@/lib/etfChartSymbols'
 
 const DAY = 86400
@@ -23,10 +24,10 @@ export interface EtfChartPayload {
   firstListedTsSec: number | null
 }
 
-/** Default benchmark for beta: TSX ETFs vs XIU, otherwise SPY. */
+/** Default benchmark for beta: CAD-listed → CAD-hedged S&P 500 proxy ({@link CAD_SPY_PROXY_SYMBOL}), else SPY. */
 export function defaultBetaBenchmarkForSymbol(yahooSymbol: string): string {
   const sym = yahooSymbol.trim().toUpperCase()
-  return sym.endsWith('.TO') ? 'XIU.TO' : 'SPY'
+  return sym.endsWith('.TO') ? CAD_SPY_PROXY_SYMBOL : 'SPY'
 }
 
 /** Safe empty series when Yahoo is unavailable or symbol is not chartable (SSR must not 500). */

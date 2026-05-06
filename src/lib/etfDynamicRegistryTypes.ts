@@ -54,6 +54,6 @@ export type EtfDynamicDef = {
   alphaBucketExposurePct?: number
   /** True when both sleeves are equity risk and should be treated as capital (not alpha) for capital efficiency. */
   allEquityStack?: boolean
-  /** Optional beta benchmark symbol; defaults by market (e.g. `.TO` → `XIU.TO`, US → `SPY`). */
+  /** Optional beta benchmark symbol; defaults by market (e.g. `.TO` → `XSP.TO` CAD-hedged S&P proxy, US → `SPY`). */
   betaBenchmarkSymbol?: string
 }

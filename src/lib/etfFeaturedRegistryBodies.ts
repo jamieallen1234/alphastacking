@@ -43,7 +43,7 @@ export const HFGM_LEDE_HTML =
 
 export const HFGM_STRATEGY_PARAS_HTML = [
   'The fund runs roughly 10–30 long and short positions in ETFs and exchange-listed futures, targeting performance that resembles the hedge fund <strong>Global Macro</strong> sector’s gross returns, typically at roughly twice the sector’s volatility. It is not a hedge fund and does not invest in hedge funds. It is a regulated ETF that implements a macro trading strategy through listed instruments.',
-  'The mandate is explicitly cross-asset: rates, equities, commodities, and currencies. Alongside the long/short macro book, HFGM holds an estimated ~50% global equity position via futures, so equity beta is part of the portfolio, not replaced by it.',
+  'The strategy is explicitly cross-asset: rates, equities, commodities, and currencies. Alongside the long/short macro book, HFGM holds an estimated ~50% global equity position via futures, so equity beta is part of the portfolio, not replaced by it.',
 ]
 
 export const HFGM_PEDIGREE_PARAS_HTML = [
@@ -56,6 +56,24 @@ export const HFGM_OUTPERF_PARAS_HTML = [
   'Underperforms in a fast undifferentiated equity sell-off, or a year with <strong>no sustained macro theme</strong> where positions get stopped out before trends develop. 2023–2024 tested many macro managers as the anticipated recession did not materialize and markets moved on idiosyncratic factors rather than macro fundamentals.',
 ]
 
+/** Issuer-level pedigree shared by all Accelerate TSX alts (ONEC, ATSX, HDGE, ARB, etc.). */
+export const ACCELERATE_FINANCIAL_TECHNOLOGIES_PEDIGREE_PARAS_HTML = [
+  '<strong>Accelerate Financial Technologies</strong> is a Canadian liquid-alternatives shop that listed hedge-fund-style sleeves on the TSX early, mostly for advisors and independent dealers rather than bank-branch distribution. The lineup spans multi-alternative funds, quantitative long/short equity, merger arbitrage, and related strategies in daily-traded wrappers.',
+  'The firm sits outside the big-bank ETF complexes: alternatives-first, with trading liquidity and assets that vary by fund. Size positions using each sleeve’s real spreads and AUM, not just the strategy headline.',
+]
+
+/** Issuer-level pedigree shared by Picton-managed CA ETFs (PFAA, PFAE, PFLS, PFMN, etc.). */
+export const PICTON_MAHONEY_PEDIGREE_PARAS_HTML = [
+  '<strong>Picton</strong> (<strong>PICTON Investments</strong>, formerly Picton Mahoney) is one of Canada’s larger independent alternatives managers. Issuer figures put group assets near <strong>$14B CAD</strong> firmwide, enough infrastructure for long/short, multi-strategy, and market-neutral books while still boutique versus global banks.',
+  '<strong>Fortified®</strong> and <strong>Authentic Hedge®</strong> are Picton’s risk-budgeted alts franchises; the ETF series puts those processes on TSX tickers with daily liquidity, alongside the firm’s older alternative mutual-fund channels.',
+]
+
+/** Issuer-level pedigree shared by Global X Investments Canada (BetaPro, enhanced beta, etc.). */
+export const GLOBAL_X_INVESTMENTS_CANADA_PEDIGREE_PARAS_HTML = [
+  'Global X Investments Canada (formerly Horizons ETFs Management) is one of Canada’s larger ETF issuers. BetaPro daily leverage, enhanced-beta (~1.25×), and related fund-of-funds sleeves share the same listed-derivatives and operational infrastructure.',
+  'The sponsor operates under Mirae Asset’s global platform, which supports futures-based implementation at scale. Path risk, financing drag, and index concentration still come from the strategy, not from issuer size.',
+]
+
 export const HDGE_LEDE_HTML =
   'HDGE.TO is a quantitative <strong>long/short equity</strong> fund. It ranks North American stocks systematically, goes long the top-ranked names, and shorts the bottom-ranked ones.'
 
@@ -64,10 +82,8 @@ export const HDGE_STRATEGY_PARAS_HTML = [
   'Accelerate typically runs the portfolio at roughly 110% gross long and 50% gross short, so <strong>~60% net long</strong>. The long book earns when top-ranked names outperform; the short book earns when bottom-ranked names underperform. Both can contribute independently of broad market direction.',
 ]
 
-export const HDGE_PEDIGREE_PARAS_HTML = [
-  '<strong>Accelerate</strong> launched HDGE in 2019 as part of its initial alternative ETF lineup. The firm’s focus is bringing hedge-fund-style strategies into exchange-traded wrappers at lower cost and with daily liquidity.',
-  'The ETF wrapper makes the mandate accessible. The playbook is hedge-fund style: factor ranking, systematic shorting, and portfolio construction around risk-adjusted returns.',
-]
+export const HDGE_PEDIGREE_PARAS_HTML =
+  ACCELERATE_FINANCIAL_TECHNOLOGIES_PEDIGREE_PARAS_HTML
 
 export const HDGE_OUTPERF_PARAS_HTML = [
   'Outperforms when <strong>stock dispersion is high</strong>: strong winners and clear losers within sectors, factor rotations, periods where a company’s fundamentals matter more than the index direction. Both the long book and short book can contribute at the same time in those conditions.',
@@ -78,14 +94,11 @@ export const PFMN_LEDE_HTML =
   'PFMN.TO is an actively managed <strong>market-neutral</strong> long/short equity ETF: it aims for capital appreciation with lower volatility than broad equities and low correlation to major stock markets.'
 
 export const PFMN_STRATEGY_PARAS_HTML = [
-  'The fund pursues Picton’s <strong>Fortified</strong> mandate: a long book plus shorts, implemented with equities, derivatives (options, futures, forwards, swaps), and related instruments. The objective is muted net equity beta to major benchmarks, with return coming from security selection and relative positioning rather than index direction.',
+  'The fund pursues Picton’s <strong>Fortified</strong> sleeve: a long book plus shorts, implemented with equities, derivatives (options, futures, forwards, swaps), and related instruments. The objective is muted net equity beta to major benchmarks, with return coming from security selection and relative positioning rather than index direction.',
   'In practice, market-neutral means the portfolio is sized so that broad index direction matters less than which stocks outperform which other stocks. Returns depend on getting individual selections right, not on calling the market.',
 ]
 
-export const PFMN_PEDIGREE_PARAS_HTML = [
-  '<strong>PICTON Investments</strong> (formerly Picton Mahoney) is a Canadian alternatives-focused manager known for the Authentic Hedge® and Fortified fund franchises. The firm has cited low-teens billions CAD in firm AUM in recent communications. PFMN sits in that lineage: an ETF expression of Picton’s institutional market-neutral equity process.',
-  'Picton has run market-neutral strategies since before PFMN launched. The ETF wrapper puts the same mandate on a TSX ticker with daily liquidity rather than the redemption schedules typical of the firm’s older alternative mutual fund lineup.',
-]
+export const PFMN_PEDIGREE_PARAS_HTML = PICTON_MAHONEY_PEDIGREE_PARAS_HTML
 
 export const PFMN_OUTPERF_PARAS_HTML = [
   'Outperforms most when <strong>dispersion is wide</strong>: clear winners and losers within markets, leadership rotation, and wide spreads between quality and junk at the stock or sector level. In those conditions, the long book earns from outperformers and the short book earns from laggards, independent of broad index direction.',
@@ -100,10 +113,8 @@ export const ARB_STRATEGY_PARAS_HTML = [
   'Economics come from deal spreads and event completion, not equity beta. Net exposure to broad markets is low by design: the fund earns when deals close, not when stocks go up.',
 ]
 
-export const ARB_PEDIGREE_PARAS_HTML = [
-  '<strong>Accelerate</strong> is the same Canadian sponsor behind HDGE.TO. The firm’s focus is bringing hedge-fund-style strategies into TSX-listed ETF wrappers. ARB.TO applies that same mission to merger arbitrage specifically.',
-  'For arbitrage, edge comes from deal sourcing, legal and regulatory diligence, and disciplined risk management around closing probability. That is the same skill set as standalone merger-arb desks, packaged for ETF investors.',
-]
+export const ARB_PEDIGREE_PARAS_HTML =
+  ACCELERATE_FINANCIAL_TECHNOLOGIES_PEDIGREE_PARAS_HTML
 
 export const ARB_OUTPERF_PARAS_HTML = [
   'Outperforms when the M&amp;A calendar is busy and <strong>deal spreads are wide</strong>: friendly credit, clear regulatory paths, and acquirer financing that holds. More concurrent deals means more opportunities to diversify break risk while harvesting the event premium.',

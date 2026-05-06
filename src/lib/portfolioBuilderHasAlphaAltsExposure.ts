@@ -21,6 +21,7 @@ function categorySuggestsAlphaOrAlts(o: PortfolioBuilderEtfOption): boolean {
     c === 'Global macro' ||
     c === 'Arbitrage' ||
     c === 'Premia and systematic alternatives' ||
+    c === 'Return Stacked - Crypto' ||
     c === 'Crypto & digital assets'
   )
 }

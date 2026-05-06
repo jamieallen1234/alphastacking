@@ -76,7 +76,7 @@ function asGrade(v: string | undefined): PortfolioBuilderEfficiencyGrade | null 
 
 async function buildOptionsForUniverse(universe: 'us' | 'ca'): Promise<PortfolioBuilderEtfOption[]> {
   const registry = universe === 'us' ? US_ETF_DYNAMIC_REGISTRY : CA_ETF_DYNAMIC_REGISTRY
-  /** De-dupe benchmark fetches when many tickers share SPY or XIU.TO. */
+  /** De-dupe benchmark fetches when many tickers share SPY or XSP.TO (CAD default). */
   const benchmarkLoads = new Map<string, Promise<PriceSeries | null>>()
   function loadBenchmark1y(benchmark: string): Promise<PriceSeries | null> {
     const k = benchmark.trim().toUpperCase()

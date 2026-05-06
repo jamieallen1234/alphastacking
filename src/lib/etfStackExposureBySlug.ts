@@ -55,10 +55,34 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'SPY',
   },
+  ctap: {
+    components: [
+      { name: 'S&P 500 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
+      { name: 'Managed futures', pct: 100, bucket: 'alpha', assetClass: 'alternatives' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'SPY',
+  },
   rssy: {
     components: [
       { name: 'S&P 500 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
       { name: 'Futures yield', pct: 100, bucket: 'alpha', assetClass: 'alternatives' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'SPY',
+  },
+  rssb: {
+    components: [
+      { name: 'Global equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
+      { name: 'US Treasuries', pct: 100, bucket: 'alpha', assetClass: 'fixed-income' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'VT',
+  },
+  hold: {
+    components: [
+      { name: 'US equity', pct: 75, bucket: 'capital', assetClass: 'equity' },
+      { name: 'Managed futures', pct: 75, bucket: 'alpha', assetClass: 'alternatives' },
     ],
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'SPY',
@@ -76,6 +100,30 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     equityOnlyUsesCoreBlend: true,
     allEquityStack: true,
   },
+  ntsx: {
+    components: [
+      { name: 'US equity', pct: 90, bucket: 'capital', assetClass: 'equity' },
+      { name: 'US Treasuries', pct: 60, bucket: 'alpha', assetClass: 'fixed-income' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'SPY',
+  },
+  ntsi: {
+    components: [
+      { name: 'Developed ex-US equity', pct: 90, bucket: 'capital', assetClass: 'equity' },
+      { name: 'US Treasuries', pct: 60, bucket: 'alpha', assetClass: 'fixed-income' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'VEA',
+  },
+  ntse: {
+    components: [
+      { name: 'Emerging markets equity', pct: 90, bucket: 'capital', assetClass: 'equity' },
+      { name: 'US Treasuries', pct: 60, bucket: 'alpha', assetClass: 'fixed-income' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'VWO',
+  },
   gde: {
     components: [
       { name: 'US equity', pct: 80, bucket: 'capital', assetClass: 'equity' },
@@ -91,6 +139,14 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     ],
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'GDX',
+  },
+  gdt: {
+    components: [
+      { name: 'TIPS', pct: 90, bucket: 'capital', assetClass: 'fixed-income' },
+      { name: 'Gold futures', pct: 90, bucket: 'alpha', assetClass: 'commodity' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'TIP',
   },
   rssx: {
     components: [

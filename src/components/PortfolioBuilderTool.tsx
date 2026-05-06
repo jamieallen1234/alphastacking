@@ -82,7 +82,7 @@ const BUILDER_EQUITY_LIKE_CATEGORIES = new Set([
   'Leveraged equity ETFs (advanced)',
 ])
 
-const CRYPTO_CATEGORY_LABEL = 'Crypto & digital assets'
+const CRYPTO_CATEGORY_LABEL = 'Return Stacked - Crypto'
 
 const PRECIOUS_METALS_CATEGORY_LABEL = 'Precious metals'
 
@@ -278,7 +278,7 @@ function optionGradeLabel(row: BuilderRow, o: PortfolioBuilderEtfOption): string
   if (row.efficiencyKind === 'capital') return o.capitalGrade != null ? o.capitalGrade : ''
   if (row.efficiencyKind === 'alpha') return o.alphaGrade != null ? o.alphaGrade : ''
   if (row.efficiencyKind === 'stacked') return o.stackedGrade != null ? o.stackedGrade : ''
-  if (o.stackedEligible) return o.stackedGrade != null ? `Stacked ${o.stackedGrade}` : ''
+  if (o.stackedEligible && o.stackedGrade != null) return `Stacked ${o.stackedGrade}`
   const eqPart = o.capitalGrade != null ? `Eq ${o.capitalGrade}` : ''
   const alPart = o.alphaGrade != null ? `Alpha ${o.alphaGrade}` : ''
   if (eqPart && alPart) return `${eqPart} / ${alPart}`

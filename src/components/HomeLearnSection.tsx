@@ -16,7 +16,9 @@ export default function HomeLearnSection({ variant = 'us' }: HomeLearnSectionPro
         Learn
       </h2>
       <p className={styles.lede}>
-        Short guides on alpha stacking, the portfolio builder, ETF pages, and efficiency grades.
+        Understand how to build an{' '}
+        <span className={styles.ledeHighlightWhite}>Alpha</span>
+        <span className={styles.ledeHighlightGold}> stacking</span> portfolio.
       </p>
       <div className={styles.actions}>
         <Link href={learnHref} className={styles.cta}>

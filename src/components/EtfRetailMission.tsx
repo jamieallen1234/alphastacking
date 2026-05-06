@@ -13,10 +13,10 @@ export default function EtfRetailMission({ variant = 'us' }: EtfRetailMissionPro
   return (
     <section className={styles.section} aria-labelledby="etf-mission-heading">
       <h2 id="etf-mission-heading" className={styles.heading}>
-        Built from ETFs, for every investor
+        ETFs, for every investor
       </h2>
       <p className={styles.body}>
-        The portfolio ideas on this site are made up of <strong>ETFs</strong> exclusively.
+        The <strong>portfolio</strong> ideas on this site are made up of <strong>ETFs</strong> exclusively.
         ETFs are known for low fees and are available to the public, unlike hedge funds, private equity, and venture capital, which are typically limited to institutions and accredited investors.
         We believe that alpha stacking should be accessible to everyone.
       </p>

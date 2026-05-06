@@ -35,8 +35,8 @@ export default function AlphaExample({ edition }: { edition: 'us' | 'ca' }) {
         Illustrative Example
       </h2>
       <p className={styles.lede}>
-        $10k invested for ten years. One portfolio tracks the S&P 500 index total return. The other adds a
-        flat +3% alpha per year on top of the same S&P 500 index path. Through compounding the small incremental
+        Take $10k invested ten years ago. The left portfolio tracks the S&P 500 index total return. The right portfolio
+        adds a flat +3% alpha per year on top of the S&P 500 index. Through compounding the small incremental
         amounts turn into big outperformance.
       </p>
       <div className={styles.grid}>

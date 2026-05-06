@@ -6,16 +6,6 @@
   box-sizing: border-box;
 }
 
-.label {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  color: var(--color-gold);
-  margin-bottom: 2rem;
-  text-transform: uppercase;
-}
-
 .heading {
   font-family: var(--font-serif);
   font-size: clamp(3rem, 6vw, 5.5rem);

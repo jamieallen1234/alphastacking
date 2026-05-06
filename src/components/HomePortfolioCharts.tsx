@@ -11,9 +11,7 @@ export interface HomePortfolioChartsProps {
 export default function HomePortfolioCharts({ variant, slots }: HomePortfolioChartsProps) {
   const hubHref = variant === 'us' ? '/portfolios' : '/ca/portfolios'
   const lede =
-    variant === 'us'
-      ? 'US + Gold & Alt Blend from the hub. Full overlapping history vs the S&P 500 index — same weights as the portfolio detail page, which offers additional range tabs.'
-      : 'Global + Long/Short from the CAD hub. Full history vs the S&P 500 index, modeled in CAD — same weights as the portfolio detail page, which offers additional range tabs.'
+    'Model portfolios serve to showcase the historical performance of alpha stacked portfolios.'
 
   return (
     <section className={styles.section} aria-labelledby="home-portfolio-charts-heading">

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styles from './Hero.module.css'
 
 export interface HeroProps {
-  /** `ca`: Canadian edition label and CTA to `/ca/portfolios`. */
+  /** `ca`: CTA to `/ca/portfolios` instead of `/portfolios`. */
   variant?: 'us' | 'ca'
 }
 
@@ -12,19 +12,15 @@ export default function Hero({ variant = 'us' }: HeroProps) {
 
   return (
     <section className={styles.hero}>
-      <div className={`${styles.label} animate animate-1`}>
-        {isCa ? 'Canadian edition' : 'A framework for portfolio construction'}
-      </div>
-
-      <h1 className={`${styles.heading} animate animate-2`}>
+      <h1 className={`${styles.heading} animate animate-1`}>
         Stack <em>alpha</em>, not beta
       </h1>
 
-      <p className={`${styles.tagline} animate animate-3`}>
+      <p className={`${styles.tagline} animate animate-2`}>
         Hedge fund strategies open to <span className={styles.taglineGold}>anyone</span>
       </p>
 
-      <p className={`${styles.sub} animate animate-4`}>
+      <p className={`${styles.sub} animate animate-3`}>
         <span className={styles.subHighlightWhite}>Alpha</span>
         <span className={styles.subHighlightGold}> stacking</span>
         {' '}
@@ -34,7 +30,7 @@ export default function Hero({ variant = 'us' }: HeroProps) {
         markets.
       </p>
 
-      <div className={`${styles.actions} animate animate-5`}>
+      <div className={`${styles.actions} animate animate-4`}>
         <Link href={portfolioHref} className={styles.btnPrimary}>
           Explore portfolios
         </Link>

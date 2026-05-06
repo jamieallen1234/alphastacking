@@ -16,8 +16,8 @@ export default function HomeLearnSection({ variant = 'us' }: HomeLearnSectionPro
         Learn
       </h2>
       <p className={styles.lede}>
-        Understand how to build an{' '}
-        <span className={styles.ledeHighlightWhite}>Alpha</span>
+        Learn the strategy behind building an{' '}
+        <span className={styles.ledeHighlightWhite}>alpha</span>
         <span className={styles.ledeHighlightGold}> stacking</span> portfolio.
       </p>
       <div className={styles.actions}>

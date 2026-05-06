@@ -17,7 +17,7 @@ export default function Hero({ variant = 'us' }: HeroProps) {
       </h1>
 
       <p className={`${styles.tagline} animate animate-2`}>
-        Hedge fund strategies open to <span className={styles.taglineGold}>anyone</span>
+        Hedge fund strategies. Open to <span className={styles.taglineGold}>anyone</span>.
       </p>
 
       <p className={`${styles.sub} animate animate-3`}>

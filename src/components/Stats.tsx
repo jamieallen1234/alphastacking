@@ -45,7 +45,7 @@ const STATS: StatItem[] = [
     kind: 'simple',
     num: '∞',
     label:
-      'Multitude of ETFs graded and charted. Use them to build your own model portfolios.',
+      'A growing universe of ETFs graded and charted. Build your own model portfolios.',
   },
 ]
 

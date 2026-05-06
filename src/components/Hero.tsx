@@ -17,14 +17,14 @@ export default function Hero({ variant = 'us' }: HeroProps) {
       </h1>
 
       <p className={`${styles.tagline} animate animate-2`}>
-        Hedge fund strategies. Open to <span className={styles.taglineGold}>anyone</span>.
+        Hedge fund strategies, stacked. Open to <span className={styles.taglineGold}>anyone</span>.
       </p>
 
       <p className={`${styles.sub} animate animate-3`}>
         <span className={styles.subHighlightWhite}>Alpha</span>
         <span className={styles.subHighlightGold}> stacking</span>
         {' '}
-        takes the strongest ideas from proven strategies (long/short equity, global macro, managed futures,
+        takes the strongest ideas from proven institutional strategies (long/short equity, global macro, managed futures,
         risk premia, systematic alternatives) and layers them
         on top of equity. The aim is to create portfolios that can seek excess total returns in bull, bear and sideways
         markets.

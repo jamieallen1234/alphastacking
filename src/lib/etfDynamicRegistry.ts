@@ -5,17 +5,15 @@
 
 import * as fb from '@/lib/etfFeaturedRegistryBodies'
 import {
-  MATE_ALPHA_EFFICIENCY_TOOLTIP,
-  MATE_CAPITAL_EFFICIENCY_TOOLTIP,
-  MATE_EFFICIENCY_FOOTNOTE,
-} from '@/components/usEtfPages/mateEfficiencyCopy'
-import {
   alphaEfficiencyStackedTooltip,
   alphaEfficiencyUnstackedTooltip,
   capitalEfficiencyTooltip,
+  insufficientHistoryTooltip,
 } from '@/lib/etfEfficiencyTooltipFraming'
 import { HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG } from '@/lib/syntheticChartConstants'
-import { NTSD_CAPITAL_EFFICIENCY_TOOLTIP_NA } from '@/lib/etfEfficiencyNtsdCopy'
+
+const NTSD_CAPITAL_SLEEVE_P2 =
+  'NTSD targets a capital-efficient blend of U.S. large-cap equity with additional developed international equity notional via futures and related instruments. It’s a 90/60-style equity stack, not an uncorrelated managed-futures alpha sleeve.'
 
 import type {
   EtfDynamicDef,
@@ -377,7 +375,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'WisdomTree (NTSD)',
     efficiency: {
       capital: {
-        tooltip: NTSD_CAPITAL_EFFICIENCY_TOOLTIP_NA,
+        tooltip: insufficientHistoryTooltip(NTSD_CAPITAL_SLEEVE_P2),
+        gradedTooltipOverride: capitalEfficiencyTooltip(NTSD_CAPITAL_SLEEVE_P2),
       },
     },
   },
@@ -1116,10 +1115,18 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'MATE official page',
     efficiency: {
       capital: {
-        tooltip: MATE_CAPITAL_EFFICIENCY_TOOLTIP,
+        tooltip: capitalEfficiencyTooltip(
+          "MATE allocates roughly 100% S&P 500 notional to the equity sleeve of the stack."
+        ),
       },
-      alpha: { tooltip: MATE_ALPHA_EFFICIENCY_TOOLTIP },
-      footnotes: [MATE_EFFICIENCY_FOOTNOTE],
+      alpha: {
+        tooltip: alphaEfficiencyStackedTooltip(
+          "MATE's alpha sleeve is approximately 100% trend-following managed futures, spanning equities, rates, currencies, and commodities. It's designed to diversify the equity core across macro regimes."
+        ),
+      },
+      footnotes: [
+        'Grades above are based on 4 months of live data and should be treated as provisional. Short history may not capture a full market-cycle.',
+      ],
     },
   },
 

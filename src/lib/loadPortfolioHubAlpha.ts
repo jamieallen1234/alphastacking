@@ -1,31 +1,31 @@
-import type { PortfolioChartPayload } from '@/lib/computePortfolioChart'
+import { getCachedPresetChart1y } from '@/lib/getCachedPresetChart'
 import {
-  getCachedCaCoreBuyHoldChart,
-  getCachedCaInternationalChart,
-  getCachedCaSsoDglmRgbmArbChart,
-  getCachedCaUsslQqqlHdgeChart,
-  getCachedUsAdvancedChart,
-  getCachedUsCoreBuyHoldChart,
-  getCachedUsGdeClseBlendChart,
-  getCachedUsInternationalChart,
-} from '@/lib/getCachedPresetChart'
+  CA_CORE_BH_PRESET_ID,
+  CA_INTL_PRESET_ID,
+  CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
+  CA_USSL_QQQL_HDGE_PRESET_ID,
+  US_ADVANCED_PRESET_ID,
+  US_CORE_BH_PRESET_ID,
+  US_GDE_CLSE_BLEND_PRESET_ID,
+  US_INTL_PRESET_ID,
+} from '@/lib/presets'
 
-/** Live hub slugs → loaders (1Y preset charts; alpha = portfolio TR% minus SPY TR% over the same window). */
-const HUB_SLUG_LOADERS: Record<string, () => Promise<PortfolioChartPayload>> = {
-  'us-international': getCachedUsInternationalChart,
-  'us-advanced': getCachedUsAdvancedChart,
-  'us-core-buy-hold': getCachedUsCoreBuyHoldChart,
-  'us-gde-clse-blend': getCachedUsGdeClseBlendChart,
-  'ca-international': getCachedCaInternationalChart,
-  'ca-core-buy-hold': getCachedCaCoreBuyHoldChart,
-  'ca-ussl-qqql-hdge': getCachedCaUsslQqqlHdgeChart,
-  'ca-sso-dglm-rgbm-arb': getCachedCaSsoDglmRgbmArbChart,
+/** Live hub slugs → preset IDs (1Y preset charts; alpha = portfolio TR% minus SPY TR% over the same window). */
+const HUB_SLUG_TO_PRESET_ID: Record<string, string> = {
+  'us-international': US_INTL_PRESET_ID,
+  'us-advanced': US_ADVANCED_PRESET_ID,
+  'us-core-buy-hold': US_CORE_BH_PRESET_ID,
+  'us-gde-clse-blend': US_GDE_CLSE_BLEND_PRESET_ID,
+  'ca-international': CA_INTL_PRESET_ID,
+  'ca-core-buy-hold': CA_CORE_BH_PRESET_ID,
+  'ca-ussl-qqql-hdge': CA_USSL_QQQL_HDGE_PRESET_ID,
+  'ca-sso-dglm-rgbm-arb': CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
 }
 
 export async function loadPortfolioHubAlphaBySlug(): Promise<Record<string, number | null>> {
   const entries = await Promise.all(
-    Object.entries(HUB_SLUG_LOADERS).map(async ([slug, load]) => {
-      const payload = await load()
+    Object.entries(HUB_SLUG_TO_PRESET_ID).map(async ([slug, presetId]) => {
+      const payload = await getCachedPresetChart1y(presetId)
       return [slug, payload.excessAlphaPercent ?? null] as const
     })
   )

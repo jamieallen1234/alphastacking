@@ -7,7 +7,6 @@ import { getCachedMonthlyEfficiencyPatchForSlug } from '@/lib/getCachedMonthlyEt
 import { US_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
 import { getCachedEtfChart } from '@/lib/getCachedEtfChart'
 import { buildPrimarySimilarityHeadline, loadSimilarEtfRows } from '@/lib/etfSimilarEtfs'
-import styles from '../mate/page.module.css'
 
 export function generateStaticParams() {
   return Object.keys(US_ETF_DYNAMIC_REGISTRY).map((slug) => ({ slug }))
@@ -50,7 +49,6 @@ export default async function UsEtfDynamicPage({
       def={def}
       chart={chart}
       slug={slug}
-      styles={styles}
       similarEtfs={similarEtfs}
       primarySimilarityHeadline={primarySimilarityHeadline}
     />

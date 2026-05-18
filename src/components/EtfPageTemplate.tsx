@@ -5,6 +5,10 @@ import Footer from '@/components/Footer'
 import EtfPageHubNav from '@/components/EtfPageHubNav'
 import EtfChartPanel from '@/components/EtfChartPanel'
 import type { EtfChartPayload } from '@/lib/getCachedEtfChart'
+import styles from './EtfPageTemplate.module.css'
+
+export { styles as etfPageStyles }
+export type EtfPageStyles = typeof styles
 
 export type EtfPageHubBase = '/us-etfs' | '/ca/etfs' | '/ca/us-etfs'
 
@@ -43,7 +47,6 @@ export type EtfPageTemplateProps = {
   ledeHtml?: boolean
   /** Optional note directly under the chart (e.g. model-portfolio proxy). */
   belowChart?: ReactNode
-  styles: Record<string, string>
   children: ReactNode
 }
 
@@ -59,7 +62,6 @@ export default function EtfPageTemplate({
   metaExtras,
   ledeHtml,
   belowChart,
-  styles,
   children,
 }: EtfPageTemplateProps) {
   const issuerLabel = meta.issuerRole === 'manager' ? 'Manager' : 'Issuer'

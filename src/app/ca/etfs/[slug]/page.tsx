@@ -7,7 +7,6 @@ import { getCachedMonthlyEfficiencyPatchForSlug } from '@/lib/getCachedMonthlyEt
 import { CA_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
 import { getCachedEtfChart } from '@/lib/getCachedEtfChart'
 import { buildPrimarySimilarityHeadline, loadSimilarEtfRows } from '@/lib/etfSimilarEtfs'
-import styles from '../hdge/page.module.css'
 
 export function generateStaticParams() {
   return Object.keys(CA_ETF_DYNAMIC_REGISTRY).map((slug) => ({ slug }))
@@ -50,7 +49,6 @@ export default async function CaEtfDynamicPage({
       def={def}
       chart={chart}
       slug={slug}
-      styles={styles}
       similarEtfs={similarEtfs}
       primarySimilarityHeadline={primarySimilarityHeadline}
     />

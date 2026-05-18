@@ -4,41 +4,25 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import PresetIntlChartPanel from '@/components/PresetIntlChartPanel'
 import PresetHoldingsTable from '@/components/PresetHoldingsTable'
-import {
-  getCachedCaCoreBuyHoldChart,
-  getCachedCaInternationalChart,
-  getCachedCaSsoDglmRgbmArbChart,
-  getCachedCaUsslQqqlHdgeChart,
-  getCachedUsAdvancedChart,
-  getCachedUsCoreBuyHoldChart,
-  getCachedUsGdeClseBlendChart,
-  getCachedUsInternationalChart,
-} from '@/lib/getCachedPresetChart'
+import { getCachedPresetChart1y } from '@/lib/getCachedPresetChart'
 import {
   caPortfolioRoutes,
   getPortfolioCardById,
   type PortfolioRouteDef,
   usPortfolioRoutes,
 } from '@/lib/portfolioRoutes'
-import { CA_CORE_BH_PRESET_ID, caCoreBuyHoldHoldings } from '@/lib/presets/caBuyHold'
 import {
+  CA_CORE_BH_PRESET_ID,
+  CA_INTL_PRESET_ID,
   CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
-  caSsoDglmRgbmArbHoldings,
-} from '@/lib/presets/caSsoDglmRgbmArb'
-import { CA_USSL_QQQL_HDGE_PRESET_ID, caUsslQqqlHdgeHoldings } from '@/lib/presets/caBuyHoldHdge'
-import { CA_INTL_PRESET_ID, caInternationalHoldings } from '@/lib/presets/caInternational'
-import { US_CORE_BH_PRESET_ID, usCoreBuyHoldHoldings } from '@/lib/presets/usBuyHold'
-import {
+  CA_USSL_QQQL_HDGE_PRESET_ID,
+  US_ADVANCED_PRESET_ID,
+  US_CORE_BH_PRESET_ID,
   US_GDE_CLSE_BLEND_PRESET_ID,
-  usGdeClseBlendHoldings,
-} from '@/lib/presets/usGdeClseBlend'
-import { US_ADVANCED_PRESET_ID, usAdvancedHoldings } from '@/lib/presets/usAdvanced'
-import {
-  type PresetHolding,
   US_INTL_PRESET_ID,
-  usInternationalHoldings,
+  getPresetById,
   weightedBeta,
-} from '@/lib/presets/usInternational'
+} from '@/lib/presets'
 import { buildExposureSummaryFromPresetHoldings } from '@/lib/exposureSummary'
 import { buildPortfolioBuilderPrefillHref } from '@/lib/portfolioBuilderPrefill'
 import { HOW_TO_BUILD_SLUG, learnArticlePath } from '@/lib/learnArticles'
@@ -54,56 +38,18 @@ function PortfolioLearnCue({ backHref }: { backHref: string }) {
   )
 }
 
-type LiveEntry = {
-  presetId: string
-  holdings: PresetHolding[]
-  load: () => ReturnType<typeof getCachedUsInternationalChart>
+const US_SLUG_TO_PRESET_ID: Record<string, string> = {
+  'us-international': US_INTL_PRESET_ID,
+  'us-advanced': US_ADVANCED_PRESET_ID,
+  'us-core-buy-hold': US_CORE_BH_PRESET_ID,
+  'us-gde-clse-blend': US_GDE_CLSE_BLEND_PRESET_ID,
 }
 
-const US_LIVE: Record<string, LiveEntry> = {
-  'us-international': {
-    presetId: US_INTL_PRESET_ID,
-    holdings: usInternationalHoldings,
-    load: getCachedUsInternationalChart,
-  },
-  'us-advanced': {
-    presetId: US_ADVANCED_PRESET_ID,
-    holdings: usAdvancedHoldings,
-    load: getCachedUsAdvancedChart,
-  },
-  'us-core-buy-hold': {
-    presetId: US_CORE_BH_PRESET_ID,
-    holdings: usCoreBuyHoldHoldings,
-    load: getCachedUsCoreBuyHoldChart,
-  },
-  'us-gde-clse-blend': {
-    presetId: US_GDE_CLSE_BLEND_PRESET_ID,
-    holdings: usGdeClseBlendHoldings,
-    load: getCachedUsGdeClseBlendChart,
-  },
-}
-
-const CA_LIVE: Record<string, LiveEntry> = {
-  'ca-international': {
-    presetId: CA_INTL_PRESET_ID,
-    holdings: caInternationalHoldings,
-    load: getCachedCaInternationalChart,
-  },
-  'ca-core-buy-hold': {
-    presetId: CA_CORE_BH_PRESET_ID,
-    holdings: caCoreBuyHoldHoldings,
-    load: getCachedCaCoreBuyHoldChart,
-  },
-  'ca-ussl-qqql-hdge': {
-    presetId: CA_USSL_QQQL_HDGE_PRESET_ID,
-    holdings: caUsslQqqlHdgeHoldings,
-    load: getCachedCaUsslQqqlHdgeChart,
-  },
-  'ca-sso-dglm-rgbm-arb': {
-    presetId: CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
-    holdings: caSsoDglmRgbmArbHoldings,
-    load: getCachedCaSsoDglmRgbmArbChart,
-  },
+const CA_SLUG_TO_PRESET_ID: Record<string, string> = {
+  'ca-international': CA_INTL_PRESET_ID,
+  'ca-core-buy-hold': CA_CORE_BH_PRESET_ID,
+  'ca-ussl-qqql-hdge': CA_USSL_QQQL_HDGE_PRESET_ID,
+  'ca-sso-dglm-rgbm-arb': CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
 }
 
 function StubLayout({
@@ -136,28 +82,31 @@ function StubLayout({
 async function LiveLayout({
   backHref,
   def,
-  live,
+  presetId,
   chartHeading,
 }: {
   backHref: string
   def: PortfolioRouteDef
-  live: LiveEntry
+  presetId: string
   chartHeading: string
 }) {
+  const preset = getPresetById(presetId)
+  if (!preset) notFound()
+
   let chart = null
   let errorMessage: string | null = null
   try {
-    chart = await live.load()
+    chart = await getCachedPresetChart1y(presetId)
   } catch (e) {
     errorMessage = e instanceof Error ? e.message : 'Failed to load chart data'
   }
 
-  const wb = weightedBeta(live.holdings)
-  const exposureSummary = buildExposureSummaryFromPresetHoldings(live.holdings)
+  const wb = weightedBeta(preset.holdings)
+  const exposureSummary = buildExposureSummaryFromPresetHoldings(preset.holdings)
   const siteIsCa = backHref.startsWith('/ca/')
   const builderCopyHref = buildPortfolioBuilderPrefillHref(
     portfolioBuilderPath(siteIsCa),
-    live.holdings
+    preset.holdings
   )
 
   return (
@@ -173,7 +122,7 @@ async function LiveLayout({
         <PortfolioLearnCue backHref={backHref} />
 
         <PresetHoldingsTable
-          holdings={live.holdings}
+          holdings={preset.holdings}
           weightedBeta={wb}
           copyBuilderHref={builderCopyHref}
         />
@@ -183,12 +132,12 @@ async function LiveLayout({
         {errorMessage ? <div className={styles.errorBox}>{errorMessage}</div> : null}
         {chart && chart.chartStartDate ? (
           <PresetIntlChartPanel
-            presetId={live.presetId}
+            presetId={presetId}
             initialPayload={chart}
             overlapInceptionYmd={chart.limitingFirstTradeDate}
             weightedBeta={wb}
             exposureSummary={exposureSummary}
-            holdings={live.holdings.map((h) => ({ ticker: h.ticker, weightPct: h.weightPct }))}
+            holdings={preset.holdings.map((h) => ({ ticker: h.ticker, weightPct: h.weightPct }))}
           />
         ) : (
           <p className={styles.pageChartDisclaimer}>
@@ -247,14 +196,14 @@ export default async function PortfolioDetailMain({ slug, backHref, routeSet }: 
       )
     }
 
-    const live = US_LIVE[slug]
-    if (!live) notFound()
+    const presetId = US_SLUG_TO_PRESET_ID[slug]
+    if (!presetId) notFound()
 
     return (
       <LiveLayout
         backHref={backHref}
         def={def}
-        live={live}
+        presetId={presetId}
         chartHeading="Total return (vs SPY)"
       />
     )
@@ -267,14 +216,14 @@ export default async function PortfolioDetailMain({ slug, backHref, routeSet }: 
     return <StubLayout backHref={backHref} def={def} />
   }
 
-  const live = CA_LIVE[slug]
-  if (!live) notFound()
+  const presetId = CA_SLUG_TO_PRESET_ID[slug]
+  if (!presetId) notFound()
 
   return (
     <LiveLayout
       backHref={backHref}
       def={def}
-      live={live}
+      presetId={presetId}
       chartHeading="Total return (CAD vs SPY)"
     />
   )

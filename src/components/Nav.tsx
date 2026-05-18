@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import {
   disclaimersPath,
   homePath,
@@ -10,11 +9,11 @@ import {
   portfoliosPath,
   usEtfHubPath,
 } from '@/lib/siteRegion'
+import { useSiteRegion } from '@/lib/useSiteRegion'
 import styles from './Nav.module.css'
 
 export default function Nav() {
-  const pathname = usePathname()
-  const isCa = pathname === '/ca' || pathname.startsWith('/ca/')
+  const { isCa } = useSiteRegion()
   const home = homePath(isCa)
   const portfolios = portfoliosPath(isCa)
   const portfolioBuilder = portfolioBuilderPath(isCa)

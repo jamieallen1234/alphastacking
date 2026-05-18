@@ -1,4 +1,4 @@
-import type { PresetHolding } from '@/lib/presets/usInternational'
+import type { PresetHolding } from '@/lib/presets'
 
 export type PortfolioPrefillHolding = { ticker: string; weightPct: number }
 

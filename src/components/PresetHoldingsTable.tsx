@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { PresetHolding } from '@/lib/presets/usInternational'
+import type { PresetHolding } from '@/lib/presets'
 import styles from './PresetHoldingsTable.module.css'
 
 interface PresetHoldingsTableProps {

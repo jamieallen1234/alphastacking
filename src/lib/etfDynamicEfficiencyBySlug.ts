@@ -4,7 +4,6 @@ import type {
   MonthlyEfficiencyGradePatch,
   MonthlyEfficiencySnapshot,
 } from '@/lib/etfEfficiencyGradesCompute'
-import { NTSD_CAPITAL_EFFICIENCY_TOOLTIP_GRADED } from '@/lib/etfEfficiencyNtsdCopy'
 import {
   EFFICIENCY_PROVISIONAL_FOOTNOTE,
   alphaEfficiencyStackedTooltip,
@@ -67,8 +66,7 @@ function secondParagraphFromTooltip(tooltip: string | undefined): string | null 
 
 export function applyMonthlyEfficiencyGradePatch(
   base: EtfDynamicEfficiencyDef,
-  patch: MonthlyEfficiencyGradePatch | null,
-  slug: string
+  patch: MonthlyEfficiencyGradePatch | null
 ): EtfDynamicEfficiencyDef {
   const out: EtfDynamicEfficiencyDef = {
     ...base,
@@ -100,11 +98,13 @@ export function applyMonthlyEfficiencyGradePatch(
   }
 
   if (patch.capital && out.capital) {
-    if (slug === 'ntsd' && patch.capital.grade !== 'N/A') {
+    const useGradedOverride =
+      patch.capital.grade !== 'N/A' && out.capital.gradedTooltipOverride != null
+    if (useGradedOverride) {
       out.capital = {
         ...out.capital,
         grade: patch.capital.grade,
-        tooltip: NTSD_CAPITAL_EFFICIENCY_TOOLTIP_GRADED,
+        tooltip: out.capital.gradedTooltipOverride!,
         gradeTone: patch.capital.grade === 'A+' ? 'gold' : out.capital.gradeTone,
       }
     } else {
@@ -521,7 +521,7 @@ export function mergeDynamicEtfEfficiency(
 
   if (!staticEff) return def
 
-  const merged = applyMonthlyEfficiencyGradePatch(staticEff, patch, slug)
+  const merged = applyMonthlyEfficiencyGradePatch(staticEff, patch)
   return { ...def, efficiency: attachStackedEfficiency(def, merged, slug) }
 }
 
@@ -535,6 +535,6 @@ export function mergeDynamicEtfEfficiencyWithPatch(
   const map = universe === 'us' ? US_ETF_DYNAMIC_EFFICIENCY : CA_ETF_DYNAMIC_EFFICIENCY
   const staticEff = def.efficiency ?? map[slug]
   if (!staticEff) return def
-  const merged = applyMonthlyEfficiencyGradePatch(staticEff, patch, slug)
+  const merged = applyMonthlyEfficiencyGradePatch(staticEff, patch)
   return { ...def, efficiency: attachStackedEfficiency(def, merged, slug) }
 }

@@ -11,6 +11,8 @@ function abs(path: string): string {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // Hubs, content pages, and learn articles. Per-ETF and per-portfolio paths
+  // are appended below from the registries so this list stays minimal.
   const paths = new Set<string>([
     '/',
     '/ca',
@@ -33,15 +35,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/ca/learn/why-alpha-stacking',
     '/learn/efficiency-grades',
     '/ca/learn/efficiency-grades',
-    '/us-etfs/mate',
-    '/us-etfs/rssy',
-    '/us-etfs/hfgm',
-    '/ca/us-etfs/mate',
-    '/ca/us-etfs/rssy',
-    '/ca/us-etfs/hfgm',
-    '/ca/etfs/hdge',
-    '/ca/etfs/arb',
-    '/ca/etfs/pfmn',
   ])
 
   for (const slug of Object.keys(US_ETF_DYNAMIC_REGISTRY)) {

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import EtfPageTemplate from '@/components/EtfPageTemplate'
+import EtfPageTemplate, { etfPageStyles as styles } from '@/components/EtfPageTemplate'
 import EtfPageDisclaimers from '@/components/EtfPageDisclaimers'
 import type { EtfDynamicDef } from '@/lib/etfDynamicRegistryTypes'
 import { chartBetaDisplay } from '@/lib/etfPageFormat'
@@ -105,8 +105,6 @@ export interface EtfDynamicPageLayoutProps {
   chart: EtfChartPayload
   /** Route slug for stack map (capital vs alpha buckets; equity label when stack has an equity sleeve). */
   slug?: string
-  /** CSS module from `page.module.css` (same shape as MATE / HDGE ETF pages). */
-  styles: Record<string, string>
   /** Tag-derived similar ETF peers (current ETF score line above, peers below). */
   similarEtfs?: SimilarEtfRow[]
   /** Primary ETF efficiency line (same score priority as peer rows) shown above the list. */
@@ -119,7 +117,6 @@ export default function EtfDynamicPageLayout({
   def,
   chart,
   slug,
-  styles,
   similarEtfs,
   primarySimilarityHeadline,
 }: EtfDynamicPageLayoutProps) {
@@ -160,7 +157,6 @@ export default function EtfDynamicPageLayout({
           />
         ) : undefined
       }
-      styles={styles}
     >
       <div className={styles.bodySection}>
         <h2>Strategy</h2>

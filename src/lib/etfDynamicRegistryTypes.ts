@@ -2,6 +2,8 @@ export type EtfDynamicEfficiencyLineDef = {
   grade?: string
   gradeTone?: 'gold' | 'muted'
   tooltip: string
+  /** When set, monthly grading swaps in this tooltip once the line clears N/A (live history sufficient). */
+  gradedTooltipOverride?: string
 }
 
 export type EtfDynamicEfficiencyDef = {

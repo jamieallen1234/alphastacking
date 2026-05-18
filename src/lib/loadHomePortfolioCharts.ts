@@ -1,8 +1,6 @@
 import { emptyPortfolioChartPayload, type PortfolioChartPayload } from '@/lib/computePortfolioChart'
-import {
-  getCachedCaInternationalChartMax,
-  getCachedUsGdeClseBlendChartMax,
-} from '@/lib/getCachedPresetChart'
+import { getCachedPresetChartMax } from '@/lib/getCachedPresetChart'
+import { CA_INTL_PRESET_ID, US_GDE_CLSE_BLEND_PRESET_ID } from '@/lib/presets'
 import { caPortfolioRoutes, usPortfolioRoutes } from '@/lib/portfolioRoutes'
 
 export type HomePortfolioChartSlot = {
@@ -70,7 +68,10 @@ export async function loadHomePortfolioChartSlots(
 ): Promise<HomePortfolioChartSlot[]> {
   if (variant === 'us') {
     const empty = () => emptyPortfolioChartPayload('USD')
-    const gdeBlendPayload = await loadHomePresetChartMax(() => getCachedUsGdeClseBlendChartMax(), empty)
+    const gdeBlendPayload = await loadHomePresetChartMax(
+      () => getCachedPresetChartMax(US_GDE_CLSE_BLEND_PRESET_ID),
+      empty
+    )
     const gdeBlendDef = usPortfolioRoutes.find((r) => r.slug === 'us-gde-clse-blend')
     if (!gdeBlendDef) {
       throw new Error('loadHomePortfolioChartSlots: missing US + Gold & Alt Blend route def')
@@ -88,7 +89,10 @@ export async function loadHomePortfolioChartSlots(
   }
 
   const empty = () => emptyPortfolioChartPayload('CAD')
-  const globalLsPayload = await loadHomePresetChartMax(() => getCachedCaInternationalChartMax(), empty)
+  const globalLsPayload = await loadHomePresetChartMax(
+    () => getCachedPresetChartMax(CA_INTL_PRESET_ID),
+    empty
+  )
   const globalLsDef = caPortfolioRoutes.find((r) => r.slug === 'ca-international')
   if (!globalLsDef) {
     throw new Error('loadHomePortfolioChartSlots: missing CA international route def')

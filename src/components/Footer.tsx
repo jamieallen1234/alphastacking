@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { REGION_COOKIE, contactPath, disclaimersPath, type SiteRegion } from '@/lib/siteRegion'
+import { useSiteRegion } from '@/lib/useSiteRegion'
 import styles from './Footer.module.css'
 
 function setRegionCookie(region: SiteRegion) {
@@ -11,8 +11,7 @@ function setRegionCookie(region: SiteRegion) {
 }
 
 export default function Footer() {
-  const pathname = usePathname()
-  const isCa = pathname === '/ca' || pathname.startsWith('/ca/')
+  const { isCa } = useSiteRegion()
   const contact = contactPath(isCa)
   const disclaimers = disclaimersPath(isCa)
 

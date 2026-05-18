@@ -1,4 +1,4 @@
-import type { PresetHolding } from '@/lib/presets/usInternational'
+import type { PresetHolding } from '@/lib/presets'
 
 /**
  * Portfolio scorecard exposure (model portfolios + builder). “Gross longs” / “Gross shorts” are

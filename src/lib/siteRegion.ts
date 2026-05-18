@@ -3,6 +3,11 @@ export const REGION_COOKIE = 'as_region'
 
 export type SiteRegion = 'us' | 'ca'
 
+/** True when the current route is part of the Canadian edition (`/ca` root or `/ca/...`). */
+export function pathIsCa(pathname: string | null | undefined): boolean {
+  return pathname === '/ca' || (pathname?.startsWith('/ca/') ?? false)
+}
+
 export function portfoliosPath(isCa: boolean): string {
   return isCa ? '/ca/portfolios' : '/portfolios'
 }

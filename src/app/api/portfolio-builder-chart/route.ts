@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { chartErrorResponse, chartJsonResponse } from '@/lib/chartApiHelper'
 import { getCachedPortfolioBuilderChart } from '@/lib/getCachedPortfolioBuilderChart'
 import type { YahooRange } from '@/lib/yahooFinance'
 
@@ -55,16 +56,8 @@ export async function POST(req: Request) {
       range,
       cadDenominated,
     })
-    return NextResponse.json(payload, {
-      headers: {
-        'Cache-Control': 'private, no-store',
-      },
-    })
+    return chartJsonResponse(payload)
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Failed to load chart data'
-    const lower = message.toLowerCase()
-    const status = lower.includes('not enough') || lower.includes('at least') ? 400 : 502
-    return NextResponse.json({ error: message }, { status })
+    return chartErrorResponse(e, 'Failed to load chart data')
   }
 }
-

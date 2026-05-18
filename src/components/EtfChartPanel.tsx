@@ -5,7 +5,6 @@ import ReturnLineChart from '@/components/ReturnLineChart'
 import type { EtfChartPayload } from '@/lib/getCachedEtfChart'
 import type { YahooRange } from '@/lib/yahooFinance'
 import styles from './EtfChartPanel.module.css'
-import chartStyles from './MateEtfChart.module.css'
 
 const RANGES: { range: YahooRange; label: string }[] = [
   { range: '1mo', label: '1M' },
@@ -62,10 +61,10 @@ export default function EtfChartPanel({ symbol, initialPayload }: EtfChartPanelP
     }
   }
 
-  const trClass = payload.totalReturnPercent != null && payload.totalReturnPercent >= 0 ? chartStyles.metricPos : ''
+  const trClass = payload.totalReturnPercent != null && payload.totalReturnPercent >= 0 ? styles.metricPos : ''
 
   return (
-    <div className={chartStyles.chartBlock}>
+    <div className={styles.chartBlock}>
       <div className={styles.chartToolbar}>
         <div className={styles.rangeRow}>
           <span className={styles.rangeLabel}>Range</span>
@@ -92,20 +91,20 @@ export default function EtfChartPanel({ symbol, initialPayload }: EtfChartPanelP
       </div>
       {error ? <p className={styles.rangeError}>{error}</p> : null}
 
-      <div className={chartStyles.metricsRow}>
+      <div className={styles.metricsRow}>
         <div>
-          <div className={`${chartStyles.metricBig} ${trClass}`}>
+          <div className={`${styles.metricBig} ${trClass}`}>
             {payload.totalReturnPercent != null
               ? `${payload.totalReturnPercent >= 0 ? '+' : ''}${payload.totalReturnPercent.toFixed(2)}%`
               : '—'}
           </div>
-          <div className={chartStyles.metricSub}>Total return ({payload.range.toUpperCase()})</div>
+          <div className={styles.metricSub}>Total return ({payload.range.toUpperCase()})</div>
         </div>
       </div>
 
-      <div className={chartStyles.legendChartWrap}>
-        <div className={chartStyles.legend}>
-          <span className={chartStyles.legendSwatch} aria-hidden="true" />
+      <div className={styles.legendChartWrap}>
+        <div className={styles.legend}>
+          <span className={styles.legendSwatch} aria-hidden="true" />
           {payload.symbol}
         </div>
         <ReturnLineChart
@@ -115,7 +114,7 @@ export default function EtfChartPanel({ symbol, initialPayload }: EtfChartPanelP
         />
       </div>
 
-      <p className={chartStyles.disclaimer}>
+      <p className={styles.disclaimer}>
         Total return (Yahoo adjusted close—dividends and splits per Yahoo), normalized to $10,000 at first
         available trade date. Educational only.
       </p>

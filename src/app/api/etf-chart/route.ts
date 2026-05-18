@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { chartErrorResponse, chartJsonResponse } from '@/lib/chartApiHelper'
 import { getCachedEtfChart } from '@/lib/getCachedEtfChart'
 import { isAllowedEtfChartSymbol } from '@/lib/etfChartSymbols'
 import type { YahooRange } from '@/lib/yahooFinance'
@@ -17,11 +18,8 @@ export async function GET(req: Request) {
 
   try {
     const data = await getCachedEtfChart(symbol, range)
-    return NextResponse.json(data, {
-      headers: { 'Cache-Control': 'private, no-store' },
-    })
+    return chartJsonResponse(data)
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Failed to load ETF chart'
-    return NextResponse.json({ error: message }, { status: 502 })
+    return chartErrorResponse(e, 'Failed to load ETF chart', { mapBadInput: false })
   }
 }

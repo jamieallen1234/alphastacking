@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { chartErrorResponse, chartJsonResponse } from '@/lib/chartApiHelper'
 import { computePortfolioChart } from '@/lib/computePortfolioChart'
 import type { YahooRange } from '@/lib/yahooFinance'
 
@@ -68,16 +69,8 @@ export async function GET(req: Request) {
 
   try {
     const payload = await computePortfolioChart({ symbols, weights, range })
-    return NextResponse.json(payload, {
-      headers: {
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
-      },
-    })
+    return chartJsonResponse(payload, 'public-1h')
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Failed to load market data'
-    const lower = message.toLowerCase()
-    const status =
-      lower.includes('not enough') || lower.includes('at least') ? 400 : 502
-    return NextResponse.json({ error: message }, { status })
+    return chartErrorResponse(e, 'Failed to load market data')
   }
 }

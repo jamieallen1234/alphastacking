@@ -280,6 +280,7 @@ When the write-up is a registry row (`US_ETF_DYNAMIC_REGISTRY` / `CA_ETF_DYNAMIC
 - **`pedigreeParas`:** Prefer **`ped(p1, p2)`** with **two** substantive paragraphs (manager/process + issuer scale or boutique honesty per §3e). Do **not** append a redundant "verify holdings / educational only" footer; shared legal and educational notes belong in **`<EtfPageDisclaimers />`** on the page template.
 - **`outperfParas`:** **Two** strings following §3d (favorable regimes; product-specific; closing paragraph not purely negative). Do **not** rely on generic `outf()`-style boilerplate.
 - **`inception` / `mer` / `aum`:** Use **ETF Facts / prospectus** when stating numbers; use `—` or "see ETF Facts" if unknown—**do not invent**.
+- **`addedToSite` (required):** ISO date (`YYYY-MM-DD`) when this write-up first goes live on alphastacking.co. Set it to **today's date** (`date +%F`) on the new registry row. The `/updates` (US) and `/ca/updates` (CA) pages are derived from this field via `src/lib/updatesFeed.ts`—**do not** edit the updates page or feed module when adding an ETF; setting `addedToSite` is the entire integration. Hand-authored `page.tsx` ETFs (rare; `hfgm`, `rssy`) **also** have a registry row in `etfDynamicRegistry.ts`—set `addedToSite` there.
 - **MER + performance fee:** When the fund charges a **performance fee** on top of management, set registry `mer` to **`<management>% + perf fee`** (e.g. `0.85% + perf fee`, `0% + perf fee`). Spell out hurdles, crystallization, and "see prospectus" detail in **Strategy** / pedigree / ETF Facts notes—not in the meta line (keeps the stat row scannable and matches `parseMerAnnual` picking the first `x%`).
 
 **HTML copy — no Markdown emphasis**
@@ -343,6 +344,7 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 - [ ] **Outperformance** emphasizes favorable regimes; closing paragraph is not purely negative; return-stacked pages stress the **second sleeve** when the first tracks the benchmark (§3d)
 - [ ] Lede and each body `<p>` respect word budgets (§4); no paragraph runs past **100 words**
 - [ ] Every `</strong>` → word boundary uses **`</strong>{' '}`** (or one-line / single-`<strong>` phrase); spot-check for smushes like "yieldstack" (see §4)
+- [ ] **`addedToSite`** set to **today** (`YYYY-MM-DD`, from `date +%F`) on every new registry row; spot-check `/updates` (and `/ca/updates` for CA ETFs) shows the new entry under today's date. **Do not** hand-edit `UpdatesPage.tsx` or `updatesFeed.ts`—the feed reads `addedToSite` automatically.
 
 ## 6. Reference implementations
 

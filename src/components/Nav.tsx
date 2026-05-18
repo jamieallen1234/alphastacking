@@ -7,6 +7,7 @@ import {
   learnPath,
   portfolioBuilderPath,
   portfoliosPath,
+  updatesPath,
   usEtfHubPath,
 } from '@/lib/siteRegion'
 import { useSiteRegion } from '@/lib/useSiteRegion'
@@ -18,6 +19,7 @@ export default function Nav() {
   const portfolios = portfoliosPath(isCa)
   const portfolioBuilder = portfolioBuilderPath(isCa)
   const learn = learnPath(isCa)
+  const updates = updatesPath(isCa)
   const usEtfHub = usEtfHubPath(isCa)
   const disclaimers = disclaimersPath(isCa)
 
@@ -54,6 +56,9 @@ export default function Nav() {
           ) : null}
           <li>
             <Link href={learn}>Learn</Link>
+          </li>
+          <li>
+            <Link href={updates}>Updates</Link>
           </li>
           <li>
             <Link href={portfolioBuilder}>Builder</Link>

@@ -16,6 +16,8 @@ export interface PortfolioRouteDef {
   /** For placeholder/stub: copy metrics from home page cards */
   sourcePortfolioId?: string
   featured?: boolean
+  /** ISO date (YYYY-MM-DD) the route + preset first went live on alphastacking.co — drives the /updates page. */
+  addedAt?: string
 }
 
 /** Curated routes for US (`/portfolios/...`) */
@@ -28,6 +30,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     title: 'US Multi-Strategy',
     description: 'Diversified US-listed mix with intentional beta near 1.0.',
     featured: true,
+    addedAt: '2026-04-15',
   },
   {
     slug: 'us-advanced',
@@ -38,6 +41,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     badge: 'Advanced',
     description:
       'LETF-heavy core with trend, long/short equity, alternatives, and macro sleeves — beta near 1.0.',
+    addedAt: '2026-04-20',
   },
   {
     slug: 'us-core-buy-hold',
@@ -48,6 +52,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     description:
       'Barbell across dividend growth, global value, Nasdaq-100, and S&P momentum.',
     featured: true,
+    addedAt: '2026-04-15',
   },
   {
     slug: 'us-gde-clse-blend',
@@ -57,6 +62,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     title: 'US + Gold & Alt Blend',
     description:
       'Gold-plus-equity core with long/short equity, S&P 500 leverage, style premia, free-cash-flow tilt, and S&P momentum.',
+    addedAt: '2026-04-25',
   },
   {
     slug: 'leveraged-premia',
@@ -67,6 +73,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     badge: 'Aggressive',
     description: 'UPRO + SSO + MATE + CTAP. High-octane LETF core with return-stacked alts.',
     sourcePortfolioId: 'leveraged-premia',
+    addedAt: '2026-04-15',
   },
   {
     slug: 'alpha-stack',
@@ -77,6 +84,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     badge: 'Coming soon',
     description: 'Return-stacked core with managed futures overlay — full breakdown in progress.',
     sourcePortfolioId: 'alpha-stack',
+    addedAt: '2026-04-15',
   },
   {
     slug: 'capital-efficient',
@@ -87,6 +95,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     badge: 'Coming soon',
     description: 'Balanced leverage with global macro hedge — model portfolio page coming.',
     sourcePortfolioId: 'capital-efficient',
+    addedAt: '2026-04-15',
   },
   {
     slug: 'global-macro-blend',
@@ -96,6 +105,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     title: 'Global Macro Blend',
     badge: 'Planned',
     description: 'Placeholder slot for an additional US model portfolio.',
+    addedAt: '2026-04-15',
   },
 ]
 
@@ -109,6 +119,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     title: 'Global + Long/Short',
     description: 'CAD-diversified US and Canadian sleeves with intentional beta near 1.0.',
     featured: true,
+    addedAt: '2026-04-15',
   },
   {
     slug: 'ca-core-buy-hold',
@@ -119,6 +130,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     description:
       'Levered US growth stack with Canadian low-vol equity and preferred income — modeled in CAD.',
     featured: true,
+    addedAt: '2026-04-15',
   },
   {
     slug: 'ca-ussl-qqql-hdge',
@@ -128,6 +140,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     title: 'US + Long/Short',
     description:
       'Concentrated levered US growth with a Canadian market-neutral long/short sleeve — three positions, buy and hold.',
+    addedAt: '2026-04-15',
   },
   {
     slug: 'ca-sso-dglm-rgbm-arb',
@@ -137,6 +150,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     title: 'S&P 500 + Macro Stack',
     description:
       'Concentrated U.S. leveraged beta blended with Canadian macro, return-stacked, and arbitrage diversifiers.',
+    addedAt: '2026-04-25',
   },
   {
     slug: 'ca-alpha-stack',
@@ -147,6 +161,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     badge: 'Coming soon',
     description: 'TSX-listed leveraged alternatives — full model page in progress.',
     sourcePortfolioId: 'ca-alpha-stack',
+    addedAt: '2026-04-15',
   },
   {
     slug: 'ca-conservative',
@@ -157,6 +172,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     badge: 'Coming soon',
     description: 'Capital-efficient TSX sleeve — details coming.',
     sourcePortfolioId: 'ca-conservative',
+    addedAt: '2026-04-15',
   },
   {
     slug: 'ca-aggressive',
@@ -167,6 +183,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     badge: 'Coming soon',
     description: 'High-conviction Canadian leveraged sleeve — details coming.',
     sourcePortfolioId: 'ca-aggressive',
+    addedAt: '2026-04-15',
   },
 ]
 

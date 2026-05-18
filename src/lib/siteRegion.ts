@@ -30,6 +30,11 @@ export function learnPath(isCa: boolean): string {
   return isCa ? '/ca/learn' : '/learn'
 }
 
+/** Site updates feed (new ETFs and portfolios). */
+export function updatesPath(isCa: boolean): string {
+  return isCa ? '/ca/updates' : '/updates'
+}
+
 export function contactPath(isCa: boolean): string {
   return isCa ? '/ca/contact' : '/contact'
 }

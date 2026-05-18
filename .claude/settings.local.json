@@ -28,7 +28,11 @@
       "Bash(gh pr*)",
       "Bash(gh issue*)",
       "Bash(gh api*)",
-      "Bash(xargs ls -la)"
+      "Bash(xargs ls -la)",
+      "Bash(cat)",
+      "Bash(bash /tmp/etf_dates.sh)",
+      "Bash(curl -s http://localhost:3000/updates)",
+      "Bash(curl -s http://localhost:3000/ca/updates)"
     ],
     "deny": [
       "Bash(git push*)"

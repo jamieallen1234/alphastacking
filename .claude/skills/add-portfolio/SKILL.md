@@ -25,9 +25,10 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
 ## Checklist (live portfolio)
 
 1. **`src/lib/portfolioRoutes.ts`**  
-   - Append `{ slug, region: 'us' | 'ca', kind: 'live', hubSection, title, description, featured? }`.  
+   - Append `{ slug, region: 'us' | 'ca', kind: 'live', hubSection, title, description, featured?, addedAt }`.  
    - `hubSection`: `'buy-hold'` or `'annual-rebalance'` (sets which hub block the card sits in).  
    - `kind` must be **`'live'`**.  
+   - **`addedAt`** (required): ISO date (`YYYY-MM-DD`) set to **today** (`date +%F`). Drives the `/updates` (US) and `/ca/updates` (CA) pages via `src/lib/updatesFeed.ts`. **Do not** hand-edit `UpdatesPage.tsx` or `updatesFeed.ts`—setting `addedAt` is the entire integration.
    - **Advanced labeling rule:** If any holding is a **3x leveraged ETF** (for example `UPRO`, `TQQQ`, `SPXL`, `SOXL`), the portfolio title or description must explicitly include **`advanced`** (same pattern as the current UPRO example). Treat this as mandatory risk labeling, not optional copy style.
    - **`description`** (hub card + home teaser copy): **one short sentence**, strategy-level — same bar as **US Multi-Strategy** (`"Diversified US-listed mix with intentional beta near 1.0."`). **Do not** paste ticker lists or `10% / 7.5% / …` weight strings here; those belong on the **detail page** (`PresetHoldingsTable` + preset `blurb`s in `src/lib/presets/...`). **Do not** call out rebalance cadence (e.g. annual January) in this field — keep it high-level; cadence lives in chart math and on-page methodology if needed. **Do not** use the word **static** here (e.g. "static weights" / "static barbell") — say what the model *is*, not that weights never change.
 
@@ -59,6 +60,7 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
    - Confirm the card appears on **`/portfolios`** or **`/ca/portfolios`** in the right section.
    - Confirm scorecard appears on the detail chart and updates across ranges.
    - Confirm the four-line exposure block appears beside scores and populates with modeled values.
+   - Confirm the new portfolio appears on **`/updates`** (US) or **`/ca/updates`** (CA) grouped under today's date.
 
 ## Cache keys
 

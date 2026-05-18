@@ -22,6 +22,8 @@ export type EtfDynamicDef = {
   displayTicker: string
   issuer: string
   inception: string
+  /** ISO date (YYYY-MM-DD) the write-up first went live on alphastacking.co — drives the /updates page. */
+  addedToSite?: string
   structure?: string
   mer: string
   aum: string

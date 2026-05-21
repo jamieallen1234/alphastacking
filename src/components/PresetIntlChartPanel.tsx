@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import PresetPortfolioChart from '@/components/PresetPortfolioChart'
 import type { PortfolioChartPayload } from '@/lib/computePortfolioChart'
 import {
@@ -46,6 +46,26 @@ export default function PresetIntlChartPanel({
 
   const rangeOptions = useMemo(() => availablePresetChartRanges(overlapDays), [overlapDays])
 
+  // Pre-warm server + browser cache for all non-active enabled ranges so clicks are instant.
+  // Stagger by 3 s each so concurrent server-side Yahoo work doesn't pile up.
+  useEffect(() => {
+    const initialRange = initialPayload.range
+    const toWarm = rangeOptions
+      .filter(({ disabled, range }) => !disabled && range !== initialRange)
+      .map(({ range }) => range)
+    const timers = toWarm.map((range, i) =>
+      setTimeout(
+        () =>
+          void fetch(`/api/preset-chart?${new URLSearchParams({ preset: presetId, range })}`).catch(
+            () => undefined
+          ),
+        2000 + i * 3000
+      )
+    )
+    return () => timers.forEach(clearTimeout)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [presetId])
+
   const loadRange = useCallback(
     async (range: YahooRange) => {
       if (range === activeRange && !loading) return
@@ -53,8 +73,7 @@ export default function PresetIntlChartPanel({
       setError(null)
       try {
         const res = await fetch(
-          `/api/preset-chart?${new URLSearchParams({ preset: presetId, range })}`,
-          { cache: 'no-store' }
+          `/api/preset-chart?${new URLSearchParams({ preset: presetId, range })}`
         )
         const data = (await res.json()) as PortfolioChartPayload & { error?: string }
         if (!res.ok) {

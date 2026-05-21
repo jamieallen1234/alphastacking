@@ -40,6 +40,7 @@ For **each** ETF, complete **before** moving to the next (or explicitly parallel
 | Body depth | §3 + §4 (Strategy / Pedigree / Outperformance) | `lede`, 2× `strategyParas`, `ped(…)`, 2× `outperfParas` |
 | Chart | §2 chart steps + `ETF_CHART_SYMBOLS` / API | `yahooSymbol` in allowlist + same chart plumbing if new symbol |
 | Similar ETFs (tags) | N/A unless hand page later opts in | §2d: **`etfSimilarityTags.ts`** bundle for US or CA universe (`equityTags` / `alphaTags`, provenance) |
+| Efficiency score | N/A | §2e: **`etfDynamicEfficiencyBySlug.ts`** entry in `US_ETF_DYNAMIC_EFFICIENCY` or `CA_ETF_DYNAMIC_EFFICIENCY` |
 | Portfolio proxy links | §2b: add **`HAND_AUTHORED_US_SLUG`** entry for this uppercase ticker | §2b: if ticker is a chart proxy, **`yahooSymbol`** match supplies the hub link—else **`OFFICIAL_ETF_HOME`** |
 | Short history, no auto proxy | §2c: if listing is **under ~2 years** and **`resolveChartProxyLegs`** is still empty after **`ETF_STACK_EXPOSURE_BY_SLUG`** + manual maps, **ask the user** for Yahoo proxy tickers for **each sleeve/asset** you cannot map | Same—do not finish the pass without resolving or explicitly accepting "no preset/builder proxy until history grows" |
 | Checklist | Run §5 mentally for **this** ticker | Same §5 lines for **this** slug |
@@ -50,6 +51,7 @@ For **each** ETF, complete **before** moving to the next (or explicitly parallel
 
 - Confirm **every** new hub `href` resolves (no typos vs `app` routes or `[slug]` keys).
 - Confirm **every** new chart symbol has getter + `route.ts` branch + panel typing.
+- Confirm **every** new slug has an efficiency entry in the correct `*_ETF_DYNAMIC_EFFICIENCY` map (§2e).
 - If any new ticker is a **portfolio chart proxy** (footnotes / synthetic modeling), confirm **`portfolioProxyEtfNav.ts`** per §2b.
 - Quick read: ledes and outperform closings not copy-paste identical across unrelated funds (§3d).
 
@@ -189,6 +191,42 @@ The **Similar ETFs** block on dynamic ETF pages (`EtfDynamicPageLayout`) is **ta
 - **Structure isolation:** peers never cross **equity-only** (only `equityTags`), **alpha-only** (only `alphaTags`, e.g. standalone managed futures), and **dual / stacked** (both dimensions). Tag bundles must reflect that shape so pure alpha sleeves are not compared to return-stacked equity+overlay funds.
 - **Precious metals / major crypto (granular):** use **`pm_gold`**, **`pm_silver`**, **`pm_platinum`**, **`pm_palladium`** so any two funds that each carry at least one pm tag can match within that family. Use **`crypto_bitcoin`** and **`crypto_ethereum`** (plus optional umbrella **`crypto_major`**) so spot BTC and spot ETH listings pair; matching is implemented in **`etfSimilarityTags.ts`** (`preciousMetalAssetPeers` / `cryptoMajorAssetPeers`).
 - Display score on each row: **stacked** grade if present, else **capital (equity)** grade, else **alpha**, else **N/A** — same priority for the **current ETF** line above the list.
+
+## 2e. Efficiency score (`etfDynamicEfficiencyBySlug.ts`)
+
+**Required for every dynamic registry row.** Add an entry to `US_ETF_DYNAMIC_EFFICIENCY` (US listings) or `CA_ETF_DYNAMIC_EFFICIENCY` (CA listings) in `src/lib/etfDynamicEfficiencyBySlug.ts`. Never skip this step — a missing entry means the ETF page shows no grade.
+
+### Which tooltip helper to use
+
+| Fund structure | `capital` key | `alpha` key |
+| --- | --- | --- |
+| Capital sleeve only (pure long equity / factor) | `capitalEfficiencyTooltip(…)` | — |
+| Alpha sleeve only (standalone alternatives, market-neutral, pure managed futures) | — | `alphaEfficiencyUnstackedTooltip(…)` |
+| Both sleeves (return-stacked / capital-efficient) | `capitalEfficiencyTooltip(…)` | `alphaEfficiencyStackedTooltip(…)` |
+| Less than ~6 months of live history | `insufficientHistoryTooltip(…)` for each sleeve present | same |
+
+### Tooltip content
+
+One to two sentences per tooltip. Describe **what the sleeve is** and **what the grade is measuring**. For CA ETFs, note that the benchmark is the CAD-hedged S&P 500 proxy (`XSP.TO`). Example:
+
+```typescript
+wdig: {
+  capital: {
+    tooltip: insufficientHistoryTooltip(
+      'WDIG pairs rare earth and strategic metals miners equity with a base metals futures overlay. Launched May 2026; insufficient live history to grade capital efficiency.'
+    ),
+  },
+  alpha: {
+    tooltip: insufficientHistoryTooltip(
+      'The alpha sleeve is a base metals futures overlay layered on miners equity. Launched May 2026; insufficient live history to grade alpha efficiency.'
+    ),
+  },
+},
+```
+
+### Common mistake to avoid
+
+Do **not** use curly/smart quotes (`'` `'`) as string delimiters in these tooltip strings. Use ASCII single quotes `'…'` or double quotes `"…"`. Curly quotes as delimiters cause TypeScript to emit "Invalid character" errors that silently break all efficiency scores in the file.
 
 ## 3. Research deep dives (before writing copy)
 
@@ -340,6 +378,7 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 - [ ] **Dynamic registry:** `lede` + two **`strategyParas`** + **`ped(...)`** (two pedigree paragraphs) + two **`outperfParas`** match MATE-level depth (§3f); **HTML only** for emphasis (`<strong>`), never Markdown `**` (§3f "HTML copy")
 - [ ] **Stacked sleeves:** add / update `src/lib/etfStackExposureBySlug.ts` with `components` (each: `pct`, `bucket`, **`assetClass`** — `equity` vs non-equity sets **capital vs alpha** lines and notionals) plus benchmark fields (`equityCoreBenchmarkSymbol` / blend when needed, `coreBenchmarkSymbol` / blend for non-equity-only funds) so grading does not use legacy inference
 - [ ] **Similar ETFs (§2d):** new slug has **`equityTags` / `alphaTags`** in `etfSimilarityTags.ts` for the correct map (US vs CA); sleeve-derived tags when **`ETF_STACK_EXPOSURE_BY_SLUG`** exists; no hard-coded peer lists in route files
+- [ ] **Efficiency score (§2e):** slug has an entry in `US_ETF_DYNAMIC_EFFICIENCY` or `CA_ETF_DYNAMIC_EFFICIENCY`; correct tooltip helper per sleeve type; new launches use `insufficientHistoryTooltip`; **no curly/smart quotes** used as string delimiters
 - [ ] **Pedigree** includes **issuer / group-level AUM** when findable (source + period); if not findable, states boutique / undisclosed scale (§3e). Dynamic pages: `ped(issuer, groupAum?)` or equivalent in custom `pedigreeParas`
 - [ ] **Outperformance** emphasizes favorable regimes; closing paragraph is not purely negative; return-stacked pages stress the **second sleeve** when the first tracks the benchmark (§3d)
 - [ ] Lede and each body `<p>` respect word budgets (§4); no paragraph runs past **100 words**

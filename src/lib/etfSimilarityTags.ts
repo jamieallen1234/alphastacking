@@ -117,6 +117,9 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_CA: Record<string, EtfSimilarityTagBund
   pfae: bundle(['canadian_equity', 'long_short_equity', 'ls_net_exposure_100pct'], [], 'manual'),
   zlb: bundle(['canadian_equity', 'low_volatility'], [], 'seeded'),
   fcmo: bundle(['us_large_cap', 'momentum'], [], 'seeded'),
+  fccm: bundle(['canadian_equity', 'momentum'], [], 'seeded'),
+  /** Systematic multi-asset market-neutral; no equity sleeve directional bias. */
+  pmm: bundle(['global_equity', 'systematic_alternatives'], ['multi_factor_alternative', 'market_neutral'], 'seeded'),
   /** 150/50 vs TSX 60 — ~100% net equity exposure; not the moderate-net global L/S cluster. */
   atsx: bundle(['canadian_equity', 'long_short_equity', 'ls_net_exposure_100pct'], [], 'manual'),
   /** Moderate net long (e.g. ~60% net per scorecard model) — not full-market net like ATSX/PFAE. */

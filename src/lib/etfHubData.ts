@@ -390,6 +390,12 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Picton Mahoney multi-strategy alpha alternatives in an ETF structure.',
       caPath('pfaa')
     ),
+    ca(
+      'pmm',
+      'PMM.TO - Purpose Multi-Strategy Market Neutral Fund',
+      'Systematic long/short across equity, FX, rates, and commodities targeting value, carry, and momentum premia with no directional bias.',
+      caPath('pmm')
+    ),
   ],
   factor: [
     ca(
@@ -403,6 +409,12 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'FCMO.TO - Fidelity U.S. Momentum ETF',
       'Rules-based single-factor sleeve: 100 U.S. large-cap names with the strongest momentum signals, rebalanced quarterly.',
       caPath('fcmo')
+    ),
+    ca(
+      'fccm',
+      'FCCM.TO - Fidelity Canadian Momentum ETF',
+      'Rules-based single-factor sleeve: 100 Canadian large-cap names with the strongest momentum signals, rebalanced quarterly.',
+      caPath('fccm')
     ),
   ],
   'managed-futures': [],

@@ -186,3 +186,22 @@ export async function runWithYahooGaps<T>(tasks: Array<() => Promise<T>>): Promi
   }
   return out
 }
+
+/**
+ * Run tasks in parallel batches of `batchSize`, with `yahooRequestGap()` between batches.
+ * Reduces total gap overhead from N×400 ms to ceil(N/batchSize)×400 ms while preserving
+ * rate-limit headroom between bursts.
+ */
+export async function runWithBatchedParallel<T>(
+  tasks: Array<() => Promise<T>>,
+  batchSize = 3
+): Promise<T[]> {
+  const out: T[] = []
+  for (let i = 0; i < tasks.length; i += batchSize) {
+    if (i > 0) await yahooRequestGap()
+    const batch = tasks.slice(i, i + batchSize)
+    const results = await Promise.all(batch.map((fn) => fn()))
+    out.push(...results)
+  }
+  return out
+}

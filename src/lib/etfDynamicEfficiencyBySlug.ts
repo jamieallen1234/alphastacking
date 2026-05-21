@@ -216,6 +216,18 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  rsit: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        'RSIT stacks 100% international developed-market equity and 100% managed futures on the same capital. Launched May 2026; insufficient live history to grade capital efficiency.'
+      ),
+    },
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        'The alpha sleeve is trend-following managed futures across rates, FX, commodities, and equity indices, identical in design to the RSST/RSSY family. Launched May 2026; insufficient live history to grade alpha efficiency.'
+      ),
+    },
+  },
   gde: {
     capital: {
       tooltip: capitalEfficiencyTooltip(
@@ -237,6 +249,18 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     alpha: {
       tooltip: alphaEfficiencyStackedTooltip(
         'The alpha sleeve is gold futures layered on top of miners equity. It earns most in falling-real-yield or policy-stress tapes, but roll and leverage can drag in hostile rate regimes.'
+      ),
+    },
+  },
+  wdig: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        'WDIG pairs rare earth and strategic metals miners equity with a base metals futures overlay (90%+90% stacked). Launched May 2026; insufficient live history to grade capital efficiency.'
+      ),
+    },
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        'The alpha sleeve is a base metals futures overlay layered on miners equity. Launched May 2026; insufficient live history to grade alpha efficiency.'
       ),
     },
   },
@@ -382,6 +406,161 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  mema: {
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        'MEMA is an active emerging-markets long/short equity ETF run by Man Group. Launched December 2025; insufficient live history to grade alpha efficiency.'
+      ),
+    },
+  },
+  mate: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        'MATE stacks 100% active managed-futures exposure on top of 100% S&P 500 equity, using swaps to run both on the same capital. Launched December 2025; insufficient live history to grade capital efficiency.'
+      ),
+    },
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        "MATE's alpha sleeve is Man Group's active trend strategy running rates, FX, commodities, and equity indices. Launched December 2025; insufficient live history to grade alpha efficiency."
+      ),
+    },
+  },
+  rssy: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'RSSY stacks 100% S&P 500 equity and 100% futures yield on the same capital. Capital efficiency grades the equity sleeve versus SPY.'
+      ),
+    },
+    alpha: {
+      tooltip: alphaEfficiencyStackedTooltip(
+        'The alpha sleeve is a diversified futures yield book: carry and roll across rates, FX, commodities, and equity index futures.'
+      ),
+    },
+  },
+  hfgm: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'HFGM maintains partial equity exposure alongside its global macro overlay; capital efficiency grades that equity component versus SPY.'
+      ),
+    },
+    alpha: {
+      tooltip: alphaEfficiencyStackedTooltip(
+        "The alpha sleeve is Unlimited's factor-model replication of diversified hedge-fund global macro strategies."
+      ),
+    },
+  },
+  ctap: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        'CTAP stacks 100% U.S. equity and 100% managed futures on the same capital using the Simplify implementation. Launched December 2025; insufficient live history to grade capital efficiency.'
+      ),
+    },
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        'The alpha sleeve is a managed futures overlay across rates, FX, commodities, and equity index futures. Launched December 2025; insufficient live history to grade alpha efficiency.'
+      ),
+    },
+  },
+  rssb: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'RSSB stacks 100% global equity (ACWI) and 100% intermediate Treasuries on the same capital. Capital efficiency grades the equity sleeve versus SPY.'
+      ),
+    },
+    alpha: {
+      tooltip: alphaEfficiencyStackedTooltip(
+        'The alpha sleeve is a Treasury bond overlay supplying duration exposure on top of the full global equity position.'
+      ),
+    },
+  },
+  gdt: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        "GDT pairs 90% TIPS exposure with a 90% gold futures overlay in WisdomTree's capital-efficient structure. Launched January 2026; insufficient live history to grade capital efficiency."
+      ),
+    },
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        'The alpha sleeve is a gold futures overlay layered on TIPS. Launched January 2026; insufficient live history to grade alpha efficiency.'
+      ),
+    },
+  },
+  ntsx: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'NTSX runs 90% U.S. large-cap equity plus a 60% Treasury futures overlay to replicate a 90/60 allocation on one dollar of capital. Capital efficiency grades the equity sleeve versus SPY.'
+      ),
+    },
+    alpha: {
+      tooltip: alphaEfficiencyStackedTooltip(
+        'The alpha sleeve is a 60% Treasury futures overlay providing duration exposure beyond the equity position.'
+      ),
+    },
+  },
+  ntsi: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'NTSI runs 90% developed-world ex-U.S. equity plus a 60% Treasury overlay, mirroring the NTSX structure for international exposure. Capital efficiency grades the equity sleeve versus SPY.'
+      ),
+    },
+    alpha: {
+      tooltip: alphaEfficiencyStackedTooltip(
+        'The alpha sleeve is a 60% Treasury futures overlay providing duration alongside the international equity position.'
+      ),
+    },
+  },
+  ntse: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'NTSE runs 90% emerging-markets equity plus a 60% Treasury overlay, mirroring the NTSX structure for EM exposure. Capital efficiency grades the equity sleeve versus SPY.'
+      ),
+    },
+    alpha: {
+      tooltip: alphaEfficiencyStackedTooltip(
+        'The alpha sleeve is a 60% Treasury futures overlay providing duration alongside the emerging-markets equity position.'
+      ),
+    },
+  },
+  avdv: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'AVDV is a pure equity sleeve: Avantis international small-cap value factor tilt, graded versus SPY as the broad benchmark hurdle.'
+      ),
+    },
+  },
+  cowz: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'COWZ is a pure equity sleeve: Pacer free-cash-flow yield factor ranking the top 100 Russell 1000 names on trailing FCF yield, rebalanced annually.'
+      ),
+    },
+  },
+  ptf: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'PTF is a pure equity sleeve: Invesco Dorsey Wright technology momentum factor, ranking U.S. technology names on relative strength signals.'
+      ),
+    },
+  },
+  hard: {
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        'HARD is a long/short commodities and hard-assets ETF from Simplify. Launched February 2026; insufficient live history to grade alpha efficiency.'
+      ),
+    },
+  },
+  hold: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        "HOLD layers 75% U.S. equity and 75% managed futures on the same capital using Harbor's alpha-layering structure. Launched August 2025; insufficient live history to grade capital efficiency."
+      ),
+    },
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        'The alpha sleeve is a managed futures overlay across rates, FX, commodities, and equity index futures. Launched August 2025; insufficient live history to grade alpha efficiency.'
+      ),
+    },
+  },
 }
 
 export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> = {
@@ -414,7 +593,28 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
   zlb: {
     capital: {
       tooltip: capitalEfficiencyTooltip(
-        'ZLB tracks BMO’s Canadian low-volatility factor index: rules-based tilts toward historically lower-beta TSX names.'
+        "ZLB tracks BMO's Canadian low-volatility factor index: rules-based tilts toward historically lower-beta TSX names."
+      ),
+    },
+  },
+  fcmo: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'FCMO tracks the Fidelity Canada U.S. Momentum Index: 100 U.S. large-cap names ranked on positive momentum signals, quarterly rebalanced. Capital efficiency grades the sleeve versus a CAD-hedged S&P 500 proxy (XSP.TO).'
+      ),
+    },
+  },
+  fccm: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'FCCM tracks the Fidelity Canada Canadian Momentum Index: 100 Canadian large-cap names ranked on positive momentum signals, quarterly rebalanced. Capital efficiency grades the sleeve versus a CAD-hedged S&P 500 proxy (XSP.TO).'
+      ),
+    },
+  },
+  pmm: {
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
+        'PMM is a systematic market-neutral fund running long/short positions across equities, FX, rates, and commodities using value, carry, and momentum signals. Sub-advised by Neuberger Berman Canada.'
       ),
     },
   },
@@ -499,7 +699,28 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
   ethxb: {
     alpha: {
       tooltip: alphaEfficiencyUnstackedTooltip(
-        'ETHX-B holds spot Ether in custody. It’s CI Galaxy’s Canadian-listed spot sleeve with CAD-unhedged pricing.'
+        "ETHX-B holds spot Ether in custody. It's CI Galaxy's Canadian-listed spot sleeve with CAD-unhedged pricing."
+      ),
+    },
+  },
+  hdge: {
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
+        "HDGE.TO is Accelerate's long/short equity fund running a diversified book of individual stock longs and shorts across North American equities. The benchmark hurdle for CA ETFs uses XSP.TO."
+      ),
+    },
+  },
+  pfmn: {
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
+        'PFMN runs a systematic market-neutral long/short equity book by Picton Mahoney, targeting near-zero net beta. The benchmark hurdle for CA ETFs uses XSP.TO.'
+      ),
+    },
+  },
+  arb: {
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
+        "ARB.TO is Accelerate's merger and SPAC arbitrage fund: long announced deal targets against deal terms, with short positions in the acquirer when applicable. The benchmark hurdle for CA ETFs uses XSP.TO."
       ),
     },
   },

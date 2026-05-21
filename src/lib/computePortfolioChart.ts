@@ -50,7 +50,6 @@ import {
   clipSeriesFromTime,
   fetchDailySeries,
   fetchFirstTradeDateSec,
-  runWithYahooGaps,
   type PriceSeries,
   type YahooRange,
 } from '@/lib/yahooFinance'
@@ -167,30 +166,28 @@ export async function computePortfolioChart(params: {
 
   const nowSec = Math.floor(Date.now() / 1000)
 
-  const initialFirstTrades = await runWithYahooGaps(
-    symbols.map(
-      (s, i) => () => {
-        const stackLegs = resolveChartProxyLegs(s)
-        if (stackLegs?.length) return stackedProductProxyOverlapFirstTradeSec(stackLegs)
-        return ntsdIdx >= 0 && i === ntsdIdx
-          ? ntsdSyntheticOverlapFirstTradeSec()
-          : mateIdx >= 0 && i === mateIdx
-            ? mateSyntheticOverlapFirstTradeSec()
-            : ialtIdx >= 0 && i === ialtIdx
-              ? ialtSyntheticOverlapFirstTradeSec()
-              : hfgmIdx >= 0 && i === hfgmIdx
-                ? hfgmSyntheticOverlapFirstTradeSec()
-                : dglmIdx >= 0 && i === dglmIdx
-                  ? fetchFirstTradeDateSec('DBMF')
-                  : heqlIdx >= 0 && i === heqlIdx
-                    ? heqlSyntheticOverlapFirstTradeSec()
-                    : usslIdx >= 0 && i === usslIdx
-                      ? usslSyntheticOverlapFirstTradeSec(cadDenominated)
-                      : qqqlIdx >= 0 && i === qqqlIdx
-                        ? qqqlSyntheticOverlapFirstTradeSec()
-                        : fetchFirstTradeDateSec(s)
-      }
-    )
+  const initialFirstTrades = await Promise.all(
+    symbols.map((s, i) => {
+      const stackLegs = resolveChartProxyLegs(s)
+      if (stackLegs?.length) return stackedProductProxyOverlapFirstTradeSec(stackLegs)
+      return ntsdIdx >= 0 && i === ntsdIdx
+        ? ntsdSyntheticOverlapFirstTradeSec()
+        : mateIdx >= 0 && i === mateIdx
+          ? mateSyntheticOverlapFirstTradeSec()
+          : ialtIdx >= 0 && i === ialtIdx
+            ? ialtSyntheticOverlapFirstTradeSec()
+            : hfgmIdx >= 0 && i === hfgmIdx
+              ? hfgmSyntheticOverlapFirstTradeSec()
+              : dglmIdx >= 0 && i === dglmIdx
+                ? fetchFirstTradeDateSec('DBMF')
+                : heqlIdx >= 0 && i === heqlIdx
+                  ? heqlSyntheticOverlapFirstTradeSec()
+                  : usslIdx >= 0 && i === usslIdx
+                    ? usslSyntheticOverlapFirstTradeSec(cadDenominated)
+                    : qqqlIdx >= 0 && i === qqqlIdx
+                      ? qqqlSyntheticOverlapFirstTradeSec()
+                      : fetchFirstTradeDateSec(s)
+    })
   )
   let slotFirstTradeSec = [...initialFirstTrades]
   const portfolioOverlapStartSec = Math.max(...slotFirstTradeSec)
@@ -221,7 +218,7 @@ export async function computePortfolioChart(params: {
         : Promise.resolve(null),
     () => (cadDenominated ? fetchDailySeries(USDCAD_YAHOO_SYMBOL, range, maxWindow) : Promise.resolve(null)),
   ]
-  const mergedSeriesResults = await runWithYahooGaps(seriesAndBenchTasks)
+  const mergedSeriesResults = await Promise.all(seriesAndBenchTasks.map((fn) => fn()))
   let r = 0
   const series = mergedSeriesResults.slice(r, r + symbols.length) as PriceSeries[]
   r += symbols.length
@@ -279,8 +276,8 @@ export async function computePortfolioChart(params: {
 
   let proxyLegBySym = new Map<string, PriceSeries>()
   if (proxyLegList.length > 0) {
-    const proxyFetched = await runWithYahooGaps(
-      proxyLegList.map((sym) => () => fetchDailySeries(sym, range, proxyHistoryWindow))
+    const proxyFetched = await Promise.all(
+      proxyLegList.map((sym) => fetchDailySeries(sym, range, proxyHistoryWindow))
     )
     proxyLegList.forEach((sym, i) => proxyLegBySym.set(sym.toUpperCase(), proxyFetched[i]!))
     if (cadDenominated && usdCadSeries != null) {

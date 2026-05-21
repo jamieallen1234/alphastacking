@@ -18,7 +18,7 @@ export async function GET(req: Request) {
 
   try {
     const data = await getCachedEtfChart(symbol, range)
-    return chartJsonResponse(data)
+    return chartJsonResponse(data, 'public-1h')
   } catch (e) {
     return chartErrorResponse(e, 'Failed to load ETF chart', { mapBadInput: false })
   }

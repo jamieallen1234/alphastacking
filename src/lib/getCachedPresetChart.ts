@@ -3,6 +3,8 @@ import { computePortfolioChart } from '@/lib/computePortfolioChart'
 import { getPresetById, presetSymbols, presetWeights, type PresetDefinition } from '@/lib/presets'
 import type { YahooRange } from '@/lib/yahooFinance'
 
+const presetChartLoaderByKey = new Map<string, () => ReturnType<typeof computePresetChart>>()
+
 const DAY = 86400
 
 /**
@@ -36,10 +38,26 @@ export function getCachedPresetChartMax(presetId: string) {
   )()
 }
 
-/** Uncached compute path used by the preset-chart API route for non-default ranges. */
+/** Uncached compute path — kept for callers that explicitly need a fresh fetch. */
 export function computeUncachedPresetChart(presetId: string, range: YahooRange) {
   const preset = mustPreset(presetId)
   return computePresetChart(preset, range)
+}
+
+/** Server-side cached preset chart for any range (24-hour TTL). */
+export function getCachedPresetChartForRange(presetId: string, range: YahooRange) {
+  const preset = mustPreset(presetId)
+  const k = `${preset.id}\t${range}`
+  let loader = presetChartLoaderByKey.get(k)
+  if (!loader) {
+    loader = unstable_cache(
+      () => computePresetChart(preset, range),
+      [...cacheKeyFor(preset, range)],
+      { revalidate: DAY }
+    )
+    presetChartLoaderByKey.set(k, loader)
+  }
+  return loader()
 }
 
 function computePresetChart(preset: PresetDefinition, range: YahooRange) {

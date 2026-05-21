@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { chartErrorResponse, chartJsonResponse } from '@/lib/chartApiHelper'
-import { computePortfolioChart } from '@/lib/computePortfolioChart'
+import { getCachedPortfolioBuilderChart } from '@/lib/getCachedPortfolioBuilderChart'
 import type { YahooRange } from '@/lib/yahooFinance'
 
 const ALLOWED_RANGES: YahooRange[] = [
@@ -68,7 +68,7 @@ export async function GET(req: Request) {
   }
 
   try {
-    const payload = await computePortfolioChart({ symbols, weights, range })
+    const payload = await getCachedPortfolioBuilderChart({ symbols, weights, range, cadDenominated: false })
     return chartJsonResponse(payload, 'public-1h')
   } catch (e) {
     return chartErrorResponse(e, 'Failed to load market data')

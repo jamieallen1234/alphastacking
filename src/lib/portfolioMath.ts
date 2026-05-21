@@ -345,8 +345,10 @@ export function normalizedBenchmarkByNyDays(
   for (const day of sortedNyDayKeys) {
     if (!day) return null
     const idx = upperBoundBenchDayIndex(benchDays, day)
-    if (idx < 0) return null
-    const p = dm.get(benchDays[idx]!)
+    // idx < 0 means all benchmark bars are after this portfolio day (benchmark data starts slightly
+    // later, e.g. a truncated Yahoo response). Use the earliest available bar rather than failing.
+    const effectiveIdx = idx < 0 ? 0 : idx
+    const p = dm.get(benchDays[effectiveIdx]!)
     if (p == null || p <= 0) return null
     raw.push(p)
   }

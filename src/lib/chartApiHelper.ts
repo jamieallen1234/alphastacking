@@ -4,7 +4,7 @@ type CacheControlMode = 'no-store' | 'public-1h'
 
 const CACHE_CONTROL: Record<CacheControlMode, string> = {
   'no-store': 'private, no-store',
-  'public-1h': 'public, s-maxage=3600, stale-while-revalidate=86400',
+  'public-1h': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
 }
 
 /** Wrap chart payloads with the standard `Cache-Control` header for chart API routes. */

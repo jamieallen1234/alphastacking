@@ -1827,6 +1827,40 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'Picton Mahoney (Fortified alternatives, PFAA)',
   },
 
+  pmm: {
+    yahooSymbol: 'PMM.TO',
+    betaBenchmarkSymbol: 'XSP.TO',
+    hubCategoryId: 'premia-systematic-alternatives',
+    badge: 'Premia and systematic alternatives',
+    h1Title: 'PMM.TO - Purpose Multi-Strategy Market Neutral Fund',
+    displayTicker: 'PMM',
+    issuer: 'Purpose Investments',
+    inception: 'c. 2014',
+    addedToSite: '2026-05-20',
+    structure: 'Systematic multi-asset market neutral (long/short)',
+    mer: '0.95%',
+    aum: '$8M CAD',
+    pageTitle: 'PMM.TO ETF - Alpha Stacking',
+    description: 'Purpose Multi-Strategy Market Neutral Fund (PMM.TO): systematic long/short across equity, FX, rates, and commodities.',
+    contentFormat: 'html',
+    lede:
+      'PMM is a systematic <strong>market-neutral</strong> fund that runs long/short positions across equities, currencies, commodities, and interest rates, targeting value, carry, and momentum premia with no net directional bias.',
+    strategyParas: [
+      'Sub-advised by Neuberger Berman Canada (PM: Frank Maeba), PMM uses quantitative signal selection to go long and short across four asset classes simultaneously. The portfolio targets factor premia (value, carry, momentum) in each market independently, which means exposure is diversified by signal type and asset class rather than by geography or sector.',
+      'Because the fund is designed to be market-direction independent, it carries less equity beta than most long/short funds. No performance fee is charged, which is unusual in this category. At roughly $8M CAD AUM and low secondary-market volume, use limit orders and check the bid/ask spread before trading — the underlying strategy is sound but the wrapper is illiquid.',
+    ],
+    pedigreeParas: ped(
+      `Purpose Investments is a Canadian ETF innovator with a broad lineup of alternatives and thematic strategies. For PMM, the active management is delegated to Neuberger Berman Canada, the domestic arm of Neuberger Berman, a firm founded in 1939 that manages approximately $460 billion USD globally across equities, fixed income, and alternatives.`,
+      `Frank Maeba leads the Canadian systematic strategies team at Neuberger Berman Canada. The no-performance-fee structure and daily liquidity are deliberate design choices, positioning PMM closer to a rules-based factor product than a hedge fund in a wrapper.`,
+    ),
+    outperfParas: [
+      'Outperforms when <strong>factor premia are wide and persistent</strong> across multiple asset classes simultaneously: value spreads in equities, carry in FX, trend in commodities, and momentum in rates all paying at once creates the ideal diversified signal environment.',
+      'Underperforms in <strong>synchronised factor drawdowns</strong> when risk-off liquidity events compress spreads across all signals at the same time; favorable tape is a divergent macro environment with genuine cross-asset dispersion, not a single correlated shock.',
+    ],
+    officialUrl: 'https://www.purposeinvest.com/funds/purpose-multi-strategy-market-neutral-fund',
+    officialLabel: 'Purpose Investments (PMM)',
+  },
+
   pfae: {
     yahooSymbol: 'PFAE.TO',
     betaBenchmarkSymbol: 'XSP.TO',
@@ -1933,6 +1967,40 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     officialUrl: 'https://www.fidelity.ca/en/products/etfs/fcmo/',
     officialLabel: 'Fidelity Canada (FCMO)',
+  },
+
+  fccm: {
+    yahooSymbol: 'FCCM.TO',
+    betaBenchmarkSymbol: 'XSP.TO',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'FCCM.TO - Fidelity Canadian Momentum ETF',
+    displayTicker: 'FCCM / FCCM-U',
+    issuer: 'Fidelity Investments Canada',
+    inception: 'Jun 5, 2020',
+    addedToSite: '2026-05-20',
+    structure: 'Rules-based Canadian large-cap momentum factor',
+    mer: '0.38%',
+    aum: '~$1.1B CAD',
+    pageTitle: 'FCCM.TO ETF - Alpha Stacking',
+    description: 'Fidelity Canadian Momentum ETF (FCCM.TO): single-factor Canadian equity momentum in a listed wrapper.',
+    contentFormat: 'html',
+    lede:
+      'FCCM tracks the Fidelity Canada Canadian Momentum Index: a rules-based, <strong>single-factor</strong> sleeve of 100 Canadian large-cap names ranked on positive momentum signals, rebalanced quarterly.',
+    strategyParas: [
+      'The index selects stocks from the Canadian large-cap universe scoring highest on proprietary momentum signals developed by Fidelity Product Services. Quarterly rebalancing aims to capture medium-term trend persistence while managing turnover. At 100 holdings the portfolio is concentrated enough that sector-level leadership tilts dominate any individual stock moves.',
+      'Momentum is a self-correcting factor: it tends to work until it doesn\'t, and rotations in Canadian equity (from energy to financials, or resources to industrials) can flip the portfolio\'s sector weight sharply at each rebalance. <strong>Note:</strong> Yahoo Finance data for FCCM.TO begins April 2024; the on-page chart reflects partial history. Full returns since the June 2020 inception are at Fidelity Canada.',
+    ],
+    pedigreeParas: ped(
+      `Fidelity Investments Canada manages around $380 billion CAD (April 2026), giving it institutional distribution and operational depth. The FCCM index is proprietary to Fidelity Product Services, so index methodology is disclosed in prospectus and ETF Facts documents rather than a third-party provider.`,
+      `Portfolio management is delegated to Geode Capital Management, the systematic manager Fidelity spun out in 2001 and which now runs $1.9 trillion (March 2026) across equity indices and systematic strategies. Geode's mandate is efficient implementation, not active stock selection.`,
+    ),
+    outperfParas: [
+      'Outperforms when <strong>Canadian equity sector leadership persists</strong> quarter over quarter: resource rallies that compound, financial sector runs, or industrial cycles where winners keep winning into the next rebalance.',
+      'Underperforms when <strong>sector leadership reverses abruptly</strong>, crowding last quarter\'s winners into this quarter\'s exits; favorable tape is one-directional domestic leadership with follow-through, not the sudden rotation where prior momentum becomes concentrated risk.',
+    ],
+    officialUrl: 'https://www.fidelity.ca/en/products/etfs/fccm/',
+    officialLabel: 'Fidelity Canada (FCCM)',
   },
 
   atsx: {

@@ -119,6 +119,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('rsst')
     ),
     us(
+      'rsit',
+      'RSIT — Return Stacked International Stocks & Managed Futures ETF',
+      'For each $1 invested, ~$1 large-cap international equity and ~$1 systematic managed futures (trend) exposure.',
+      usPath('rsit')
+    ),
+    us(
       'ctap',
       'CTAP — Simplify US Equity PLUS Managed Futures Strategy ETF',
       '100% U.S. large-cap equity plus 100% systematic managed futures in one return-stacked wrapper.',
@@ -155,6 +161,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'GDMN — WisdomTree Efficient Gold Plus Gold Miners Strategy Fund',
       'Stacks gold miners equity with a leveraged gold-futures sleeve for a concentrated precious-metals expression.',
       usPath('gdmn')
+    ),
+    us(
+      'wdig',
+      'WDIG — WisdomTree Efficient Rare Earth Plus Strategic Metals Fund',
+      'Pairs rare earth and strategic metals miners equity with a base-metals futures overlay for critical-minerals exposure.',
+      usPath('wdig')
     ),
     us(
       'gdt',
@@ -385,6 +397,12 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'ZLB.TO - BMO Low Volatility Canadian Equity ETF',
       'Rules-based Canadian equity sleeve tilted toward historically lower-beta names (low-volatility factor).',
       caPath('zlb')
+    ),
+    ca(
+      'fcmo',
+      'FCMO.TO - Fidelity U.S. Momentum ETF',
+      'Rules-based single-factor sleeve: 100 U.S. large-cap names with the strongest momentum signals, rebalanced quarterly.',
+      caPath('fcmo')
     ),
   ],
   'managed-futures': [],

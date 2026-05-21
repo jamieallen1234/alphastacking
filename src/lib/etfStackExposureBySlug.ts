@@ -55,6 +55,14 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'SPY',
   },
+  rsit: {
+    components: [
+      { name: 'International equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
+      { name: 'Managed futures', pct: 100, bucket: 'alpha', assetClass: 'alternatives' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'SPDW',
+  },
   ctap: {
     components: [
       { name: 'S&P 500 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
@@ -128,6 +136,14 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     components: [
       { name: 'US equity', pct: 80, bucket: 'capital', assetClass: 'equity' },
       { name: 'Gold', pct: 80, bucket: 'alpha', assetClass: 'commodity' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'SPY',
+  },
+  wdig: {
+    components: [
+      { name: 'Rare earth and strategic metals miners equity', pct: 90, bucket: 'capital', assetClass: 'equity' },
+      { name: 'Base metals futures', pct: 90, bucket: 'alpha', assetClass: 'commodity' },
     ],
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'SPY',

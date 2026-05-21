@@ -305,6 +305,39 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'https://www.returnstackedetfs.com/rsst-return-stacked-us-stocks-managed-futures/',
     officialLabel: 'Return Stacked ETFs (RSST)',
   },
+
+  rsit: {
+    yahooSymbol: 'RSIT',
+    hubCategoryId: 'return-stacked-ge-2x',
+    badge: 'Return Stacked - 2x',
+    h1Title: 'RSIT — Return Stacked International Stocks &amp; Managed Futures ETF',
+    displayTicker: 'RSIT',
+    issuer: 'Tidal / Return Stacked ETFs',
+    inception: 'May 5, 2026',
+    addedToSite: '2026-05-20',
+    structure: 'Return-stacked international equity + managed futures',
+    capitalBucketExposurePct: 100,
+    alphaBucketExposurePct: 100,
+    mer: '0.98%',
+    aum: '~$16M',
+    pageTitle: 'RSIT ETF — Alpha Stacking',
+    description: 'Return Stacked International Stocks & Managed Futures ETF (RSIT).',
+    contentFormat: 'html',
+    lede:
+      'RSIT targets roughly dollar-for-dollar large-cap international equity alongside a systematic managed-futures sleeve, extending the Return Stacked® approach beyond U.S. large caps.',
+    strategyParas: [
+      'The equity sleeve is implemented primarily through SPDW (SPDR Portfolio Developed World ex-US ETF) plus international equity index futures. The managed-futures sleeve uses a blended replication approach: 30% top-down regression matching against leading CTA funds, 70% bottom-up time-series momentum and breakout signals across equities, rates, FX, and commodities.',
+      'For each dollar invested RSIT targets roughly one dollar of international equity notional and one dollar of managed-futures notional. Daily rebalancing keeps both sleeves near target, but futures gains and losses may realize gains frequently, creating an above-average distribution burden relative to equity-only wrappers.',
+    ],
+    pedigreeParas: TIDAL_RETURN_STACKED_PEDIGREE_PARAS,
+    outperfParas: [
+      'Outperforms when international equities lead a sustained re-rating, such as EAFE/EM catch-up windows, while <strong>managed-futures trends persist</strong> across rates, FX, and commodities, delivering non-correlated return on top of equity participation.',
+      'Underperforms when <strong>fast mean-reversion</strong> repeatedly stops out trend signals and international equity performance lags U.S. benchmarks simultaneously, combining a weaker equity sleeve with a whipsawing overlay.',
+    ],
+    officialUrl: 'https://www.returnstackedetfs.com/rsit/',
+    officialLabel: 'Return Stacked ETFs (RSIT)',
+  },
+
   ctap: {
     yahooSymbol: 'CTAP',
     hubCategoryId: 'return-stacked-ge-2x',
@@ -421,6 +454,38 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialUrl:
       'https://www.wisdomtree.com/investments/etfs/capital-efficient/gde',
     officialLabel: 'WisdomTree (GDE)',
+  },
+
+  wdig: {
+    yahooSymbol: 'WDIG',
+    hubCategoryId: 'return-stacked-lt-2x',
+    badge: 'Return Stacked - Lower Leverage',
+    h1Title: 'WDIG — WisdomTree Efficient Rare Earth Plus Strategic Metals Fund',
+    displayTicker: 'WDIG',
+    issuer: 'WisdomTree',
+    inception: 'May 7, 2026',
+    addedToSite: '2026-05-20',
+    structure: 'Rare earth and strategic metals miners + base-metals futures',
+    capitalBucketExposurePct: 90,
+    alphaBucketExposurePct: 90,
+    mer: '0.55%',
+    aum: '—',
+    pageTitle: 'WDIG ETF — Alpha Stacking',
+    description: 'WisdomTree Efficient Rare Earth Plus Strategic Metals Fund (WDIG).',
+    contentFormat: 'html',
+    lede:
+      '<strong>WDIG</strong> pairs equity in rare earth and strategic metals miners with a base-metals futures overlay, targeting capital-efficient exposure across the critical-minerals supply chain.',
+    strategyParas: [
+      'The equity sleeve holds mining companies across market caps focused on rare earth elements and strategic metals including lithium, cobalt, copper, nickel, zinc, and related industrial materials. The futures sleeve overlays CME/LME-listed contracts across aluminum, cobalt, copper, lead, lithium, nickel, platinum, silver, tin, and zinc, implemented through a Cayman subsidiary.',
+      'WisdomTree runs the portfolio with proprietary research, co-managed with Mellon Investments Corporation. Because the futures leg introduces leverage on top of already-cyclical mining equities, sleeve interactions matter: both sides can sell together in broad risk-off tapes while diverging sharply when futures curves price structural supply constraints differently from equity sentiment.',
+    ],
+    pedigreeParas: WISDOMTREE_PEDIGREE_PARAS,
+    outperfParas: [
+      'Outperforms when the <strong>green-energy transition</strong> and industrial demand drive sustained rallies in base and rare earth metals, with miners re-rating on higher realized prices while futures curves stay in backwardation and provide positive roll yield.',
+      'Underperforms when <strong>risk-off rotation hits cyclicals</strong> broadly, compressing miners independently of metals spot moves, or when futures contango erodes roll yield while equity sentiment is already cautious on China demand.',
+    ],
+    officialUrl: 'https://www.wisdomtree.com/investments/etfs/capital-efficient/wdig',
+    officialLabel: 'WisdomTree (WDIG)',
   },
 
   gdmn: {
@@ -1834,6 +1899,40 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialUrl:
       'https://www.bmoetfs.ca/etfs/zlb-bmo-low-volatility-canadian-equity-etf',
     officialLabel: 'BMO ETFs (ZLB)',
+  },
+
+  fcmo: {
+    yahooSymbol: 'FCMO.TO',
+    betaBenchmarkSymbol: 'XSP.TO',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'FCMO.TO - Fidelity U.S. Momentum ETF',
+    displayTicker: 'FCMO / FCMO-U',
+    issuer: 'Fidelity Investments Canada',
+    inception: 'Jun 5, 2020',
+    addedToSite: '2026-05-20',
+    structure: 'Rules-based U.S. large-cap momentum factor',
+    mer: '0.38%',
+    aum: '~$2.2B CAD',
+    pageTitle: 'FCMO.TO ETF - Alpha Stacking',
+    description: 'Fidelity U.S. Momentum ETF (FCMO.TO): single-factor U.S. equity momentum in a Canadian-listed wrapper.',
+    contentFormat: 'html',
+    lede:
+      'FCMO tracks the Fidelity Canada U.S. Momentum Index: a rules-based, <strong>single-factor</strong> sleeve that tilts a 100-stock portfolio toward U.S. large caps exhibiting strong positive momentum signals, rebalanced quarterly.',
+    strategyParas: [
+      'The index selects and weights U.S. large-cap names scoring highest on proprietary momentum signals developed by Fidelity Product Services. Quarterly rebalancing captures medium-term trend persistence while limiting turnover; at 100 holdings the portfolio is concentrated enough that sector-level momentum tilts dominate cap-weight differences.',
+      'Momentum factor funds rotate hard when leadership shifts: expect above-average concentration in whatever sector drove the prior quarter, plus sharp reversals when macro catalysts cause rapid re-rankings. Geode Capital Management (sub-advisor) runs the index implementation with its $1.9 trillion systematic execution infrastructure.',
+    ],
+    pedigreeParas: ped(
+      `Fidelity Investments Canada is the domestic arm of Fidelity, one of the world's largest privately held asset managers. Fidelity Canada manages around $380 billion (April 2026), giving it institutional distribution reach and deep ETF operational infrastructure in the Canadian market.`,
+      `The portfolio manager is Geode Capital Management, the systematic asset manager spun out of Fidelity in 2001 that now manages $1.9 trillion in AUM (March 2026) across equity indices, options, and systematic strategies. Geode's mandate here is efficient index implementation, not discretionary stock selection.`,
+    ),
+    outperfParas: [
+      'Outperforms when <strong>price trends persist</strong> across U.S. equity sectors: strong-momentum names keep outrunning laggards through earnings cycles and macro follow-through, particularly in trending tech or energy leadership regimes.',
+      'Underperforms in <strong>sharp reversals or factor rotations</strong> where last quarter\'s leaders become this quarter\'s crowded exits; favorable tape is one-directional sector leadership, not the abrupt rotation where momentum\'s exposure becomes its biggest liability.',
+    ],
+    officialUrl: 'https://www.fidelity.ca/en/products/etfs/fcmo/',
+    officialLabel: 'Fidelity Canada (FCMO)',
   },
 
   atsx: {

@@ -40,6 +40,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   // --- Return-stacked / sleeves from ETF_STACK_EXPOSURE_BY_SLUG ---
   mate: bundle(['us_large_cap'], ['managed_futures'], 'sleeve'),
   rsst: bundle(['us_large_cap'], ['managed_futures'], 'sleeve'),
+  rsit: bundle(['international', 'developed_ex_us'], ['managed_futures'], 'sleeve'),
   ctap: bundle(['us_large_cap'], ['managed_futures'], 'sleeve'),
   hold: bundle(['us_large_cap'], ['managed_futures'], 'sleeve'),
   rssy: bundle(['us_large_cap'], ['futures_yield'], 'sleeve'),
@@ -51,6 +52,8 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   /** US equity + gold overlay — `pm_gold` on equity ties to other gold PM stacks for similarity. */
   gde: bundle(['us_large_cap', 'pm_gold'], ['gold_commodity', 'pm_gold'], 'sleeve'),
   gdmn: bundle(['gold_miners', 'pm_gold'], ['gold_commodity', 'pm_gold'], 'sleeve'),
+  /** Rare earth/strategic metals miners equity + base-metals futures overlay; distinct from precious-metals stacks. */
+  wdig: bundle(['metals_miners', 'commodity_metals'], ['commodity_metals', 'base_metals'], 'sleeve'),
   gdt: bundle(['inflation_linked_bonds'], ['gold_commodity', 'pm_gold'], 'sleeve'),
   rssx: bundle(['us_large_cap'], ['gold_commodity', 'crypto', 'crypto_bitcoin', 'crypto_ethereum', 'pm_gold'], 'sleeve'),
   /** Shared equity sleeve shape for half-us-large / half-macro stacks (see stack map). */
@@ -113,6 +116,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_CA: Record<string, EtfSimilarityTagBund
   /** ~130% long / 30% short Canadian equity — ~100% net; pairs with ATSX (150/50, same net). */
   pfae: bundle(['canadian_equity', 'long_short_equity', 'ls_net_exposure_100pct'], [], 'manual'),
   zlb: bundle(['canadian_equity', 'low_volatility'], [], 'seeded'),
+  fcmo: bundle(['us_large_cap', 'momentum'], [], 'seeded'),
   /** 150/50 vs TSX 60 — ~100% net equity exposure; not the moderate-net global L/S cluster. */
   atsx: bundle(['canadian_equity', 'long_short_equity', 'ls_net_exposure_100pct'], [], 'manual'),
   /** Moderate net long (e.g. ~60% net per scorecard model) — not full-market net like ATSX/PFAE. */

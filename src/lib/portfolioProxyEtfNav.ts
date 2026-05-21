@@ -16,6 +16,7 @@ const HAND_AUTHORED_US_SLUG: Record<string, string> = {
 const OFFICIAL_ETF_HOME: Record<string, string> = {
   SPY: 'https://www.ssga.com/us/en/intermediary/etfs/funds/spdr-sp-500-etf-trust-spy',
   EFA: 'https://www.ishares.com/us/products/239516/ishares-msci-eafe-etf',
+  SPDW: 'https://www.ssga.com/us/en/intermediary/etfs/funds/spdr-portfolio-developed-world-ex-us-etf-spdw',
   QQQ: 'https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Individual&ticker=QQQ',
   'VFV.TO': 'https://www.vanguard.ca/en/product/etf/series/vanguard-sp-500-index-etf',
   'XSP.TO': 'https://www.ishares.com/ca/en/products/239729/ishares-core-sp-500-index-etf',

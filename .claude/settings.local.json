@@ -32,7 +32,22 @@
       "Bash(cat)",
       "Bash(bash /tmp/etf_dates.sh)",
       "Bash(curl -s http://localhost:3000/updates)",
-      "Bash(curl -s http://localhost:3000/ca/updates)"
+      "Bash(curl -s http://localhost:3000/ca/updates)",
+      "Skill(create-etf-page)",
+      "Skill(create-etf-page:*)",
+      "WebFetch(domain:www.wisdomtree.com)",
+      "WebFetch(domain:www.returnstackedetfs.com)",
+      "WebFetch(domain:www.etf.com)",
+      "WebFetch(domain:finance.yahoo.com)",
+      "WebFetch(domain:etfdb.com)",
+      "WebFetch(domain:www.ssga.com)",
+      "WebFetch(domain:www.sec.gov)",
+      "WebFetch(domain:www.morningstar.com)",
+      "WebFetch(domain:seekingalpha.com)",
+      "WebFetch(domain:stockanalysis.com)",
+      "WebFetch(domain:www.fidelity.ca)",
+      "WebFetch(domain:www.geode.com)",
+      "WebFetch(domain:geodecapital.com)"
     ],
     "deny": [
       "Bash(git push*)"

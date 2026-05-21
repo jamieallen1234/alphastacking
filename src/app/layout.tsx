@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Playfair_Display, DM_Mono, DM_Sans } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import SiteJsonLd from '@/components/SiteJsonLd'
 import { getSiteUrl, SITE_TWITTER_HANDLE } from '@/lib/siteUrl'
 import './globals.css'
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
     description: defaultDescription,
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     site: `@${SITE_TWITTER_HANDLE}`,
     creator: `@${SITE_TWITTER_HANDLE}`,
   },
@@ -55,6 +56,7 @@ export default function RootLayout({
       <body>
         <SiteJsonLd />
         {children}
+        <Analytics />
       </body>
     </html>
   )

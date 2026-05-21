@@ -2,8 +2,10 @@ import type { ReactNode } from 'react'
 import Link from 'next/link'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
+import ArticleJsonLd from '@/components/ArticleJsonLd'
+import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd'
 import { learnPath } from '@/lib/siteRegion'
-import { getLearnArticleNeighbors, learnArticlePath } from '@/lib/learnArticles'
+import { LEARN_ARTICLES, getLearnArticleNeighbors, learnArticlePath } from '@/lib/learnArticles'
 import styles from './LearnArticle.module.css'
 
 export default function LearnArticleShell({
@@ -19,9 +21,29 @@ export default function LearnArticleShell({
   const isCa = edition === 'ca'
   const learnHref = learnPath(isCa)
   const { prev, next } = getLearnArticleNeighbors(currentSlug)
+  const article = LEARN_ARTICLES.find((a) => a.slug === currentSlug)
+  const articlePath = learnArticlePath(isCa, currentSlug)
+  const homePath = isCa ? '/ca' : '/'
 
   return (
     <main className={styles.main}>
+      {article && (
+        <>
+          <ArticleJsonLd
+            title={article.title}
+            description={article.deck}
+            path={articlePath}
+            publishedDate={article.publishedDate}
+          />
+          <BreadcrumbJsonLd
+            items={[
+              { name: 'Home', href: homePath },
+              { name: 'Learn', href: learnHref },
+              { name: article.title, href: articlePath },
+            ]}
+          />
+        </>
+      )}
       <Nav />
       <div className={styles.shellTop}>
         <nav className={styles.shellNav} aria-label="Learn section">

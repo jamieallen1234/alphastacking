@@ -15,6 +15,7 @@ export type LearnArticleMeta = {
   read: string
   title: string
   deck: string
+  publishedDate: string
 }
 
 /**
@@ -27,6 +28,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     read: '~3 min read',
     title: 'What is alpha stacking',
     deck: 'Equity plus return sources that earn when stocks don\u2019t. What the strategy is, how capital efficiency makes it possible, and definitions of the key terms.',
+    publishedDate: '2026-04-19',
   },
   {
     slug: WHY_ALPHA_STACKING_SLUG,
@@ -34,6 +36,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     read: '~7 min read',
     title: 'Why alpha stacking',
     deck: 'How alpha stacking compares to index funds, return stacking, all-weather portfolios, and leveraged ETFs, with a plain language read on when each option tends to fit.',
+    publishedDate: '2026-04-19',
   },
   {
     slug: ETF_PAGES_BUILDER_101_SLUG,
@@ -41,6 +44,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     read: '~5 min read',
     title: 'ETF pages, model portfolios, and the portfolio builder',
     deck: 'How to read each section of the site and move from ETF research to model weights to builder stress-tests.',
+    publishedDate: '2026-04-19',
   },
   {
     slug: HOW_TO_BUILD_SLUG,
@@ -48,6 +52,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     read: '~6 min read',
     title: 'How to build an alpha stacking portfolio',
     deck: 'The four sleeve types, how total beta works, and a worked example using the US Alpha Stack model portfolio.',
+    publishedDate: '2026-04-19',
   },
   {
     slug: EFFICIENCY_GRADES_SLUG,
@@ -55,6 +60,7 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     read: '~5 min read',
     title: 'Capital, Alpha, and Stacked Efficiency grades explained',
     deck: 'What the letter grades on each ETF page measure, how they\u2019re calculated, and what they do not tell you.',
+    publishedDate: '2026-04-25',
   },
 ]
 

@@ -3,12 +3,6 @@ import { CA_ETF_DYNAMIC_REGISTRY, US_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynam
 /** US ETF hub root (main site vs Canadian edition shell). */
 export type PortfolioUsEtfHubBase = '/us-etfs' | '/ca/us-etfs'
 
-const HAND_AUTHORED_US_SLUG: Record<string, string> = {
-  MATE: 'mate',
-  RSSY: 'rssy',
-  HFGM: 'hfgm',
-}
-
 /**
  * Issuer / sponsor product pages for proxies that do not have an on-site write-up.
  * Keys must match Yahoo-style tickers used in charts (uppercase).
@@ -45,9 +39,6 @@ export function getPortfolioProxyEtfNav(
   hubBaseUs: PortfolioUsEtfHubBase
 ): { href: string; external: boolean } | null {
   const t = ticker.trim().toUpperCase()
-
-  const hand = HAND_AUTHORED_US_SLUG[t]
-  if (hand) return { href: `${hubBaseUs}/${hand}`, external: false }
 
   const usSlug = slugFromUsRegistry(t)
   if (usSlug) return { href: `${hubBaseUs}/${usSlug}`, external: false }

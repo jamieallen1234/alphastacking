@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import EtfPageTemplate, { etfPageStyles as styles } from '@/components/EtfPageTemplate'
 import EtfPageDisclaimers from '@/components/EtfPageDisclaimers'
+import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd'
 import type { EtfDynamicDef } from '@/lib/etfDynamicRegistryTypes'
 import { chartBetaDisplay } from '@/lib/etfPageFormat'
 import type { EtfChartPayload } from '@/lib/getCachedEtfChart'
@@ -121,8 +122,21 @@ export default function EtfDynamicPageLayout({
   primarySimilarityHeadline,
 }: EtfDynamicPageLayoutProps) {
   const categoryValue = def.structure ?? def.badge
+  const isCaHub = hubBase.startsWith('/ca')
+  const homePath = isCaHub ? '/ca' : '/'
+  const hubLabel = hubBase === '/ca/etfs' ? 'CA ETFs' : 'US ETFs'
 
   return (
+    <>
+      {slug && (
+        <BreadcrumbJsonLd
+          items={[
+            { name: 'Home', href: homePath },
+            { name: hubLabel, href: hubBase },
+            { name: def.displayTicker, href: `${hubBase}/${slug}` },
+          ]}
+        />
+      )}
     <EtfPageTemplate
       variant={variant}
       hubBase={hubBase}
@@ -252,5 +266,6 @@ export default function EtfDynamicPageLayout({
         <EtfEfficiencyPageFootnotes paragraphs={def.efficiency.footnotes} />
       ) : null}
     </EtfPageTemplate>
+    </>
   )
 }

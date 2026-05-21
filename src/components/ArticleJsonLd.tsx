@@ -18,7 +18,8 @@ export default function ArticleJsonLd({
     headline: title,
     description,
     url: `${siteUrl}${path}`,
-    datePublished: publishedDate,
+    image: `${siteUrl}/opengraph-image`,
+    datePublished: `${publishedDate}T00:00:00Z`,
     author: {
       '@type': 'Organization',
       name: 'Alpha Stacking',

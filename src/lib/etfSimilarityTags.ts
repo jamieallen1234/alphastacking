@@ -39,6 +39,7 @@ function bundle(
 export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBundle> = {
   // --- Return-stacked / sleeves from ETF_STACK_EXPOSURE_BY_SLUG ---
   mate: bundle(['us_large_cap'], ['managed_futures'], 'sleeve'),
+  rsbt: bundle([], ['managed_futures', 'treasuries'], 'sleeve'),
   rsst: bundle(['us_large_cap'], ['managed_futures'], 'sleeve'),
   rsit: bundle(['international', 'developed_ex_us'], ['managed_futures'], 'sleeve'),
   ctap: bundle(['us_large_cap'], ['managed_futures'], 'sleeve'),

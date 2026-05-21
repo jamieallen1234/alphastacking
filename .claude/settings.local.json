@@ -76,7 +76,8 @@
       "WebFetch(domain:www.nb.com)",
       "WebFetch(domain:www.theglobeandmail.com)",
       "Bash(python3)",
-      "Edit(/.claude/skills/create-etf-page/**)"
+      "Edit(/.claude/skills/create-etf-page/**)",
+      "WebSearch"
     ],
     "deny": [
       "Bash(git push*)"

@@ -47,6 +47,14 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'SPY',
   },
+  rsbt: {
+    components: [
+      { name: 'Broad US bonds (Bloomberg U.S. Aggregate)', pct: 100, bucket: 'capital', assetClass: 'fixed-income' },
+      { name: 'Managed futures', pct: 100, bucket: 'alpha', assetClass: 'alternatives' },
+    ],
+    capitalMarketBenchmarkSymbol: 'AGG',
+    coreBenchmarkSymbol: 'AGG',
+  },
   rsst: {
     components: [
       { name: 'S&P 500 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },

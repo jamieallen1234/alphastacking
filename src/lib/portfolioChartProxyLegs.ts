@@ -11,6 +11,8 @@ import {
  * Bitcoin leg: **BITO** if the sleeve/fund is futures-based; **IBIT** for spot / physical / generic “bitcoin” proxy.
  */
 export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, string[]> = {
+  /** Pre-inception: AGG (broad US bonds) + DBMF (managed-futures replication) mirrors RSBT's two-sleeve design. */
+  RSBT: ['AGG', 'DBMF'],
   /** Pre-inception: SPDW (developed world ex-US equity) + DBMF (managed-futures replication) mirrors RSIT's two-sleeve design. */
   RSIT: ['SPDW', 'DBMF'],
   BTGD: ['BITO', 'GLD'],

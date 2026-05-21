@@ -142,6 +142,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Global equities stacked with a Treasury bond sleeve in one capital-efficient wrapper.',
       usPath('rssb')
     ),
+    us(
+      'rsbt',
+      'RSBT — Return Stacked Bonds & Managed Futures ETF',
+      'For each $1 invested, ~$1 broad U.S. bond exposure and ~$1 systematic managed futures trend exposure.',
+      usPath('rsbt')
+    ),
   ],
   'return-stacked-lt-2x': [
     us(

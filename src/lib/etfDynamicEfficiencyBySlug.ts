@@ -204,6 +204,18 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     },
     footnotes: [EFFICIENCY_PROVISIONAL_FOOTNOTE],
   },
+  rsbt: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'RSBT holds a broad U.S. bond sleeve targeting the Bloomberg U.S. Aggregate. Capital efficiency grades the bond sleeve versus AGG as the fixed-income hurdle.'
+      ),
+    },
+    alpha: {
+      tooltip: alphaEfficiencyStackedTooltip(
+        'The alpha sleeve is trend-following managed futures across rates, FX, commodities, and equity indices, using the same blended CTA replication approach as RSST and RSIT.'
+      ),
+    },
+  },
   rsst: {
     capital: {
       tooltip: capitalEfficiencyTooltip(

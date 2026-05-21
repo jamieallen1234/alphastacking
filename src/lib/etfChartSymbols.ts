@@ -10,6 +10,7 @@ export const ETF_CHART_SYMBOLS = [
   'RSSX',
   'WTIB',
   'MATE',
+  'RSBT',
   'RSST',
   'RSIT',
   'CTAP',

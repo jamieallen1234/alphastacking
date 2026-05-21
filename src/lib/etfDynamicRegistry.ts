@@ -273,6 +273,38 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'USCF Investments (WTIB)',
   },
 
+  rsbt: {
+    yahooSymbol: 'RSBT',
+    hubCategoryId: 'return-stacked-ge-2x',
+    badge: 'Return Stacked - 2x',
+    h1Title: 'RSBT — Return Stacked Bonds & Managed Futures ETF',
+    displayTicker: 'RSBT',
+    issuer: 'Tidal / Return Stacked ETFs',
+    inception: 'Feb 7, 2023',
+    addedToSite: '2026-05-20',
+    structure: 'Return-stacked US bonds + managed futures',
+    capitalBucketExposurePct: 100,
+    alphaBucketExposurePct: 100,
+    mer: '1.02%',
+    aum: '~$126M',
+    pageTitle: 'RSBT ETF — Alpha Stacking',
+    description: 'Return Stacked Bonds & Managed Futures ETF (RSBT): 100% broad U.S. bond exposure stacked with 100% systematic managed futures.',
+    contentFormat: 'html',
+    lede:
+      'RSBT targets roughly dollar-for-dollar broad U.S. bond exposure alongside a systematic managed-futures sleeve, return stacking for fixed-income allocators who want trend exposure without selling bonds.',
+    strategyParas: [
+      'For each dollar invested, RSBT holds roughly one dollar of broad U.S. bond exposure targeting the Bloomberg U.S. Aggregate Bond Index (implemented via SPAB, Treasuries, or Treasury futures) and one dollar of systematic managed-futures exposure. The futures sleeve uses a blended approach: 30% top-down regression against leading CTA funds, 70% bottom-up time-series momentum, price-versus-moving-average, and breakout signals across equities, bonds, commodities, and currencies.',
+      'The bond sleeve provides duration and credit carry; the futures overlay trend-follows independently. When rates move directionally or macro themes persist, both sleeves can contribute. In choppy, mean-reverting markets the futures drag adds to the carry cost of running leveraged exposures, and investors should review the prospectus for details on swap counterparty risk and gross notional limits.',
+    ],
+    pedigreeParas: TIDAL_RETURN_STACKED_PEDIGREE_PARAS,
+    outperfParas: [
+      'Outperforms when bond markets deliver positive total return while <strong>managed-futures trends persist</strong> across rates, FX, or commodities, adding a layer of diversified alpha on top of the core fixed-income allocation rather than replacing it.',
+      'Underperforms when <strong>fast mean-reversion</strong> repeatedly stops out trend signals while bond markets trade sideways or decline, collapsing the contribution from both sleeves simultaneously and leaving financing costs unearned.',
+    ],
+    officialUrl: 'https://www.returnstackedetfs.com/rsbt-return-stacked-bonds-managed-futures/',
+    officialLabel: 'Return Stacked ETFs (RSBT)',
+  },
+
   rsst: {
     yahooSymbol: 'RSST',
     hubCategoryId: 'return-stacked-ge-2x',
@@ -310,7 +342,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     yahooSymbol: 'RSIT',
     hubCategoryId: 'return-stacked-ge-2x',
     badge: 'Return Stacked - 2x',
-    h1Title: 'RSIT — Return Stacked International Stocks &amp; Managed Futures ETF',
+    h1Title: 'RSIT — Return Stacked International Stocks & Managed Futures ETF',
     displayTicker: 'RSIT',
     issuer: 'Tidal / Return Stacked ETFs',
     inception: 'May 5, 2026',

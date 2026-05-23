@@ -77,6 +77,7 @@ export const ETF_CHART_SYMBOLS = [
   'CLOA',
   'BAAA.TO',
   'SPBC',
+  'FOXY',
 ] as const
 
 export type EtfChartYahooSymbol = (typeof ETF_CHART_SYMBOLS)[number]

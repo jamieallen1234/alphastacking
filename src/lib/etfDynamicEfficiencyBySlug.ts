@@ -365,6 +365,13 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  foxy: {
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        'FOXY harvests EM currency carry (long high-yield, short low-yield EM pairs) and G10 mean reversion via currency forwards and futures. Launched February 2025; insufficient live history to grade alpha efficiency.'
+      ),
+    },
+  },
   cta: {
     alpha: {
       tooltip: alphaEfficiencyUnstackedTooltip(

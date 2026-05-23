@@ -589,6 +589,38 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'WisdomTree (GDMN)',
   },
 
+  foxy: {
+    yahooSymbol: 'FOXY',
+    hubCategoryId: 'premia-systematic-alternatives',
+    badge: 'Premia and systematic alternatives',
+    h1Title: 'FOXY — Simplify Currency Strategy ETF',
+    displayTicker: 'FOXY',
+    issuer: 'Simplify Asset Management',
+    inception: 'Feb 3, 2025',
+    addedToSite: '2026-05-23',
+    structure: 'Systematic currency: EM carry + G10 mean reversion',
+    mer: '0.81%',
+    aum: '~$314M',
+    pageTitle: 'FOXY ETF — Alpha Stacking',
+    description: 'Simplify Currency Strategy ETF (FOXY): systematic EM carry and G10 mean-reversion strategy via currency forwards and futures.',
+    contentFormat: 'html',
+    lede: 'FOXY harvests two systematic currency return premia in one actively managed wrapper: a <strong>long/short emerging market carry trade</strong> (long high-yield EM currencies, short low-yield) and a <strong>G10 mean-reversion strategy</strong> (developed-market currencies faded at historical extremes), implemented via forwards and futures over a T-bill collateral base.',
+    strategyParas: [
+      'The EM sleeve runs a carry trade across eight currency pairs vs USD: Simplify goes long the four with the highest yield differentials and shorts the four with the lowest, sizing each position by realized volatility to limit single-currency concentration risk. The G10 sleeve takes mean-reversion positions across ten developed-market currencies (AUD, CAD, EUR, JPY, NZD, NOK, GBP, SEK, CHF, USD), fading extended deviations from historical norms with technical signals rather than macro forecasts. T-bills and money market instruments (~74% of NAV) serve as collateral and add short-duration carry on the cash book.',
+      'The two-engine design targets genuine decorrelation from equities and bonds. EM carry earns its premium in risk-on, stable-rate environments; G10 mean reversion is more regime-agnostic, engaging when developed currencies push to historically extreme levels. Portfolio leverage is calibrated by volatility metrics applied at the position, sleeve, and portfolio level, which compresses notional in dislocated tape.',
+    ],
+    pedigreeParas: ped(
+      `FOXY is managed by the Simplify Asset Management investment team: David Berns, PhD (CIO) and Ken Miller (Portfolio Manager) co-managed the fund from its February 2025 launch; Chris Getter (Emerging Markets Strategist) was added in October 2025 to deepen the EM currency capability. Simplify manages approximately $6.1B in ETF assets, built primarily on derivatives-centric structures across volatility, convexity, and systematic strategies.`,
+      `The EM carry trade is one of the most documented return premia in institutional FX literature, with decades of evidence across macro hedge funds and systematic currency programs. FOXY's contribution is packaging it alongside G10 mean reversion in a no-K-1 listed wrapper accessible to RIA and retail portfolios that have historically lacked a clean standalone currency vehicle.`,
+    ),
+    outperfParas: [
+      'Outperforms when EM interest rate differentials are <strong>wide and stable</strong>: the carry trade captures the rate spread in calm risk-on environments, and G10 currencies revert from trend-extended levels without sudden macro gaps.',
+      'Underperforms when a <strong>dollar flight-to-quality spike compresses EM simultaneously</strong>: carry crashes tend to be sudden and asymmetric, with high-yield EM pairs gapping lower together in global deleveraging; the G10 mean-reversion sleeve may partially offset if developed-market trends also reverse, but both engines can correlate in a synchronized risk-off episode.',
+    ],
+    officialUrl: 'https://www.simplify.us/etfs/foxy-simplify-currency-strategy-etf',
+    officialLabel: 'Simplify Asset Management (FOXY)',
+  },
+
   flsp: {
     yahooSymbol: 'FLSP',
     hubCategoryId: 'premia-systematic-alternatives',

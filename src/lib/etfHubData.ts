@@ -213,6 +213,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   ],
   'premia-systematic-alternatives': [
     us(
+      'foxy',
+      'FOXY — Simplify Currency Strategy ETF',
+      'Simplify: systematic EM carry trade and G10 mean-reversion strategy, implemented via currency forwards and futures.',
+      usPath('foxy')
+    ),
+    us(
       'flsp',
       'FLSP — Franklin Systematic Style Premia ETF',
       'Active style premia and multi-asset long/short sleeves targeting absolute return.',

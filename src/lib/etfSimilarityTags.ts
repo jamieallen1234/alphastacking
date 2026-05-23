@@ -79,6 +79,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   cowz: bundle(['us_large_cap', 'free_cash_flow'], [], 'manual'),
   avuv: bundle(['us_small_cap', 'value'], [], 'seeded'),
   avdv: bundle(['international', 'small_cap', 'value', 'international_small_value'], [], 'manual'),
+  foxy: bundle([], ['systematic_alternatives', 'global_macro'], 'seeded'),
   flsp: bundle(['us_large_cap', 'systematic_alternatives'], ['multi_factor_alternative'], 'manual'),
   ialt: bundle(['global_equity', 'systematic_alternatives'], ['multi_factor_alternative'], 'manual'),
   caos: bundle(['us_large_cap', 'tail_risk'], ['tail_risk'], 'manual'),

@@ -273,6 +273,43 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'USCF Investments (WTIB)',
   },
 
+  spbc: {
+    yahooSymbol: 'SPBC',
+    capitalBucketExposurePct: 100,
+    alphaBucketExposurePct: 10,
+    hubCategoryId: 'crypto',
+    badge: 'Return Stacked - Crypto',
+    h1Title: 'SPBC — Simplify US Equity PLUS Bitcoin Strategy ETF',
+    displayTicker: 'SPBC',
+    issuer: 'Simplify Asset Management',
+    inception: 'May 24, 2021',
+    addedToSite: '2026-05-23',
+    structure: 'S&P 500 + ~10% spot bitcoin overlay',
+    mer: '0.54%',
+    aum: '~$45M',
+    pageTitle: 'SPBC ETF — Alpha Stacking',
+    description: 'Simplify US Equity PLUS Bitcoin Strategy ETF (SPBC): 100% S&P 500 with a ~10% spot bitcoin overlay.',
+    contentFormat: 'html',
+    lede: cryptoLede(
+      'SPBC',
+      'holds <strong>100% S&P 500 equity</strong> exposure alongside a targeted <strong>~10% spot bitcoin allocation</strong> via exchange-traded products, offering a measured way to add bitcoin to a core equity position.'
+    ),
+    strategyParas: [
+      'Unlike full one-plus-one stacked designs that place a complete second sleeve on every invested dollar, SPBC is deliberately measured: IVV (iShares Core S&P 500) anchors the equity book while S&P 500 E-mini futures supplement to hold 100% notional, and spot bitcoin ETPs (currently VanEck HODL) target 10% of NAV with quarterly rebalancing and a hard 25% cap. Gross notional runs roughly 110%, not 200%.',
+      'Simplify avoids bitcoin futures entirely, using only spot ETPs. That choice sidesteps roll costs and contango friction common in futures-based wrappers but means the bitcoin exposure is fully price-linked. Investors should size the 10% sleeve as a convexity addition, not a hedge: in a sharp crypto selloff it clips 3-5 percentage points of NAV regardless of equity direction.',
+    ],
+    pedigreeParas: ped(
+      `Simplify Asset Management was co-founded in 2020 by Paul Kim (CEO) and David Berns, PhD (CIO), with Michael Green (Managing Director and Chief Strategist) also serving as a portfolio manager for SPBC. The firm built its reputation on options-enhanced and convexity-aware ETF structures before expanding into stacked and bitcoin-overlay products; it manages approximately $6.1B in ETF assets across its complex.`,
+      `Berns holds a PhD in physics from MIT with a background in quantum computation; Green is widely followed for macro and market-structure research. The team's orientation is toward engineering exposures precisely rather than replicating index conventions: SPBC's quarterly rebalance cadence and explicit bitcoin cap reflect that design-first philosophy.`,
+    ),
+    outperfParas: [
+      'Outperforms when U.S. large-cap equities trend higher and bitcoin captures an independent <strong>digital-scarcity bid</strong>: the 10% sleeve adds meaningful convexity to the upside without proportionally increasing drawdown drag because the notional is modest.',
+      'Underperforms when bitcoin sells off hard while equities are flat or moderately positive; the 10% sleeve is large enough to impose real NAV drag (3-5 percentage points in a severe crypto drawdown) with no offsetting diversification if the equity sleeve is only generating <strong>muted returns on the weaker leg</strong>.',
+    ],
+    officialUrl: 'https://www.simplify.us/etfs/spbc-simplify-us-equity-plus-bitcoin-strategy-etf',
+    officialLabel: 'Simplify Asset Management (SPBC)',
+  },
+
   rsbt: {
     yahooSymbol: 'RSBT',
     hubCategoryId: 'return-stacked-ge-2x',
@@ -1087,6 +1124,39 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'Convergence Investment Partners (CLSE)',
   },
 
+  vamo: {
+    yahooSymbol: 'VAMO',
+    hubCategoryId: 'long-short',
+    badge: 'Long/short',
+    h1Title: 'VAMO - Cambria Value and Momentum ETF',
+    displayTicker: 'VAMO',
+    issuer: 'Cambria Investment Management',
+    inception: 'Sep 8, 2015',
+    addedToSite: '2026-05-22',
+    structure: 'Active tactical long/short US equity',
+    mer: '0.65%',
+    aum: '~$83M',
+    pageTitle: 'VAMO ETF - Alpha Stacking',
+    description:
+      'Cambria Value and Momentum ETF (VAMO): quantitative U.S. equity fund combining value and momentum factor selection with systematic tactical hedging via S&P 500 futures.',
+    lede:
+      'VAMO is a quantitative long U.S. equity fund combining value and momentum signals to select roughly 100 holdings, with a systematic overlay that can hedge up to 100% of the long book with S&P 500 futures when markets look expensive or trend turns negative.',
+    strategyParas: [
+      'VAMO screens U.S. equities above $200M market cap, ranking candidates on long-term value metrics (price relative to fundamentals, typically over five to ten years) and near-term relative momentum (typically less than one year). The top roughly 100 names enter the long book; the portfolio rebalances monthly. The factor pairing is intentional: value finds underpriced candidates while momentum filters out names still in a price downtrend.',
+      'Tactical hedging runs as a separate weekly process: Cambria\'s rules assess market valuation and price trend, then scale a short S&amp;P 500 futures position from 0% to up to 100% of the long book. When both signals are unfavorable the fund can be near market-neutral. Futures roll, carry, and implementation costs for the hedge layer on top of the published 0.65% expense ratio and show up in the spread versus a plain equity benchmark.',
+    ],
+    pedigreeParas: ped(
+      `Mebane T. Faber (co-founder and CIO) and Jonathan Keetz (President) have managed VAMO since its September 2015 launch through Cambria Investment Management, a Los Angeles-based independent registered investment adviser. Faber is widely cited in factor investing, global asset allocation, and shareholder yield research; Keetz focuses on portfolio management and operations.`,
+      `Cambria managed approximately $4.1 billion across its nineteen-ETF platform as of May 2026, a focused scale relative to index giants. The firm concentrates on evidence-based, rules-driven strategies across shareholder yield, value, trend, and multi-factor equity, applying the same systematic discipline across VAMO and its broader product set.`,
+    ),
+    outperfParas: [
+      'Outperforms when <strong>value stocks re-rate with momentum confirmation</strong>: cheap, fundamentally sound companies begin to outperform the index just as near-term relative strength turns constructive. Periods where earnings quality and balance-sheet discipline drive dispersion between sectors are the favorable tape; both the stock selection and the unhedged net-long position earn simultaneously.',
+      'Underperforms in extended <strong>growth-driven momentum markets</strong> where a small number of high-multiple names drive index returns and the value screen systematically avoids them. The tactical hedge introduces timing risk: a rapid recovery within a weekly rebalance cycle can generate drag even when the signal fires correctly. The constructive flip is that wide valuation spreads and deteriorating breadth eventually produce the conditions where VAMO\'s systematic rules activate most cleanly.',
+    ],
+    officialUrl: 'https://www.cambriafunds.com/vamo',
+    officialLabel: 'Cambria Funds (VAMO)',
+  },
+
   orr: {
     yahooSymbol: 'ORR',
     hubCategoryId: 'long-short',
@@ -1760,9 +1830,114 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       },
     },
   },
+
+  jaaa: {
+    yahooSymbol: 'JAAA',
+    hubCategoryId: 'fixed-income',
+    badge: 'Fixed income',
+    h1Title: 'JAAA - Janus Henderson AAA CLO ETF',
+    displayTicker: 'JAAA',
+    issuer: 'Janus Henderson Investors',
+    inception: 'Oct 16, 2020',
+    addedToSite: '2026-05-22',
+    structure: 'AAA CLO (floating rate)',
+    mer: '0.20%',
+    aum: '~$27B',
+    pageTitle: 'JAAA ETF — Alpha Stacking',
+    description:
+      'Janus Henderson AAA CLO ETF (JAAA): actively managed floating-rate AAA-rated collateralized loan obligation fund.',
+    contentFormat: 'html',
+    chartHeadingLabel: 'total return',
+    lede:
+      'JAAA seeks current income by actively selecting <strong>AAA-rated CLO tranches</strong>, delivering floating-rate yield above short-term rates with near-zero duration and equity correlation.',
+    strategyParas: [
+      'Collateralized loan obligations are securitizations backed by diversified pools of leveraged corporate loans. <strong>AAA-rated tranches</strong> sit at the top of the CLO capital structure and absorb losses only after every junior tranche below them is wiped out — a structural buffer that has protected AAA investors through multiple credit cycles including 2008. JAAA targets this senior tier exclusively, selecting across deal managers, vintages, and loan sectors rather than passively tracking an index.',
+      'Coupons reset monthly (SOFR plus a credit spread), so the fund carries effectively <strong>no duration risk</strong> to rising interest rates. When the Fed lifts short-term rates the coupon income rises in lockstep. The tradeoff: credit-spread widening in acute stress events, though AAA CLO spreads have historically compressed again quickly once liquidity normalizes. The prospectus covers swap counterparty exposure and concentration limits.',
+    ],
+    pedigreeParas: ped(
+      'John Kerschner (Head of U.S. Securitized Products at Janus Henderson) co-managed the launch of JAAA in October 2020 alongside Nick Childs and Jessica Shill. The fund was the first listed AAA CLO ETF in the U.S. and grew to more than $27 billion by 2026, making it one of the largest actively managed fixed-income ETFs in the country. The securitized products desk manages across the full CLO capital structure and has covered this asset class through multiple market cycles.',
+      'Janus Henderson Group plc managed approximately $379 billion in assets under management as of the end of 2024 (per annual report filings), spanning global equity, fixed income, multi-asset, and alternatives from offices in Denver, London, and Sydney. The firm runs institutional and retail mandates and is one of the larger independent active managers globally.',
+    ),
+    outperfParas: [
+      'Outperforms when the federal funds rate is elevated: coupons reset upward each month, compounding a <strong>carry spread above T-bills</strong> that equity portfolios cannot replicate without duration or credit risk. Stable CLO deal flow and well-functioning leveraged-loan markets let the fund reinvest at prevailing rates without forced selling.',
+      'Underperforms when <strong>CLO spreads gap out sharply</strong> in a broad credit event, as NAV reflects mark-to-market prices on thinly traded CLO tranches even if no credit losses are realized. Favorable tape is a high-rate, orderly-credit environment where carry compounds cleanly and the structural protection of AAA seniority is never tested.',
+    ],
+    officialUrl: 'https://www.janushenderson.com/en-us/investor/etf/jaaa/',
+    officialLabel: 'Janus Henderson (JAAA)',
+  },
+
+  cloa: {
+    yahooSymbol: 'CLOA',
+    hubCategoryId: 'fixed-income',
+    badge: 'Fixed income',
+    h1Title: 'CLOA - iShares AAA CLO Active ETF',
+    displayTicker: 'CLOA',
+    issuer: 'BlackRock / iShares',
+    inception: 'Jan 10, 2023',
+    addedToSite: '2026-05-22',
+    structure: 'AAA CLO (floating rate)',
+    mer: '0.20%',
+    aum: '~$2.1B',
+    pageTitle: 'CLOA ETF — Alpha Stacking',
+    description:
+      'iShares AAA CLO Active ETF (CLOA): BlackRock actively managed fund investing in USD-denominated AAA-rated CLO tranches.',
+    contentFormat: 'html',
+    chartHeadingLabel: 'total return',
+    lede:
+      'CLOA is BlackRock\'s actively managed entry into <strong>AAA-rated CLO investing</strong>, targeting USD-denominated senior CLO tranches for floating-rate structured credit income.',
+    strategyParas: [
+      'CLOA invests in USD-denominated CLOs rated <strong>AAA at the senior tranche level</strong>: the highest-quality layer of structured credit, sitting atop the capital structure of a diversified pool of leveraged corporate loans. BlackRock\'s active selection across CLO managers, vintages, and underlying loan sectors aims to optimize yield pickup versus short-term rates while keeping the portfolio inside the AAA envelope.',
+      'Like JAAA, CLOA benefits from the <strong>floating-rate coupon</strong> structure: distributions reset monthly with SOFR, eliminating duration sensitivity. Spread compression and deal-level selection drive incremental return. The fund is smaller than JAAA, which can mean slightly wider bid/ask spreads on individual CLO positions, but BlackRock\'s market access and primary-deal relationships offset some of that size disadvantage.',
+    ],
+    pedigreeParas: ped(
+      'CLOA launched in January 2023 on BlackRock\'s iShares platform, the world\'s largest ETF issuer by assets. The iShares active fixed-income team manages the fund, drawing on BlackRock\'s global credit research infrastructure, primary-deal access to new CLO issuance, and proprietary risk analytics. The iShares active platform now spans a broad range of actively managed bond strategies in an ETF wrapper.',
+      'BlackRock managed approximately $11.6 trillion in assets under management as of end of 2024 (per annual earnings filings), making it the largest asset manager in the world. Its fixed-income platform is one of the deepest in the industry, with relationships across every major CLO deal manager. That scale provides early access to new deals and liquidity that smaller securitized-credit teams cannot easily replicate.',
+    ),
+    outperfParas: [
+      'Outperforms when <strong>short rates are elevated and CLO spreads are stable</strong>: the floating coupon compounds carry above T-bills each month, and BlackRock\'s primary-market access allows CLOA to participate in new deals at competitive spreads rather than buying seasoned paper in the secondary market.',
+      'Underperforms when <strong>CLO secondary market liquidity contracts sharply</strong>, forcing mark-to-market spreads wider on thinly priced positions. As a newer and smaller fund vs JAAA, spread impact on individual trades is somewhat larger. Favorable tape is the same as for any AAA CLO fund: a high-short-rate, orderly-credit environment where the structural seniority of AAA tranches is never approached.',
+    ],
+    officialUrl: 'https://www.ishares.com/us/products/336360/ishares-aaa-clo-active-etf',
+    officialLabel: 'iShares (CLOA)',
+  },
 }
 
 export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
+  baaa: {
+    yahooSymbol: 'BAAA.TO',
+    hubCategoryId: 'fixed-income',
+    badge: 'Fixed income',
+    h1Title: 'BAAA.TO - Brompton Wellington Square AAA CLO ETF',
+    displayTicker: 'BAAA / BAAA.U',
+    issuer: 'Brompton Funds',
+    inception: 'Apr 22, 2025',
+    addedToSite: '2026-05-23',
+    structure: 'Actively managed AAA CLO structured credit',
+    mer: '0.40% mgmt fee',
+    aum: '~$132M CAD',
+    pageTitle: 'BAAA.TO ETF - Alpha Stacking',
+    description:
+      'Brompton Wellington Square AAA CLO ETF (BAAA.TO): actively managed portfolio of primarily AAA-rated collateralized loan obligation bonds, sub-advised by Wellington Square Advisors.',
+    contentFormat: 'html',
+    chartHeadingLabel: 'total return',
+    lede:
+      'BAAA is Brompton\'s actively managed portfolio of primarily <strong>AAA-rated CLO bonds</strong>, sub-advised by Wellington Square Advisors: structured credit income with low equity correlation in an ETF wrapper.',
+    strategyParas: [
+      'CLOs are floating-rate debt instruments backed by pools of broadly syndicated corporate loans. BAAA holds a minimum 75% in AAA-rated tranches, with the remainder down to BBB quality. The floating-rate coupon structure means distributions adjust with rates and the fund carries minimal duration risk, unlike traditional bond ETFs. Wellington Square selects CLOs across U.S., European, and Canadian markets, targeting monthly income currently running at roughly 4.75% annualized (CAD units).',
+      'Because CLO tranches are complex structured instruments, spread and secondary-market liquidity risk can spike during credit stress even at the AAA level. The 0.40% management fee is the base cost; verify the full MER in the ETF Facts as operating expenses combine with the management fee to determine total cost. The fund also offers USD-denominated units (BAAA.U) for investors who want USD settlement.',
+    ],
+    pedigreeParas: ped(
+      `Wellington Square Advisors Inc. is a Toronto-based independent credit advisory whose portfolio managers Jeff Sujitno (CPA, CA, CIM; 23 years credit experience) and Amar Dhanoya (CFA, MBA; 20 years credit experience) bring institutional CLO expertise across U.S., European, and Canadian leveraged loan markets. Wellington Square's total assets under management are not widely published, but the team's track record spans investment-grade and high-yield credit across the full capital structure.`,
+      `Brompton Funds is a Toronto-based alternative asset manager overseeing approximately $3 billion across 19 TSX-listed closed-end and exchange-traded funds. The BAAA structure delegates active credit selection to Wellington Square while Brompton handles the ETF wrapper, distribution mechanics, and regulatory compliance. Brompton's broader lineup spans covered-call income, resource, and alternative credit strategies.`,
+    ),
+    outperfParas: [
+      'Outperforms when <strong>investment-grade credit spreads are stable or tightening</strong>: AAA CLO tranches earn the floating coupon with low default risk and monthly distributions compound at a yield well above short-term government bonds, with no equity beta drag pulling the NAV.',
+      'Underperforms when <strong>CLO secondary-market liquidity dries up</strong>: even AAA tranches can be marked to crisis prices well below their theoretical default-adjusted value when institutional buyers step back. Favorable tape is an orderly credit market with active CLO issuance and functioning structured-product bids, not a seized syndicated loan market.',
+    ],
+    officialUrl: 'https://www.bromptongroup.com/product/brompton-wellington-square-aaa-clo-etf/',
+    officialLabel: 'Brompton Funds (BAAA)',
+  },
+
   rgbm: {
     yahooSymbol: 'RGBM.TO',
     hubCategoryId: 'return-stacked',

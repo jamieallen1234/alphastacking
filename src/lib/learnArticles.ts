@@ -1,6 +1,8 @@
 /** Slug segments under `/learn/[slug]` and `/ca/learn/[slug]`. */
 export const WHAT_IS_ALPHA_SLUG = 'what-is-alpha-stacking'
 
+export const RETURN_STACKING_EXPLAINED_SLUG = 'return-stacking-explained'
+
 export const ETF_PAGES_BUILDER_101_SLUG = 'etf-pages-and-portfolio-builder-101'
 
 export const HOW_TO_BUILD_SLUG = 'how-to-build-an-alpha-stacking-portfolio'
@@ -29,6 +31,14 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     title: 'What is alpha stacking',
     deck: 'Equity plus return sources that earn when stocks don\u2019t. What the strategy is, how capital efficiency makes it possible, and definitions of the key terms.',
     publishedDate: '2026-04-19',
+  },
+  {
+    slug: RETURN_STACKING_EXPLAINED_SLUG,
+    eyebrow: 'Concepts',
+    read: '~3 min read',
+    title: 'Return stacking explained',
+    deck: 'Leverage that holds two exposures on the same dollar without selling one to make room. The main ratios, what carry drag actually costs, and when the math breaks down.',
+    publishedDate: '2026-05-21',
   },
   {
     slug: WHY_ALPHA_STACKING_SLUG,

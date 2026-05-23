@@ -42,6 +42,8 @@ export type EtfDynamicDef = {
    * (e.g. `<strong>`), rendered with `dangerouslySetInnerHTML`.
    */
   contentFormat?: 'html'
+  /** Override the chart section heading (default: `"{ticker} price history"`). Use "total return" for income-heavy funds where dividends are the primary return driver. */
+  chartHeadingLabel?: string
   /** Optional HTML note under the price chart (trusted site copy). */
   belowChart?: string
   /**

@@ -77,7 +77,21 @@
       "WebFetch(domain:www.theglobeandmail.com)",
       "Bash(python3)",
       "Edit(/.claude/skills/create-etf-page/**)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:www.cambriafunds.com)",
+      "WebFetch(domain:www.janushenderson.com)",
+      "WebFetch(domain:www.blackrock.com)",
+      "WebFetch(domain:etf.com)",
+      "WebFetch(domain:www.wisesheets.io)",
+      "WebFetch(domain:advisors.vanguard.com)",
+      "WebFetch(domain:www.barchart.com)",
+      "WebFetch(domain:www.nasdaq.com)",
+      "WebFetch(domain:bmogam.com)",
+      "WebFetch(domain:advisors.janushenderson.com)",
+      "WebFetch(domain:www.bromptongroup.com)",
+      "WebFetch(domain:institutional.janushenderson.com)",
+      "Bash(python3 -c ' *)",
+      "WebFetch(domain:www.simplify.us)"
     ],
     "deny": [
       "Bash(git push*)"

@@ -44,6 +44,7 @@ export const ETF_CHART_SYMBOLS = [
   'KMLM',
   'MEMA',
   'CLSE',
+  'VAMO',
   'MRGR',
   'HARD',
   'HOLD',
@@ -72,6 +73,10 @@ export const ETF_CHART_SYMBOLS = [
   'BTCC-B.TO',
   'ETHX-B.TO',
   'ARB.TO',
+  'JAAA',
+  'CLOA',
+  'BAAA.TO',
+  'SPBC',
 ] as const
 
 export type EtfChartYahooSymbol = (typeof ETF_CHART_SYMBOLS)[number]

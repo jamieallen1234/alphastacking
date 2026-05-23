@@ -162,6 +162,10 @@ export async function getCachedArbChart(range: YahooRange = '1y') {
   return getCachedEtfChart('ARB.TO', range)
 }
 
+export async function getCachedBaaaChart(range: YahooRange = '1y') {
+  return getCachedEtfChart('BAAA.TO', range)
+}
+
 function alignedDailyReturns(
   aTs: number[],
   aPx: number[],

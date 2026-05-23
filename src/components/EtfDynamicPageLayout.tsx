@@ -160,6 +160,7 @@ export default function EtfDynamicPageLayout({
       metaExtras={buildEfficiencyMetaExtras(def, chart, slug)}
       chart={{
         displayLabel: def.displayTicker,
+        headingLabel: def.chartHeadingLabel,
         yahooSymbol: def.yahooSymbol,
         payload: chart,
       }}

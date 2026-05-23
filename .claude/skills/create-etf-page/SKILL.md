@@ -328,6 +328,7 @@ When the write-up is a registry row (`US_ETF_DYNAMIC_REGISTRY` / `CA_ETF_DYNAMIC
 - For emphasis, use **HTML**: `<strong>…</strong>` (and `<em>…</em>` only if you truly need italics). Follow §4 for `</strong>{' '}` before the next word so phrases do not smush.
 - In HTML strings, use **`&amp;`** for an ampersand when it is part of a name or token (e.g. **`S&amp;P 500`**) so markup stays unambiguous.
 - **No em dashes (—)** in **user-visible** copy: dynamic registry HTML strings (`lede`, strategy, pedigree, outperformance, `description`), featured-body HTML, and hub blurbs shown on `/us-etfs` / `/ca/etfs`. Use a comma, period, colon, or parentheses. (Code comments, JSDoc, and non-rendered strings are not the priority.) Ticker–title separators in `h1Title` / `pageTitle` may use ` - ` or your site's chosen title pattern.
+- **No curly/smart quotes** anywhere in `.ts` / `.tsx` source. Curly apostrophes (`'` `'`) and curly double quotes (`"` `"`) are not valid TypeScript string delimiters and break the compiler when used as such. Always use straight ASCII quotes (`'` and `"`). Possessives inside single-quoted strings (e.g. `'Purpose's'`) must use a double-quoted string instead: `"Purpose's"`. If your editor autocorrects to curly quotes, disable that setting for this project.
 
 **Do not confuse**
 
@@ -355,9 +356,9 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 
 **TSX/JSX: spaces after `</strong>` (mandatory pattern)**
 
-- **Do not rely** on a literal space or indented newline after `</strong>`—in practice, the next word can still render **smushed** (e.g. "cross-assetfutures", "futures yieldstack") depending on wrapping and minification.
-- **Default**: whenever `</strong>` is followed by another **word** (letters), use **`</strong>{' '}`** before that word. Punctuation glued to the closing tag (`</strong>—`, `</strong>.`, `</strong>;`) can stay as-is.
-- **Alternative**: keep `</strong>` and the entire next word on one line with no break between them, or wrap the whole phrase in one `<strong>…</strong>`.
+- **Always** write `</strong>{' '}` before the next word — a literal space or newline is NOT reliable and will smush words at render time regardless of how the source looks.
+- Only exception: punctuation glued directly to the tag (`</strong>.`, `</strong>,`, `</strong>:`) needs no space.
+- This applies to every TSX file: ETF pages, learn articles, and any other prose component.
 - Also avoid **`word <strong`** (TypeScript may parse `<` as less-than); reorder or use `{' '}<strong>`.
 
 ## 5. Checklist

@@ -86,7 +86,7 @@ const CRYPTO_HUB_LIST: EtfHubListItem[] = [
   us(
     'oosb',
     'OOSB — One+One™ S&P 500® and Bitcoin ETF',
-    'Volatility Shares: ~100% S&P 500 and ~100% bitcoin futures—dual exposure similar to OOQB’s structure.',
+    "Volatility Shares: ~100% S&P 500 and ~100% bitcoin futures, dual exposure similar to OOQB's structure.",
     usPath('oosb')
   ),
   us(
@@ -100,6 +100,12 @@ const CRYPTO_HUB_LIST: EtfHubListItem[] = [
     'WTIB — USCF Oil Plus Bitcoin Strategy Fund',
     'Actively managed crude oil and bitcoin futures/ETP exposure with roughly balanced notional sleeves.',
     usPath('wtib')
+  ),
+  us(
+    'spbc',
+    'SPBC — Simplify US Equity PLUS Bitcoin Strategy ETF',
+    'Simplify: 100% S&P 500 equity with a targeted ~10% spot bitcoin overlay via ETPs, rebalanced quarterly.',
+    usPath('spbc')
   ),
 ]
 
@@ -309,6 +315,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('orr')
     ),
     us(
+      'vamo',
+      'VAMO — Cambria Value and Momentum ETF',
+      "Cambria's quantitative value and momentum U.S. equity fund with systematic tactical hedging via S&P 500 futures (Cambria Investment Management).",
+      usPath('vamo')
+    ),
+    us(
       'mema',
       'MEMA — Man Active Emerging Markets Alternative ETF',
       'Actively managed emerging-markets long/short equity sleeve using systematic signals plus portfolio-manager discretion.',
@@ -370,6 +382,20 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
     ),
   ],
   crypto: CRYPTO_HUB_LIST,
+  'fixed-income': [
+    us(
+      'jaaa',
+      'JAAA — Janus Henderson AAA CLO ETF',
+      'Actively managed AAA-rated CLO tranche fund: floating-rate senior structured credit with near-zero duration and equity correlation.',
+      usPath('jaaa')
+    ),
+    us(
+      'cloa',
+      'CLOA — iShares AAA CLO Active ETF',
+      'BlackRock iShares actively managed fund investing in USD-denominated AAA-rated CLO tranches for floating-rate structured credit income.',
+      usPath('cloa')
+    ),
+  ],
 }
 
 /** Canadian-listed ETFs shown on `/ca` ETF hub */
@@ -514,14 +540,22 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
     ca(
       'btccb',
       'BTCC-B.TO - Purpose Bitcoin ETF (CAD, unhedged)',
-      'Spot Bitcoin in cold storage: Purpose’s flagship Canadian physical BTC sleeve (competes with CI Galaxy and Fidelity for top AUM).',
+      "Spot Bitcoin in cold storage: Purpose's flagship Canadian physical BTC sleeve (competes with CI Galaxy and Fidelity for top AUM).",
       caPath('btccb')
     ),
     ca(
       'ethxb',
       'ETHX-B.TO - CI Galaxy Ethereum ETF (CAD, unhedged)',
-      'Spot Ether held in custody: CI / Galaxy’s large-capacity Canadian ETH ETF (low fee vs. many peers).',
+      "Spot Ether held in custody: CI / Galaxy's large-capacity Canadian ETH ETF (low fee vs. many peers).",
       caPath('ethxb')
+    ),
+  ],
+  'fixed-income': [
+    ca(
+      'baaa',
+      'BAAA.TO - Brompton Wellington Square AAA CLO ETF',
+      'Actively managed portfolio of primarily AAA-rated CLO bonds: structured credit income with floating-rate coupons and low equity correlation.',
+      caPath('baaa')
     ),
   ],
 }

@@ -256,6 +256,15 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
       { symbol: 'BTC-USD', weightPct: 50 },
     ],
   },
+  /** Simplify: 100% S&P 500 equity + ~10% spot bitcoin via ETPs (quarterly rebalance, 25% hard cap). */
+  spbc: {
+    components: [
+      { name: 'S&P 500 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
+      { name: 'Bitcoin', pct: 10, bucket: 'alpha', assetClass: 'crypto' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'SPY',
+  },
 }
 
 /** Sum of `pct` by sleeve `bucket` for a mapped stack (used for splits + stacked grade weights). */

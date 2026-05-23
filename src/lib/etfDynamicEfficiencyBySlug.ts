@@ -204,6 +204,18 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     },
     footnotes: [EFFICIENCY_PROVISIONAL_FOOTNOTE],
   },
+  spbc: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'SPBC holds 100% S&P 500 equity (via IVV and E-mini futures) as its capital sleeve. Capital efficiency grades the equity book versus SPY as the benchmark.'
+      ),
+    },
+    alpha: {
+      tooltip: alphaEfficiencyStackedTooltip(
+        'The alpha sleeve is a ~10% allocation to spot bitcoin via exchange-traded products (currently VanEck HODL), rebalanced quarterly. The grade scores the incremental bitcoin return per unit of crypto-spread risk added above the equity core.'
+      ),
+    },
+  },
   rsbt: {
     capital: {
       tooltip: capitalEfficiencyTooltip(
@@ -371,6 +383,13 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     alpha: {
       tooltip: alphaEfficiencyUnstackedTooltip(
         'KMLM is KraneShares’ managed-futures ETF: systematic trend and macro exposure without a bundled equity stack.'
+      ),
+    },
+  },
+  vamo: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'VAMO holds a long U.S. equity book (value and momentum factors) and can hedge up to 100% with S&P 500 futures. The grade measures excess return versus SPY, net of costs and tactical hedge drag.'
       ),
     },
   },
@@ -573,6 +592,22 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+
+  // --- Fixed income / structured credit ---
+  jaaa: {
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
+        'JAAA is a pure floating-rate structured credit sleeve: AAA-rated CLO tranches with near-zero duration and equity correlation. Alpha efficiency grades the carry spread above SOFR delivered per unit of credit-spread risk taken.'
+      ),
+    },
+  },
+  cloa: {
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
+        "CLOA is BlackRock's AAA CLO active sleeve: USD-denominated senior CLO tranches with floating-rate coupons. Alpha efficiency grades the carry spread above SOFR delivered per unit of credit-spread risk taken."
+      ),
+    },
+  },
 }
 
 export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> = {
@@ -733,6 +768,13 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     alpha: {
       tooltip: alphaEfficiencyUnstackedTooltip(
         "ARB.TO is Accelerate's merger and SPAC arbitrage fund: long announced deal targets against deal terms, with short positions in the acquirer when applicable. The benchmark hurdle for CA ETFs uses XSP.TO."
+      ),
+    },
+  },
+  baaa: {
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
+        'BAAA.TO is Brompton\'s actively managed AAA CLO portfolio: floating-rate structured credit income with no equity sleeve, sub-advised by Wellington Square Advisors. The alpha grade scores credit yield delivery versus costs and hurdle.'
       ),
     },
   },

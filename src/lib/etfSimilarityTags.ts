@@ -70,6 +70,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
     'sleeve'
   ),
   wtib: bundle(['commodity_energy'], ['crypto', 'crypto_bitcoin'], 'sleeve'),
+  spbc: bundle(['us_large_cap'], ['crypto', 'crypto_bitcoin'], 'sleeve'),
 
   // --- Factor / style ---
   spmo: bundle(['us_large_cap', 'momentum'], [], 'manual'),
@@ -96,6 +97,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
    * Net-long L/S (not market-neutral). Gross book ~110% long / 50% short per `exposureSummary` —
    * peer with ORR (~150% / 100%) via `ls_net_long_similar_gross`.
    */
+  vamo: bundle(['us_large_cap', 'long_short_equity', 'value', 'momentum', 'tactical_hedge'], [], 'manual'),
   clse: bundle(['us_large_cap', 'long_short_equity', 'ls_net_long_similar_gross'], [], 'manual'),
   /**
    * Global net-long L/S; gross ~150% long / 100% short per `exposureSummary` — same peer band as CLSE.
@@ -107,6 +109,12 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   dbmf: bundle([], ['managed_futures'], 'seeded'),
   kmlm: bundle([], ['managed_futures'], 'seeded'),
   hard: bundle(['hard_assets_long_short'], ['commodities'], 'manual'),
+
+  // --- Fixed income / structured credit ---
+  /** Pure AAA CLO fund: no equity sleeve; alpha is carry spread above SOFR. */
+  jaaa: bundle([], ['aaa_clo', 'floating_rate_credit', 'investment_grade_credit'], 'seeded'),
+  /** iShares AAA CLO fund; same peer group as JAAA — same structure, different sponsor. */
+  cloa: bundle([], ['aaa_clo', 'floating_rate_credit', 'investment_grade_credit'], 'seeded'),
 }
 
 /** CA hub registry slugs — peers only within Canadian listings. */
@@ -138,6 +146,8 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_CA: Record<string, EtfSimilarityTagBund
   hdge: bundle(['us_large_cap', 'long_short_equity', 'ls_net_exposure_mod_60'], [], 'manual'),
   pfmn: bundle(['preferreds_credit'], ['credit'], 'seeded'),
   arb: bundle(['global_macro', 'multi_asset'], ['absolute_return'], 'seeded'),
+  /** Pure AAA CLO structured credit; no equity sleeve. Peers with other credit-alpha sleeves. */
+  baaa: bundle([], ['aaa_clo', 'floating_rate_credit', 'investment_grade_credit'], 'seeded'),
 }
 
 export type EtfSimilarityUniverse = 'us' | 'ca'

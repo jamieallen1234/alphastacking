@@ -55,6 +55,12 @@ export const ETF_CATEGORY_ROWS = [
       'Daily-resetting funds that deliver 2× or 3× the daily return of a broad equity index. They amplify both gains and losses, and volatility drag means long-term returns don\'t simply scale with the multiple.',
   },
   {
+    id: 'fixed-income',
+    title: 'Fixed income',
+    subtitle:
+      'ETFs that invest in bonds, structured credit, and floating-rate instruments. Includes AAA CLO funds, investment-grade credit, and bond strategies used as collateral or yield sleeves in portfolio construction.',
+  },
+  {
     id: 'crypto',
     title: 'Crypto & digital assets',
     subtitle:

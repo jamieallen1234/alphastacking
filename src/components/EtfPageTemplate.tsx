@@ -36,8 +36,10 @@ export type EtfPageTemplateProps = {
   lede: ReactNode
   meta: EtfPageMeta
   chart: {
-    /** e.g. `MATE` or `HDGE.TO` — used in “{label} price history” */
+    /** e.g. `MATE` or `HDGE.TO` — used in “{label} {headingLabel}” */
     displayLabel: string
+    /** Defaults to “price history”. Use “total return” for income-heavy ETFs. */
+    headingLabel?: string
     yahooSymbol: string
     payload: EtfChartPayload
   }
@@ -144,7 +146,7 @@ export default function EtfPageTemplate({
         )}
         {metaExtras}
 
-        <h2 className={styles.chartHeading}>{chart.displayLabel} price history</h2>
+        <h2 className={styles.chartHeading}>{chart.displayLabel} {chart.headingLabel ?? 'price history'}</h2>
         <EtfChartPanel symbol={chart.yahooSymbol} initialPayload={chart.payload} />
         {belowChart}
 

@@ -260,7 +260,7 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     },
     alpha: {
       tooltip: alphaEfficiencyStackedTooltip(
-        'The non-core sleeve is gold futures exposure for convexity in real-rate and stress regimes. Roll and margin interact with the equity leg.'
+        'The non-core sleeve is gold futures exposure for convexity in real-rate and stress environments. Roll and margin interact with the equity leg.'
       ),
     },
   },
@@ -272,7 +272,7 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     },
     alpha: {
       tooltip: alphaEfficiencyStackedTooltip(
-        'The alpha sleeve is gold futures layered on top of miners equity. It earns most in falling-real-yield or policy-stress tapes, but roll and leverage can drag in hostile rate regimes.'
+        'The alpha sleeve is gold futures layered on top of miners equity. It earns most in falling-real-yield or policy-stress tapes, but roll and leverage can drag in hostile rate environments.'
       ),
     },
   },
@@ -305,7 +305,7 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
   caos: {
     alpha: {
       tooltip: alphaEfficiencyUnstackedTooltip(
-        'CAOS is a tail-risk and convexity sleeve: options and volatility-linked positioning designed to pay in crash regimes rather than grind equity-like returns.'
+        'CAOS is a tail-risk and convexity sleeve: options and volatility-linked positioning designed to pay in crash environments rather than grind equity-like returns.'
       ),
     },
   },

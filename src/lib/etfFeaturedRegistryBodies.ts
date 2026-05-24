@@ -102,7 +102,7 @@ export const PFMN_PEDIGREE_PARAS_HTML = PICTON_MAHONEY_PEDIGREE_PARAS_HTML
 
 export const PFMN_OUTPERF_PARAS_HTML = [
   'Outperforms most when <strong>dispersion is wide</strong>: clear winners and losers within markets, leadership rotation, and wide spreads between quality and junk at the stock or sector level. In those conditions, the long book earns from outperformers and the short book earns from laggards, independent of broad index direction.',
-  'Underperforms in a <strong>single-factor correlation</strong> regime: a macro shock that moves everything in one direction collapses the spread between longs and shorts. Short squeezes are the other risk, particularly when heavily-shorted names rip in a momentum-driven market regardless of fundamentals.',
+  'Underperforms in a <strong>single-factor correlation</strong> environment: a macro shock that moves everything in one direction collapses the spread between longs and shorts. Short squeezes are the other risk, particularly when heavily-shorted names rip in a momentum-driven market regardless of fundamentals.',
 ]
 
 export const ARB_LEDE_HTML =

@@ -6,7 +6,7 @@ description: >-
   product page, manager, and sponsor. Use when creating ETF write-ups, adding
   tickers, or drafting strategy/pedigree/outperformance copy with a hedge-fund
   and alpha lens. Enforces concise paragraphs, section word budgets, and
-  constructive Outperformance framing (favorable regimes; return-stacked second sleeve).
+  constructive Outperformance framing (favorable environments; return-stacked second sleeve).
   When adding multiple ETFs in one request, follow the batch workflow: verify every
   issuer URL early, then complete the full checklist per ticker—no thin copy on "the rest."
   If listing is young (~under 2 years) and chart proxies cannot be built for every sleeve,
@@ -238,7 +238,7 @@ Do not rely on ticker aggregators alone. Build the **Strategy**, **Manager and I
 - **Hedge-fund-style** or **alternatives** framing when the product is long/short, managed futures, multi-strategy, or explicitly absolute-return
 - **Quant / systematic / factor / trend** language when disclosures describe models, rules, or multi-factor sleeves
 - **AUM**: **fund-level** figures belong in meta (`<ul className={styles.meta}>`) and ETF Facts; **issuer / group-level** total AUM belongs in **Manager and Issuer Pedigree** when you can source it (see §3e)
-- **Outperformance** as *when* the edge tends to appear (regimes, dispersion, trend persistence), not as a promise of results
+- **Outperformance** as *when* the edge tends to appear (environments, dispersion, trend persistence), not as a promise of results
 - **Competitive advantage**: what is hard to replicate—research depth, execution, data, organizational history, cost of replication—not generic "quality management"
 
 ### 3a. Deep dive: the ETF's official page
@@ -271,13 +271,14 @@ The **legal issuer / sponsor** (ETF trust, parent asset manager) is a separate l
 
 Use this for the **issuer** half of **Manager and Issuer Pedigree** (firm pedigree, not just the PM's CV).
 
-### 3d. Outperformance section (regimes, tone, return stacking)
+### 3d. Outperformance section (environments, tone, return stacking)
 
 - **Every `outperfParas` entry must start with exactly `"Outperforms"` (favorable) or `"Underperforms"` (hostile)—no exceptions.** Do not use "Earns when", "Pays when", "Hurts when", "Bleeds in", "Works best when", "Wins when", "Loses when", "Edge shows up when", "The design shines when", or any other synonym. The two allowed verbs are `Outperforms` and `Underperforms`, period.
-- **Lead with favorable regimes**—when the process tends to add value: macro trends, dispersion, factor alignment, carry, curve shape, crisis correlation, etc. This section answers **"when does the edge show up?"**, not **"here is why you should be afraid."**
-- **Do not** default to ending on a purely negative paragraph (risks, melt-ups, when it fails). Prospectus covers downside; here, keep the **last paragraph constructive**—reinforce **when conditions are good** for the strategy, or summarize the positive regime in one tight beat. Risks belong in **Strategy** or filings, not as the mandatory emotional closer.
+- **Lead with favorable environments**—when the process tends to add value: macro trends, dispersion, factor alignment, carry, curve shape, crisis correlation, etc. This section answers **"when does the edge show up?"**, not **"here is why you should be afraid."**
+- **Use the 5 canonical environment names** when describing market environments in outperformance copy. The site defines five environments — growth, inflation, recession, choppy/sideways, deflation — each anchored to a specific ETF in the 5:4:3:2:1 portfolio (RSST, GDE, RSSB, CLSE, ZROZ respectively). When the ETF's edge aligns with one of these environments, name it: "growth environment", "choppy/sideways environment", etc. Environment names are lowercase mid-sentence; capitalize only at the start of a sentence or in a heading.
+- **Do not** default to ending on a purely negative paragraph (risks, melt-ups, when it fails). Prospectus covers downside; here, keep the **last paragraph constructive**—reinforce **when conditions are good** for the strategy, or summarize the positive environment in one tight beat. Risks belong in **Strategy** or filings, not as the mandatory emotional closer.
 - **Return-stacked** funds (first sleeve ≈ benchmark beta, e.g. S&P 500 + a second sleeve): the **first sleeve** is the **beta** anchor; **incremental edge** vs. that benchmark typically comes from the **second sleeve**. Center **Outperformance** on **market conditions where the second sleeve shines** (e.g. managed futures: persistent macro trends, stress divergence; futures yield: favorable roll/carry, cross-asset setups). Name that split explicitly when it clarifies the story.
-- **Single-strategy / non-stacked** funds (e.g. long/short equity only): focus on regimes favorable to **both** books or the core alpha sleeve (dispersion, selection, factor spreads)—still avoid a **negative-only** final paragraph unless the user asks for balanced risk language.
+- **Single-strategy / non-stacked** funds (e.g. long/short equity only): focus on environments favorable to **both** books or the core alpha sleeve (dispersion, selection, factor spreads)—still avoid a **negative-only** final paragraph unless the user asks for balanced risk language.
 
 ### 3e. Issuer (group) AUM in pedigree — when findable
 
@@ -316,7 +317,7 @@ When the write-up is a registry row (`US_ETF_DYNAMIC_REGISTRY` / `CA_ETF_DYNAMIC
 - **`lede`:** One clear thesis (respect §4 word budget when rendered).
 - **`strategyParas`:** Typically **two** strings—mechanics, sleeves, leverage/rebalance, risks, what to read in the prospectus—mirroring **Strategy** depth.
 - **`pedigreeParas`:** Prefer **`ped(p1, p2)`** with **two** substantive paragraphs (manager/process + issuer scale or boutique honesty per §3e). Do **not** append a redundant "verify holdings / educational only" footer; shared legal and educational notes belong in **`<EtfPageDisclaimers />`** on the page template.
-- **`outperfParas`:** **Two** strings following §3d (favorable regimes; product-specific; closing paragraph not purely negative). Do **not** rely on generic `outf()`-style boilerplate.
+- **`outperfParas`:** **Two** strings following §3d (favorable environments; product-specific; closing paragraph not purely negative). Do **not** rely on generic `outf()`-style boilerplate.
 - **`inception` / `mer` / `aum`:** Use **ETF Facts / prospectus** when stating numbers; use `—` or "see ETF Facts" if unknown—**do not invent**.
 - **`addedToSite` (required):** ISO date (`YYYY-MM-DD`) when this write-up first goes live on alphastacking.co. Set it to **today's date** (`date +%F`) on the new registry row. The `/updates` (US) and `/ca/updates` (CA) pages are derived from this field via `src/lib/updatesFeed.ts`—**do not** edit the updates page or feed module when adding an ETF; setting `addedToSite` is the entire integration. Hand-authored `page.tsx` ETFs (rare; `hfgm`, `rssy`) **also** have a registry row in `etfDynamicRegistry.ts`—set `addedToSite` there.
 - **MER + performance fee:** When the fund charges a **performance fee** on top of management, set registry `mer` to **`<management>% + perf fee`** (e.g. `0.85% + perf fee`, `0% + perf fee`). Spell out hurdles, crystallization, and "see prospectus" detail in **Strategy** / pedigree / ETF Facts notes—not in the meta line (keeps the stat row scannable and matches `parseMerAnnual` picking the first `x%`).
@@ -374,14 +375,14 @@ Deep research is **not** an excuse for long copy on the page. Prefer density ove
 - [ ] Chart: getter + API branch + `EtfChartPanel` type + `chartCurrency` if non-USD (see HDGE)
 - [ ] **Portfolio proxies:** If this ticker (or `yahooSymbol`) appears in **`PresetPortfolioChart`** / synthetic preset copy, **`portfolioProxyEtfNav.ts`** is updated per §2b (hand slug, registry parity, or **`OFFICIAL_ETF_HOME`**; drop official-only row when an on-site page exists)
 - [ ] **§2c · Short history + no proxy:** If inception is **under ~2 years** and **`resolveChartProxyLegs`** is still empty or a sleeve is **unmapped**, you **asked the user** for proxy Yahoo symbols (or an explicit decision to defer)—per §2c "Young listing — ask when you cannot proxy"
-- [ ] Copy reflects deep reads of issuer ETF page, manager, and sponsor; regime/outperformance tied to strategy
+- [ ] Copy reflects deep reads of issuer ETF page, manager, and sponsor; environment/outperformance tied to strategy
 - [ ] **Dynamic registry (`etfDynamicRegistry.ts`):** `officialUrl` is a **verified, fund-specific** issuer/sponsor product page (or clearly labeled SEC/prospectus fallback per §3f)—**not** a generic aggregator default; `officialLabel` names the product/destination clearly
 - [ ] **Dynamic registry:** `lede` + two **`strategyParas`** + **`ped(...)`** (two pedigree paragraphs) + two **`outperfParas`** match MATE-level depth (§3f); **HTML only** for emphasis (`<strong>`), never Markdown `**` (§3f "HTML copy")
 - [ ] **Stacked sleeves:** add / update `src/lib/etfStackExposureBySlug.ts` with `components` (each: `pct`, `bucket`, **`assetClass`** — `equity` vs non-equity sets **capital vs alpha** lines and notionals) plus benchmark fields (`equityCoreBenchmarkSymbol` / blend when needed, `coreBenchmarkSymbol` / blend for non-equity-only funds) so grading does not use legacy inference
 - [ ] **Similar ETFs (§2d):** new slug has **`equityTags` / `alphaTags`** in `etfSimilarityTags.ts` for the correct map (US vs CA); sleeve-derived tags when **`ETF_STACK_EXPOSURE_BY_SLUG`** exists; no hard-coded peer lists in route files
 - [ ] **Efficiency score (§2e):** slug has an entry in `US_ETF_DYNAMIC_EFFICIENCY` or `CA_ETF_DYNAMIC_EFFICIENCY`; correct tooltip helper per sleeve type; new launches use `insufficientHistoryTooltip`; **no curly/smart quotes** used as string delimiters
 - [ ] **Pedigree** includes **issuer / group-level AUM** when findable (source + period); if not findable, states boutique / undisclosed scale (§3e). Dynamic pages: `ped(issuer, groupAum?)` or equivalent in custom `pedigreeParas`
-- [ ] **Outperformance** emphasizes favorable regimes; closing paragraph is not purely negative; return-stacked pages stress the **second sleeve** when the first tracks the benchmark (§3d)
+- [ ] **Outperformance** emphasizes favorable environments; closing paragraph is not purely negative; return-stacked pages stress the **second sleeve** when the first tracks the benchmark (§3d)
 - [ ] Lede and each body `<p>` respect word budgets (§4); no paragraph runs past **100 words**
 - [ ] Every `</strong>` → word boundary uses **`</strong>{' '}`** (or one-line / single-`<strong>` phrase); spot-check for smushes like "yieldstack" (see §4)
 - [ ] **`addedToSite`** set to **today** (`YYYY-MM-DD`, from `date +%F`) on every new registry row; spot-check `/updates` (and `/ca/updates` for CA ETFs) shows the new entry under today's date. **Do not** hand-edit `UpdatesPage.tsx` or `updatesFeed.ts`—the feed reads `addedToSite` automatically.

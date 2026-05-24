@@ -40,7 +40,7 @@ export const ETF_CATEGORY_ROWS = [
     id: 'global-macro',
     title: 'Global macro',
     subtitle:
-      'Funds that take positions across currencies, interest rates, equities, and commodities based on macroeconomic themes and regime analysis.',
+      'Funds that take positions across currencies, interest rates, equities, and commodities based on macroeconomic themes and environment analysis.',
   },
   {
     id: 'arbitrage',

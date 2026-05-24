@@ -35,6 +35,7 @@ export function presetWeights(p: PresetDefinition): number[] {
 }
 
 // -------------------- Preset IDs --------------------
+export const US_5_4_3_2_1_PRESET_ID = 'us-5-4-3-2-1-v6'
 export const US_UPRO_PREMIA_STACK_PRESET_ID = 'us-upro-premia-stack-v1'
 export const US_INTL_PRESET_ID = 'us-intl-v2'
 export const US_ADVANCED_PRESET_ID = 'us-advanced-v1'
@@ -138,6 +139,15 @@ export const caAlphaStackHoldings: PresetHolding[] = [
   { ticker: 'PFMN.TO', weightPct: 10, beta: 0.12, blurb: 'Market-neutral long/short equity.' },
 ]
 
+/** 35 / 25 / 20 / 15 / 5 quarterly-rebalance: one holding per macro environment. Weighted beta ~0.83. */
+export const us54321Holdings: PresetHolding[] = [
+  { ticker: 'RSST', weightPct: 35, beta: 1.0, blurb: 'Return-stacked 100% S&P 500 + 100% managed futures (Growth environment engine).' },
+  { ticker: 'GDE', weightPct: 25, beta: 1.02, blurb: 'Capital-efficient US equity plus gold futures overlay (Inflation hedge).' },
+  { ticker: 'RSSB', weightPct: 20, beta: 0.80, blurb: 'Return-stacked global stocks + US Treasury bond overlay (Recession ballast).' },
+  { ticker: 'CLSE', weightPct: 15, beta: 0.60, blurb: 'US long/short equity (choppy/sideways environment sleeve).' },
+  { ticker: 'ZROZ', weightPct: 5, beta: -0.35, blurb: '25+ year zero-coupon Treasuries — extreme duration hyper-ballast (deflation spike).' },
+]
+
 export const caSsoDglmRgbmArbHoldings: PresetHolding[] = [
   { ticker: 'SSO', weightPct: 35, beta: 2, blurb: '2x daily S&P 500 exposure for high-conviction U.S. beta.' },
   { ticker: 'RSSY', weightPct: 10, beta: 1, blurb: 'Return-stacked equity + managed futures sleeve.' },
@@ -149,6 +159,14 @@ export const caSsoDglmRgbmArbHoldings: PresetHolding[] = [
 
 // -------------------- Registry --------------------
 export const PRESET_DEFINITIONS: PresetDefinition[] = [
+  {
+    id: US_5_4_3_2_1_PRESET_ID,
+    region: 'us',
+    cadDenominated: false,
+    rebalanceSchedule: 'quarterly',
+    holdings: us54321Holdings,
+    extraCacheKeyTags: ['quarterly-rebal', 'rsst-gde-rssb-clse-zroz-v6', 'rssb-vt-agg-proxy-v1', 'rsst-spy-mf-proxy-v1'],
+  },
   {
     id: US_UPRO_PREMIA_STACK_PRESET_ID,
     region: 'us',

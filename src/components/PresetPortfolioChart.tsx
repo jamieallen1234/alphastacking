@@ -144,19 +144,6 @@ function SyntheticModelingLine({
         </p>
       )
     }
-    case 'mate_rsst':
-      return (
-        <p key={`mate-${m.firstRealNyDay}`} className={styles.disclaimerDetail}>
-          <ProxyLink ticker="MATE" hubBase={hubBase}>
-            MATE
-          </ProxyLink>
-          : before {when}, MATE is proxied by{' '}
-          <ProxyLink ticker="RSST" hubBase={hubBase}>
-            RSST
-          </ProxyLink>{' '}
-          daily returns.
-        </p>
-      )
     case 'ialt_flsp_dbmf':
       return (
         <p key={`ialt-${m.firstRealNyDay}`} className={styles.disclaimerDetail}>

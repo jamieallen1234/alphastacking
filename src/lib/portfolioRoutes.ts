@@ -94,6 +94,15 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     description: '3x S&P 500 core paired with systematic long/short equity and EM currency carry premia.',
     addedAt: '2026-05-23',
   },
+  {
+    slug: '5-4-3-2-1',
+    region: 'us',
+    kind: 'live',
+    hubSection: 'annual-rebalance',
+    title: '5:4:3:2:1 Portfolio',
+    description: 'Return-stacked all-weather model with one holding mapped to each of five macro environments.',
+    addedAt: '2026-05-23',
+  },
 ]
 
 /** Curated routes for Canada (`/ca/portfolios/...`) */

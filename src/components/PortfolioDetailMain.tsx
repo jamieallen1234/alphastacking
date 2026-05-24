@@ -17,6 +17,7 @@ import {
   CA_INTL_PRESET_ID,
   CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
   CA_USSL_QQQL_HDGE_PRESET_ID,
+  US_5_4_3_2_1_PRESET_ID,
   US_ADVANCED_PRESET_ID,
   US_ALPHA_STACK_PRESET_ID,
   US_CORE_BH_PRESET_ID,
@@ -48,6 +49,7 @@ const US_SLUG_TO_PRESET_ID: Record<string, string> = {
   'us-gde-clse-blend': US_GDE_CLSE_BLEND_PRESET_ID,
   'alpha-stack': US_ALPHA_STACK_PRESET_ID,
   'upro-premia-stack': US_UPRO_PREMIA_STACK_PRESET_ID,
+  '5-4-3-2-1': US_5_4_3_2_1_PRESET_ID,
 }
 
 const CA_SLUG_TO_PRESET_ID: Record<string, string> = {

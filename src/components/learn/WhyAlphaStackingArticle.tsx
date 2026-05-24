@@ -108,7 +108,7 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
         </h2>
         <p className={styles.body}>
           All-weather portfolios (Dalio&apos;s original and its derivatives) hold equities, long bonds,
-          gold, and commodities weighted so something works in every economic regime. You do not need to
+          gold, and commodities weighted so something works in every economic environment. You do not need to
           predict the environment.
         </p>
         <p className={styles.body}>
@@ -137,7 +137,7 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           the drawdown you had to survive to participate in the recovery.
         </p>
         <p className={styles.body}>
-          LETFs also have daily-reset mechanics that create volatility drag in choppy markets. A fund that
+          LETFs also have daily-reset mechanics that create volatility drag in the choppy/sideways environment. A fund that
           falls 10% then rises 10% ends about 1% below where it started. They work best in sustained,
           low-volatility uptrends, and require conviction you won&apos;t sell during a major drawdown.
         </p>

@@ -85,7 +85,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ),
     outperfParas: [
       'Outperforms when <strong>both assets trend with supportive volatility</strong>: gold catching a real-rate or stress bid while crypto retains speculative liquidity often produces the cleanest dual-beta tape for a leveraged long wrapper.',
-      'Underperforms in sharp reversals, <strong>correlated selloffs</strong> across metals and tokens, or funding spikes that invert futures curves are the natural adversaries, favorable windows are trending, not chop-filled, regimes where you can tolerate daily reset behavior.',
+      'Underperforms in sharp reversals, <strong>correlated selloffs</strong> across metals and tokens, or funding spikes that invert futures curves are the natural adversaries, favorable windows are trending, not chop-filled, environments where you can tolerate daily reset behavior.',
     ],
     officialUrl:
       'https://rareviewcapital.com/2x-bull-cryptocurrency-precious-metals-etf/',
@@ -368,7 +368,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pedigreeParas: TIDAL_RETURN_STACKED_PEDIGREE_PARAS,
     outperfParas: [
       'Outperforms when equities grind higher while managed futures harvest <strong>directional trends</strong> elsewhere, rates breaking one way, dollar trends, or commodity curves, so the second sleeve diversifies equity path risk instead of doubling it.',
-      'Underperforms in <strong>fast mean-reversion</strong> or liquidity shocks that invert signals; favorable tape is persistent macro trends with orderly futures markets, not every quarter where stocks and bonds both sell off in sync.',
+      'Underperforms in <strong>fast mean-reversion</strong> or liquidity shocks that invert signals. Favorable: <strong>growth</strong> environment (persistent macro trends across rates, FX, and commodities with orderly futures markets). Hostile: choppy tape where equity and futures signals reverse together.',
     ],
     officialUrl:
       'https://www.returnstackedetfs.com/rsst-return-stacked-us-stocks-managed-futures/',
@@ -479,7 +479,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pedigreeParas: WISDOMTREE_PEDIGREE_PARAS,
     outperfParas: [
       'Outperforms when EAFE-style markets rerate faster than U.S. large caps while futures implementation stays cheap, the classic <strong>“international catches up”</strong> window with orderly currency markets.',
-      'Underperforms when <strong>the dollar rips and international disappoints</strong>, and futures sit in contango simultaneously; this is still equity risk stacked across regions, not a hedge fund, favorable regimes are broad non-U.S. leadership, not every U.S. drawdown.',
+      'Underperforms when <strong>the dollar rips and international disappoints</strong>, and futures sit in contango simultaneously; this is still equity risk stacked across regions, not a hedge fund, favorable environments are broad non-U.S. leadership, not every U.S. drawdown.',
     ],
     officialUrl:
       'https://www.wisdomtree.com/investments/etfs/capital-efficient/ntsd',
@@ -517,8 +517,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     pedigreeParas: WISDOMTREE_PEDIGREE_PARAS,
     outperfParas: [
-      'Outperforms when equities trend but investors want <strong>insurance against real-rate spikes</strong>: gold often pays on the margin when the Fed is perceived as behind the curve or geopolitical risk reprices safe havens.',
-      'Underperforms when <strong>real yields rise</strong> and risk appetite stays firm: gold grinds lower in those windows, and stacking doesn’t create diversification where none exists.',
+      'Outperforms when equities trend but investors want <strong>insurance against real-rate spikes</strong>: gold often pays on the margin in the <strong>inflation</strong> environment, when the Fed is perceived as behind the curve or geopolitical risk reprices safe havens.',
+      'Underperforms when <strong>real yields rise</strong> and risk appetite stays firm: gold grinds lower in those windows, and stacking doesn\'t create diversification where none exists. Favorable: <strong>inflation</strong> environment (real yields falling or geopolitical safe-haven demand). Hostile: real yields rising with firm risk appetite.',
     ],
     officialUrl:
       'https://www.wisdomtree.com/investments/etfs/capital-efficient/gde',
@@ -582,7 +582,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     pedigreeParas: WISDOMTREE_PEDIGREE_PARAS,
     outperfParas: [
-      'Outperforms when <strong>gold and miners rally together</strong>: typically in falling-real-yield or policy-uncertainty regimes where bullion strength feeds earnings leverage in miners. In those windows, the futures sleeve can add convex upside to equity participation.',
+      'Outperforms when <strong>gold and miners rally together</strong>: typically in falling-real-yield or policy-uncertainty environments where bullion strength feeds earnings leverage in miners. In those windows, the futures sleeve can add convex upside to equity participation.',
       'Underperforms in rising <strong>real yields</strong>, stronger dollar trends, or equity-led selloffs where <strong>miners de-rate faster than bullion</strong>.',
     ],
     officialUrl: 'https://www.wisdomtree.com/investments/etfs/capital-efficient/gdmn',
@@ -607,7 +607,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     lede: 'FOXY harvests two systematic currency return premia in one actively managed wrapper: a <strong>long/short emerging market carry trade</strong> (long high-yield EM currencies, short low-yield) and a <strong>G10 mean-reversion strategy</strong> (developed-market currencies faded at historical extremes), implemented via forwards and futures over a T-bill collateral base.',
     strategyParas: [
       'The EM sleeve runs a carry trade across eight currency pairs vs USD: Simplify goes long the four with the highest yield differentials and shorts the four with the lowest, sizing each position by realized volatility to limit single-currency concentration risk. The G10 sleeve takes mean-reversion positions across ten developed-market currencies (AUD, CAD, EUR, JPY, NZD, NOK, GBP, SEK, CHF, USD), fading extended deviations from historical norms with technical signals rather than macro forecasts. T-bills and money market instruments (~74% of NAV) serve as collateral and add short-duration carry on the cash book.',
-      'The two-engine design targets genuine decorrelation from equities and bonds. EM carry earns its premium in risk-on, stable-rate environments; G10 mean reversion is more regime-agnostic, engaging when developed currencies push to historically extreme levels. Portfolio leverage is calibrated by volatility metrics applied at the position, sleeve, and portfolio level, which compresses notional in dislocated tape.',
+      'The two-engine design targets genuine decorrelation from equities and bonds. EM carry earns its premium in risk-on, stable-rate environments; G10 mean reversion is more environment-agnostic, engaging when developed currencies push to historically extreme levels. Portfolio leverage is calibrated by volatility metrics applied at the position, sleeve, and portfolio level, which compresses notional in dislocated tape.',
     ],
     pedigreeParas: ped(
       `FOXY is managed by the Simplify Asset Management investment team: David Berns, PhD (CIO) and Ken Miller (Portfolio Manager) co-managed the fund from its February 2025 launch; Chris Getter (Emerging Markets Strategist) was added in October 2025 to deepen the EM currency capability. Simplify manages approximately $6.1B in ETF assets, built primarily on derivatives-centric structures across volatility, convexity, and systematic strategies.`,
@@ -648,7 +648,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ),
     outperfParas: [
       'Outperforms when <strong>style and cross-asset spreads are wide</strong> that systematic long/short books earn after transaction costs, think post-shock mean reversion, leadership handoffs between growth and value, or rates markets that trend instead of chop.',
-      'Underperforms when <strong>factors whipsaw</strong> and financing tightens. favorable regimes are dispersion-rich, not low-vol grind higher where every sleeve pays a vig to stay hedged.',
+      'Underperforms when <strong>factors whipsaw</strong> and financing tightens. favorable environments are dispersion-rich, not low-vol grind higher where every sleeve pays a vig to stay hedged.',
     ],
     officialUrl:
       'https://www.franklintempleton.com/investments/options/exchange-traded-funds/products/28388/SINGLCLASS/franklin-liberty-systematic-style-premia-etf/FLSP',
@@ -682,7 +682,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ),
     outperfParas: [
       'Outperforms when <strong>security-level dispersion</strong>, cross-country valuation gaps, or macro inflection points matter more than owning a static 60/40 mix, market-neutral books can earn when pair trades work, strategic premia can monetize macro tilts, and the dynamic macro sleeve can add convexity when trends break.',
-      'Underperforms when <strong>every sleeve faces hostile conditions at once</strong>: tight liquidity, correlated selloffs, or sharp reversals that whipsaw models), multi-strategy fees and implementation drag show up quickly, favorable regimes are those where at least one pillar is clearly “open for business,” not when all markets grind in sync.',
+      'Underperforms when <strong>every sleeve faces hostile conditions at once</strong>: tight liquidity, correlated selloffs, or sharp reversals that whipsaw models), multi-strategy fees and implementation drag show up quickly, favorable environments are those where at least one pillar is clearly “open for business,” not when all markets grind in sync.',
     ],
     officialUrl: 'https://www.ishares.com/us/products/346898/ishares-systematic-alternatives-active-etf',
     officialLabel: 'iShares (IALT)',
@@ -710,8 +710,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Theta bleed is the product: you are renting crash convexity. If implied volatility collapses after you buy protection, NAV can fall even when stocks are flat—size the sleeve as insurance, not core beta.',
     ],
     pedigreeParas: ped(
-      `Alpha Architect built its brand publishing factor research and transparent rules before launching ETFs; CAOS inherits that culture—prospectus language tends to be precise about what is systematic versus manager discretion in vol regimes.`,
-      `Firm AUM is boutique versus BlackRock, but the sponsor’s audience is advisor-quant literate—expect frequent methodology blogs and updates when option markets regime-shift, which matters more for tail products than for vanilla indexers.`,
+      `Alpha Architect built its brand publishing factor research and transparent rules before launching ETFs; CAOS inherits that culture—prospectus language tends to be precise about what is systematic versus manager discretion in vol environments.`,
+      `Firm AUM is boutique versus BlackRock, but the sponsor’s audience is advisor-quant literate—expect frequent methodology blogs and updates when option markets environment-shift, which matters more for tail products than for vanilla indexers.`,
     ),
     outperfParas: [
       'Outperforms when realized volatility and gap risk exceed what option prices implied: sharp drawdowns, correlation spikes, or liquidity events where <strong>convexity pays multiples</strong> of the carry burned in calm quarters.',
@@ -1149,8 +1149,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       `Listed AUM is boutique versus mega issuers—expect wider median bid/ask and more days away from NAV than SPY-class funds—so implementation (limit orders, patience around rebalances) matters as much as the underlying stock calls.`,
     ),
     outperfParas: [
-      'Outperforms when <strong>stocks diverge</strong> from each other, when good companies beat bad ones regardless of what the index does. Active stock dispersion environments, where earnings quality and balance-sheet differences drive divergence between longs and shorts, are the favorable tape. CLSE can compound in flat or sideways equity markets that kill pure index strategies.',
-      'Underperforms when <strong>everything correlates to 1.0</strong>: a sharp macro-driven risk-off collapses the spread between long and short legs, and a short squeeze can hurt the short book independent of fundamentals. It also needs time, months or years for stock calls to play out, and underperforms in momentum-driven markets where cheap valuation is irrelevant.',
+      'Outperforms when <strong>stocks diverge</strong> from each other, when good companies beat bad ones regardless of what the index does. Active stock dispersion environments, where earnings quality and balance-sheet differences drive divergence between longs and shorts, are the favorable tape. CLSE can compound in the <strong>choppy/sideways</strong> environment, in flat or directionless markets that kill pure index strategies.',
+      'Underperforms when <strong>everything correlates to 1.0</strong>: a sharp macro-driven risk-off collapses the spread between long and short legs, and a short squeeze can hurt the short book independent of fundamentals. It also needs time, months or years for stock calls to play out, and underperforms in momentum-driven markets where cheap valuation is irrelevant. Favorable: <strong>choppy/sideways</strong> environment (wide stock dispersion, sideways or directionless index). Hostile: synchronized macro risk-off.',
     ],
     officialUrl: 'https://www.investcip.com/etfstrategies.html',
     officialLabel: 'Convergence Investment Partners (CLSE)',
@@ -1243,7 +1243,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'ASGM packages AlphaSimplex’s research-driven global macro sleeve inside Virtus’s ETF shelf: a strategic equity sleeve plus systematic futures across rates, currencies, and commodities, so macro risk can rotate without loading everything on a single equity factor.',
     strategyParas: [
       'ASGM uses adaptive risk budgeting layered on trend and macro signals. Gross exposure expands and contracts with volatility targeting, so headline beta in any given month can look very different from a 60/40 proxy. Futures implementation, roll timing, and margin are central to understanding sleeve interaction.',
-      'Because the process is model-driven, the failure mode is regime shift: models optimized on long histories can lag abrupt policy reversals or liquidity shocks. Stress tests against 2020 and 2022-style months matter more than a single backtested decade.',
+      'Because the process is model-driven, the failure mode is environment shift: models optimized on long histories can lag abrupt policy reversals or liquidity shocks. Stress tests against 2020 and 2022-style months matter more than a single backtested decade.',
     ],
     pedigreeParas: ped(
       `AlphaSimplex spun out of MIT-linked quantitative finance (Andrew Lo’s research ecosystem) before becoming Virtus’s systematic macro affiliate—its edge is published methodology, peer-reviewed roots, and institutional risk systems rather than discretionary macro “stories.”`,
@@ -1305,7 +1305,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     lede:
       'ATTR is an actively managed tail-risk sleeve that seeks U.S. large-cap participation while mitigating severe drawdowns through options structures and tactical overlays.',
     strategyParas: [
-      'ATTR blends equity index exposure with options on large-cap benchmarks (S&P 500-linked structures), aiming to retain upside participation while dampening left-tail outcomes in stress regimes.',
+      'ATTR blends equity index exposure with options on large-cap benchmarks (S&P 500-linked structures), aiming to retain upside participation while dampening left-tail outcomes in stress environments.',
       'The trade-off is explicit carry cost: hedging and convexity overlays can lag in quiet bull markets, and implementation (strike selection, roll timing, collateral use, and ETF-of-ETF sleeves such as tail-risk allocations) drives realized outcomes versus a plain beta benchmark.',
     ],
     pedigreeParas: ped(
@@ -1352,7 +1352,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       },
       alpha: {
         tooltip: alphaEfficiencyStackedTooltip(
-          "MATE's alpha sleeve is approximately 100% trend-following managed futures, spanning equities, rates, currencies, and commodities. It's designed to diversify the equity core across macro regimes."
+          "MATE's alpha sleeve is approximately 100% trend-following managed futures, spanning equities, rates, currencies, and commodities. It's designed to diversify the equity core across macro environments."
         ),
       },
       footnotes: [
@@ -1464,7 +1464,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     pedigreeParas: TIDAL_RETURN_STACKED_PEDIGREE_PARAS,
     outperfParas: [
-      'Outperforms when global equities trend while Treasuries provide positive carry or convex diversification, especially in growth-slowdown regimes where duration offsets part of equity path risk.',
+      'Outperforms when global equities trend while Treasuries provide positive carry or convex diversification, especially in growth-slowdown environments where duration offsets part of equity path risk.',
       'Underperforms when <strong>stocks and long-duration bonds sell off together</strong> under inflation shocks or repricing in real yields, because both sleeves can be pressured at the same time.',
     ],
     officialUrl: 'https://www.returnstackedetfs.com/return-stacked-global-stocks-bonds/',
@@ -1503,11 +1503,11 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'GDT pairs a TIPS core with a gold futures overlay in a capital-efficient wrapper designed for inflation-sensitive diversification.',
     strategyParas: [
       'The equity-like risk in this fund is minimal; the core sleeve is inflation-linked Treasuries while gold is added through futures. Positioning therefore reflects both real-rate duration and commodity futures dynamics.',
-      'This profile can differ meaningfully from holding bullion plus a short-duration bond ETF because futures roll, collateral, and duration path effects influence returns in different macro regimes.',
+      'This profile can differ meaningfully from holding bullion plus a short-duration bond ETF because futures roll, collateral, and duration path effects influence returns in different macro environments.',
     ],
     pedigreeParas: WISDOMTREE_PEDIGREE_PARAS,
     outperfParas: [
-      'Outperforms when inflation expectations rise or real yields fall enough that gold and TIPS both contribute, producing a cleaner inflation-hedge regime than nominal-duration exposure alone.',
+      'Outperforms when inflation expectations rise or real yields fall enough that gold and TIPS both contribute, producing a cleaner inflation-hedge environment than nominal-duration exposure alone.',
       'Underperforms when <strong>real yields rise sharply</strong> and gold weakens at the same time, which can pressure both sleeves despite the diversification intent.',
     ],
     officialUrl: 'https://www.wisdomtree.com/investments/etfs/capital-efficient/gdt',
@@ -1551,7 +1551,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pedigreeParas: WISDOMTREE_PEDIGREE_PARAS,
     outperfParas: [
       'Outperforms when U.S. equities rise while Treasury duration is neutral-to-helpful, or when growth shocks lift bonds enough to partially cushion equity volatility.',
-      'Underperforms when <strong>equities and duration lose together</strong> in inflationary repricing regimes where both sleeves face drawdown pressure.',
+      'Underperforms when <strong>equities and duration lose together</strong> in inflationary repricing environments where both sleeves face drawdown pressure.',
     ],
     officialUrl: 'https://www.wisdomtree.com/investments/etfs/capital-efficient/ntsx',
     officialLabel: 'WisdomTree (NTSX)',
@@ -1632,7 +1632,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'NTSE applies the efficient-core model to emerging-markets equities, pairing EM beta with a Treasury futures sleeve in one fund.',
     strategyParas: [
       'The strategy keeps an EM equity core and overlays Treasury duration via futures, aiming to preserve growth participation while adding a rates-sensitive diversifier.',
-      'EM equity path, USD regime changes, and Treasury term-structure moves can all drive outcomes; this is best viewed as a packaged two-sleeve allocation rather than a single-factor equity ETF.',
+      'EM equity path, USD environment changes, and Treasury term-structure moves can all drive outcomes; this is best viewed as a packaged two-sleeve allocation rather than a single-factor equity ETF.',
     ],
     pedigreeParas: WISDOMTREE_PEDIGREE_PARAS,
     outperfParas: [
@@ -1837,7 +1837,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'HOLD layers a U.S. equity sleeve with a trend-following managed-futures sleeve in one ETF to keep beta participation while adding diversifying macro exposure.',
     strategyParas: [
       'The structure combines broad equity exposure and systematic futures positioning, so investors get a return-stacked profile rather than a static 60/40 allocation. Futures sleeves can be long or short across major contracts as trends evolve.',
-      'Realized outcomes depend on trend persistence, futures roll/carry, and equity regime. In fast mean-reversion periods, the managed-futures overlay can lag or offset equity direction unexpectedly.',
+      'Realized outcomes depend on trend persistence, futures roll/carry, and equity environment. In fast mean-reversion periods, the managed-futures overlay can lag or offset equity direction unexpectedly.',
     ],
     pedigreeParas: ped(
       `Harbor Capital operates a growing active ETF platform and uses specialist sub-advisers for targeted strategies; HOLD is sub-advised by PanAgora, a quantitative manager with long institutional track records.`,
@@ -2201,7 +2201,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       `The portfolio manager is Geode Capital Management, the systematic asset manager spun out of Fidelity in 2001 that now manages $1.9 trillion in AUM (March 2026) across equity indices, options, and systematic strategies. Geode's mandate here is efficient index implementation, not discretionary stock selection.`,
     ),
     outperfParas: [
-      'Outperforms when <strong>price trends persist</strong> across U.S. equity sectors: strong-momentum names keep outrunning laggards through earnings cycles and macro follow-through, particularly in trending tech or energy leadership regimes.',
+      'Outperforms when <strong>price trends persist</strong> across U.S. equity sectors: strong-momentum names keep outrunning laggards through earnings cycles and macro follow-through, particularly in trending tech or energy leadership environments.',
       'Underperforms in <strong>sharp reversals or factor rotations</strong> where last quarter\'s leaders become this quarter\'s crowded exits; favorable tape is one-directional sector leadership, not the abrupt rotation where momentum\'s exposure becomes its biggest liability.',
     ],
     officialUrl: 'https://www.fidelity.ca/en/products/etfs/fcmo/',
@@ -2261,7 +2261,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     lede:
       'ATSX runs a quantitative 150/50 Canadian long/short sleeve vs. the S&P/TSX 60, with directional hedge-fund-style exposure in an ETF.',
     strategyParas: [
-      'The fund runs about 150% long and 50% short versus S&P/TSX 60 names. Systematic signals pick leaders and laggards inside the benchmark, so factor tilts can cluster in banks, energy, and rails when the model chases the same macro regime.',
+      'The fund runs about 150% long and 50% short versus S&P/TSX 60 names. Systematic signals pick leaders and laggards inside the benchmark, so factor tilts can cluster in banks, energy, and rails when the model chases the same macro environment.',
       'Leverage magnifies both alpha and model error; verify current gross/net in ETF Facts because a 150/50 template still carries meaningful equity beta through the long sleeve. *Fee note: 0% management fee; performance fee is 50% of outperformance above the S&P/TSX 60 index.',
     ],
     pedigreeParas: fb.ACCELERATE_FINANCIAL_TECHNOLOGIES_PEDIGREE_PARAS_HTML,
@@ -2427,7 +2427,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     pedigreeParas: fb.GLOBAL_X_INVESTMENTS_CANADA_PEDIGREE_PARAS_HTML,
     outperfParas: [
-      'Outperforms in <strong>persistent uptrends with contained volatility</strong>, when daily compounding can reinforce directional gains and 2x exposure captures strong beta regimes.',
+      'Outperforms in <strong>persistent uptrends with contained volatility</strong>, when daily compounding can reinforce directional gains and 2x exposure captures strong beta environments.',
       'Underperforms in <strong>choppy, high-volatility ranges</strong> because path dependence and volatility drag accumulate quickly.',
     ],
     officialUrl: 'https://www.globalx.ca/product/HSU',
@@ -2454,7 +2454,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'HQU is a daily-reset 2x Nasdaq-100 exposure sleeve in Canada, designed for tactical growth-beta positioning rather than long-horizon buy-and-hold allocation.',
     strategyParas: [
       'The fund aims for roughly two times the NASDAQ-100 daily return before fees. As with all daily leveraged ETFs, realized multi-day performance depends on sequence of returns, volatility, and rebalance math, not just start-to-end index change.',
-      'Because the index is tech-heavy and duration-sensitive, HQU’s risk profile is tightly linked to rates regime, mega-cap concentration, and momentum persistence. Position sizing and holding period discipline matter more than ticker selection alone.',
+      'Because the index is tech-heavy and duration-sensitive, HQU’s risk profile is tightly linked to rates environment, mega-cap concentration, and momentum persistence. Position sizing and holding period discipline matter more than ticker selection alone.',
     ],
     pedigreeParas: fb.GLOBAL_X_INVESTMENTS_CANADA_PEDIGREE_PARAS_HTML,
     outperfParas: [
@@ -2606,7 +2606,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     aum: '~$105M CAD',
     pageTitle: 'HDGE.TO ETF - Alpha Stacking',
     description:
-      'Accelerate Absolute Return Fund (HDGE.TO): strategy, manager background, and long/short market regime context.',
+      'Accelerate Absolute Return Fund (HDGE.TO): strategy, manager background, and long/short market environment context.',
     contentFormat: 'html',
     lede: fb.HDGE_LEDE_HTML,
     strategyParas: fb.HDGE_STRATEGY_PARAS_HTML,
@@ -2637,7 +2637,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     aum: '~$58M CAD',
     pageTitle: 'PFMN.TO ETF - Alpha Stacking',
     description:
-      'Picton Mahoney Fortified Market Neutral Alternative Fund ETF (PFMN.TO): strategy, Picton pedigree, and regime context.',
+      'Picton Mahoney Fortified Market Neutral Alternative Fund ETF (PFMN.TO): strategy, Picton pedigree, and environment context.',
     contentFormat: 'html',
     lede: fb.PFMN_LEDE_HTML,
     strategyParas: fb.PFMN_STRATEGY_PARAS_HTML,

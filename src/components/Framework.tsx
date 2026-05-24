@@ -9,7 +9,7 @@ const pillars = [
   {
     num: '02',
     title: 'Uncorrelated layers',
-    body: 'Combine sleeves with edges that appear in different conditions — trend, carry, dispersion, security selection — so the portfolio has a path in bull, bear, and choppy tape, not one macro bet.',
+    body: 'Combine sleeves with edges that appear in different conditions — trend, carry, dispersion, security selection — so the portfolio has a path across growth, inflation, recession, choppy/sideways, and deflation environments, not one macro bet.',
   },
   {
     num: '03',
@@ -31,7 +31,7 @@ export default function Framework() {
           futures, long/short, macro, systematic alternatives — using capital efficiency where it
           clears its hurdle. Where return stacking adds one diversifying beta on top of equity, alpha
           stacking asks which sleeves have genuine independent edges, how they interact, and whether
-          the combined book can compound through regimes that each sleeve alone cannot.
+          the combined book can compound through environments that each sleeve alone cannot.
         </p>
       </div>
 

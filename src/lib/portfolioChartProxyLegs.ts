@@ -4,24 +4,50 @@ import {
   type EtfStackExposureConfig,
   type SleeveComponent,
 } from '@/lib/etfStackExposureBySlug'
+import { blendPriceSeries } from '@/lib/syntheticProxyMerge'
+import type { PriceSeries } from '@/lib/yahooFinance'
+
+export type BlendComponent = { symbol: string; weight: number }
+export type BlendSpec = { blend: BlendComponent[] }
+/** A single stack leg: either a ticker symbol (100% leg) or a weighted blend of tickers (one overlay leg). */
+export type ProxyLeg = string | BlendSpec
+export type ProxyDef = {
+  legs: ProxyLeg[]
+  /**
+   * Gross notional % for borrow-drag in buildPreInceptionProductStackMerge.
+   * 200 when building from scratch (e.g. SPY + MF blend).
+   * 100 when the proxy is an existing fund whose borrow cost is already embedded (e.g. RSST for MATE).
+   */
+  grossExposurePct?: number
+}
 
 /**
- * Explicit multi-leg Yahoo symbols for portfolio / builder chart proxies (pre-inception stack merge).
+ * Explicit proxy definitions for portfolio / builder chart (pre-inception stack merge).
  * Manual entries override auto resolution from `ETF_STACK_EXPOSURE_BY_SLUG`.
- * Bitcoin leg: **BITO** if the sleeve/fund is futures-based; **IBIT** for spot / physical / generic “bitcoin” proxy.
+ * A string leg that is itself a key here is a chain proxy: the system extends that ticker's history
+ * first (Phase 1), then uses the extended series as a proxy leg for the outer fund (Phase 2).
  */
-export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, string[]> = {
+export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, ProxyDef> = {
+  /** SPY + (70% DBMF + 30% KMLM) managed-futures blend, back to KMLM's Dec 2020 inception. */
+  RSST: {
+    legs: ['SPY', { blend: [{ symbol: 'DBMF', weight: 0.7 }, { symbol: 'KMLM', weight: 0.3 }] }],
+    grossExposurePct: 200,
+  },
+  /** Chains through RSST: uses extended RSST series; RSST's borrow cost is already embedded. */
+  MATE: { legs: ['RSST'], grossExposurePct: 100 },
   /** Pre-inception: AGG (broad US bonds) + DBMF (managed-futures replication) mirrors RSBT's two-sleeve design. */
-  RSBT: ['AGG', 'DBMF'],
+  RSBT: { legs: ['AGG', 'DBMF'] },
   /** Pre-inception: SPDW (developed world ex-US equity) + DBMF (managed-futures replication) mirrors RSIT's two-sleeve design. */
-  RSIT: ['SPDW', 'DBMF'],
-  BTGD: ['BITO', 'GLD'],
-  OOQB: ['QQQ', 'BITO'],
-  OOSB: ['SPY', 'BITO'],
-  RSSX: ['SPY', 'BITO', 'GLD'],
-  WTIB: ['USO', 'BITO'],
-  /** Pre-listing: similar cash-flow / “cash cows” equity sleeve; extends joint history before VFLO’s inception. */
-  VFLO: ['COWZ'],
+  RSIT: { legs: ['SPDW', 'DBMF'] },
+  /** Pre-inception: VT (global equity) + AGG (US bonds) mirrors RSSB's two-sleeve design. */
+  RSSB: { legs: ['VT', 'AGG'] },
+  BTGD: { legs: ['BITO', 'GLD'] },
+  OOQB: { legs: ['QQQ', 'BITO'] },
+  OOSB: { legs: ['SPY', 'BITO'] },
+  RSSX: { legs: ['SPY', 'BITO', 'GLD'] },
+  WTIB: { legs: ['USO', 'BITO'] },
+  /** Pre-listing: similar cash-flow / "cash cows" equity sleeve; extends joint history before VFLO's inception. */
+  VFLO: { legs: ['COWZ'] },
 }
 
 /** CME-style bitcoin futures exposure → BITO; otherwise spot-style proxy → IBIT (see sleeve `name` in stack map). */
@@ -122,7 +148,7 @@ export function grossExposurePctForSlug(slug: string): number | null {
 }
 
 /**
- * Gross notional % for financing drag: registry sum, else ~100× manual leg count, else 200.
+ * Gross notional % for financing drag: ProxyDef explicit value, then registry sum, then leg count × 100, else 200.
  */
 export function grossExposureForChartProxy(yahooSymbol: string, slug: string | null): number {
   if (slug) {
@@ -130,16 +156,111 @@ export function grossExposureForChartProxy(yahooSymbol: string, slug: string | n
     if (g != null && g > 0) return g
   }
   const manual = CHART_STACK_PRODUCT_PROXY_LEGS[yahooSymbol.trim().toUpperCase()]
-  if (manual?.length) return manual.length * 100
+  if (manual) {
+    if (manual.grossExposurePct != null) return manual.grossExposurePct
+    return manual.legs.length * 100
+  }
   return 200
 }
 
-/** Resolved proxy legs for a Yahoo symbol: manual map overrides auto stack-derived legs. */
-export function resolveChartProxyLegs(yahooSymbol: string): string[] | null {
+/**
+ * All symbols needed for fetching: direct leg symbols plus any chain-proxy descendants (recursive).
+ * E.g. for MATE → ['RSST', 'SPY', 'DBMF', 'KMLM'] (RSST is a chain ticker; its leaves are included).
+ */
+export function collectProxyFetchSymbols(def: ProxyDef): string[] {
+  const syms = new Set<string>()
+  for (const leg of def.legs) {
+    if (typeof leg === 'string') {
+      const u = leg.toUpperCase()
+      syms.add(u)
+      const chainDef = CHART_STACK_PRODUCT_PROXY_LEGS[u]
+      if (chainDef) {
+        for (const s of collectProxyFetchSymbols(chainDef)) syms.add(s)
+      }
+    } else {
+      for (const c of leg.blend) syms.add(c.symbol.toUpperCase())
+    }
+  }
+  return [...syms]
+}
+
+/**
+ * Terminal (leaf) symbols only, no chain-ticker intermediates.
+ * Used for first-trade-date calculation so the binding date is KMLM (Dec 2020), not RSST (Oct 2022).
+ * E.g. for MATE → ['SPY', 'DBMF', 'KMLM']; for RSST → ['SPY', 'DBMF', 'KMLM'].
+ */
+export function collectProxyLeafSymbols(def: ProxyDef): string[] {
+  const syms = new Set<string>()
+  for (const leg of def.legs) {
+    if (typeof leg === 'string') {
+      const u = leg.toUpperCase()
+      const chainDef = CHART_STACK_PRODUCT_PROXY_LEGS[u]
+      if (chainDef) {
+        for (const s of collectProxyLeafSymbols(chainDef)) syms.add(s)
+      } else {
+        syms.add(u)
+      }
+    } else {
+      for (const c of leg.blend) syms.add(c.symbol.toUpperCase())
+    }
+  }
+  return [...syms]
+}
+
+/** Resolved proxy def for a Yahoo symbol: manual map first, then auto-derives from ETF_STACK_EXPOSURE_BY_SLUG. */
+export function resolveProxyDef(yahooSymbol: string): ProxyDef | null {
   const u = yahooSymbol.trim().toUpperCase()
   const manual = CHART_STACK_PRODUCT_PROXY_LEGS[u]
-  if (manual?.length) return manual
+  if (manual) return manual
   const slug = findSlugByYahooSymbol(u)
   if (!slug) return null
-  return buildAutoStackProxyLegs(slug)
+  const legs = buildAutoStackProxyLegs(slug)
+  if (!legs) return null
+  return { legs }
+}
+
+/**
+ * Resolves a ProxyDef's legs to PriceSeries[] for buildPreInceptionProductStackMerge.
+ * String legs: look up in seriesBySymbol (Phase 1 may have already extended chain-proxy entries).
+ * BlendSpec legs: blend the two components into one series (currently supports exactly 2 components).
+ * Returns null if any required series is missing or too short.
+ */
+export function buildResolvedStackLegs(
+  def: ProxyDef,
+  seriesBySymbol: Map<string, PriceSeries>
+): PriceSeries[] | null {
+  const result: PriceSeries[] = []
+  for (const leg of def.legs) {
+    if (typeof leg === 'string') {
+      const ser = seriesBySymbol.get(leg.toUpperCase())
+      if (ser == null || ser.timestamps.length < 2) return null
+      result.push(ser)
+    } else {
+      if (leg.blend.length !== 2) return null
+      const serA = seriesBySymbol.get(leg.blend[0]!.symbol.toUpperCase())
+      const serB = seriesBySymbol.get(leg.blend[1]!.symbol.toUpperCase())
+      if (serA == null || serA.timestamps.length < 2) return null
+      if (serB == null || serB.timestamps.length < 2) return null
+      result.push(blendPriceSeries(serA, leg.blend[0]!.weight, serB, leg.blend[1]!.weight))
+    }
+  }
+  return result.length >= 1 ? result : null
+}
+
+/**
+ * Compat shim: flattens a ProxyDef to a flat string[] of all direct symbols (no chain recursion).
+ * Use resolveProxyDef + collectProxyLeafSymbols for first-trade-date calculations.
+ */
+export function resolveChartProxyLegs(yahooSymbol: string): string[] | null {
+  const def = resolveProxyDef(yahooSymbol)
+  if (!def) return null
+  const syms: string[] = []
+  for (const leg of def.legs) {
+    if (typeof leg === 'string') {
+      syms.push(leg.toUpperCase())
+    } else {
+      for (const c of leg.blend) syms.push(c.symbol.toUpperCase())
+    }
+  }
+  return syms.length >= 1 ? syms : null
 }

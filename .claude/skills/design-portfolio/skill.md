@@ -1,6 +1,6 @@
 ---
 name: design-portfolio
-description: "Interactively designs a new Alpha Stacking preset portfolio. Asks the user about region, theme, and specific tickers, then applies construction rules (beta 0.9-1.1, drawdown comparable to SPY, proxy chain history, regime coverage, and correlation synergy) to propose a holdings table with weights, betas, blurbs, weighted beta, effective history, and rebalance cadence. Produces a proposal the user can approve and hand off to /add-portfolio."
+description: "Interactively designs a new Alpha Stacking preset portfolio. Asks the user about region, theme, and specific tickers, then applies construction rules (beta 0.9-1.1, drawdown comparable to SPY, proxy chain history, environment coverage, and correlation synergy) to propose a holdings table with weights, betas, blurbs, weighted beta, effective history, and rebalance cadence. Produces a proposal the user can approve and hand off to /add-portfolio."
 ---
 
 # Design portfolio (Alpha Stacking)
@@ -15,33 +15,37 @@ Use `AskUserQuestion` to ask all three at once in a single multi-question block:
 
 ## Phase 2 — Design rules (apply always)
 
-### Regime-aware construction (core principle)
+### Environment-aware construction (core principle)
 
-A good portfolio earns its keep across multiple market environments. Before fixing weights, map each candidate ETF to the regimes where it wins and loses, then check that the combined portfolio has at least one strong leg in every regime below.
+A good portfolio earns its keep across multiple market environments. Before fixing weights, map each candidate ETF to the environments where it wins and loses, then check that the combined portfolio has at least one strong leg in every environment below.
 
-**Four regimes to cover:**
+**Five environments to cover:**
 
-| Regime | Equity | Bonds | Description |
+| Environment | Equity | Bonds | Description |
 |--------|--------|-------|-------------|
-| Risk-on bull | Up | Flat/up | Low vol, trending equity gains, positive carry |
-| Inflationary bear | Down | Down | Stagflation; commodities/real assets outperform |
-| Deflationary bear | Down | Up | Recession; safe-haven flows; gold bid |
-| Choppy/mean-reverting | Flat | Flat | No trend; whipsaw; carry dominates |
+| Growth | Up | Flat/up | Low vol, trending equity gains, positive carry |
+| Inflation | Down | Down | Stagflation; real assets and commodities outperform |
+| Recession | Down | Up | Economic contraction, credit stress, safe-haven flows |
+| Deflation | Down hard | Up hard | Falling prices, zero-rate risk; duration and cash are king |
+| choppy/sideways | Flat | Flat | No trend; whipsaw; carry dominates |
 
-**Alpha category regime map — where each sleeve wins and loses:**
+> Recession vs. Deflation: Recession is a cyclical slowdown (bonds rally moderately, credit spreads widen). Deflation is an extreme scenario (ZROZ/EDV spike violently, equities collapse, falling price levels).
+
+**Alpha category environment map — where each sleeve wins and loses:**
 
 | Category | ETFs | Wins in | Loses in |
 |----------|------|---------|----------|
-| Trend / Managed futures | MATE, IALT, FLSP, DBMF, KMLM, DGLM.TO | Inflationary bear, deflationary bear (sustained trends) | Choppy/mean-reverting; trend reversals |
-| Momentum equity | SPMO, MTUM | Risk-on bull (late cycle) | Sharp factor rotations; bear opens |
-| Market neutral / carry | FOXY, CLSE, ARB.TO | All regimes (near-zero beta carry) | Crowded-factor unwind; liquidity crises |
-| Return-stacked (equity + overlay) | MATE, NTSD, GDE, IALT | Divergent regimes where equity AND overlay both trend | Simultaneous equity + futures drawdown |
-| Real assets / gold overlay | GDE | Inflationary bear; USD weakness; geopolitical risk | Risk-on bull; rising real rates; strong USD |
-| Mid-duration treasury overlay | NTSX | Deflationary bear; recession | Inflationary bear; rate spikes |
-| Low-vol / defensive | HDGE.TO, PFLS.TO | Bear equity; vol spikes | Low-vol grind-up bull |
-| Leveraged equity | SSO, UPRO, HSU.TO, HQU.TO | Risk-on bull (amplified) | Any significant drawdown (amplified losses) |
+| Trend / Managed futures | MATE, IALT, FLSP, DBMF, KMLM, DGLM.TO | Inflation, Recession, Deflation (sustained trends) | choppy/sideways; trend reversals |
+| Momentum equity | SPMO, MTUM | Growth (late cycle) | Sharp factor rotations; bear opens |
+| Market neutral / carry | FOXY, CLSE, ARB.TO | All environments (near-zero beta carry) | Crowded-factor unwind; liquidity crises |
+| Return-stacked (equity + overlay) | MATE, NTSD, GDE, IALT, RSSB, RSIT | Growth + divergent overlay trend | Simultaneous equity + futures drawdown |
+| Real assets / gold overlay | GDE | Inflation; USD weakness; geopolitical risk | Growth; rising real rates; strong USD |
+| Mid-duration treasury overlay | NTSX, RSSB | Recession, Deflation | Inflation; rate spikes |
+| Long-duration zero-coupon | ZROZ, EDV | Deflation; sudden Growth-to-Recession shock | Inflation; rate spikes |
+| Low-vol / defensive | HDGE.TO, PFLS.TO | Bear equity; vol spikes | Low-vol Growth grind |
+| Leveraged equity | SSO, UPRO, HSU.TO, HQU.TO | Growth (amplified) | Any significant drawdown (amplified losses) |
 
-**Regime coverage check (required before finalizing):** After choosing holdings, write one sentence per regime stating which ETF(s) carry the portfolio through that environment. If any regime has no coverage leg, revise weights or swap a holding.
+**Environment coverage check (required before finalizing):** After choosing holdings, write one sentence per environment stating which ETF(s) carry the portfolio through that environment. If any environment has no coverage leg, revise weights or swap a holding.
 
 ---
 
@@ -61,7 +65,7 @@ A good portfolio earns its keep across multiple market environments. Before fixi
 
 | Anti-pair | Why to avoid |
 |-----------|-------------|
-| Multiple managed futures (e.g. DBMF + KMLM + FLSP + DGLM.TO together) | High factor overlap; redundant regime exposure; use MATE (which blends DBMF/KMLM already) or IALT instead |
+| Multiple managed futures (e.g. DBMF + KMLM + FLSP + DGLM.TO together) | High factor overlap; redundant environment exposure; use MATE (which blends DBMF/KMLM already) or IALT instead |
 | Multiple momentum equity ETFs (SPMO + MTUM + SPYG) | Same factor, same drawdown timing; pick one |
 | Multiple market-neutral strategies without diversifying factor bets | Check whether the strategies share the same arbitrage or carry trade; if yes, they concentrate single-factor risk |
 | SSO or UPRO + NTSD | NTSD is already 90% SPY + 60% international developed equity; adding leveraged US equity on top creates triple-stacked equity with minimal diversification benefit |
@@ -77,7 +81,7 @@ A good portfolio earns its keep across multiple market environments. Before fixi
 | Momentum equity vs. broad equity | +0.8 to +0.95 (high; momentum is equity-like) |
 | Managed futures vs. gold | +0.1 to +0.3 (low-moderate; both benefit from trends) |
 
-When two holdings have correlation above ~0.7, treat them as one leg for regime-coverage purposes — they won't provide meaningful diversification.
+When two holdings have correlation above ~0.7, treat them as one leg for environment-coverage purposes — they won't provide meaningful diversification.
 
 ---
 
@@ -184,14 +188,15 @@ Present the proposal with all six sections:
 
 Show arithmetic: `0.50 x 1.0 + 0.35 x 1.1 + 0.15 x 0.35 = 0.94`
 
-### 3. Regime coverage
+### 3. Environment coverage
 
-One bullet per regime. State which holding(s) carry the portfolio and how.
+One bullet per environment. State which holding(s) carry the portfolio and how.
 
-- **Risk-on bull:** [ETF(s)] — [why they win here]
-- **Inflationary bear:** [ETF(s)] — [why they win here]
-- **Deflationary bear:** [ETF(s)] — [why they win here]
-- **Choppy/mean-reverting:** [ETF(s)] — [why they win here]
+- **Growth:** [ETF(s)] — [why they win here]
+- **Inflation:** [ETF(s)] — [why they win here]
+- **Recession:** [ETF(s)] — [why they win here]
+- **Deflation:** [ETF(s)] — [why they win here]
+- **choppy/sideways:** [ETF(s)] — [why they win here]
 
 ### 4. Effective history
 

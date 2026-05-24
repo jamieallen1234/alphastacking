@@ -75,6 +75,10 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   'PFAE.TO': { longEquityPct: 130, shortEquityPct: 30, alphaPct: 0 },
   'TGAF.TO': { longEquityPct: 100, shortEquityPct: 40, alphaPct: 0 },
 
+  // Duration / fixed-income diversifiers
+  ZROZ: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
+  EDV: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
+
   // Alternatives / macro / arb
   FLSP: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   IALT: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },

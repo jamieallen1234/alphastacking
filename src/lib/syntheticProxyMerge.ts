@@ -120,12 +120,6 @@ function forwardFillTargetOnUnderlyingDays(
   return out
 }
 
-export async function mateSyntheticOverlapFirstTradeSec(): Promise<number> {
-  // KMLM (Dec 2020) is the binding limit for the 70% DBMF + 30% KMLM managed-futures blend
-  // used as the pre-RSST proxy layer in the MATE → RSST → (SPY + MF blend) chain.
-  return fetchFirstTradeDateSec('KMLM')
-}
-
 /**
  * Blends two price series by weight using daily returns.
  * Output starts at 100 on the first shared trading day; both series must be adjusted closes (total return).

@@ -77,7 +77,7 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
             </p>
           </div>
           <div className={styles.principle}>
-            <span className={styles.principleLabel}>2. Trend-following: the bear market sleeve</span>
+            <span className={styles.principleLabel}>2. Trend-following: the recession environment sleeve</span>
             <p className={styles.principleText}>
               Managed futures funds (DBMF, KMLM, MATE) trend-follow across equities, bonds,
               currencies, and commodities. In a sustained equity decline, falling rates and rising
@@ -90,12 +90,12 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
             <p className={styles.principleText}>
               Long/short equity funds (CLSE, ORR) hold long positions in stocks they like and short
               positions in stocks they don&apos;t. Their returns depend less on market direction and
-              more on whether good stocks beat bad ones. In choppy sideways markets where the index
-              goes nowhere, a strong long/short fund can still compound.
+              more on whether good stocks beat bad ones. In the choppy/sideways environment — where the index
+              goes nowhere — a strong long/short fund can still compound.
             </p>
           </div>
           <div className={styles.principle}>
-            <span className={styles.principleLabel}>4. Macro &amp; alternatives: the regime diversifier</span>
+            <span className={styles.principleLabel}>4. Macro &amp; alternatives: the environment diversifier</span>
             <p className={styles.principleText}>
               Systematic macro (HFGM), style premia (FLSP), and merger arbitrage (MRGR) each have
               return profiles with low correlation to the other sleeves. Merger arb earns when deal
@@ -165,13 +165,13 @@ export default function HowToBuildAlphaStackingArticle({ edition }: { edition: '
         </p>
         <div className={styles.principles}>
           <div className={styles.principle}>
-            <span className={styles.principleLabel}>Alpha stacking earns across regimes</span>
+            <span className={styles.principleLabel}>Alpha stacking earns across environments</span>
             <p className={styles.principleText}>
               An index fund needs stocks to go up. Alpha stacking carries sleeves that can earn
               when they don&apos;t. In 2022, when the S&amp;P 500 fell 18% and bonds fell 13%,
               managed futures ETFs gained about 20% to 30%. In the lost decade from 2000 to 2010, systematic macro
               and long/short outperformed. A multi-sleeve portfolio doesn&apos;t need any single
-              regime to cooperate.
+              environment to cooperate.
             </p>
           </div>
           <div className={styles.principle}>

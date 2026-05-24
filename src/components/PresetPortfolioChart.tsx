@@ -68,16 +68,16 @@ function Cad125UnderlyingLine({
   underlying,
   hubBase,
 }: {
-  underlying: 'HEQT.TO' | 'QQQ' | 'VFV.TO' | 'SPY'
+  underlying: 'HEQT.TO' | 'ZQQ.TO' | 'VFV.TO' | 'SPY'
   hubBase: PortfolioUsEtfHubBase
 }) {
-  if (underlying === 'QQQ') {
+  if (underlying === 'ZQQ.TO') {
     return (
       <>
-        <ProxyLink ticker="QQQ" hubBase={hubBase}>
-          QQQ
+        <ProxyLink ticker="ZQQ.TO" hubBase={hubBase}>
+          ZQQ.TO
         </ProxyLink>{' '}
-        daily total returns (Yahoo adjusted), converted to CAD with NY-aligned USDCAD
+        daily total returns (BMO unhedged Nasdaq-100, CAD-listed, Yahoo adjusted)
       </>
     )
   }
@@ -129,7 +129,7 @@ function SyntheticModelingLine({
         </p>
       )
     case 'cad_levered_125': {
-      const u = m.cadLeveredUnderlying ?? 'HEQT.TO'
+      const u = m.cadLeveredUnderlying ?? ('HEQT.TO' as const)
       return (
         <p key={`cad125-${m.slotSymbol}-${m.firstRealNyDay}`} className={styles.disclaimerDetail}>
           <ProxyLink ticker={m.slotSymbol} hubBase={hubBase}>

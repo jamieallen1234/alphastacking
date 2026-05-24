@@ -5,6 +5,7 @@ import PresetPortfolioChart from '@/components/PresetPortfolioChart'
 import type { PortfolioChartPayload } from '@/lib/computePortfolioChart'
 import {
   availablePresetChartRanges,
+  defaultPresetRange,
   overlapCalendarDaysForPresetUi,
   PRESET_RANGE_MIN_DAYS,
 } from '@/lib/presetChartRanges'
@@ -35,7 +36,6 @@ export default function PresetIntlChartPanel({
   holdings = [],
 }: PresetIntlChartPanelProps) {
   const [payload, setPayload] = useState(initialPayload)
-  const [activeRange, setActiveRange] = useState<YahooRange>(initialPayload.range)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -45,6 +45,24 @@ export default function PresetIntlChartPanel({
   )
 
   const rangeOptions = useMemo(() => availablePresetChartRanges(overlapDays), [overlapDays])
+
+  // Server always renders 1y; if 1y is disabled (< 365 days history), start on the best available range.
+  const bestInitialRange = useMemo(() => defaultPresetRange(overlapDays), [overlapDays])
+  const [activeRange, setActiveRange] = useState<YahooRange>(bestInitialRange)
+
+  // If the server rendered 1y but 1y is disabled (short history), fetch the correct default range.
+  useEffect(() => {
+    if (bestInitialRange === initialPayload.range) return
+    setLoading(true)
+    void fetch(`/api/preset-chart?${new URLSearchParams({ preset: presetId, range: bestInitialRange })}`)
+      .then((r) => r.json())
+      .then((data: PortfolioChartPayload & { error?: string }) => {
+        setPayload(data)
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Pre-warm server + browser cache for all non-active enabled ranges so clicks are instant.
   // Stagger by 3 s each so concurrent server-side Yahoo work doesn't pile up.

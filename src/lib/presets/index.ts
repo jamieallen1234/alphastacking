@@ -35,6 +35,7 @@ export function presetWeights(p: PresetDefinition): number[] {
 }
 
 // -------------------- Preset IDs --------------------
+export const US_UPRO_PREMIA_STACK_PRESET_ID = 'us-upro-premia-stack-v1'
 export const US_INTL_PRESET_ID = 'us-intl-v2'
 export const US_ADVANCED_PRESET_ID = 'us-advanced-v1'
 export const US_CORE_BH_PRESET_ID = 'us-core-bh-v4'
@@ -43,6 +44,8 @@ export const CA_INTL_PRESET_ID = 'ca-intl-v10'
 export const CA_CORE_BH_PRESET_ID = 'ca-core-bh-v6'
 export const CA_USSL_QQQL_HDGE_PRESET_ID = 'ca-ussl-qqql-hdge-v3'
 export const CA_SSO_DGLM_RGBM_ARB_PRESET_ID = 'ca-sso-dglm-rgbm-arb-v3'
+export const US_ALPHA_STACK_PRESET_ID = 'us-alpha-stack-v2'
+export const CA_ALPHA_STACK_PRESET_ID = 'ca-alpha-stack-v6'
 
 // -------------------- Holdings --------------------
 export const usInternationalHoldings: PresetHolding[] = [
@@ -109,6 +112,32 @@ export const caUsslQqqlHdgeHoldings: PresetHolding[] = [
   { ticker: 'ATSX.TO', weightPct: 10, beta: 0.8, blurb: '150/50 Canadian long/short equity (TSX 60).' },
 ]
 
+/** 25 / 20 / 15 / 10 / 10 / 10 / 10 annual-rebalance: momentum + 2x S&P lever + managed futures + alts + FCF quality + futures yield + long/short buffer. Weighted beta ~0.96. */
+export const usAlphaStackHoldings: PresetHolding[] = [
+  { ticker: 'SPMO', weightPct: 25, beta: 1.1, blurb: 'S&P 500 momentum factor.' },
+  { ticker: 'MATE', weightPct: 20, beta: 1, blurb: 'Return-stacked 100% S&P 500 + 100% managed futures.' },
+  { ticker: 'IALT', weightPct: 15, beta: 0.35, blurb: 'Systematic multi-strategy alternatives sleeve.' },
+  { ticker: 'SSO', weightPct: 10, beta: 2, blurb: '2x S&P 500 — leveraged beta sleeve.' },
+  { ticker: 'VFLO', weightPct: 10, beta: 0.75, blurb: 'Large-cap free-cash-flow quality tilt.' },
+  { ticker: 'RSSY', weightPct: 10, beta: 1, blurb: 'Return-stacked equity + systematic futures yield sleeve.' },
+  { ticker: 'CLSE', weightPct: 10, beta: 0.6, blurb: 'US long/short equity drawdown buffer.' },
+]
+
+/** 34 / 33 / 33 annual-rebalance: 3x S&P core offset by systematic long/short and EM carry premia sleeves. */
+export const uproPremaStackHoldings: PresetHolding[] = [
+  { ticker: 'UPRO', weightPct: 34, beta: 3, blurb: '3x daily S&P 500 — high-conviction leveraged core.' },
+  { ticker: 'FLSP', weightPct: 33, beta: 0, blurb: 'Systematic long/short equity and style premia sleeve.' },
+  { ticker: 'FOXY', weightPct: 33, beta: 0.05, blurb: 'Systematic EM carry + G10 mean-reversion currency sleeve.' },
+]
+
+/** 45 / 25 / 20 / 10 annual-rebalance: USSL + QQQL leveraged core + managed futures + market-neutral. Weighted beta ~0.96. */
+export const caAlphaStackHoldings: PresetHolding[] = [
+  { ticker: 'USSL.TO', weightPct: 45, beta: 1.25, blurb: '1.25x S&P 500 (proxied via 1.25x VFV.TO in CAD).' },
+  { ticker: 'QQQL.TO', weightPct: 25, beta: 1.25, blurb: '1.25x Nasdaq-100 — tech growth tilt alongside S&P 500 core.' },
+  { ticker: 'DGLM.TO', weightPct: 20, beta: 0.35, blurb: 'Systematic global macro managed futures sleeve.' },
+  { ticker: 'PFMN.TO', weightPct: 10, beta: 0.12, blurb: 'Market-neutral long/short equity.' },
+]
+
 export const caSsoDglmRgbmArbHoldings: PresetHolding[] = [
   { ticker: 'SSO', weightPct: 35, beta: 2, blurb: '2x daily S&P 500 exposure for high-conviction U.S. beta.' },
   { ticker: 'RSSY', weightPct: 10, beta: 1, blurb: 'Return-stacked equity + managed futures sleeve.' },
@@ -120,6 +149,14 @@ export const caSsoDglmRgbmArbHoldings: PresetHolding[] = [
 
 // -------------------- Registry --------------------
 export const PRESET_DEFINITIONS: PresetDefinition[] = [
+  {
+    id: US_UPRO_PREMIA_STACK_PRESET_ID,
+    region: 'us',
+    cadDenominated: false,
+    rebalanceSchedule: 'annual',
+    holdings: uproPremaStackHoldings,
+    extraCacheKeyTags: ['annual-rebal', 'upro-flsp-foxy-v1'],
+  },
   {
     id: US_INTL_PRESET_ID,
     region: 'us',
@@ -187,6 +224,22 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     rebalanceSchedule: 'none',
     holdings: caUsslQqqlHdgeHoldings,
     extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'buy-hold', 'ussl-qqql-hdge-60-15-25'],
+  },
+  {
+    id: US_ALPHA_STACK_PRESET_ID,
+    region: 'us',
+    cadDenominated: false,
+    rebalanceSchedule: 'annual',
+    holdings: usAlphaStackHoldings,
+    extraCacheKeyTags: ['annual-rebal', 'spmo-mate-ialt-sso-vflo-rssy-clse-v4', 'mate-kmlm-chain-v1'],
+  },
+  {
+    id: CA_ALPHA_STACK_PRESET_ID,
+    region: 'ca',
+    cadDenominated: true,
+    rebalanceSchedule: 'annual',
+    holdings: caAlphaStackHoldings,
+    extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'annual-rebal', 'ussl-qqql-dglm-pfmn-v1'],
   },
   {
     id: CA_SSO_DGLM_RGBM_ARB_PRESET_ID,

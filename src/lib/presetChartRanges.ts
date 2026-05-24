@@ -15,8 +15,7 @@ export interface PresetChartRangeOption {
 export const PRESET_RANGE_MIN_DAYS = {
   '1mo': 21,
   ytd: 45,
-  /** Yahoo 1y window works with short overlap (clipped); do not require a full calendar year. */
-  '1y': 21,
+  '1y': 365,
   '2y': 730,
   /** Three calendar years of joint history (~3 × 365). */
   '3y': 1095,
@@ -55,6 +54,18 @@ export function isPresetRangeEnabled(range: YahooRange, overlapDays: number): bo
   const min = PRESET_RANGE_MIN_DAYS[range as keyof typeof PRESET_RANGE_MIN_DAYS]
   if (min === undefined) return false
   return overlapDays >= min
+}
+
+/** Best default range to show based on available overlap history (longest enabled tab, starting from 1y). */
+export function defaultPresetRange(overlapDays: number): YahooRange {
+  for (const { range } of [
+    { range: '1y' as YahooRange },
+    { range: 'ytd' as YahooRange },
+    { range: '1mo' as YahooRange },
+  ]) {
+    if (isPresetRangeEnabled(range, overlapDays)) return range
+  }
+  return 'max'
 }
 
 /**

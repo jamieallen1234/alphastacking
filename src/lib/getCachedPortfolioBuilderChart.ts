@@ -48,7 +48,7 @@ export async function getCachedPortfolioBuilderChart(params: {
           cadDenominated: params.cadDenominated,
           rebalanceSchedule: 'none',
         }),
-      ['portfolio-builder-chart-v8-ibit-bito', key],
+      ['portfolio-builder-chart-v9-zqq-qqql', key],
       { revalidate: DAY }
     )
     chartLoaderByKey.set(key, loader)

@@ -10,6 +10,9 @@ export const CAD_SPY_PROXY_SYMBOL = 'XSP.TO'
 /** Unhedged CAD-listed S&P 500 ETF — USSL 1.25× synthetic and related modeling (not the chart benchmark). */
 export const CAD_UNHEDGED_SP500_PROXY_SYMBOL = 'VFV.TO'
 
+/** Unhedged CAD-listed Nasdaq-100 ETF — QQQL 1.25× synthetic proxy (BMO Nasdaq 100, inception ~2001, unhedged). */
+export const CAD_UNHEDGED_NASDAQ_PROXY_SYMBOL = 'ZQQ.TO'
+
 export function isCadListedSymbol(symbol: string): boolean {
   return symbol.trim().toUpperCase().endsWith('.TO')
 }

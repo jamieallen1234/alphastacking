@@ -121,12 +121,52 @@ function forwardFillTargetOnUnderlyingDays(
 }
 
 export async function mateSyntheticOverlapFirstTradeSec(): Promise<number> {
-  return fetchFirstTradeDateSec('RSST')
+  // KMLM (Dec 2020) is the binding limit for the 70% DBMF + 30% KMLM managed-futures blend
+  // used as the pre-RSST proxy layer in the MATE → RSST → (SPY + MF blend) chain.
+  return fetchFirstTradeDateSec('KMLM')
 }
 
-/** Joint history for HFGM uses ASGM (1.5× daily returns minus `HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG` / 252 in merge) before HFGM’s first real session. */
+/**
+ * Blends two price series by weight using daily returns.
+ * Output starts at 100 on the first shared trading day; both series must be adjusted closes (total return).
+ * Days present in only one series are skipped (union intersection).
+ */
+export function blendPriceSeries(
+  a: PriceSeries,
+  weightA: number,
+  b: PriceSeries,
+  weightB: number
+): PriceSeries {
+  const aM = seriesToNyDayPriceMap(a)
+  const bM = seriesToNyDayPriceMap(b)
+  const days = [...aM.keys()].filter((d) => bM.has(d)).sort()
+
+  if (days.length < 2) {
+    throw new Error('blendPriceSeries: insufficient overlapping days between the two series')
+  }
+
+  const timestamps: number[] = []
+  const prices: number[] = []
+  let level = 100
+  timestamps.push(dayKeyToUtcNoonUnix(days[0]!))
+  prices.push(level)
+
+  for (let i = 1; i < days.length; i++) {
+    const prev = days[i - 1]!
+    const cur = days[i]!
+    const ra = aM.get(cur)! / aM.get(prev)! - 1
+    const rb = bM.get(cur)! / bM.get(prev)! - 1
+    level *= 1 + weightA * ra + weightB * rb
+    timestamps.push(dayKeyToUtcNoonUnix(cur))
+    prices.push(level)
+  }
+
+  return { symbol: `blend(${a.symbol}x${weightA},${b.symbol}x${weightB})`, timestamps, prices }
+}
+
+/** Joint history for HFGM: ASGM launched after HFGM (Aug 2025 vs Apr 2025), so it provides no pre-inception extension. Use HFGM’s own first trade as the effective start. */
 export async function hfgmSyntheticOverlapFirstTradeSec(): Promise<number> {
-  return fetchFirstTradeDateSec('ASGM')
+  return fetchFirstTradeDateSec('HFGM')
 }
 
 export async function heqlSyntheticOverlapFirstTradeSec(): Promise<number> {
@@ -138,9 +178,9 @@ export async function usslSyntheticOverlapFirstTradeSec(cadDenominated: boolean)
   return fetchFirstTradeDateSec(cadDenominated ? CAD_UNHEDGED_SP500_PROXY_SYMBOL : 'SPY')
 }
 
-/** Nasdaq-100 anchor for pre-listing 1.25× simulation (QQQ adj. TR, then CAD in chart pipeline). */
+/** Nasdaq-100 anchor for pre-listing 1.25× simulation (ZQQ.TO: BMO unhedged CAD Nasdaq-100, inception ~2001). */
 export async function qqqlSyntheticOverlapFirstTradeSec(): Promise<number> {
-  return fetchFirstTradeDateSec('QQQ')
+  return fetchFirstTradeDateSec('ZQQ.TO')
 }
 
 /** Joint start for multi-leg stacked-product chart proxies (IBIT+GLD, etc.): latest first listing among legs. */

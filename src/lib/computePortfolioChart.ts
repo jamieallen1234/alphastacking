@@ -25,6 +25,7 @@ import {
   USSL_FIRST_REAL_NY_DAY,
 } from '@/lib/syntheticChartConstants'
 import {
+  blendPriceSeries,
   buildLeveredUnderlyingMergeSeries,
   buildPreInceptionProductStackMerge,
   heqlSyntheticOverlapFirstTradeSec,
@@ -41,6 +42,7 @@ import {
 } from '@/lib/portfolioChartProxyLegs'
 import {
   CAD_SPY_PROXY_SYMBOL,
+  CAD_UNHEDGED_NASDAQ_PROXY_SYMBOL,
   CAD_UNHEDGED_SP500_PROXY_SYMBOL,
   convertUsdPricesToCad,
   isCadListedSymbol,
@@ -69,8 +71,8 @@ export interface SyntheticModelingNote {
   slotSymbol: string
   firstRealNyDay: string
   kind: SyntheticModelingKind
-  /** 1.25× CAD levered sleeve: which index TR is scaled (QQQ is converted to CAD in the pipeline). */
-  cadLeveredUnderlying?: 'HEQT.TO' | 'QQQ' | 'VFV.TO' | 'SPY'
+  /** 1.25× CAD levered sleeve: which index TR is scaled (ZQQ.TO is CAD-listed unhedged Nasdaq-100; VFV.TO is CAD-listed unhedged S&P 500). */
+  cadLeveredUnderlying?: 'HEQT.TO' | 'ZQQ.TO' | 'VFV.TO' | 'SPY'
   /**
    * Stacked manual chart proxies (`stacked_product_proxy*`): false when proxy legs are configured but
    * this Yahoo window had no calendar days before the fund’s first session to splice (footnote still
@@ -195,7 +197,14 @@ export async function computePortfolioChart(params: {
   const needExtraSpy = ntsdIdx >= 0 && benchmarkFetchSymbol.toUpperCase() !== 'SPY'
 
   const needHeqt = heqlIdx >= 0
-  const needQqq = qqqlIdx >= 0
+  const needZqq = qqqlIdx >= 0
+
+  // MATE proxy chain: MATE → RSST NAV → SPY + (70% DBMF + 30% KMLM blend).
+  // SPY is already fetched as the benchmark for US charts; only needs an extra fetch for CA.
+  // DBMF may already be fetched if IALT is in the portfolio.
+  const needMateProxySpy = mateIdx >= 0 && benchmarkFetchSymbol.toUpperCase() !== 'SPY'
+  const needMateProxyDbmf = mateIdx >= 0 && dbmfIdx < 0 && !needIaltDbmfProxy && !needDglmDbmfProxy
+  const needMateProxyKmlm = mateIdx >= 0
 
   const maxWindow =
     range === 'max' ? { fromSec: portfolioOverlapStartSec, toSec: nowSec } : undefined
@@ -206,7 +215,7 @@ export async function computePortfolioChart(params: {
     () => (ntsdIdx >= 0 ? fetchDailySeries('EFA', range, maxWindow) : Promise.resolve(null)),
     () => (needExtraSpy ? fetchDailySeries('SPY', range, maxWindow) : Promise.resolve(null)),
     () => (needHeqt ? fetchDailySeries('HEQT.TO', range, maxWindow) : Promise.resolve(null)),
-    () => (needQqq ? fetchDailySeries('QQQ', range, maxWindow) : Promise.resolve(null)),
+    () => (needZqq ? fetchDailySeries(CAD_UNHEDGED_NASDAQ_PROXY_SYMBOL, range, maxWindow) : Promise.resolve(null)),
     () => (mateIdx >= 0 ? fetchDailySeries('RSST', range, maxWindow) : Promise.resolve(null)),
     () => (needIaltFlspProxy ? fetchDailySeries('FLSP', range, maxWindow) : Promise.resolve(null)),
     () => (needIaltDbmfProxy ? fetchDailySeries('DBMF', range, maxWindow) : Promise.resolve(null)),
@@ -217,6 +226,9 @@ export async function computePortfolioChart(params: {
         ? fetchDailySeries(CAD_UNHEDGED_SP500_PROXY_SYMBOL, range, maxWindow)
         : Promise.resolve(null),
     () => (cadDenominated ? fetchDailySeries(USDCAD_YAHOO_SYMBOL, range, maxWindow) : Promise.resolve(null)),
+    () => (needMateProxySpy ? fetchDailySeries('SPY', range, maxWindow) : Promise.resolve(null)),
+    () => (needMateProxyDbmf ? fetchDailySeries('DBMF', range, maxWindow) : Promise.resolve(null)),
+    () => (needMateProxyKmlm ? fetchDailySeries('KMLM', range, maxWindow) : Promise.resolve(null)),
   ]
   const mergedSeriesResults = await Promise.all(seriesAndBenchTasks.map((fn) => fn()))
   let r = 0
@@ -226,7 +238,7 @@ export async function computePortfolioChart(params: {
   const efaExtra = mergedSeriesResults[r++] as PriceSeries | null
   const spyExtra = mergedSeriesResults[r++] as PriceSeries | null
   const heqtExtra = mergedSeriesResults[r++] as PriceSeries | null
-  const qqqExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const zqqExtra = mergedSeriesResults[r++] as PriceSeries | null
   const rsstExtra = mergedSeriesResults[r++] as PriceSeries | null
   const ialtFlspExtra = mergedSeriesResults[r++] as PriceSeries | null
   const ialtDbmfExtra = mergedSeriesResults[r++] as PriceSeries | null
@@ -234,16 +246,22 @@ export async function computePortfolioChart(params: {
   const hfgmAsgmExtra = mergedSeriesResults[r++] as PriceSeries | null
   const usslVfvExtra = mergedSeriesResults[r++] as PriceSeries | null
   const usdCadSeries = mergedSeriesResults[r++] as PriceSeries | null
+  const mateProxySpyExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const mateProxyDbmfExtra = mergedSeriesResults[r++] as PriceSeries | null
+  const mateProxyKmlmExtra = mergedSeriesResults[r++] as PriceSeries | null
 
   let seriesMut = series
   let efaMut = efaExtra
   let spyMut = spyExtra
   let rsstMut = rsstExtra
-  let qqqMut = qqqExtra
+  let zqqMut = zqqExtra
   let ialtFlspMut: typeof ialtFlspExtra = ialtFlspExtra
   let ialtDbmfMut: typeof ialtDbmfExtra = ialtDbmfExtra
   let dglmDbmfMut: typeof dglmDbmfExtra = dglmDbmfExtra
   let hfgmAsgmMut: typeof hfgmAsgmExtra = hfgmAsgmExtra
+  let mateProxySpyMut: typeof mateProxySpyExtra = mateProxySpyExtra
+  let mateProxyDbmfMut: typeof mateProxyDbmfExtra = mateProxyDbmfExtra
+  let mateProxyKmlmMut: typeof mateProxyKmlmExtra = mateProxyKmlmExtra
 
   if (cadDenominated) {
     if (usdCadSeries == null || usdCadSeries.timestamps.length < 2) {
@@ -255,11 +273,14 @@ export async function computePortfolioChart(params: {
     if (efaMut != null) efaMut = convertUsdPricesToCad(efaMut, usdCadSeries)
     if (spyMut != null) spyMut = convertUsdPricesToCad(spyMut, usdCadSeries)
     if (rsstMut != null) rsstMut = convertUsdPricesToCad(rsstMut, usdCadSeries)
-    if (qqqMut != null) qqqMut = convertUsdPricesToCad(qqqMut, usdCadSeries)
+    // zqqMut is ZQQ.TO (CAD-listed, unhedged) — no USDCAD conversion needed
     if (ialtFlspMut != null) ialtFlspMut = convertUsdPricesToCad(ialtFlspMut, usdCadSeries)
     if (ialtDbmfMut != null) ialtDbmfMut = convertUsdPricesToCad(ialtDbmfMut, usdCadSeries)
     if (dglmDbmfMut != null) dglmDbmfMut = convertUsdPricesToCad(dglmDbmfMut, usdCadSeries)
     if (hfgmAsgmMut != null) hfgmAsgmMut = convertUsdPricesToCad(hfgmAsgmMut, usdCadSeries)
+    if (mateProxySpyMut != null) mateProxySpyMut = convertUsdPricesToCad(mateProxySpyMut, usdCadSeries)
+    if (mateProxyDbmfMut != null) mateProxyDbmfMut = convertUsdPricesToCad(mateProxyDbmfMut, usdCadSeries)
+    if (mateProxyKmlmMut != null) mateProxyKmlmMut = convertUsdPricesToCad(mateProxyKmlmMut, usdCadSeries)
   }
 
   const proxyLegSymsNeeded = new Set<string>()
@@ -343,9 +364,28 @@ export async function computePortfolioChart(params: {
   }
 
   if (mateIdx >= 0 && rsstMut != null) {
+    // Extend RSST back to Dec 2020 using SPY + (70% DBMF + 30% KMLM) as the managed-futures proxy.
+    // spyForMate: use the extra SPY fetch for CA (which has a non-SPY benchmark), else use the benchmark.
+    // dbmfForMate: use the dedicated extra, or fall back to whichever DBMF series is already in scope.
+    const spyForMate = mateProxySpyMut ?? (benchmarkFetchSymbol.toUpperCase() === 'SPY' ? benchSeries : null)
+    const dbmfForMate =
+      mateProxyDbmfMut ??
+      (dbmfIdx >= 0 ? seriesMut[dbmfIdx]! : null) ??
+      ialtDbmfMut ??
+      dglmDbmfMut
+    const kmlmForMate = mateProxyKmlmMut
+
+    let rsstForMate = rsstMut
+    if (spyForMate != null && dbmfForMate != null && kmlmForMate != null) {
+      const mfBlend = blendPriceSeries(dbmfForMate, 0.7, kmlmForMate, 0.3)
+      rsstForMate = buildPreInceptionProductStackMerge(rsstMut, [spyForMate, mfBlend], {
+        grossExposurePct: 200,
+      }).series
+    }
+
     const { series: mergedMate, modeling } = buildLeveredUnderlyingMergeSeries(
       seriesMut[mateIdx]!,
-      rsstMut,
+      rsstForMate,
       1,
       0
     )
@@ -433,7 +473,7 @@ export async function computePortfolioChart(params: {
     idx: number,
     underlying: PriceSeries,
     firstRealFloor: string,
-    cadLeveredUnderlying: 'HEQT.TO' | 'QQQ' | 'VFV.TO' | 'SPY'
+    cadLeveredUnderlying: 'HEQT.TO' | 'ZQQ.TO' | 'VFV.TO' | 'SPY'
   ) => {
     const { series: merged, modeling } = buildLeveredUnderlyingMergeSeries(
       seriesMut[idx]!,
@@ -465,10 +505,10 @@ export async function computePortfolioChart(params: {
   }
 
   if (qqqlIdx >= 0) {
-    if (!cadDenominated || qqqMut == null) {
-      throw new Error('QQQL.TO requires a CAD-denominated chart (underlying QQQ is converted with USDCAD).')
+    if (!cadDenominated || zqqMut == null) {
+      throw new Error('QQQL.TO requires a CAD-denominated chart (underlying ZQQ.TO is CAD-listed unhedged Nasdaq-100).')
     }
-    pushCad125(qqqlIdx, qqqMut, QQQL_FIRST_REAL_NY_DAY, 'QQQ')
+    pushCad125(qqqlIdx, zqqMut, QQQL_FIRST_REAL_NY_DAY, 'ZQQ.TO')
   }
 
   if (heqlIdx >= 0 && heqtExtra != null) {

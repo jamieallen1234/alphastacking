@@ -120,6 +120,7 @@ export function getUpdatesFeed(edition: 'us' | 'ca'): UpdateDay[] {
     entries.push(...etfEntries(US_ETF_DYNAMIC_REGISTRY, '/us-etfs'))
   } else {
     entries.push(...portfolioEntries(caPortfolioRoutes, '/ca/portfolios'))
+    entries.push(...portfolioEntries(usPortfolioRoutes, '/portfolios'))
     entries.push(...etfEntries(CA_ETF_DYNAMIC_REGISTRY, '/ca/etfs'))
     entries.push(...etfEntries(US_ETF_DYNAMIC_REGISTRY, '/ca/us-etfs'))
   }

@@ -1,6 +1,8 @@
 /** Slug segments under `/learn/[slug]` and `/ca/learn/[slug]`. */
 export const WHAT_IS_ALPHA_SLUG = 'what-is-alpha-stacking'
 
+export const MARKET_ENVIRONMENTS_SLUG = 'market-environments'
+
 export const RETURN_STACKING_EXPLAINED_SLUG = 'return-stacking-explained'
 
 export const ETF_PAGES_BUILDER_101_SLUG = 'etf-pages-and-portfolio-builder-101'
@@ -49,6 +51,14 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     title: 'Why alpha stacking',
     deck: 'How alpha stacking compares to index funds, return stacking, all-weather portfolios, and leveraged ETFs, with a plain language read on when each option tends to fit.',
     publishedDate: '2026-04-19',
+  },
+  {
+    slug: MARKET_ENVIRONMENTS_SLUG,
+    eyebrow: 'Concepts',
+    read: '~5 min read',
+    title: 'Five market environments',
+    deck: 'What growth, inflation, recession, deflation, and choppy markets look like on a chart, and why a portfolio that only thrives in one of them is a fragile portfolio.',
+    publishedDate: '2026-05-25',
   },
   {
     slug: ETF_PAGES_BUILDER_101_SLUG,

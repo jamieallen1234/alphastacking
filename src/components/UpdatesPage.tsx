@@ -20,7 +20,7 @@ export default function UpdatesPage({ edition }: { edition: UpdatesPageEdition }
 
         {days.length === 0 ? (
           <p className={styles.empty}>
-            Updates will appear here as new ETFs and portfolios are added.
+            Updates will appear here as new ETFs, portfolios, and learn articles are added.
           </p>
         ) : (
           <ol className={styles.dayList}>
@@ -33,7 +33,7 @@ export default function UpdatesPage({ edition }: { edition: UpdatesPageEdition }
                       <Link href={entry.href} className={styles.entryCard}>
                         <div className={styles.entryMeta}>
                           <span className={styles.entryKind}>
-                            {entry.kind === 'etf' ? 'ETF' : 'Portfolio'}
+                            {entry.kind === 'etf' ? 'ETF' : entry.kind === 'portfolio' ? 'Portfolio' : 'Learn'}
                           </span>
                           {entry.ticker ? (
                             <span className={styles.entryTicker}>{entry.ticker}</span>
@@ -41,7 +41,9 @@ export default function UpdatesPage({ edition }: { edition: UpdatesPageEdition }
                         </div>
                         <h3 className={styles.entryTitle}>{entry.title}</h3>
                         <p className={styles.entryBlurb}>{entry.blurb}</p>
-                        <span className={styles.entryCta}>View page &rarr;</span>
+                        <span className={styles.entryCta}>
+                          {entry.kind === 'learn' ? 'Read article' : 'View page'} &rarr;
+                        </span>
                       </Link>
                     </li>
                   ))}

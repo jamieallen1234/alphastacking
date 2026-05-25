@@ -8,10 +8,11 @@
 
 import { CA_ETF_DYNAMIC_REGISTRY, US_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
 import type { EtfDynamicDef } from '@/lib/etfDynamicRegistryTypes'
+import { LEARN_ARTICLES } from '@/lib/learnArticles'
 import { caPortfolioRoutes, usPortfolioRoutes } from '@/lib/portfolioRoutes'
 import type { PortfolioRouteDef } from '@/lib/portfolioRoutes'
 
-export type UpdateKind = 'etf' | 'portfolio'
+export type UpdateKind = 'etf' | 'portfolio' | 'learn'
 
 export interface UpdateEntry {
   kind: UpdateKind
@@ -104,9 +105,26 @@ function portfolioEntries(
   return out
 }
 
+function learnEntries(isCa: boolean): UpdateEntry[] {
+  return LEARN_ARTICLES.map((a) => ({
+    kind: 'learn' as const,
+    date: a.publishedDate,
+    slug: a.slug,
+    title: a.title,
+    href: isCa ? `/ca/learn/${a.slug}` : `/learn/${a.slug}`,
+    blurb: a.deck,
+  }))
+}
+
+function kindRank(k: UpdateKind): number {
+  if (k === 'portfolio') return 0
+  if (k === 'learn') return 1
+  return 2
+}
+
 function compareEntries(a: UpdateEntry, b: UpdateEntry): number {
-  // Within a day: portfolios first, then ETFs alphabetical by ticker/slug.
-  if (a.kind !== b.kind) return a.kind === 'portfolio' ? -1 : 1
+  const rankDiff = kindRank(a.kind) - kindRank(b.kind)
+  if (rankDiff !== 0) return rankDiff
   const aKey = (a.ticker || a.slug).toLowerCase()
   const bKey = (b.ticker || b.slug).toLowerCase()
   return aKey < bKey ? -1 : aKey > bKey ? 1 : 0
@@ -117,10 +135,12 @@ export function getUpdatesFeed(edition: 'us' | 'ca'): UpdateDay[] {
 
   if (edition === 'us') {
     entries.push(...portfolioEntries(usPortfolioRoutes, '/portfolios'))
+    entries.push(...learnEntries(false))
     entries.push(...etfEntries(US_ETF_DYNAMIC_REGISTRY, '/us-etfs'))
   } else {
     entries.push(...portfolioEntries(caPortfolioRoutes, '/ca/portfolios'))
     entries.push(...portfolioEntries(usPortfolioRoutes, '/portfolios'))
+    entries.push(...learnEntries(true))
     entries.push(...etfEntries(CA_ETF_DYNAMIC_REGISTRY, '/ca/etfs'))
     entries.push(...etfEntries(US_ETF_DYNAMIC_REGISTRY, '/ca/us-etfs'))
   }

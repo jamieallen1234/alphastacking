@@ -1,0 +1,113 @@
+.wrap {
+  margin: 1.75rem 0 2rem;
+}
+
+.chartWrap {
+  position: relative;
+  width: 100%;
+  background: rgba(232, 228, 220, 0.02);
+  border: 0.5px solid var(--color-border);
+  border-radius: 2px;
+  overflow: visible;
+  cursor: crosshair;
+}
+
+.reticleLine {
+  stroke: rgba(232, 228, 220, 0.22);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+
+.reticleDot {
+  filter: drop-shadow(0 0 3px rgba(0,0,0,0.4));
+}
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(18, 17, 15, 0.92);
+  border: 0.5px solid var(--color-border);
+  border-radius: 3px;
+  padding: 0.4rem 0.65rem;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(232, 228, 220, 0.85);
+  z-index: 10;
+}
+
+.tooltipDate {
+  color: rgba(232, 228, 220, 0.45);
+  font-size: 10px;
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.04em;
+}
+
+.tooltipRow {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.tooltipLabel {
+  color: rgba(232, 228, 220, 0.55);
+}
+
+.tooltipVal {
+  color: rgba(232, 228, 220, 0.9);
+  font-weight: 500;
+}
+
+.tooltipEnv {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.xAxis {
+  position: relative;
+  height: 1.1rem;
+  margin-top: 0.3rem;
+  overflow: hidden;
+}
+
+.xAxisLabel {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  color: rgba(232, 228, 220, 0.35);
+  white-space: nowrap;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.35rem;
+  margin-top: 0.75rem;
+  padding: 0 0.1rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 220, 0.6);
+}
+
+.legendSwatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  opacity: 0.85;
+  flex-shrink: 0;
+}

@@ -126,8 +126,9 @@ const RISK_FREE_RATE_ANNUAL = 0.045
 
 function computeSharpeAndSortino(valueLine: number[]): { sharpe: number | null; sortino: number | null } {
   const n = valueLine.length
-  // Need at least 253 points (252 daily return periods = ~1 year) for meaningful ratios.
-  if (n < 253) return { sharpe: null, sortino: null }
+  // Need at least 240 points (~11.5 months) for meaningful ratios. Using 240 rather than
+  // 253 avoids the 1Y window flipping to null as it drifts by a day near the boundary.
+  if (n < 240) return { sharpe: null, sortino: null }
 
   const dailyReturns: number[] = []
   for (let i = 1; i < n; i++) {

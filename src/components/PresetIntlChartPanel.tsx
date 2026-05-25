@@ -168,6 +168,8 @@ export default function PresetIntlChartPanel({
             ? { payload1y: toScorecardPayload(initialPayload), payloadMax: toScorecardPayload(maxPayload) }
             : null
         }
+        maxSharpeRatio={maxPayload?.sharpeRatio ?? null}
+        maxSortinoRatio={maxPayload?.sortinoRatio ?? null}
       />
     </div>
   )

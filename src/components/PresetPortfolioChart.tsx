@@ -272,6 +272,10 @@ interface PresetPortfolioChartProps {
    * If only one range has data, that range is weighted 100%.
    */
   scorecardPayloads?: { payload1y: ScorecardPayload; payloadMax: ScorecardPayload } | null
+  /** Fixed Sharpe from MAX range — overrides the active-range payload value so the display doesn't change per tab. */
+  maxSharpeRatio?: number | null
+  /** Fixed Sortino from MAX range — overrides the active-range payload value so the display doesn't change per tab. */
+  maxSortinoRatio?: number | null
 }
 
 type LetterGrade = PortfolioLetterGrade
@@ -333,6 +337,8 @@ export default function PresetPortfolioChart({
   exposureSummary = null,
   holdings = [],
   scorecardPayloads = null,
+  maxSharpeRatio = null,
+  maxSortinoRatio = null,
 }: PresetPortfolioChartProps) {
   const [asOfMs] = useState(() => Date.now())
   const pathname = usePathname()
@@ -356,9 +362,12 @@ export default function PresetPortfolioChart({
     limitingFirstTradeDate,
     syntheticModeling = [],
     chartCurrency = 'USD',
-    sharpeRatio = null,
-    sortinoRatio = null,
+    sharpeRatio: payloadSharpeRatio = null,
+    sortinoRatio: payloadSortinoRatio = null,
   } = payload
+
+  const sharpeRatio = maxSharpeRatio !== null ? maxSharpeRatio : payloadSharpeRatio
+  const sortinoRatio = maxSortinoRatio !== null ? maxSortinoRatio : payloadSortinoRatio
 
   const trClass =
     totalReturnPercent == null
@@ -542,17 +551,23 @@ export default function PresetPortfolioChart({
             </div>
           </>
         ) : null}
-        <div title="Annualised excess return over 4.5% risk-free rate divided by annualised volatility">
+        <div className={styles.metricTooltipHost} tabIndex={0}>
           <div className={`${styles.metricBig} ${sharpeRatio != null && sharpeRatio >= 0 ? styles.metricBigPos : sharpeRatio != null ? styles.metricBigNeg : ''}`}>
             {sharpeRatio != null ? sharpeRatio.toFixed(2) : '—'}
           </div>
           <div className={styles.metricSub}>Sharpe (4.5% rf)</div>
+          <span className={styles.metricTooltip} role="tooltip">
+            Excess return above the 4.5% risk-free rate divided by annualised volatility.{'\n'}Above 1.0 is good; above 2.0 is excellent.{'\n'}SPY typically scores around 0.5–0.8.
+          </span>
         </div>
-        <div title="Annualised excess return over 4.5% risk-free rate divided by annualised downside deviation">
+        <div className={styles.metricTooltipHost} tabIndex={0}>
           <div className={`${styles.metricBig} ${sortinoRatio != null && sortinoRatio >= 0 ? styles.metricBigPos : sortinoRatio != null ? styles.metricBigNeg : ''}`}>
             {sortinoRatio != null ? sortinoRatio.toFixed(2) : '—'}
           </div>
           <div className={styles.metricSub}>Sortino (4.5% rf)</div>
+          <span className={styles.metricTooltip} role="tooltip">
+            Excess return above the 4.5% risk-free rate divided by annualised downside deviation (penalises losses only).{'\n'}Above 1.5 is good; above 3.0 is excellent.
+          </span>
         </div>
       </div>
       <div className={styles.legendChartWrap}>

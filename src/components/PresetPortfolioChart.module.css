@@ -133,6 +133,40 @@
   text-transform: uppercase;
 }
 
+.metricTooltipHost {
+  position: relative;
+  cursor: help;
+}
+
+.metricTooltipHost:hover .metricTooltip,
+.metricTooltipHost:focus-visible .metricTooltip {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.metricTooltip {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 6;
+  width: min(20rem, 88vw);
+  padding: 0.6rem 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.5;
+  color: rgba(232, 228, 220, 0.88);
+  background: #121214;
+  border: 0.5px solid var(--color-border);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
 .scorecard {
   margin-top: 0;
   border: 0.5px solid var(--color-border);

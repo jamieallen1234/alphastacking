@@ -59,11 +59,21 @@ function portfolioGrid(
         const alpha = data?.excessAlphaPercent ?? null
         const grade = resolveGrade(p, data)
         return (
-          <Link key={p.slug} href={hrefFor(p.slug)} className={styles.card}>
+          <Link
+            key={p.slug}
+            href={hrefFor(p.slug)}
+            className={[
+              styles.card,
+              grade === 'A+' ? styles.cardAPlus : grade === 'A' ? styles.cardA : '',
+            ].filter(Boolean).join(' ')}
+          >
             <div className={styles.cardTopRow}>
               {p.badge ? <span className={styles.cardBadge}>{p.badge}</span> : null}
               {grade != null ? (
-                <span className={styles.cardGrade}>{grade}</span>
+                <span className={[
+                  styles.cardGrade,
+                  grade === 'A+' ? styles.cardGradeAPlus : grade === 'A' ? styles.cardGradeA : '',
+                ].filter(Boolean).join(' ')}>{grade}</span>
               ) : null}
             </div>
             <h2 className={styles.cardTitle}>{p.title}</h2>

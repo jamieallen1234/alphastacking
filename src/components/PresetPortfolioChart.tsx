@@ -351,6 +351,8 @@ export default function PresetPortfolioChart({
     limitingFirstTradeDate,
     syntheticModeling = [],
     chartCurrency = 'USD',
+    sharpeRatio = null,
+    sortinoRatio = null,
   } = payload
 
   const trClass =
@@ -503,6 +505,18 @@ export default function PresetPortfolioChart({
             </div>
           </>
         ) : null}
+        <div title="Annualised excess return over 4.5% risk-free rate divided by annualised volatility">
+          <div className={`${styles.metricBig} ${sharpeRatio != null && sharpeRatio >= 0 ? styles.metricBigPos : sharpeRatio != null ? styles.metricBigNeg : ''}`}>
+            {sharpeRatio != null ? sharpeRatio.toFixed(2) : '—'}
+          </div>
+          <div className={styles.metricSub}>Sharpe (4.5% rf)</div>
+        </div>
+        <div title="Annualised excess return over 4.5% risk-free rate divided by annualised downside deviation">
+          <div className={`${styles.metricBig} ${sortinoRatio != null && sortinoRatio >= 0 ? styles.metricBigPos : sortinoRatio != null ? styles.metricBigNeg : ''}`}>
+            {sortinoRatio != null ? sortinoRatio.toFixed(2) : '—'}
+          </div>
+          <div className={styles.metricSub}>Sortino (4.5% rf)</div>
+        </div>
       </div>
       <div className={styles.legendChartWrap}>
         <div className={styles.legend}>

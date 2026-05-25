@@ -47,6 +47,10 @@ export const CA_USSL_QQQL_HDGE_PRESET_ID = 'ca-ussl-qqql-hdge-v3'
 export const CA_SSO_DGLM_RGBM_ARB_PRESET_ID = 'ca-sso-dglm-rgbm-arb-v3'
 export const US_ALPHA_STACK_PRESET_ID = 'us-alpha-stack-v2'
 export const CA_ALPHA_STACK_PRESET_ID = 'ca-alpha-stack-v6'
+export const US_RISK_PARITY_PRESET_ID = 'us-risk-parity-v4'
+export const US_LONG_SHORT_EQUITY_PRESET_ID = 'us-long-short-equity-v1'
+export const US_LETF_STACK_2X_PRESET_ID = 'us-letf-stack-2x-v1'
+export const US_LETF_STACK_3X_PRESET_ID = 'us-letf-stack-3x-v1'
 
 // -------------------- Holdings --------------------
 export const usInternationalHoldings: PresetHolding[] = [
@@ -146,6 +150,42 @@ export const us54321Holdings: PresetHolding[] = [
   { ticker: 'RSSB', weightPct: 20, beta: 0.80, blurb: 'Return-stacked global stocks + US Treasury bond overlay (Recession ballast).' },
   { ticker: 'CLSE', weightPct: 15, beta: 0.60, blurb: 'US long/short equity (choppy/sideways environment sleeve).' },
   { ticker: 'ZROZ', weightPct: 5, beta: -0.35, blurb: '25+ year zero-coupon Treasuries — extreme duration hyper-ballast (deflation spike).' },
+]
+
+/** 55 / 15 / 15 / 15 annual-rebalance: 2x S&P 500 leveraged core with long-duration bond ballast, managed futures, and gold. Weighted beta ~1.06. */
+export const usLetfStack2xHoldings: PresetHolding[] = [
+  { ticker: 'SSO', weightPct: 55, beta: 2, blurb: '2x daily S&P 500 — the leveraged equity core driving amplified growth returns.' },
+  { ticker: 'ZROZ', weightPct: 15, beta: -0.35, blurb: '25+ year zero-coupon Treasuries — long-duration counterweight that spikes in drawdowns and deflation.' },
+  { ticker: 'DBMF', weightPct: 15, beta: 0.05, blurb: 'iMGP managed futures — trend-following CTA that tends flat-to-positive in sustained equity drawdowns.' },
+  { ticker: 'GLD', weightPct: 15, beta: 0.05, blurb: 'SPDR Gold Shares — inflation and real-asset hedge with near-zero equity correlation.' },
+]
+
+/** 40 / 20 / 20 / 20 annual-rebalance: 3x S&P 500 leveraged core with long-duration bond ballast, managed futures, and gold. Weighted beta ~1.15. */
+export const usLetfStack3xHoldings: PresetHolding[] = [
+  { ticker: 'UPRO', weightPct: 40, beta: 3, blurb: '3x daily S&P 500 — the high-conviction leveraged equity core.' },
+  { ticker: 'ZROZ', weightPct: 20, beta: -0.35, blurb: '25+ year zero-coupon Treasuries — long-duration counterweight that spikes in drawdowns and deflation.' },
+  { ticker: 'DBMF', weightPct: 20, beta: 0.05, blurb: 'iMGP managed futures — trend-following CTA that tends flat-to-positive in sustained equity drawdowns.' },
+  { ticker: 'GLD', weightPct: 20, beta: 0.05, blurb: 'SPDR Gold Shares — inflation and real-asset hedge with near-zero equity correlation.' },
+]
+
+/** 25 / 25 / 20 / 15 / 5 / 5 / 5 buy-and-hold: net-long L/S equity core with capital-efficient international equity overlay and cross-asset diversifiers. Weighted beta ~0.82. */
+export const usLongShortEquityHoldings: PresetHolding[] = [
+  { ticker: 'CLSE', weightPct: 25, beta: 0.6, blurb: 'Convergence US net-long L/S equity (~110% long / 60% short gross) — systematic US long/short core.' },
+  { ticker: 'NTSD', weightPct: 25, beta: 1.6, blurb: '90/60 U.S. large-cap + developed international equity overlay — adds regional equity breadth to the long book.' },
+  { ticker: 'WTLS', weightPct: 20, beta: 0.85, blurb: 'WisdomTree 90% U.S. large-cap + 90% ML-driven L/S overlay — capital-efficient L/S in one wrapper.' },
+  { ticker: 'ORR', weightPct: 15, beta: 0.55, blurb: 'Militia global L/S equity — fundamental stock selection across regions as the international L/S complement.' },
+  { ticker: 'DBMF', weightPct: 5, beta: 0.05, blurb: 'iMGP managed futures — long/short across rates, currencies, and commodities as a cross-asset diversifier.' },
+  { ticker: 'HARD', weightPct: 5, beta: 0.2, blurb: 'Simplify systematic L/S commodity futures — commodity long/short sleeve.' },
+  { ticker: 'FOXY', weightPct: 5, beta: 0.05, blurb: 'Rareview currency carry and mean-reversion — uncorrelated FX alpha source.' },
+]
+
+/** 40 / 20 / 15 / 15 / 10 buy-and-hold: equity-heavy all-weather via return-stacked capital-efficient wrappers. Weighted beta ~0.946. */
+export const usRiskParityHoldings: PresetHolding[] = [
+  { ticker: 'NTSD', weightPct: 40, beta: 1.6, blurb: '90/60 U.S. large-cap + developed international equity overlay — primary equity engine stacking two regional sleeves per dollar.' },
+  { ticker: 'NTSX', weightPct: 20, beta: 0.9, blurb: '90/60 U.S. equity + mid-duration Treasuries — growth/recession balance with a built-in bond cushion.' },
+  { ticker: 'GDT', weightPct: 15, beta: 0.05, blurb: '90/90 TIPS + gold — explicit inflation protection covering both real rates and monetary inflation.' },
+  { ticker: 'GDE', weightPct: 15, beta: 1.02, blurb: '80/80 U.S. equity + gold overlay — inflation and real-asset hedge alongside equity growth.' },
+  { ticker: 'ZROZ', weightPct: 10, beta: -0.35, blurb: '25+ year zero-coupon Treasuries — maximum-duration deflation ballast.' },
 ]
 
 export const caSsoDglmRgbmArbHoldings: PresetHolding[] = [
@@ -258,6 +298,38 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     rebalanceSchedule: 'annual',
     holdings: caAlphaStackHoldings,
     extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'annual-rebal', 'ussl-qqql-dglm-pfmn-v1'],
+  },
+  {
+    id: US_LETF_STACK_2X_PRESET_ID,
+    region: 'us',
+    cadDenominated: false,
+    rebalanceSchedule: 'annual',
+    holdings: usLetfStack2xHoldings,
+    extraCacheKeyTags: ['annual-rebal', 'sso-zroz-dbmf-gld-v1'],
+  },
+  {
+    id: US_LETF_STACK_3X_PRESET_ID,
+    region: 'us',
+    cadDenominated: false,
+    rebalanceSchedule: 'annual',
+    holdings: usLetfStack3xHoldings,
+    extraCacheKeyTags: ['annual-rebal', 'upro-zroz-dbmf-gld-v1'],
+  },
+  {
+    id: US_LONG_SHORT_EQUITY_PRESET_ID,
+    region: 'us',
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+    holdings: usLongShortEquityHoldings,
+    extraCacheKeyTags: ['buy-hold', 'clse-ntsd-wtls-orr-dbmf-hard-foxy-v1'],
+  },
+  {
+    id: US_RISK_PARITY_PRESET_ID,
+    region: 'us',
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+    holdings: usRiskParityHoldings,
+    extraCacheKeyTags: ['buy-hold', 'ntsd-ntsx-gde-zroz-gdt-v4', 'gdt-tip-gld-proxy-v1'],
   },
   {
     id: CA_SSO_DGLM_RGBM_ARB_PRESET_ID,

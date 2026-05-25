@@ -104,6 +104,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
    * Global net-long L/S; gross ~150% long / 100% short per `exposureSummary` — same peer band as CLSE.
    */
   orr: bundle(['global_equity', 'long_short_equity', 'ls_net_long_similar_gross'], [], 'manual'),
+  wtls: bundle(['us_large_cap', 'long_short_equity', 'ls_net_long_similar_gross'], ['long_short_equity'], 'sleeve'),
   mrgr: bundle(['merger_arbitrage'], [], 'seeded'),
   mema: bundle(['emerging_markets', 'managed_futures'], ['managed_futures'], 'seeded'),
   cta: bundle([], ['managed_futures'], 'seeded'),

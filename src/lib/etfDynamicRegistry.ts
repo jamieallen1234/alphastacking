@@ -1189,6 +1189,39 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'Cambria Funds (VAMO)',
   },
 
+  wtls: {
+    yahooSymbol: 'WTLS',
+    hubCategoryId: 'long-short',
+    badge: 'Long/short',
+    h1Title: 'WTLS - WisdomTree Efficient Long/Short U.S. Equity Fund',
+    displayTicker: 'WTLS',
+    issuer: 'WisdomTree',
+    inception: 'Jan 22, 2026',
+    addedToSite: '2026-05-24',
+    structure: 'Capital-efficient long/short US equity',
+    mer: '0.88%',
+    aum: '~$12M',
+    pageTitle: 'WTLS ETF - Alpha Stacking',
+    description:
+      'WisdomTree Efficient Long/Short U.S. Equity Fund (WTLS): capital-efficient 90% U.S. equity plus 90% ML-driven long/short overlay in one wrapper.',
+    lede:
+      '<strong>WTLS</strong> pairs broad U.S. large-cap equity with a machine-learning-driven long/short overlay in a single capital-efficient wrapper, targeting incremental return above benchmark without requiring investors to reduce existing equity exposure.',
+    strategyParas: [
+      'The fund runs two strategies simultaneously on the same capital base. The first is a long-only broad U.S. large-cap equity book, designed to track general market participation. The second is an active long/short overlay: machine learning models developed by <strong>AlphaBeta Investment Indices Ltd.</strong> score U.S. securities on predicted return and risk, generating a long book of favored names and a short book of unfavored ones. The combined notional is approximately 180%, funded from one dollar of capital.',
+      'Because the L/S overlay is ML-driven and rebalances with model output, turnover and position concentration can shift materially quarter to quarter. Borrow costs, dividend pass-through on short positions, and financing on the incremental notional all flow through returns on top of the 0.88% expense ratio. The fund launched in January 2026 so live track record is short; the AlphaBeta models are trained on historical data, which introduces backtest-to-live risk.',
+    ],
+    pedigreeParas: ped(
+      `WisdomTree is a New York-based ETF sponsor and asset manager with approximately $100 billion in global AUM across factor equity, fixed income, and capital-efficient ETFs; WTLS extends its capital-efficient suite, which already includes NTSX, NTSD, GDE, and GDT, into the long/short equity space. The model provider is AlphaBeta Investment Indices Ltd., a specialist quantitative research firm; WisdomTree holds a minority stake in AlphaBeta ETF Ltd., AlphaBeta's operating entity, aligning incentives between sponsor and model developer.`,
+      `AlphaBeta's machine learning framework applies supervised models trained on historical price, fundamental, and risk data to predict relative stock returns across the U.S. large-cap universe. The same team and model infrastructure drive both the long and short selection, which differs from multi-manager structures where long and short books run independently.`
+    ),
+    outperfParas: [
+      'Outperforms when <strong>U.S. large-cap stock dispersion is wide</strong> and ML return predictions align with market outcomes: periods where earnings quality, balance-sheet strength, and factor spreads drive meaningful divergence between longs and shorts. The capital-efficient structure means the overlay can add incremental return above the equity benchmark without requiring portfolio reallocation, a clean fit for investors already long U.S. equities who want to layer on a systematic alpha sleeve.',
+      'Underperforms in <strong>macro-driven correlated selloffs</strong> where all large-cap names move together and short selection is overwhelmed by index-level moves, or in short-squeeze episodes where borrowed names gap higher against the thesis. The favorable tape is a <strong>choppy/sideways environment</strong> with high cross-sectional dispersion and stable securities lending conditions, not synchronized risk-off episodes where factor spreads compress to zero.',
+    ],
+    officialUrl: 'https://www.wisdomtree.com/investments/etfs/capital-efficient/wtls',
+    officialLabel: 'WisdomTree (WTLS)',
+  },
+
   orr: {
     yahooSymbol: 'ORR',
     hubCategoryId: 'long-short',

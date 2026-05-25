@@ -172,6 +172,14 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'TIP',
   },
+  wtls: {
+    components: [
+      { name: 'US large-cap equity', pct: 90, bucket: 'capital', assetClass: 'equity' },
+      { name: 'Long/short US equity overlay', pct: 90, bucket: 'alpha', assetClass: 'equity' },
+    ],
+    capitalMarketBenchmarkSymbol: 'SPY',
+    coreBenchmarkSymbol: 'SPY',
+  },
   rssx: {
     components: [
       { name: 'US equity', pct: 100, bucket: 'capital', assetClass: 'equity' },

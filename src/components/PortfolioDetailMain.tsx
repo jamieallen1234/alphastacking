@@ -24,6 +24,10 @@ import {
   US_GDE_CLSE_BLEND_PRESET_ID,
   US_INTL_PRESET_ID,
   US_UPRO_PREMIA_STACK_PRESET_ID,
+  US_RISK_PARITY_PRESET_ID,
+  US_LONG_SHORT_EQUITY_PRESET_ID,
+  US_LETF_STACK_2X_PRESET_ID,
+  US_LETF_STACK_3X_PRESET_ID,
   getPresetById,
   weightedBeta,
 } from '@/lib/presets'
@@ -50,6 +54,10 @@ const US_SLUG_TO_PRESET_ID: Record<string, string> = {
   'alpha-stack': US_ALPHA_STACK_PRESET_ID,
   'upro-premia-stack': US_UPRO_PREMIA_STACK_PRESET_ID,
   '5-4-3-2-1': US_5_4_3_2_1_PRESET_ID,
+  'risk-parity': US_RISK_PARITY_PRESET_ID,
+  'long-short-equity': US_LONG_SHORT_EQUITY_PRESET_ID,
+  'letf-stack-2x': US_LETF_STACK_2X_PRESET_ID,
+  'letf-stack-3x': US_LETF_STACK_3X_PRESET_ID,
 }
 
 const CA_SLUG_TO_PRESET_ID: Record<string, string> = {

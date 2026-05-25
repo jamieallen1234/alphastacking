@@ -414,6 +414,18 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  wtls: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        'WTLS holds roughly 90% U.S. large-cap equity as the capital sleeve, benchmarked against SPY. Launched January 2026; insufficient live history to grade capital efficiency.'
+      ),
+    },
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        'The alpha sleeve is a machine-learning-driven long/short U.S. equity overlay adding approximately 90% notional exposure above the equity position. Launched January 2026; insufficient live history to grade alpha efficiency.'
+      ),
+    },
+  },
   asgm: {
     capital: {
       tooltip: capitalEfficiencyTooltip(

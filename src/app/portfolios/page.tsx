@@ -8,6 +8,6 @@ export const metadata = {
 }
 
 export default async function PortfoliosHubPage() {
-  const alphaBySlug = await loadPortfolioHubAlphaBySlug()
-  return <PortfoliosHub edition="us" alphaBySlug={alphaBySlug} />
+  const hubDataBySlug = await loadPortfolioHubAlphaBySlug()
+  return <PortfoliosHub edition="us" hubDataBySlug={hubDataBySlug} />
 }

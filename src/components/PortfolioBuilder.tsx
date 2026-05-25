@@ -189,6 +189,8 @@ export default function PortfolioBuilder() {
           chartCurrency,
           rebalanceSchedule: 'none',
           holdingTotalReturnPercents: [],
+          sharpeRatio: null,
+          sortinoRatio: null,
         }
       : null
 

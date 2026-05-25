@@ -332,6 +332,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Actively managed emerging-markets long/short equity sleeve using systematic signals plus portfolio-manager discretion.',
       usPath('mema')
     ),
+    us(
+      'wtls',
+      'WTLS — WisdomTree Efficient Long/Short U.S. Equity Fund',
+      'Capital-efficient 90% U.S. large-cap equity paired with a 90% ML-driven long/short overlay in one wrapper (WisdomTree / AlphaBeta).',
+      usPath('wtls')
+    ),
   ],
   'global-macro': [
     us(

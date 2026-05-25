@@ -115,9 +115,44 @@ export interface PortfolioChartPayload {
   rebalanceSchedule: 'none' | 'quarterly' | 'annual'
   /** Each holding’s buy-and-hold TR % over the same common NY days as the chart (merged/synthetic series per symbol). */
   holdingTotalReturnPercents: { symbol: string; totalReturnPercent: number | null }[]
+  /** Annualised Sharpe ratio (CAGR − 4.5% risk-free) / annualised vol. null when < 1 year of data. */
+  sharpeRatio: number | null
+  /** Annualised Sortino ratio (CAGR − 4.5% risk-free) / annualised downside deviation. null when < 1 year of data. */
+  sortinoRatio: number | null
 }
 
 const DEFAULT_BENCHMARK = 'SPY'
+const RISK_FREE_RATE_ANNUAL = 0.045
+
+function computeSharpeAndSortino(valueLine: number[]): { sharpe: number | null; sortino: number | null } {
+  const n = valueLine.length
+  // Need at least 253 points (252 daily return periods = ~1 year) for meaningful ratios.
+  if (n < 253) return { sharpe: null, sortino: null }
+
+  const dailyReturns: number[] = []
+  for (let i = 1; i < n; i++) {
+    dailyReturns.push((valueLine[i]! - valueLine[i - 1]!) / valueLine[i - 1]!)
+  }
+  const nPeriods = dailyReturns.length
+
+  const cagr = Math.pow(valueLine[n - 1]! / valueLine[0]!, 252 / nPeriods) - 1
+
+  const mean = dailyReturns.reduce((s, r) => s + r, 0) / nPeriods
+  const variance = dailyReturns.reduce((s, r) => s + (r - mean) ** 2, 0) / nPeriods
+  const annualizedVol = Math.sqrt(variance) * Math.sqrt(252)
+  if (annualizedVol === 0) return { sharpe: null, sortino: null }
+
+  const excess = cagr - RISK_FREE_RATE_ANNUAL
+  const sharpe = excess / annualizedVol
+
+  // Downside deviation: sum of squared negative daily returns divided by ALL periods (Sortino's formulation).
+  const downsideVariance = dailyReturns.reduce((s, r) => s + Math.min(r, 0) ** 2, 0) / nPeriods
+  const downsideDeviation = Math.sqrt(downsideVariance) * Math.sqrt(252)
+  if (downsideDeviation === 0) return { sharpe, sortino: null }
+
+  const sortino = excess / downsideDeviation
+  return { sharpe, sortino }
+}
 
 /** Re-export for chart footnotes / PresetPortfolioChart. */
 export { CHART_STACK_PRODUCT_PROXY_LEGS } from '@/lib/portfolioChartProxyLegs'
@@ -512,6 +547,7 @@ export async function computePortfolioChart(params: {
   const limitingFirstTradeDate = nyTradingDayKey(effectiveStartSec)
 
   const holdingTotalReturnPercents = perHoldingTotalReturnPercentsAligned(clipped, symbols)
+  const { sharpe: sharpeRatio, sortino: sortinoRatio } = computeSharpeAndSortino(valueLine)
 
   return {
     symbols,
@@ -537,6 +573,8 @@ export async function computePortfolioChart(params: {
         ? new Date(points[points.length - 1]!.t * 1000).toISOString().slice(0, 10)
         : null,
     holdingTotalReturnPercents,
+    sharpeRatio,
+    sortinoRatio,
   }
 }
 
@@ -562,5 +600,7 @@ export function emptyPortfolioChartPayload(chartCurrency: 'USD' | 'CAD'): Portfo
     chartCurrency,
     rebalanceSchedule: 'none',
     holdingTotalReturnPercents: [],
+    sharpeRatio: null,
+    sortinoRatio: null,
   }
 }

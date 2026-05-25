@@ -61,7 +61,7 @@ export default function MarketEnvironmentsArticle({ edition, timestamps, values 
               GDP is expanding, earnings are rising, and central banks are broadly accommodative or
               neutral. Equities trend up, credit spreads tighten, and a plain index fund does well.
               This is the default state for much of the post-1982 era. The failure mode: growth
-              environments end. Portfolios that are all-equity have no cushion when the regime
+              environments end. Portfolios that are all-equity have no cushion when the environment
               shifts, and the shift is never announced in advance.
             </p>
           </div>
@@ -138,7 +138,7 @@ export default function MarketEnvironmentsArticle({ edition, timestamps, values 
         <p className={styles.body}>
           The portfolio score on each model portfolio penalizes short track records partly because
           of this: a portfolio that has only been live during a growth environment has no data on
-          how it handles the other four. A score built on one regime is a weak signal.
+          how it handles the other four. A score built on one environment is a weak signal.
         </p>
       </section>
 
@@ -157,7 +157,7 @@ export default function MarketEnvironmentsArticle({ edition, timestamps, values 
         security. Past performance does not guarantee future results. Leveraged and alternative
         funds involve substantial risk. Market environment classifications are illustrative and
         based on dominant macro conditions during each period; reasonable analysts may define
-        regime boundaries differently.
+        environment boundaries differently.
       </p>
     </article>
   )

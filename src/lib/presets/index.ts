@@ -47,6 +47,7 @@ export const CA_USSL_QQQL_HDGE_PRESET_ID = 'ca-ussl-qqql-hdge-v3'
 export const CA_SSO_DGLM_RGBM_ARB_PRESET_ID = 'ca-sso-dglm-rgbm-arb-v3'
 export const US_ALPHA_STACK_PRESET_ID = 'us-alpha-stack-v2'
 export const CA_ALPHA_STACK_PRESET_ID = 'ca-alpha-stack-v6'
+export const CA_FACTOR_FCMO_PRESET_ID = 'ca-factor-fcmo-v2'
 export const US_RISK_PARITY_PRESET_ID = 'us-risk-parity-v4'
 export const US_LONG_SHORT_EQUITY_PRESET_ID = 'us-long-short-equity-v1'
 export const US_LETF_STACK_2X_PRESET_ID = 'us-letf-stack-2x-v1'
@@ -107,6 +108,14 @@ export const caCoreBuyHoldHoldings: PresetHolding[] = [
   { ticker: 'QQQL.TO', weightPct: 30, beta: 1.25, blurb: '1.25× Nasdaq-100 (charts: 1.25× QQQ TR in CAD + Canadian borrow on extra 0.25× notional).' },
   { ticker: 'ZLB.TO', weightPct: 20, beta: 0.63, blurb: 'BMO Low Volatility US Equity (CAD-hedged).' },
   { ticker: 'PFLS.TO', weightPct: 15, beta: 0.48, blurb: 'Long/short equity (~160% / ~100% gross).' },
+]
+
+/** 30 / 25 / 25 / 20 buy-and-hold: CAD momentum + Nasdaq growth + Canadian low-vol + US small-cap value. 60% growth, 40% value. */
+export const caFactorFcmoHoldings: PresetHolding[] = [
+  { ticker: 'FCMO.TO', weightPct: 30, beta: 1.0, blurb: 'Fidelity U.S. Momentum ETF — 100-stock U.S. large-cap momentum factor, quarterly rebalanced.' },
+  { ticker: 'QQQL.TO', weightPct: 25, beta: 1.25, blurb: '1.25× Nasdaq-100 (charts: 1.25× QQQ TR in CAD + Canadian borrow on extra 0.25× notional).' },
+  { ticker: 'ZLB.TO', weightPct: 25, beta: 0.63, blurb: 'BMO Low Volatility US Equity (CAD-hedged) — defensive low-beta anchor.' },
+  { ticker: 'VFLO', weightPct: 20, beta: 0.75, blurb: 'Large-cap free-cash-flow quality tilt — value factor via high-FCF yield selection.' },
 ]
 
 /** 50 / 25 / 15 / 10 buy-and-hold: levered US large-cap + NDX + Canadian long/short sleeves. */
@@ -274,6 +283,14 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
       'ussl-qqql-cad125-synth',
       'core-30-30-15-25',
     ],
+  },
+  {
+    id: CA_FACTOR_FCMO_PRESET_ID,
+    region: 'ca',
+    cadDenominated: true,
+    rebalanceSchedule: 'none',
+    holdings: caFactorFcmoHoldings,
+    extraCacheKeyTags: ['buy-hold', 'fcmo-qqql-zlb-vflo-v1'],
   },
   {
     id: CA_USSL_QQQL_HDGE_PRESET_ID,

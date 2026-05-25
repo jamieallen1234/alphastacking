@@ -4,9 +4,7 @@ import Footer from '@/components/Footer'
 import PortfolioHubNav from '@/components/PortfolioHubNav'
 import {
   caPortfolioRoutes,
-  HUB_SECTION_LABEL,
   US_PORTFOLIO_CATEGORIES,
-  type PortfolioHubSection,
   type PortfolioRouteDef,
   portfolioHubRoutes,
   usPortfolioRoutes,
@@ -187,18 +185,55 @@ export default function PortfoliosHub({ edition, hubDataBySlug }: PortfoliosHubP
           Canada
         </h2>
 
-        {(['annual-rebalance', 'buy-hold'] as const).map((section, i) => {
-          const label = HUB_SECTION_LABEL[section]
-          const routes = sortByGradeThenDate(
-            portfolioHubRoutes(caPortfolioRoutes.filter((r) => r.hubSection === section)),
-            hubDataBySlug,
+        {US_PORTFOLIO_CATEGORIES.map((cat, catIdx) => {
+          const live = portfolioHubRoutes(
+            caPortfolioRoutes.filter((r) => r.hubSection === cat.id)
           )
-          if (routes.length === 0) return null
+          if (live.length === 0) return null
+
+          const hasAnnual = live.some((r) => r.rebalance === 'annual')
+          const hasNone = live.some((r) => r.rebalance === 'none')
+          const hasSubsections = hasAnnual && hasNone
+
           return (
-            <div key={section} id={section === 'annual-rebalance' ? 'ca-annual-rebalance' : 'ca-buyhold'} className={i === 0 ? undefined : styles.categorySection}>
-              <h2 className={styles.categoryHeading} style={{ marginTop: i === 0 ? '0.5rem' : undefined }}>{label.heading}</h2>
-              <p className={styles.lede} style={{ marginBottom: '1.25rem', fontSize: 13 }}>{label.blurb}</p>
-              {portfolioGrid(routes, (slug) => `/ca/portfolios/${slug}`, hubDataBySlug)}
+            <div key={cat.id} id={`ca-${cat.id}`} className={catIdx === 0 ? undefined : styles.categorySection}>
+              <h2 className={styles.categoryHeading} style={{ marginTop: catIdx === 0 ? '0.5rem' : undefined }}>{cat.title}</h2>
+              {cat.subtitle ? (
+                <p className={styles.lede} style={{ marginBottom: '1.25rem', fontSize: 13 }}>
+                  {cat.subtitle}
+                </p>
+              ) : null}
+
+              {hasSubsections ? (
+                <>
+                  {(['annual', 'none'] as const).map((rb) => {
+                    const group = sortByGradeThenDate(
+                      live.filter((r) => r.rebalance === rb),
+                      hubDataBySlug,
+                    )
+                    if (group.length === 0) return null
+                    return (
+                      <div key={rb} className={styles.rebalanceSubsection}>
+                        <h3 className={styles.subsectionHeading}>{REBALANCE_LABEL[rb]}</h3>
+                        {portfolioGrid(group, (slug) => `/ca/portfolios/${slug}`, hubDataBySlug)}
+                      </div>
+                    )
+                  })}
+                </>
+              ) : (
+                <>
+                  {hasAnnual || hasNone ? (
+                    <p className={styles.subsectionLabel}>
+                      {hasAnnual ? REBALANCE_LABEL['annual'] : REBALANCE_LABEL['none']}
+                    </p>
+                  ) : null}
+                  {portfolioGrid(
+                    sortByGradeThenDate(live, hubDataBySlug),
+                    (slug) => `/ca/portfolios/${slug}`,
+                    hubDataBySlug,
+                  )}
+                </>
+              )}
             </div>
           )
         })}

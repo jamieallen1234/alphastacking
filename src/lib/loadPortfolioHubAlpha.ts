@@ -2,6 +2,7 @@ import { getCachedPresetChart1y, getCachedPresetChartMax } from '@/lib/getCached
 import {
   CA_ALPHA_STACK_PRESET_ID,
   CA_CORE_BH_PRESET_ID,
+  CA_FACTOR_FCMO_PRESET_ID,
   CA_INTL_PRESET_ID,
   CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
   CA_USSL_QQQL_HDGE_PRESET_ID,
@@ -40,6 +41,7 @@ const HUB_SLUG_TO_PRESET_ID: Record<string, string> = {
   'letf-stack-3x': US_LETF_STACK_3X_PRESET_ID,
   'ca-international': CA_INTL_PRESET_ID,
   'ca-core-buy-hold': CA_CORE_BH_PRESET_ID,
+  'ca-factor-fcmo': CA_FACTOR_FCMO_PRESET_ID,
   'ca-ussl-qqql-hdge': CA_USSL_QQQL_HDGE_PRESET_ID,
   'ca-sso-dglm-rgbm-arb': CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
   'ca-alpha-stack': CA_ALPHA_STACK_PRESET_ID,

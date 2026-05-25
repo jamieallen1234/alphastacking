@@ -9,8 +9,19 @@ import {
   overlapCalendarDaysForPresetUi,
   PRESET_RANGE_MIN_DAYS,
 } from '@/lib/presetChartRanges'
+import type { ScorecardPayload } from '@/lib/portfolioHubGrade'
 import type { YahooRange } from '@/lib/yahooFinance'
 import styles from './PresetIntlChartPanel.module.css'
+
+function toScorecardPayload(p: PortfolioChartPayload): ScorecardPayload {
+  return {
+    totalReturnPercent: p.totalReturnPercent ?? null,
+    benchmarkTotalReturnPercent: p.benchmarkTotalReturnPercent ?? null,
+    maxDrawdownPortfolioPercent: p.maxDrawdownPortfolioPercent ?? null,
+    maxDrawdownBenchmarkPercent: p.maxDrawdownBenchmarkPercent ?? null,
+    limitingFirstTradeDate: p.limitingFirstTradeDate ?? '',
+  }
+}
 
 interface PresetIntlChartPanelProps {
   presetId: string
@@ -38,6 +49,8 @@ export default function PresetIntlChartPanel({
   const [payload, setPayload] = useState(initialPayload)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // MAX payload for blended scorecard (fetched once on mount)
+  const [maxPayload, setMaxPayload] = useState<PortfolioChartPayload | null>(null)
 
   const overlapDays = useMemo(
     () => overlapCalendarDaysForPresetUi(overlapInceptionYmd),
@@ -64,12 +77,17 @@ export default function PresetIntlChartPanel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Pre-warm server + browser cache for all non-active enabled ranges so clicks are instant.
-  // Stagger by 3 s each so concurrent server-side Yahoo work doesn't pile up.
+  // Fetch MAX payload for blended scorecard, then pre-warm remaining ranges.
   useEffect(() => {
     const initialRange = initialPayload.range
+    // MAX first (needed for scorecard blend); stagger others after
+    void fetch(`/api/preset-chart?${new URLSearchParams({ preset: presetId, range: 'max' })}`)
+      .then((r) => r.json())
+      .then((data: PortfolioChartPayload) => setMaxPayload(data))
+      .catch(() => undefined)
+
     const toWarm = rangeOptions
-      .filter(({ disabled, range }) => !disabled && range !== initialRange)
+      .filter(({ disabled, range }) => !disabled && range !== initialRange && range !== 'max')
       .map(({ range }) => range)
     const timers = toWarm.map((range, i) =>
       setTimeout(
@@ -145,6 +163,11 @@ export default function PresetIntlChartPanel({
         showScorecard
         exposureSummary={exposureSummary}
         holdings={holdings}
+        scorecardPayloads={
+          maxPayload != null
+            ? { payload1y: toScorecardPayload(initialPayload), payloadMax: toScorecardPayload(maxPayload) }
+            : null
+        }
       />
     </div>
   )

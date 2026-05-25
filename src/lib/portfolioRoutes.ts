@@ -10,6 +10,7 @@ export type PortfolioHubSection =
   | 'return-stacked'
   | 'letf-2x'
   | 'letf-3x'
+  | 'factor'
   | 'trend'
   | 'risk-parity'
   | 'long-short'
@@ -25,6 +26,7 @@ export const US_PORTFOLIO_CATEGORIES: PortfolioHubCategoryDef[] = [
   { id: 'return-stacked', title: 'Return Stacked', subtitle: 'Capital-efficient sleeves that add alpha without reducing equity exposure.' },
   { id: 'letf-2x', title: 'LETF 2x', subtitle: '2x leveraged equity core paired with offsetting alternatives.' },
   { id: 'letf-3x', title: 'LETF 3x', subtitle: '3x leveraged equity core — advanced portfolios with amplified risk and return.' },
+  { id: 'factor', title: 'Factor', subtitle: 'Equity factor portfolios — momentum, value, and quality.' },
   { id: 'trend', title: 'Trend / CTA', subtitle: 'Managed futures and systematic alternatives as the primary alpha engine.' },
   { id: 'risk-parity', title: 'Risk Parity', subtitle: 'All-weather diversification across equity, bonds, and real assets.' },
   { id: 'long-short', title: 'Long/Short', subtitle: 'Net-long long/short equity across US and global markets.' },
@@ -80,9 +82,10 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     slug: 'us-core-buy-hold',
     region: 'us',
     kind: 'live',
-    hubSection: 'multi-strat',
+    hubSection: 'factor',
     rebalance: 'none',
     title: 'Factor - Momentum & Value Barbell',
+    badge: 'Unleveraged',
     description: 'Equity factor sleeves across momentum, free-cash-flow value, and Nasdaq-100 growth, buffered by a long/short equity allocation.',
     featured: true,
     addedAt: '2026-04-15',
@@ -297,6 +300,10 @@ export const HUB_SECTION_LABEL: Record<
   'letf-3x': {
     heading: 'LETF 3x',
     blurb: '3x leveraged equity core — advanced portfolios with amplified risk and return.',
+  },
+  'factor': {
+    heading: 'Factor',
+    blurb: 'Equity factor portfolios — momentum, value, and quality.',
   },
   'trend': {
     heading: 'Trend / CTA',

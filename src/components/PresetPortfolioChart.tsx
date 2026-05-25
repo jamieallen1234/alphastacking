@@ -3,6 +3,13 @@
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import {
+  computeBlendedGrade,
+  pointsToLetter as gradePointsToLetter,
+  downgradeOneLetter as gradeDowngradeOneLetter,
+  type ScorecardPayload,
+  type PortfolioLetterGrade,
+} from '@/lib/portfolioHubGrade'
 import ReturnLineChart from '@/components/ReturnLineChart'
 import {
   type PortfolioChartPayload,
@@ -259,25 +266,22 @@ interface PresetPortfolioChartProps {
     grossAlphaExposurePct: number
   } | null
   holdings?: Array<{ ticker: string; weightPct: number }>
+  /**
+   * Both 1Y and MAX payloads for blended scorecard (50% 1Y + 50% MAX).
+   * When provided, the overall grade uses the blend; sub-scores still show the active range.
+   * If only one range has data, that range is weighted 100%.
+   */
+  scorecardPayloads?: { payload1y: ScorecardPayload; payloadMax: ScorecardPayload } | null
 }
 
-type LetterGrade = 'A+' | 'A' | 'B+' | 'B' | 'C' | 'D'
+type LetterGrade = PortfolioLetterGrade
 
 function pointsToLetter(points: number): LetterGrade {
-  if (points >= 4.5) return 'A+'
-  if (points >= 3.5) return 'A'
-  if (points >= 2.5) return 'B+'
-  if (points >= 1.5) return 'B'
-  if (points >= 0.75) return 'C'
-  return 'D'
+  return gradePointsToLetter(points)
 }
 
 function downgradeOneLetter(grade: LetterGrade): LetterGrade {
-  if (grade === 'A+') return 'A'
-  if (grade === 'A') return 'B+'
-  if (grade === 'B+') return 'B'
-  if (grade === 'B') return 'C'
-  return 'D'
+  return gradeDowngradeOneLetter(grade)
 }
 
 /**
@@ -328,6 +332,7 @@ export default function PresetPortfolioChart({
   showScorecard = false,
   exposureSummary = null,
   holdings = [],
+  scorecardPayloads = null,
 }: PresetPortfolioChartProps) {
   const [asOfMs] = useState(() => Date.now())
   const pathname = usePathname()
@@ -440,23 +445,55 @@ export default function PresetPortfolioChart({
       : null
   const betaEdge = weightedBeta != null ? 1 - weightedBeta : null
 
-  const alphaGrade = alphaEdge != null ? pointsToLetter(alphaPoints(alphaEdge)) : null
-  const drawdownGrade = drawdownEdge != null ? pointsToLetter(drawdownPoints(drawdownEdge)) : null
-  const betaGrade = betaEdge != null ? pointsToLetter(betaPoints(betaEdge)) : null
-
-  const weightedScore =
-    alphaEdge != null && drawdownEdge != null && betaEdge != null
-      ? alphaPoints(alphaEdge) * 0.5 + drawdownPoints(drawdownEdge) * 0.3 + betaPoints(betaEdge) * 0.2
-      : null
-  const rawOverallGrade = weightedScore != null ? pointsToLetter(weightedScore) : null
   const underOneYear = (() => {
     const ts = Date.parse(`${limitingFirstTradeDate}T00:00:00Z`)
     if (!Number.isFinite(ts)) return false
     const days = (asOfMs - ts) / (1000 * 60 * 60 * 24)
     return days < 365
   })()
-  const overallGrade =
+
+  // When blended payloads are available, blend the sub-scores too so everything is consistent.
+  const blendEdge = (
+    get1y: (p: ScorecardPayload) => number | null,
+    getMax: (p: ScorecardPayload) => number | null,
+  ): number | null => {
+    if (scorecardPayloads == null) return null
+    const v1y = get1y(scorecardPayloads.payload1y)
+    const vMax = getMax(scorecardPayloads.payloadMax)
+    if (v1y != null && vMax != null) return v1y * 0.5 + vMax * 0.5
+    return vMax ?? v1y ?? null
+  }
+
+  const edgeAlpha = (p: ScorecardPayload): number | null =>
+    p.totalReturnPercent != null && p.benchmarkTotalReturnPercent != null && Math.abs(p.benchmarkTotalReturnPercent) > 0
+      ? (p.totalReturnPercent / p.benchmarkTotalReturnPercent - 1) * 100
+      : null
+
+  const edgeDrawdown = (p: ScorecardPayload): number | null =>
+    p.maxDrawdownPortfolioPercent != null && p.maxDrawdownBenchmarkPercent != null && Math.abs(p.maxDrawdownBenchmarkPercent) > 0
+      ? (Math.abs(p.maxDrawdownPortfolioPercent) / Math.abs(p.maxDrawdownBenchmarkPercent) - 1) * 100
+      : null
+
+  const blendedAlphaEdge = blendEdge(edgeAlpha, edgeAlpha) ?? alphaEdge
+  const blendedDrawdownEdge = blendEdge(edgeDrawdown, edgeDrawdown) ?? drawdownEdge
+
+  const alphaGrade = blendedAlphaEdge != null ? pointsToLetter(alphaPoints(blendedAlphaEdge)) : null
+  const drawdownGrade = blendedDrawdownEdge != null ? pointsToLetter(drawdownPoints(blendedDrawdownEdge)) : null
+  const betaGrade = betaEdge != null ? pointsToLetter(betaPoints(betaEdge)) : null
+
+  const weightedScore =
+    blendedAlphaEdge != null && blendedDrawdownEdge != null && betaEdge != null
+      ? alphaPoints(blendedAlphaEdge) * 0.5 + drawdownPoints(blendedDrawdownEdge) * 0.3 + betaPoints(betaEdge) * 0.2
+      : null
+  const rawOverallGrade = weightedScore != null ? pointsToLetter(weightedScore) : null
+  const rangeOverallGrade =
     rawOverallGrade != null && underOneYear ? downgradeOneLetter(rawOverallGrade) : rawOverallGrade
+
+  // Blended overall grade: 50% 1Y + 50% MAX when both payloads are available
+  const overallGrade =
+    scorecardPayloads != null && weightedBeta != null
+      ? computeBlendedGrade(scorecardPayloads.payload1y, scorecardPayloads.payloadMax, weightedBeta)
+      : rangeOverallGrade
 
   return (
     <div className={styles.chartBlock}>

@@ -1,4 +1,4 @@
-import { getCachedPresetChart1y } from '@/lib/getCachedPresetChart'
+import { getCachedPresetChart1y, getCachedPresetChartMax } from '@/lib/getCachedPresetChart'
 import {
   CA_ALPHA_STACK_PRESET_ID,
   CA_CORE_BH_PRESET_ID,
@@ -17,14 +17,12 @@ import {
   US_LETF_STACK_2X_PRESET_ID,
   US_LETF_STACK_3X_PRESET_ID,
 } from '@/lib/presets'
+import type { ScorecardPayload } from '@/lib/portfolioHubGrade'
 
 export interface PortfolioHubSlugData {
   excessAlphaPercent: number | null
-  totalReturnPercent: number | null
-  benchmarkTotalReturnPercent: number | null
-  maxDrawdownPortfolioPercent: number | null
-  maxDrawdownBenchmarkPercent: number | null
-  limitingFirstTradeDate: string
+  payload1y: ScorecardPayload
+  payloadMax: ScorecardPayload
 }
 
 /** Live hub slugs → preset IDs (1Y preset charts; alpha = portfolio TR% minus SPY TR% over the same window). */
@@ -47,17 +45,33 @@ const HUB_SLUG_TO_PRESET_ID: Record<string, string> = {
   'ca-alpha-stack': CA_ALPHA_STACK_PRESET_ID,
 }
 
+function toScorecardPayload(p: {
+  totalReturnPercent: number | null
+  benchmarkTotalReturnPercent: number | null
+  maxDrawdownPortfolioPercent: number | null
+  maxDrawdownBenchmarkPercent: number | null
+  limitingFirstTradeDate: string
+}): ScorecardPayload {
+  return {
+    totalReturnPercent: p.totalReturnPercent ?? null,
+    benchmarkTotalReturnPercent: p.benchmarkTotalReturnPercent ?? null,
+    maxDrawdownPortfolioPercent: p.maxDrawdownPortfolioPercent ?? null,
+    maxDrawdownBenchmarkPercent: p.maxDrawdownBenchmarkPercent ?? null,
+    limitingFirstTradeDate: p.limitingFirstTradeDate ?? '',
+  }
+}
+
 export async function loadPortfolioHubAlphaBySlug(): Promise<Record<string, PortfolioHubSlugData>> {
   const entries = await Promise.all(
     Object.entries(HUB_SLUG_TO_PRESET_ID).map(async ([slug, presetId]) => {
-      const payload = await getCachedPresetChart1y(presetId)
+      const [p1y, pMax] = await Promise.all([
+        getCachedPresetChart1y(presetId),
+        getCachedPresetChartMax(presetId),
+      ])
       const data: PortfolioHubSlugData = {
-        excessAlphaPercent: payload.excessAlphaPercent ?? null,
-        totalReturnPercent: payload.totalReturnPercent ?? null,
-        benchmarkTotalReturnPercent: payload.benchmarkTotalReturnPercent ?? null,
-        maxDrawdownPortfolioPercent: payload.maxDrawdownPortfolioPercent ?? null,
-        maxDrawdownBenchmarkPercent: payload.maxDrawdownBenchmarkPercent ?? null,
-        limitingFirstTradeDate: payload.limitingFirstTradeDate ?? '',
+        excessAlphaPercent: p1y.excessAlphaPercent ?? null,
+        payload1y: toScorecardPayload(p1y),
+        payloadMax: toScorecardPayload(pMax),
       }
       return [slug, data] as const
     })

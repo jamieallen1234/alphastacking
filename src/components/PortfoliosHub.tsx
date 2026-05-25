@@ -12,7 +12,7 @@ import {
   usPortfolioRoutes,
 } from '@/lib/portfolioRoutes'
 import type { PortfolioHubSlugData } from '@/lib/loadPortfolioHubAlpha'
-import { computePortfolioHubGrade, gradeRank, type PortfolioLetterGrade } from '@/lib/portfolioHubGrade'
+import { computeBlendedGrade, gradeRank, type PortfolioLetterGrade } from '@/lib/portfolioHubGrade'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
 
 export type PortfoliosHubEdition = 'us' | 'ca'
@@ -28,14 +28,7 @@ function formatHubAlpha(pct: number): string {
 
 function resolveGrade(route: PortfolioRouteDef, data: PortfolioHubSlugData | undefined): PortfolioLetterGrade | null {
   if (!data || route.weightedBeta == null) return null
-  return computePortfolioHubGrade(
-    data.totalReturnPercent,
-    data.benchmarkTotalReturnPercent,
-    data.maxDrawdownPortfolioPercent,
-    data.maxDrawdownBenchmarkPercent,
-    route.weightedBeta,
-    data.limitingFirstTradeDate,
-  )
+  return computeBlendedGrade(data.payload1y, data.payloadMax, route.weightedBeta)
 }
 
 function sortByGradeThenDate(

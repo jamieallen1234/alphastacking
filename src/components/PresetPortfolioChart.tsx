@@ -555,7 +555,7 @@ export default function PresetPortfolioChart({
           <div className={`${styles.metricBig} ${sharpeRatio != null && sharpeRatio >= 0 ? styles.metricBigPos : sharpeRatio != null ? styles.metricBigNeg : ''}`}>
             {sharpeRatio != null ? sharpeRatio.toFixed(2) : '—'}
           </div>
-          <div className={styles.metricSub}>Sharpe (4.5% rf)</div>
+          <div className={styles.metricSub}>Sharpe</div>
           <span className={styles.metricTooltip} role="tooltip">
             Excess return above the 4.5% risk-free rate divided by annualised volatility.{'\n'}Above 1.0 is good; above 2.0 is excellent.{'\n'}SPY typically scores around 0.5–0.8.
           </span>
@@ -564,7 +564,7 @@ export default function PresetPortfolioChart({
           <div className={`${styles.metricBig} ${sortinoRatio != null && sortinoRatio >= 0 ? styles.metricBigPos : sortinoRatio != null ? styles.metricBigNeg : ''}`}>
             {sortinoRatio != null ? sortinoRatio.toFixed(2) : '—'}
           </div>
-          <div className={styles.metricSub}>Sortino (4.5% rf)</div>
+          <div className={styles.metricSub}>Sortino</div>
           <span className={styles.metricTooltip} role="tooltip">
             Excess return above the 4.5% risk-free rate divided by annualised downside deviation (penalises losses only).{'\n'}Above 1.5 is good; above 3.0 is excellent.
           </span>

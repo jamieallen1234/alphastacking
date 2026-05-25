@@ -11,6 +11,8 @@ export const WHY_ALPHA_STACKING_SLUG = 'why-alpha-stacking'
 
 export const EFFICIENCY_GRADES_SLUG = 'efficiency-grades'
 
+export const PORTFOLIO_SCORE_SLUG = 'portfolio-score'
+
 export type LearnArticleMeta = {
   slug: string
   eyebrow: string
@@ -71,6 +73,14 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
     title: 'Capital, Alpha, and Stacked Efficiency grades explained',
     deck: 'What the letter grades on each ETF page measure, how they\u2019re calculated, and what they do not tell you.',
     publishedDate: '2026-04-25',
+  },
+  {
+    slug: PORTFOLIO_SCORE_SLUG,
+    eyebrow: 'Reference',
+    read: '~3 min read',
+    title: 'How portfolio scores work',
+    deck: 'What the A/B/C grade on each portfolio means, how it is calculated, and what it does not tell you.',
+    publishedDate: '2026-05-25',
   },
 ]
 

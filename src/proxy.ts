@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const REGION_COOKIE = 'region'
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Already on CA edition — nothing to do

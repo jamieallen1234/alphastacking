@@ -55,6 +55,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={`${playfair.variable} ${dmMono.variable} ${dmSans.variable}`}
     >
       <head>

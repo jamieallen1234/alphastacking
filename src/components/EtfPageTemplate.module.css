@@ -15,7 +15,7 @@
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(232, 228, 220, 0.62);
+  color: rgba(var(--rgb-text), 0.62);
   margin-bottom: 1rem;
   display: inline-block;
   text-decoration: none;
@@ -48,7 +48,7 @@
 .categoryLine {
   font-size: 13px;
   font-weight: 400;
-  color: rgba(232, 228, 220, 0.74);
+  color: rgba(var(--rgb-text), 0.74);
   line-height: 1.55;
   max-width: 50rem;
   margin: 0 0 0.75rem;
@@ -62,7 +62,7 @@
 .lede {
   font-size: 14px;
   font-weight: 400;
-  color: rgba(232, 228, 220, 0.78);
+  color: rgba(var(--rgb-text), 0.78);
   line-height: 1.65;
   max-width: 50rem;
   margin-bottom: 1.2rem;
@@ -108,7 +108,7 @@
   font-size: 11px;
   line-height: 1.55;
   font-weight: 300;
-  color: rgba(232, 228, 220, 0.42);
+  color: rgba(var(--rgb-text), 0.42);
 }
 
 .bodySection {
@@ -128,7 +128,7 @@
   margin: 0 0 0.85rem;
   font-size: 14px;
   line-height: 1.65;
-  color: rgba(232, 228, 220, 0.75);
+  color: rgba(var(--rgb-text), 0.75);
 }
 
 .bodySection a {
@@ -150,7 +150,7 @@
   margin: 0 0 0.45rem;
   font-size: 14px;
   line-height: 1.6;
-  color: rgba(232, 228, 220, 0.75);
+  color: rgba(var(--rgb-text), 0.75);
 }
 
 .similarEtfTableWrap {
@@ -164,7 +164,7 @@
   width: 100%;
   border-collapse: collapse;
   min-width: 640px;
-  background: rgba(232, 228, 220, 0.015);
+  background: rgba(var(--rgb-text), 0.015);
 }
 
 .similarEtfTable th,
@@ -174,7 +174,7 @@
   border-bottom: 0.5px solid var(--color-border-faint);
   font-size: 13px;
   line-height: 1.5;
-  color: rgba(232, 228, 220, 0.78);
+  color: rgba(var(--rgb-text), 0.78);
   vertical-align: top;
 }
 
@@ -184,7 +184,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-muted);
-  background: rgba(232, 228, 220, 0.03);
+  background: rgba(var(--rgb-text), 0.03);
 }
 
 .similarEtfTable tr:last-child td {

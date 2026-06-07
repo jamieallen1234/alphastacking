@@ -68,7 +68,7 @@
   text-transform: none;
   line-height: 1.45;
   white-space: pre-line;
-  color: rgba(232, 228, 220, 0.88);
+  color: rgba(var(--rgb-text), 0.88);
   background: #121214;
   border: 0.5px solid var(--color-border);
   border-radius: 2px;

@@ -41,7 +41,7 @@
 
 .empty {
   font-size: 14px;
-  color: rgba(232, 228, 220, 0.55);
+  color: rgba(var(--rgb-text), 0.55);
   max-width: 44rem;
   margin-bottom: 2.5rem;
 }
@@ -90,7 +90,7 @@
   padding: 1.1rem 1.25rem 1.2rem;
   border: 0.5px solid var(--color-border);
   border-radius: 2px;
-  background: rgba(232, 228, 220, 0.02);
+  background: rgba(var(--rgb-text), 0.02);
   transition:
     border-color 0.15s ease,
     background 0.15s ease;
@@ -140,7 +140,7 @@
   font-family: var(--font-sans);
   font-size: 13px;
   line-height: 1.6;
-  color: rgba(232, 228, 220, 0.58);
+  color: rgba(var(--rgb-text), 0.58);
   margin: 0 0 0.75rem;
 }
 
@@ -162,7 +162,7 @@
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(232, 228, 220, 0.62);
+  color: rgba(var(--rgb-text), 0.62);
   text-decoration: none;
 }
 

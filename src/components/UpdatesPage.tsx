@@ -33,7 +33,13 @@ export default function UpdatesPage({ edition }: { edition: UpdatesPageEdition }
                       <Link href={entry.href} className={styles.entryCard}>
                         <div className={styles.entryMeta}>
                           <span className={styles.entryKind}>
-                            {entry.kind === 'etf' ? 'ETF' : entry.kind === 'portfolio' ? 'Portfolio' : 'Learn'}
+                            {entry.kind === 'etf'
+                              ? 'ETF'
+                              : entry.kind === 'portfolio'
+                                ? 'Portfolio'
+                                : entry.kind === 'feature'
+                                  ? 'Site update'
+                                  : 'Learn'}
                           </span>
                           {entry.ticker ? (
                             <span className={styles.entryTicker}>{entry.ticker}</span>
@@ -42,7 +48,12 @@ export default function UpdatesPage({ edition }: { edition: UpdatesPageEdition }
                         <h3 className={styles.entryTitle}>{entry.title}</h3>
                         <p className={styles.entryBlurb}>{entry.blurb}</p>
                         <span className={styles.entryCta}>
-                          {entry.kind === 'learn' ? 'Read article' : 'View page'} &rarr;
+                          {entry.kind === 'learn'
+                            ? 'Read article'
+                            : entry.kind === 'feature'
+                              ? 'Try it now'
+                              : 'View page'}{' '}
+                          &rarr;
                         </span>
                       </Link>
                     </li>

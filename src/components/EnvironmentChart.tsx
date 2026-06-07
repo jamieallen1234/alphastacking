@@ -89,7 +89,7 @@ export default function EnvironmentChart({ timestamps, values, height = 220 }: E
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'rgba(232,228,220,0.35)',
+          color: 'var(--color-text-faint)',
           fontFamily: 'var(--font-mono)',
           fontSize: 11,
         }}
@@ -190,7 +190,7 @@ export default function EnvironmentChart({ timestamps, values, height = 220 }: E
           <polyline
             points={buildPoints()}
             fill="none"
-            stroke="rgba(232,228,220,0.7)"
+            stroke="rgba(var(--rgb-text), 0.7)"
             strokeWidth={1}
             strokeLinejoin="round"
             vectorEffect="nonScalingStroke"
@@ -202,7 +202,7 @@ export default function EnvironmentChart({ timestamps, values, height = 220 }: E
               cx={tsToX(timestamps[hi]!)}
               cy={valToY(values[hi]!)}
               r={3.5}
-              fill={hoverEnv ? ENV_COLORS[hoverEnv] : 'rgba(232,228,220,0.8)'}
+              fill={hoverEnv ? ENV_COLORS[hoverEnv] : 'rgba(var(--rgb-text), 0.8)'}
             />
           ) : null}
         </svg>

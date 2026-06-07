@@ -52,7 +52,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${dmMono.variable} ${dmSans.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${playfair.variable} ${dmMono.variable} ${dmSans.variable}`}
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('theme')||'dark';document.documentElement.dataset.theme=t;}catch(e){}})();",
+          }}
+        />
+      </head>
       <body>
         <SiteJsonLd />
         {children}

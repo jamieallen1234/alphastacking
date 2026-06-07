@@ -23,8 +23,8 @@
 }
 
 .popover {
-  --tour-popover-edge: rgba(232, 228, 220, 0.18);
-  --tour-arrow-stroke: rgba(232, 228, 220, 0.22);
+  --tour-popover-edge: rgba(var(--rgb-text), 0.18);
+  --tour-arrow-stroke: rgba(var(--rgb-text), 0.22);
   --tour-arrow-half: 16px;
   position: absolute;
   z-index: 1;
@@ -91,7 +91,7 @@
 }
 
 .popover:focus {
-  outline: 2px solid rgba(232, 228, 220, 0.35);
+  outline: 2px solid rgba(var(--rgb-text), 0.35);
   outline-offset: 2px;
 }
 
@@ -121,7 +121,7 @@
   z-index: 2;
   font-size: 12px;
   line-height: 1.5;
-  color: rgba(232, 228, 220, 0.45);
+  color: rgba(var(--rgb-text), 0.45);
   margin: -0.35rem 0 1rem;
 }
 
@@ -150,18 +150,18 @@
 
 .popoverBtn:hover {
   color: var(--color-text);
-  border-color: rgba(232, 228, 220, 0.28);
+  border-color: rgba(var(--rgb-text), 0.28);
 }
 
 .popoverBtnPrimary {
-  background: var(--color-gold);
-  color: var(--color-bg);
+  background: var(--color-gold-fill);
+  color: var(--color-gold-fill-text);
   border-color: transparent;
 }
 
 .popoverBtnPrimary:hover {
-  background: var(--color-gold-hover);
-  color: var(--color-bg);
+  background: var(--color-gold-fill-hover);
+  color: var(--color-gold-fill-text);
 }
 
 .popoverBtnPrimary:disabled {
@@ -199,7 +199,7 @@
 }
 
 .helperLink {
-  color: rgba(232, 228, 220, 0.55);
+  color: rgba(var(--rgb-text), 0.55);
   background: none;
   border: none;
   padding: 0;

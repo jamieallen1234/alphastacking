@@ -2,7 +2,7 @@
   border: 0.5px solid var(--color-border);
   padding: 1.5rem 1.8rem;
   margin-bottom: 2.5rem;
-  background: rgba(232, 228, 220, 0.02);
+  background: rgba(var(--rgb-text), 0.02);
 }
 
 .builderLabel {
@@ -43,7 +43,7 @@
   font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(232, 228, 220, 0.4);
+  color: rgba(var(--rgb-text), 0.4);
 }
 
 .input,
@@ -79,8 +79,8 @@
 }
 
 .btn:hover:not(:disabled) {
-  background: rgba(201, 168, 76, 0.12);
-  border-color: rgba(201, 168, 76, 0.45);
+  background: rgba(var(--rgb-gold), 0.12);
+  border-color: rgba(var(--rgb-gold), 0.45);
 }
 
 .btn:disabled {

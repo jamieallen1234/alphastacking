@@ -11,8 +11,9 @@ import type { EtfDynamicDef } from '@/lib/etfDynamicRegistryTypes'
 import { LEARN_ARTICLES } from '@/lib/learnArticles'
 import { caPortfolioRoutes, usPortfolioRoutes } from '@/lib/portfolioRoutes'
 import type { PortfolioRouteDef } from '@/lib/portfolioRoutes'
+import { homePath } from '@/lib/siteRegion'
 
-export type UpdateKind = 'etf' | 'portfolio' | 'learn'
+export type UpdateKind = 'etf' | 'portfolio' | 'learn' | 'feature'
 
 export interface UpdateEntry {
   kind: UpdateKind
@@ -105,6 +106,35 @@ function portfolioEntries(
   return out
 }
 
+interface SiteFeatureDef {
+  date: string
+  slug: string
+  title: string
+  blurb: string
+}
+
+/** One-off site features worth announcing on `/updates`, outside the registry-driven feeds. */
+const SITE_FEATURES: SiteFeatureDef[] = [
+  {
+    date: '2026-06-07',
+    slug: 'light-mode',
+    title: 'Light mode',
+    blurb: 'Switch between dark and light themes with the toggle in the nav bar. Your choice is remembered on your next visit.',
+  },
+]
+
+function featureEntries(isCa: boolean): UpdateEntry[] {
+  const home = homePath(isCa)
+  return SITE_FEATURES.map((f) => ({
+    kind: 'feature' as const,
+    date: f.date,
+    slug: f.slug,
+    title: f.title,
+    href: home,
+    blurb: f.blurb,
+  }))
+}
+
 function learnEntries(isCa: boolean): UpdateEntry[] {
   return LEARN_ARTICLES.map((a) => ({
     kind: 'learn' as const,
@@ -117,9 +147,10 @@ function learnEntries(isCa: boolean): UpdateEntry[] {
 }
 
 function kindRank(k: UpdateKind): number {
-  if (k === 'portfolio') return 0
-  if (k === 'learn') return 1
-  return 2
+  if (k === 'feature') return 0
+  if (k === 'portfolio') return 1
+  if (k === 'learn') return 2
+  return 3
 }
 
 function compareEntries(a: UpdateEntry, b: UpdateEntry): number {
@@ -134,10 +165,12 @@ export function getUpdatesFeed(edition: 'us' | 'ca'): UpdateDay[] {
   const entries: UpdateEntry[] = []
 
   if (edition === 'us') {
+    entries.push(...featureEntries(false))
     entries.push(...portfolioEntries(usPortfolioRoutes, '/portfolios'))
     entries.push(...learnEntries(false))
     entries.push(...etfEntries(US_ETF_DYNAMIC_REGISTRY, '/us-etfs'))
   } else {
+    entries.push(...featureEntries(true))
     entries.push(...portfolioEntries(caPortfolioRoutes, '/ca/portfolios'))
     entries.push(...portfolioEntries(usPortfolioRoutes, '/portfolios'))
     entries.push(...learnEntries(true))

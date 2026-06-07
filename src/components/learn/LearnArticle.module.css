@@ -33,7 +33,7 @@
 }
 
 .shellSeriesLink {
-  color: rgba(232, 228, 220, 0.72);
+  color: rgba(var(--rgb-text), 0.72);
   text-decoration: none;
   line-height: 1.35;
 }
@@ -43,11 +43,11 @@
 }
 
 .shellSeriesMuted {
-  color: rgba(232, 228, 220, 0.32);
+  color: var(--color-text-faint);
 }
 
 .shellSeriesSep {
-  color: rgba(232, 228, 220, 0.22);
+  color: var(--color-text-ghost);
   user-select: none;
 }
 
@@ -67,19 +67,19 @@
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(232, 228, 220, 0.72);
+  color: rgba(var(--rgb-text), 0.72);
   text-decoration: none;
 }
 
 .shellBack:hover {
   color: var(--color-gold-hover);
-  border-color: rgba(232, 228, 220, 0.22);
+  border-color: var(--color-text-ghost);
 }
 
 .shellBackArrow {
   font-size: 13px;
   line-height: 1;
-  color: rgba(232, 228, 220, 0.88);
+  color: rgba(var(--rgb-text), 0.88);
 }
 
 .shellBack:hover .shellBackArrow {
@@ -118,7 +118,7 @@
   font-weight: 400;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(232, 228, 220, 0.38);
+  color: var(--color-text-faint);
 }
 
 .title {
@@ -159,7 +159,7 @@
   font-size: 15px;
   font-weight: 400;
   line-height: 1.72;
-  color: rgba(232, 228, 220, 0.72);
+  color: rgba(var(--rgb-text), 0.72);
   margin-bottom: 1rem;
 }
 
@@ -169,7 +169,7 @@
 
 .body strong {
   font-weight: 500;
-  color: rgba(232, 228, 220, 0.9);
+  color: rgba(var(--rgb-text), 0.9);
 }
 
 .inlineLink {
@@ -187,7 +187,7 @@
   padding: 0;
   border: 0.5px solid var(--color-border);
   border-radius: 2px;
-  background: rgba(232, 228, 220, 0.03);
+  background: rgba(var(--rgb-text), 0.03);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2) inset;
 }
 
@@ -196,7 +196,7 @@
   grid-template-columns: minmax(6.5rem, 8.5rem) 1fr;
   gap: 0.65rem 1.25rem;
   padding: 0.75rem 1.15rem;
-  border-bottom: 0.5px solid rgba(232, 228, 220, 0.08);
+  border-bottom: 0.5px solid rgba(var(--rgb-text), 0.08);
   align-items: start;
 }
 
@@ -221,7 +221,7 @@
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.65;
-  color: rgba(232, 228, 220, 0.72);
+  color: rgba(var(--rgb-text), 0.72);
 }
 
 @media (max-width: 520px) {
@@ -240,7 +240,7 @@
   padding: 1.35rem 1.5rem 1.5rem;
   border: 0.5px solid var(--color-border);
   border-radius: 2px;
-  background: rgba(232, 228, 220, 0.03);
+  background: rgba(var(--rgb-text), 0.03);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2) inset;
 }
 
@@ -267,7 +267,7 @@
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.68;
-  color: rgba(232, 228, 220, 0.7);
+  color: rgba(var(--rgb-text), 0.7);
   margin: 0;
 }
 
@@ -288,13 +288,13 @@
   padding: 1.25rem 1.35rem;
   border: 0.5px solid var(--color-border);
   border-radius: 2px;
-  background: rgba(232, 228, 220, 0.02);
+  background: rgba(var(--rgb-text), 0.02);
 }
 
 .compareCardFeatured {
   border-color: var(--color-gold-border);
   background: var(--color-gold-dim);
-  box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.08) inset;
+  box-shadow: 0 0 0 1px rgba(var(--rgb-gold), 0.08) inset;
 }
 
 .compareBadge {
@@ -307,15 +307,15 @@
   padding: 0.35rem 0.55rem;
   margin-bottom: 0.65rem;
   border-radius: 2px;
-  border: 0.5px solid rgba(232, 228, 220, 0.14);
-  color: rgba(232, 228, 220, 0.55);
-  background: rgba(232, 228, 220, 0.04);
+  border: 0.5px solid rgba(var(--rgb-text), 0.14);
+  color: rgba(var(--rgb-text), 0.55);
+  background: rgba(var(--rgb-text), 0.04);
 }
 
 .compareBadgeGold {
   border-color: var(--color-gold-border);
   color: var(--color-gold);
-  background: rgba(201, 168, 76, 0.08);
+  background: rgba(var(--rgb-gold), 0.08);
 }
 
 .compareTitle {
@@ -330,7 +330,7 @@
   font-family: var(--font-sans);
   font-size: 13px;
   line-height: 1.65;
-  color: rgba(232, 228, 220, 0.68);
+  color: rgba(var(--rgb-text), 0.68);
   margin: 0;
 }
 
@@ -376,7 +376,7 @@
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(232, 228, 220, 0.5);
+  color: rgba(var(--rgb-text), 0.5);
   text-decoration: none;
 }
 

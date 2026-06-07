@@ -12,7 +12,7 @@
   max-width: 18rem;
   padding: 0.45rem 0.55rem;
   border: 0.5px solid var(--color-border);
-  background: rgba(14, 14, 16, 0.96);
+  background: rgba(var(--rgb-bg-elevated), 0.96);
   font-family: var(--font-mono);
   font-size: 10px;
   line-height: 1.45;
@@ -34,7 +34,7 @@
 }
 
 .tooltipLabel {
-  color: rgba(232, 228, 220, 0.45);
+  color: rgba(var(--rgb-text), 0.45);
 }
 
 .tooltipVal {
@@ -43,7 +43,7 @@
 }
 
 .reticleLine {
-  stroke: rgba(232, 228, 220, 0.2);
+  stroke: rgba(var(--rgb-text), 0.2);
   stroke-width: 1;
   stroke-dasharray: 3 3;
   vector-effect: non-scaling-stroke;

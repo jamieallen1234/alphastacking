@@ -1,0 +1,19 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0.5px solid var(--color-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.toggle:hover {
+  color: var(--color-text);
+  border-color: var(--color-gold-border);
+  background: var(--color-gold-dim);
+}

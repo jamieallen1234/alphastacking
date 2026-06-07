@@ -71,8 +71,8 @@
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: var(--color-gold);
-  color: var(--color-bg);
+  background: var(--color-gold-fill);
+  color: var(--color-gold-fill-text);
   border: none;
   padding: 0.9rem 2rem;
   cursor: pointer;
@@ -82,7 +82,7 @@
 }
 
 .btnPrimary:hover {
-  background: var(--color-gold-hover);
+  background: var(--color-gold-fill-hover);
 }
 
 @media (max-width: 768px) {

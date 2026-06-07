@@ -65,8 +65,8 @@
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-bg);
-  background: var(--color-gold);
+  color: var(--color-gold-fill-text);
+  background: var(--color-gold-fill);
   border: none;
   border-radius: 3px;
   padding: 0.65rem 1.25rem;
@@ -75,7 +75,7 @@
 }
 
 .submit:hover:not(:disabled) {
-  background: var(--color-gold-hover);
+  background: var(--color-gold-fill-hover);
 }
 
 .submit:disabled {

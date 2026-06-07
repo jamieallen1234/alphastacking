@@ -6,7 +6,7 @@
   max-width: 40rem;
   font-size: 13px;
   line-height: 1.65;
-  color: rgba(232, 228, 220, 0.55);
+  color: rgba(var(--rgb-text), 0.55);
 }
 
 .wrapBuilderNoDivider {
@@ -16,7 +16,7 @@
   max-width: 40rem;
   font-size: 13px;
   line-height: 1.65;
-  color: rgba(232, 228, 220, 0.55);
+  color: rgba(var(--rgb-text), 0.55);
 }
 
 /* ETF detail — band above site footer (outside elevated section so it stays visible) */
@@ -34,7 +34,7 @@
   margin: 0;
   font-size: 14px;
   line-height: 1.65;
-  color: rgba(232, 228, 220, 0.78);
+  color: rgba(var(--rgb-text), 0.78);
 }
 
 @media (max-width: 900px) {

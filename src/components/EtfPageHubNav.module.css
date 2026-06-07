@@ -34,9 +34,9 @@
   font-size: 10px;
   letter-spacing: 0.04em;
   font-weight: 400;
-  color: rgba(232, 228, 220, 0.6);
-  background: rgba(232, 228, 220, 0.04);
-  border: 0.5px solid rgba(232, 228, 220, 0.22);
+  color: rgba(var(--rgb-text), 0.6);
+  background: rgba(var(--rgb-text), 0.04);
+  border: 0.5px solid rgba(var(--rgb-text), 0.22);
   border-radius: 2px;
   padding: 0.3rem 1.6rem 0.3rem 0.5rem;
   cursor: pointer;
@@ -51,8 +51,8 @@
 .trigger:focus {
   outline: none;
   color: var(--color-gold);
-  border-color: rgba(201, 168, 76, 0.5);
-  background-color: rgba(201, 168, 76, 0.06);
+  border-color: rgba(var(--rgb-gold), 0.5);
+  background-color: rgba(var(--rgb-gold), 0.06);
 }
 
 .list {
@@ -96,6 +96,6 @@
 }
 
 .option:hover {
-  background: rgba(201, 168, 76, 0.12);
+  background: rgba(var(--rgb-gold), 0.12);
   color: var(--color-gold);
 }

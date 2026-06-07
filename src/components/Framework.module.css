@@ -46,14 +46,14 @@
   font-size: 16px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(232, 228, 220, 0.8);
+  color: rgba(var(--rgb-text), 0.8);
 }
 
 .pillars {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  background: rgba(232, 228, 220, 0.08);
+  background: rgba(var(--rgb-text), 0.08);
 }
 
 .pillar {

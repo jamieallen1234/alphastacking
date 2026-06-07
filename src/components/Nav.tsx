@@ -11,6 +11,7 @@ import {
   usEtfHubPath,
 } from '@/lib/siteRegion'
 import { useSiteRegion } from '@/lib/useSiteRegion'
+import ThemeToggle from './ThemeToggle'
 import styles from './Nav.module.css'
 
 export default function Nav() {
@@ -62,6 +63,9 @@ export default function Nav() {
           </li>
           <li>
             <Link href={portfolioBuilder}>Builder</Link>
+          </li>
+          <li>
+            <ThemeToggle />
           </li>
         </ul>
       </nav>

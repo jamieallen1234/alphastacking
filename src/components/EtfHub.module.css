@@ -36,7 +36,7 @@
 .lede {
   font-size: 14px;
   font-weight: 300;
-  color: rgba(232, 228, 220, 0.5);
+  color: rgba(var(--rgb-text), 0.5);
   max-width: 36rem;
   line-height: 1.6;
   margin: 0 0 2.5rem;
@@ -75,24 +75,24 @@
 .etfRow {
   display: block;
   padding: 0.95rem 1rem;
-  border: 0.5px solid rgba(232, 228, 220, 0.12);
+  border: 0.5px solid rgba(var(--rgb-text), 0.12);
   text-decoration: none;
   border-radius: 3px;
   background: linear-gradient(
     165deg,
-    rgba(232, 228, 220, 0.04) 0%,
-    rgba(232, 228, 220, 0.015) 100%
+    rgba(var(--rgb-text), 0.04) 0%,
+    rgba(var(--rgb-text), 0.015) 100%
   );
   transition: border-color 0.2s, background 0.2s;
 }
 
 /* Hub-only rows use <div>; write-ups use <a>. Same card hover for both. */
 .etfRow:hover {
-  border-color: rgba(201, 168, 76, 0.45);
+  border-color: rgba(var(--rgb-gold), 0.45);
   background: linear-gradient(
     165deg,
-    rgba(201, 168, 76, 0.11) 0%,
-    rgba(232, 228, 220, 0.03) 100%
+    rgba(var(--rgb-gold), 0.11) 0%,
+    rgba(var(--rgb-text), 0.03) 100%
   );
 }
 
@@ -101,7 +101,7 @@ a.etfRow {
 }
 
 a.etfRow:focus-visible {
-  outline: 1px solid rgba(201, 168, 76, 0.55);
+  outline: 1px solid rgba(var(--rgb-gold), 0.55);
   outline-offset: 2px;
 }
 
@@ -115,7 +115,7 @@ a.etfRow:focus-visible {
 .etfDesc {
   font-size: 13px;
   line-height: 1.55;
-  color: rgba(232, 228, 220, 0.72);
+  color: rgba(var(--rgb-text), 0.72);
 }
 
 .category {
@@ -141,7 +141,7 @@ a.etfRow:focus-visible {
 .categorySubtitle {
   font-size: 13px;
   line-height: 1.6;
-  color: rgba(232, 228, 220, 0.5);
+  color: rgba(var(--rgb-text), 0.5);
   max-width: 36rem;
   margin: 0 0 0.75rem;
 }
@@ -149,7 +149,7 @@ a.etfRow:focus-visible {
 .comingSoon {
   font-size: 13px;
   font-weight: 300;
-  color: rgba(232, 228, 220, 0.38);
+  color: var(--color-text-faint);
   margin: 0;
   font-style: italic;
 }

@@ -40,7 +40,7 @@
 .card {
   border: 0.5px solid var(--color-border);
   padding: 1rem 1.15rem;
-  background: rgba(232, 228, 220, 0.02);
+  background: rgba(var(--rgb-text), 0.02);
 }
 
 .cardLabel {

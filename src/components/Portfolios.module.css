@@ -32,7 +32,7 @@
 }
 
 .disclaimer {
-  background: rgba(232, 228, 220, 0.04);
+  background: rgba(var(--rgb-text), 0.04);
   border: 0.5px solid var(--color-border);
   padding: 0.9rem 1.2rem;
   margin-bottom: 2rem;
@@ -52,7 +52,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 400;
-  color: rgba(232, 228, 220, 0.4);
+  color: rgba(var(--rgb-text), 0.4);
   margin: 0;
   line-height: 1.6;
   letter-spacing: 0.02em;
@@ -73,7 +73,7 @@
   cursor: pointer;
   border: none;
   background: none;
-  color: rgba(232, 228, 220, 0.4);
+  color: rgba(var(--rgb-text), 0.4);
   border-bottom: 2px solid transparent;
   margin-bottom: -0.5px;
   transition: all 0.2s;
@@ -99,7 +99,7 @@
 }
 
 .card:hover {
-  border-color: rgba(201, 168, 76, 0.4);
+  border-color: rgba(var(--rgb-gold), 0.4);
 }
 
 .cardFeatured {
@@ -127,7 +127,7 @@
 .cardDesc {
   font-size: 12px;
   font-weight: 300;
-  color: rgba(232, 228, 220, 0.45);
+  color: rgba(var(--rgb-text), 0.45);
   margin-bottom: 1.5rem;
   line-height: 1.6;
 }
@@ -163,7 +163,7 @@
 
 .metricLabel {
   font-size: 10px;
-  color: rgba(232, 228, 220, 0.35);
+  color: var(--color-text-faint);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }

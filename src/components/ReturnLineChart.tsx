@@ -90,7 +90,7 @@ export default function ReturnLineChart({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'rgba(232, 228, 220, 0.35)',
+          color: 'var(--color-text-faint)',
           fontFamily: 'var(--font-mono)',
           fontSize: 11,
         }}
@@ -108,7 +108,7 @@ export default function ReturnLineChart({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'rgba(232, 228, 220, 0.35)',
+          color: 'var(--color-text-faint)',
           fontFamily: 'var(--font-mono)',
           fontSize: 11,
         }}

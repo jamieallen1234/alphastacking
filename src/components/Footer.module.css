@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 0.5px solid rgba(232, 228, 220, 0.06);
+  border-top: 0.5px solid rgba(var(--rgb-text), 0.06);
   background: var(--color-bg-footer);
 }
 
@@ -38,12 +38,12 @@
 .logo {
   font-family: var(--font-mono);
   font-size: 13px;
-  color: rgba(232, 228, 220, 0.3);
+  color: var(--color-text-faint);
   letter-spacing: 0.08em;
 }
 
 .logo span {
-  color: rgba(201, 168, 76, 0.5);
+  color: rgba(var(--rgb-gold), 0.5);
 }
 
 .regionToggle {
@@ -59,7 +59,7 @@
 .regionBtn {
   cursor: pointer;
   padding: 0.3rem 0.6rem;
-  border: 0.5px solid rgba(232, 228, 220, 0.15);
+  border: 0.5px solid rgba(var(--rgb-text), 0.15);
   background: none;
   color: var(--color-text-faint);
   font-family: var(--font-mono);

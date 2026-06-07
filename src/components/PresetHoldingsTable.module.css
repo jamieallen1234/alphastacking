@@ -8,7 +8,7 @@
   border-collapse: collapse;
   font-size: 13px;
   font-weight: 300;
-  color: rgba(232, 228, 220, 0.85);
+  color: rgba(var(--rgb-text), 0.85);
 }
 
 .table th {
@@ -17,7 +17,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-align: left;
-  color: rgba(232, 228, 220, 0.45);
+  color: rgba(var(--rgb-text), 0.45);
   padding: 0.5rem 0.75rem 0.65rem 0;
   border-bottom: 0.5px solid var(--color-border);
 }
@@ -35,7 +35,7 @@
 }
 
 .blurb {
-  color: rgba(232, 228, 220, 0.5);
+  color: rgba(var(--rgb-text), 0.5);
   max-width: 22rem;
   line-height: 1.5;
 }
@@ -51,7 +51,7 @@
 .betaRowText {
   margin: 0;
   font-size: 12px;
-  color: rgba(232, 228, 220, 0.5);
+  color: rgba(var(--rgb-text), 0.5);
   flex: 1 1 12rem;
   min-width: 0;
 }

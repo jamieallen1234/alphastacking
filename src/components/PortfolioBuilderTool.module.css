@@ -1,6 +1,6 @@
 .panel {
   border: 0.5px solid var(--color-border);
-  background: rgba(232, 228, 220, 0.02);
+  background: rgba(var(--rgb-text), 0.02);
   padding: 1.25rem 1.25rem 1.1rem;
   border-radius: 3px;
 }
@@ -35,8 +35,8 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(201, 162, 39, 0.35) 20%,
-    rgba(201, 162, 39, 0.35) 80%,
+    rgba(var(--rgb-gold-deep), 0.35) 20%,
+    rgba(var(--rgb-gold-deep), 0.35) 80%,
     transparent 100%
   );
 }
@@ -79,7 +79,7 @@
   font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(232, 228, 220, 0.45);
+  color: rgba(var(--rgb-text), 0.45);
   padding-top: 0;
   line-height: 1.2;
   min-width: 0;
@@ -126,7 +126,7 @@
   min-inline-size: 0;
   border: 0.5px solid var(--color-border);
   border-radius: 3px;
-  background: rgba(232, 228, 220, 0.025);
+  background: rgba(var(--rgb-text), 0.025);
   padding: 0.45rem 0 0.5rem;
   margin: 0;
 }
@@ -176,7 +176,7 @@
 
 /** Keep total output chrome visible in both valid and mismatch states. */
 .totalHolding .totalOutputMismatch {
-  border-color: rgba(226, 75, 74, 0.45);
+  border-color: rgba(var(--rgb-red), 0.45);
 }
 
 .totalFieldRow .holdingRow {
@@ -223,7 +223,7 @@
 }
 
 .betaReadoutMuted {
-  color: rgba(232, 228, 220, 0.55);
+  color: rgba(var(--rgb-text), 0.55);
 }
 
 .totalOutput {
@@ -235,7 +235,7 @@
   padding: 0.4rem 0.55rem;
   border: 0.5px solid var(--color-border);
   border-radius: 3px;
-  background: rgba(232, 228, 220, 0.04);
+  background: rgba(var(--rgb-text), 0.04);
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--color-text);
@@ -244,7 +244,7 @@
 }
 
 .totalOutputMismatch {
-  border-color: rgba(226, 75, 74, 0.4);
+  border-color: rgba(var(--rgb-red), 0.4);
 }
 
 .input {
@@ -359,7 +359,7 @@
   box-sizing: border-box;
   border: 0.5px solid var(--color-border);
   border-radius: 3px;
-  background: rgba(232, 228, 220, 0.03);
+  background: rgba(var(--rgb-text), 0.03);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 12px;
@@ -392,11 +392,11 @@
 }
 
 .customSelectOption:hover {
-  background: rgba(201, 168, 76, 0.12);
+  background: rgba(var(--rgb-gold), 0.12);
 }
 
 .customSelectOptionSelected {
-  background: rgba(201, 168, 76, 0.18);
+  background: rgba(var(--rgb-gold), 0.18);
   color: var(--color-gold);
 }
 
@@ -406,7 +406,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border: 0.5px solid var(--color-border);
-  background: rgba(232, 228, 220, 0.03);
+  background: rgba(var(--rgb-text), 0.03);
   color: var(--color-text);
   padding: 0.5rem 0.7rem;
   cursor: pointer;
@@ -456,13 +456,13 @@
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(232, 228, 220, 0.55);
+  color: rgba(var(--rgb-text), 0.55);
   margin-right: 0.2rem;
 }
 
 .rangeBtn {
   border: 0.5px solid var(--color-border);
-  background: rgba(232, 228, 220, 0.03);
+  background: rgba(var(--rgb-text), 0.03);
   color: var(--color-text-muted);
   font-family: var(--font-mono);
   font-size: 10px;

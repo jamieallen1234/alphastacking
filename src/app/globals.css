@@ -1,17 +1,26 @@
 :root {
+  --rgb-text: 232, 228, 220;
+  --rgb-gold: 201, 168, 76;
+  --rgb-gold-deep: 201, 162, 39;
+  --rgb-red: 226, 75, 74;
+  --rgb-bg-elevated: 14, 14, 16;
+
   --color-bg: #0a0a0b;
   --color-bg-elevated: #0e0e10;
   --color-bg-footer: #070708;
-  --color-text: #e8e4dc;
-  --color-text-muted: rgba(232, 228, 220, 0.55);
-  --color-text-faint: rgba(232, 228, 220, 0.35);
-  --color-text-ghost: rgba(232, 228, 220, 0.25);
+  --color-text: rgb(var(--rgb-text));
+  --color-text-muted: rgba(var(--rgb-text), 0.55);
+  --color-text-faint: rgba(var(--rgb-text), 0.35);
+  --color-text-ghost: rgba(var(--rgb-text), 0.25);
   --color-gold: #c9a84c;
   --color-gold-hover: #dbb95e;
-  --color-gold-dim: rgba(201, 168, 76, 0.06);
-  --color-gold-border: rgba(201, 168, 76, 0.3);
-  --color-border: rgba(232, 228, 220, 0.1);
-  --color-border-faint: rgba(232, 228, 220, 0.08);
+  --color-gold-fill: var(--color-gold);
+  --color-gold-fill-hover: var(--color-gold-hover);
+  --color-gold-fill-text: var(--color-bg);
+  --color-gold-dim: rgba(var(--rgb-gold), 0.06);
+  --color-gold-border: rgba(var(--rgb-gold), 0.3);
+  --color-border: rgba(var(--rgb-text), 0.1);
+  --color-border-faint: rgba(var(--rgb-text), 0.08);
   --color-green: #5dca8a;
   --color-red: #e24b4a;
   --color-blue: #85b7eb;
@@ -20,6 +29,29 @@
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
   /** Single column width for home sections so CTAs and copy share one left edge when centered. */
   --home-content-max: 900px;
+}
+
+[data-theme='light'] {
+  --rgb-text: 31, 29, 26;
+  --rgb-gold: 168, 121, 26;
+  --rgb-gold-deep: 154, 125, 46;
+  --rgb-bg-elevated: 255, 255, 255;
+  --color-bg: #faf8f3;
+  --color-bg-elevated: #ffffff;
+  --color-bg-footer: #f1eee7;
+  --color-text-muted: rgba(var(--rgb-text), 0.66);
+  --color-text-faint: rgba(var(--rgb-text), 0.5);
+  --color-text-ghost: rgba(var(--rgb-text), 0.48);
+  --color-gold: #a8791a;
+  --color-gold-hover: #bd8a22;
+  --color-gold-fill: #86691f;
+  --color-gold-fill-hover: #9a7a26;
+  --color-gold-fill-text: #faf8f3;
+  --color-green: #2f9d63;
+  --color-red: #c33b3a;
+  --color-blue: #3f74b8;
+  --color-border: rgba(var(--rgb-text), 0.16);
+  --color-border-faint: rgba(var(--rgb-text), 0.1);
 }
 
 * {
@@ -39,6 +71,7 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /**

@@ -2,11 +2,17 @@ import { NextResponse } from 'next/server'
 import { chartErrorResponse, chartJsonResponse } from '@/lib/chartApiHelper'
 import { getCachedEtfChart } from '@/lib/getCachedEtfChart'
 import { isAllowedEtfChartSymbol } from '@/lib/etfChartSymbols'
+import { allowChartRequest } from '@/lib/chartRateLimit'
+import { clientIp } from '@/lib/rateLimit'
 import type { YahooRange } from '@/lib/yahooFinance'
 
 const ALLOWED: YahooRange[] = ['1mo', 'ytd', '1y', '2y', '3y', '5y', 'max']
 
 export async function GET(req: Request) {
+  if (!allowChartRequest(clientIp(req))) {
+    return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 })
+  }
+
   const { searchParams } = new URL(req.url)
   const symbol = (searchParams.get('symbol') || '').toUpperCase()
   const rangeRaw = (searchParams.get('range') || '1y') as YahooRange

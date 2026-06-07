@@ -1,16 +1,11 @@
 import { NextResponse } from 'next/server'
 import { allowFeedbackRequest } from '@/lib/feedbackRateLimit'
+import { clientIp } from '@/lib/rateLimit'
 
 export const runtime = 'nodejs'
 
 const MAX_MESSAGE = 8000
 const MAX_NAME = 200
-
-function clientIp(request: Request): string {
-  const xff = request.headers.get('x-forwarded-for')
-  if (xff) return xff.split(',')[0]?.trim() || 'unknown'
-  return request.headers.get('x-real-ip') ?? 'unknown'
-}
 
 function isValidEmail(s: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)

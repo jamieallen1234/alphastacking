@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { chartErrorResponse, chartJsonResponse } from '@/lib/chartApiHelper'
 import { getCachedPortfolioBuilderChart } from '@/lib/getCachedPortfolioBuilderChart'
+import { allowChartRequest } from '@/lib/chartRateLimit'
+import { clientIp } from '@/lib/rateLimit'
+import { isValidTickerSymbol } from '@/lib/tickerSymbol'
 import type { YahooRange } from '@/lib/yahooFinance'
 
 const ALLOWED_RANGES: YahooRange[] = ['1mo', 'ytd', '1y', '2y', '3y', '5y', 'max']
@@ -16,7 +19,7 @@ function normalizeSymbols(raw: unknown): string[] {
   if (!Array.isArray(raw)) return []
   return raw
     .map((s) => (typeof s === 'string' ? s.trim().toUpperCase() : ''))
-    .filter(Boolean)
+    .filter(isValidTickerSymbol)
     .slice(0, 20)
 }
 
@@ -30,6 +33,10 @@ function normalizeWeights(raw: unknown, n: number): number[] | null {
 }
 
 export async function POST(req: Request) {
+  if (!allowChartRequest(clientIp(req))) {
+    return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 })
+  }
+
   let body: BuilderChartRequest
   try {
     body = (await req.json()) as BuilderChartRequest

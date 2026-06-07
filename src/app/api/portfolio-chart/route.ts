@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { chartErrorResponse, chartJsonResponse } from '@/lib/chartApiHelper'
 import { getCachedPortfolioBuilderChart } from '@/lib/getCachedPortfolioBuilderChart'
+import { allowChartRequest } from '@/lib/chartRateLimit'
+import { clientIp } from '@/lib/rateLimit'
+import { isValidTickerSymbol } from '@/lib/tickerSymbol'
 import type { YahooRange } from '@/lib/yahooFinance'
 
 const ALLOWED_RANGES: YahooRange[] = [
@@ -20,7 +23,7 @@ function parseSymbols(raw: string | null): string[] {
   return raw
     .split(/[,\s]+/)
     .map((s) => s.trim().toUpperCase())
-    .filter(Boolean)
+    .filter(isValidTickerSymbol)
     .slice(0, 12)
 }
 
@@ -44,6 +47,10 @@ function parseWeights(raw: string | null, n: number): number[] | null {
 }
 
 export async function GET(req: Request) {
+  if (!allowChartRequest(clientIp(req))) {
+    return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 })
+  }
+
   const { searchParams } = new URL(req.url)
   const symbols = parseSymbols(searchParams.get('symbols'))
   if (symbols.length < 2) {

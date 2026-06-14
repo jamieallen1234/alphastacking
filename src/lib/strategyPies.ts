@@ -11,7 +11,7 @@ export const FOUR_ALPHA_QUADRANTS_SLICES: StrategyPieSlice[] = [
     color: '#7aa6e8',
     growthComponent: '2× SPY (SSO)',
     alpha: 'long/short equity',
-    environments: ['Choppy/Sideways', 'Growth'],
+    environments: ['Growth', 'Choppy/Sideways'],
     description: 'Security selection and dispersion alpha, paired with leveraged S&P 500 beta.',
   },
   {
@@ -29,7 +29,7 @@ export const FOUR_ALPHA_QUADRANTS_SLICES: StrategyPieSlice[] = [
     color: '#e8944a',
     growthComponent: '3× SPY (UPRO)',
     alpha: 'systematic premia / carry',
-    environments: ['Choppy/Sideways', 'Inflation', 'Growth'],
+    environments: ['Growth', 'Inflation', 'Choppy/Sideways'],
     description: 'Style premia and multi-strategy alternatives, paired with high-conviction leveraged beta.',
   },
   {
@@ -38,7 +38,7 @@ export const FOUR_ALPHA_QUADRANTS_SLICES: StrategyPieSlice[] = [
     color: '#c9a84c',
     growthComponent: 'SPY sleeve in MATE',
     alpha: 'managed futures',
-    environments: ['Inflation', 'Recession', 'Deflation', 'Growth'],
+    environments: ['Growth', 'Inflation', 'Recession', 'Deflation'],
     description: 'Trend-following crisis alpha return-stacked with S&P 500 beta in a single fund.',
   },
 ]

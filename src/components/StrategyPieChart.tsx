@@ -53,6 +53,19 @@ function donutSlicePath(startAngle: number, endAngle: number): string {
   ].join(' ')
 }
 
+/**
+ * Path string(s) for one slice. A slice spanning the full circle (single 100% slice) is
+ * split into two half-arcs, because an SVG arc whose start and end points coincide renders
+ * nothing.
+ */
+function donutSlicePaths(startAngle: number, endAngle: number): string[] {
+  if (endAngle - startAngle >= 359.999) {
+    const mid = startAngle + 180
+    return [donutSlicePath(startAngle, mid), donutSlicePath(mid, endAngle)]
+  }
+  return [donutSlicePath(startAngle, endAngle)]
+}
+
 export default function StrategyPieChart({ slices, centerLabel = 'Growth', size = 220 }: StrategyPieChartProps) {
   const [activeIdx, setActiveIdx] = useState<number | null>(null)
 
@@ -72,17 +85,19 @@ export default function StrategyPieChart({ slices, centerLabel = 'Growth', size 
       <div className={styles.chartRow}>
         <div className={styles.svgWrap} style={{ width: size, height: size }}>
           <svg viewBox={`0 0 ${VIEW} ${VIEW}`} role="img" aria-label="Strategy allocation pie chart">
-            {arcs.map(({ slice, startAngle, endAngle }, i) => (
-              <path
-                key={slice.label}
-                d={donutSlicePath(startAngle, endAngle)}
-                fill={slice.color}
-                fillOpacity={activeIdx == null || activeIdx === i ? 0.85 : 0.25}
-                className={styles.slicePath}
-                onMouseEnter={() => setActiveIdx(i)}
-                onMouseLeave={() => setActiveIdx(null)}
-              />
-            ))}
+            {arcs.flatMap(({ slice, startAngle, endAngle }, i) =>
+              donutSlicePaths(startAngle, endAngle).map((d, j) => (
+                <path
+                  key={`${slice.label}-${j}`}
+                  d={d}
+                  fill={slice.color}
+                  fillOpacity={activeIdx == null || activeIdx === i ? 0.85 : 0.25}
+                  className={styles.slicePath}
+                  onMouseEnter={() => setActiveIdx(i)}
+                  onMouseLeave={() => setActiveIdx(null)}
+                />
+              ))
+            )}
           </svg>
           <div className={styles.centerLabel}>
             <span className={styles.centerLabelText}>{active ? active.label : centerLabel}</span>

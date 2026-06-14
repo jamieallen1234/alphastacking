@@ -49,6 +49,10 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
      (`Net leverage`, `Gross longs`, `Gross shorts`, `Gross alpha & alts`) so every live
      portfolio uses the same right-side scorecard block as the builder.
 
+4. **Strategy pie (`src/lib/strategyPies.ts`)** — automatic, no per-portfolio wiring.  
+   - `pieSlicesForPreset(slug, preset.holdings)` derives the growth+alpha category pie for every preset, so a new portfolio gets a pie for free.  
+   - The **only** manual step: if the portfolio holds a **genuinely new ticker** not already in `strategyPies.ts`, add it to the right map (`STACK_SPLIT` for return-stacked funds, `FACTOR_FUNDS` for long-only factor funds, `GROWTH_FUNDS` + `LEVERAGE` for levered/plain index, or `ALPHA_FUNDS` for an alpha sleeve). An unmapped ticker renders as an `Unclassified (TICKER)` slice — that is the signal to classify it.
+
 6. **`src/lib/loadPortfolioHubAlpha.ts`**  
    - Add `'slug': PRESET_ID_CONSTANT` to **`HUB_SLUG_TO_PRESET_ID`**.  
    - Import the new preset ID constant.  
@@ -61,6 +65,7 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
    - Confirm scorecard appears on the detail chart and updates across ranges.
    - Confirm the four-line exposure block appears beside scores and populates with modeled values.
    - Confirm the new portfolio appears on **`/updates`** (US) or **`/ca/updates`** (CA) grouped under today's date.
+   - Confirm the strategy pie renders below the chart and has **no** `Unclassified (…)` slice (every ticker is mapped in `strategyPies.ts`).
 
 ## Cache keys
 

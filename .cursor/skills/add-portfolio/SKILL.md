@@ -49,6 +49,7 @@ Pick **one** array per product (US-listed model → US routes; TSX / CAD-denomin
    - Exposure parity: compute and pass the modeled sleeve exposure summary
      (`Net leveage`, `Gross longs`, `Gross shorts`, `Gross alpha & alts`) so every live
      portfolio uses the same right-side scorecard block as the builder.
+   - Strategy pie: automatic via `pieSlicesForPreset(slug, holdings)` in `src/lib/strategyPies.ts`. Only manual step is classifying a **genuinely new ticker** in one of that file's maps (`STACK_SPLIT` / `FACTOR_FUNDS` / `GROWTH_FUNDS` + `LEVERAGE` / `ALPHA_FUNDS`); an unmapped ticker renders as `Unclassified (TICKER)`.
 
 5. **`src/app/api/preset-chart/route.ts`**  
    - Register preset in **`PRESETS`**; append id to **`PRESET_HINT`**.

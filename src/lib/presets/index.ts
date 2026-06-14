@@ -52,6 +52,8 @@ export const US_RISK_PARITY_PRESET_ID = 'us-risk-parity-v4'
 export const US_LONG_SHORT_EQUITY_PRESET_ID = 'us-long-short-equity-v1'
 export const US_LETF_STACK_2X_PRESET_ID = 'us-letf-stack-2x-v1'
 export const US_LETF_STACK_3X_PRESET_ID = 'us-letf-stack-3x-v1'
+export const US_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'us-four-alpha-quadrants-v1'
+export const CA_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'ca-four-alpha-quadrants-v1'
 
 // -------------------- Holdings --------------------
 export const usInternationalHoldings: PresetHolding[] = [
@@ -204,6 +206,37 @@ export const caSsoDglmRgbmArbHoldings: PresetHolding[] = [
   { ticker: 'DGLM.TO', weightPct: 10, beta: 0.35, blurb: 'Systematic global macro alternatives sleeve.' },
   { ticker: 'RGBM.TO', weightPct: 10, beta: 0.85, blurb: 'Return-stacked global balanced + macro sleeve.' },
   { ticker: 'ARB.TO', weightPct: 25, beta: 0.05, blurb: 'Event-driven merger/SPAC arbitrage diversifier.' },
+]
+
+/**
+ * 4 Alpha Quadrants (US), annual rebalance: four 25% sleeves, each pairing a shared
+ * growth-beta engine with a distinct alpha source. Weighted beta ~0.99.
+ */
+export const usFourAlphaQuadrantsHoldings: PresetHolding[] = [
+  { ticker: 'CLSE', weightPct: 17.5, beta: 0.6, blurb: '[Alpha] US long/short equity, security selection and dispersion, low-net-correlation drawdown buffer.' },
+  { ticker: 'SSO', weightPct: 7.5, beta: 2, blurb: '[Growth] 2x S&P 500, leveraged beta paired with the long/short alpha sleeve.' },
+  { ticker: 'SPMO', weightPct: 15, beta: 1.1, blurb: '[Growth] S&P 500 momentum factor, equity growth engine for this quadrant.' },
+  { ticker: 'VFLO', weightPct: 10, beta: 0.75, blurb: '[Alpha] Large-cap free-cash-flow value tilt, factor-premia alpha alongside momentum.' },
+  { ticker: 'UPRO', weightPct: 7, beta: 3, blurb: '[Growth] 3x S&P 500, high-conviction leveraged beta paired with the systematic premia sleeve.' },
+  { ticker: 'FLSP', weightPct: 9, beta: 0, blurb: '[Alpha] Systematic long/short equity and style premia sleeve.' },
+  { ticker: 'IALT', weightPct: 9, beta: 0.35, blurb: '[Alpha] Systematic multi-strategy alternatives sleeve, carry and premia complement to FLSP.' },
+  { ticker: 'MATE', weightPct: 25, beta: 1, blurb: '[Growth + Alpha] Return-stacked 100% S&P 500 + 100% managed futures, growth core and trend-following alpha in one fund.' },
+]
+
+/**
+ * 4 Alpha Quadrants (Canada), annual rebalance, CAD-denominated: four 25% sleeves using
+ * Canadian-listed funds for momentum, plus US-listed long/short, value, and leveraged sleeves
+ * converted to CAD. Weighted beta ~0.99.
+ */
+export const caFourAlphaQuadrantsHoldings: PresetHolding[] = [
+  { ticker: 'CLSE', weightPct: 16, beta: 0.6, blurb: '[Alpha] US long/short equity, security selection and dispersion, low-net-correlation drawdown buffer.' },
+  { ticker: 'SSO', weightPct: 9, beta: 2, blurb: '[Growth] 2x S&P 500, leveraged beta paired with the long/short alpha sleeve.' },
+  { ticker: 'FCMO.TO', weightPct: 18, beta: 1.0, blurb: '[Growth] Fidelity U.S. Momentum ETF, Canadian-listed momentum growth engine for this quadrant.' },
+  { ticker: 'VFLO', weightPct: 7, beta: 0.75, blurb: '[Alpha] Large-cap free-cash-flow value tilt, factor-premia alpha alongside momentum.' },
+  { ticker: 'UPRO', weightPct: 7.5, beta: 3, blurb: '[Growth] 3x S&P 500, high-conviction leveraged beta paired with the systematic premia sleeves.' },
+  { ticker: 'FLSP', weightPct: 9, beta: 0, blurb: '[Alpha] Systematic long/short equity and style premia sleeve.' },
+  { ticker: 'PFMN.TO', weightPct: 8.5, beta: 0.12, blurb: '[Alpha] Market-neutral long/short equity, beta-neutral premia complement to FLSP.' },
+  { ticker: 'MATE', weightPct: 25, beta: 1, blurb: '[Growth + Alpha] Return-stacked 100% S&P 500 + 100% managed futures, growth core and trend-following alpha in one fund.' },
 ]
 
 // -------------------- Registry --------------------
@@ -359,6 +392,27 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
       'annual-rebal',
       'sso-qld-dglm-rgbm-arb-v3',
       'dglm-dbmf-proxy-v1',
+    ],
+  },
+  {
+    id: US_FOUR_ALPHA_QUADRANTS_PRESET_ID,
+    region: 'us',
+    cadDenominated: false,
+    rebalanceSchedule: 'annual',
+    holdings: usFourAlphaQuadrantsHoldings,
+    extraCacheKeyTags: ['annual-rebal', 'clse-sso-spmo-vflo-upro-flsp-ialt-mate-v1', 'mate-kmlm-chain-v1'],
+  },
+  {
+    id: CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
+    region: 'ca',
+    cadDenominated: true,
+    rebalanceSchedule: 'annual',
+    holdings: caFourAlphaQuadrantsHoldings,
+    extraCacheKeyTags: [
+      'cad-xsp-bench-vfv-ussl-proxy',
+      'annual-rebal',
+      'clse-sso-fcmo-vflo-upro-flsp-pfmn-mate-v2',
+      'mate-kmlm-chain-v1',
     ],
   },
 ]

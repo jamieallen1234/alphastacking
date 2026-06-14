@@ -17,6 +17,9 @@ export type UpdateKind = 'etf' | 'portfolio' | 'learn' | 'feature'
 
 export interface UpdateEntry {
   kind: UpdateKind
+  /** Which edition this entry's content is native to. On `/ca/updates`, US-native entries
+   *  (linked via `/portfolios` or `/ca/us-etfs`) are tagged so readers know they're US funds. */
+  region: 'us' | 'ca'
   date: string
   slug: string
   ticker?: string
@@ -68,12 +71,14 @@ function etfDisplayTitle(def: EtfDynamicDef): string {
 function etfEntries(
   registry: Record<string, EtfDynamicDef>,
   hrefPrefix: string,
+  region: 'us' | 'ca',
 ): UpdateEntry[] {
   const out: UpdateEntry[] = []
   for (const [slug, def] of Object.entries(registry)) {
     if (!def.addedToSite) continue
     out.push({
       kind: 'etf',
+      region,
       date: def.addedToSite,
       slug,
       ticker: def.displayTicker,
@@ -88,6 +93,7 @@ function etfEntries(
 function portfolioEntries(
   routes: PortfolioRouteDef[],
   hrefPrefix: string,
+  region: 'us' | 'ca',
 ): UpdateEntry[] {
   const out: UpdateEntry[] = []
   for (const route of routes) {
@@ -96,6 +102,7 @@ function portfolioEntries(
     if (!route.addedAt) continue
     out.push({
       kind: 'portfolio',
+      region,
       date: route.addedAt,
       slug: route.slug,
       title: route.title,
@@ -127,6 +134,7 @@ function featureEntries(isCa: boolean): UpdateEntry[] {
   const home = homePath(isCa)
   return SITE_FEATURES.map((f) => ({
     kind: 'feature' as const,
+    region: isCa ? ('ca' as const) : ('us' as const),
     date: f.date,
     slug: f.slug,
     title: f.title,
@@ -138,6 +146,7 @@ function featureEntries(isCa: boolean): UpdateEntry[] {
 function learnEntries(isCa: boolean): UpdateEntry[] {
   return LEARN_ARTICLES.map((a) => ({
     kind: 'learn' as const,
+    region: isCa ? ('ca' as const) : ('us' as const),
     date: a.publishedDate,
     slug: a.slug,
     title: a.title,
@@ -166,16 +175,16 @@ export function getUpdatesFeed(edition: 'us' | 'ca'): UpdateDay[] {
 
   if (edition === 'us') {
     entries.push(...featureEntries(false))
-    entries.push(...portfolioEntries(usPortfolioRoutes, '/portfolios'))
+    entries.push(...portfolioEntries(usPortfolioRoutes, '/portfolios', 'us'))
     entries.push(...learnEntries(false))
-    entries.push(...etfEntries(US_ETF_DYNAMIC_REGISTRY, '/us-etfs'))
+    entries.push(...etfEntries(US_ETF_DYNAMIC_REGISTRY, '/us-etfs', 'us'))
   } else {
     entries.push(...featureEntries(true))
-    entries.push(...portfolioEntries(caPortfolioRoutes, '/ca/portfolios'))
-    entries.push(...portfolioEntries(usPortfolioRoutes, '/portfolios'))
+    entries.push(...portfolioEntries(caPortfolioRoutes, '/ca/portfolios', 'ca'))
+    entries.push(...portfolioEntries(usPortfolioRoutes, '/portfolios', 'us'))
     entries.push(...learnEntries(true))
-    entries.push(...etfEntries(CA_ETF_DYNAMIC_REGISTRY, '/ca/etfs'))
-    entries.push(...etfEntries(US_ETF_DYNAMIC_REGISTRY, '/ca/us-etfs'))
+    entries.push(...etfEntries(CA_ETF_DYNAMIC_REGISTRY, '/ca/etfs', 'ca'))
+    entries.push(...etfEntries(US_ETF_DYNAMIC_REGISTRY, '/ca/us-etfs', 'us'))
   }
 
   const byDate = new Map<string, UpdateEntry[]>()

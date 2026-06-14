@@ -41,6 +41,11 @@ export default function UpdatesPage({ edition }: { edition: UpdatesPageEdition }
                                   ? 'Site update'
                                   : 'Learn'}
                           </span>
+                          {isCa ? (
+                            <span className={styles.entryRegion}>
+                              {entry.region === 'ca' ? 'CAD' : 'US'}
+                            </span>
+                          ) : null}
                           {entry.ticker ? (
                             <span className={styles.entryTicker}>{entry.ticker}</span>
                           ) : null}

@@ -2189,18 +2189,18 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     description: 'BMO Low Volatility Canadian Equity ETF (ZLB.TO).',
     contentFormat: 'html',
     lede:
-      'ZLB tracks a rules-based Canadian equity sleeve tilted toward historically lower-beta names: a domestic low-volatility factor fund.',
+      'ZLB is a Canadian <strong>value and defensive equity</strong> sleeve: a rules-based portfolio of TSX names selected for low historical volatility, which in practice means cheaper, cash-generative businesses (banks, utilities, staples) rather than the index\'s resource and momentum leadership.',
     strategyParas: [
-      'BMO’s index ranks TSX-listed stocks for historical beta and volatility, then weights toward the calmer cohort. Expect structural tilts to regulated utilities, staples, and large financials when energy and miners dominate cap-weight Canada.',
-      'Low-volatility is not low-return by design, but it will underperform speculative TSX rallies where small-cap resource names squeeze; read methodology for sector caps and rebalance frequency to understand turnover.',
+      'BMO\'s index ranks TSX-listed stocks for historical beta and volatility, then weights toward the calmer cohort. The result is a structural tilt toward regulated utilities, staples, and large financials, sectors that trade on dividend yield and book value rather than growth multiples, which is the same set of names a value screen tends to surface.',
+      'This value/defensive tilt underperforms speculative TSX rallies where small-cap resource names squeeze; read methodology for sector caps and rebalance frequency to understand turnover.',
     ],
     pedigreeParas: ped(
-      `BMO ETFs are among Canada’s largest third-party issuers; ZLB’s ~$6B scale means tight spreads, deep creation/redemption, and index governance backed by a major bank balance sheet.`,
-      `BMO Financial Group reported company-wide AUM of about CDN $507 billion at Oct. 31, 2025. That is bank-scale infrastructure behind a factor sleeve that still behaves differently than BMO’s cap-weight flagship products.`,
+      `BMO ETFs are among Canada's largest third-party issuers; ZLB's ~$6B scale means tight spreads, deep creation/redemption, and index governance backed by a major bank balance sheet.`,
+      `BMO Financial Group reported company-wide AUM of about CDN $507 billion at Oct. 31, 2025. That is bank-scale infrastructure behind a factor sleeve that still behaves differently than BMO's cap-weight flagship products.`,
     ),
     outperfParas: [
-      'Outperforms when <strong>investors favor stable cash flows</strong> and defensives, TSX ranges, credit worries, or late-cycle rotations out of high-beta commodity beta.',
-      'Underperforms in <strong>commodity or liquidity rallies</strong> where volatility itself is rewarded; favorable tape is risk-off tone or quality leadership, not every cyclical upswing.',
+      'Outperforms when <strong>investors rotate into cheap, cash-generative names</strong>: defensives and value lead during TSX ranges, credit worries, or late-cycle rotations out of high-beta commodity exposure.',
+      'Underperforms in <strong>commodity or liquidity rallies</strong> where growth and resource beta are rewarded over book value; favorable tape is value leadership or risk-off tone, not every cyclical upswing.',
     ],
     officialUrl:
       'https://www.bmoetfs.ca/etfs/zlb-bmo-low-volatility-canadian-equity-etf',

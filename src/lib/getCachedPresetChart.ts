@@ -6,13 +6,24 @@ import type { YahooRange } from '@/lib/yahooFinance'
 const DAY = 86400
 
 /**
+ * Stable fingerprint of a preset's holdings (ticker, weight, beta) plus its
+ * `extraCacheKeyTags`. Passed into `unstable_cache` as a cache-key argument so editing a
+ * preset's holdings automatically invalidates its cached chart, without relying on
+ * remembering to bump a version tag by hand.
+ */
+function presetHoldingsSignature(preset: PresetDefinition): string {
+  const holdingsKey = preset.holdings.map((h) => `${h.ticker}:${h.weightPct}:${h.beta}`).join(',')
+  return `${holdingsKey}|${preset.extraCacheKeyTags.join(',')}`
+}
+
+/**
  * Single module-level unstable_cache wrapper. Next.js includes runtime arguments in the
- * cache key, so different (presetId, range) pairs are stored as distinct entries.
- * Defining it once at module scope avoids the source-location hash collision that occurs
- * when unstable_cache is called inside a function body on every invocation.
+ * cache key, so different (presetId, range, holdingsSignature) tuples are stored as distinct
+ * entries. Defining it once at module scope avoids the source-location hash collision that
+ * occurs when unstable_cache is called inside a function body on every invocation.
  */
 const _cachedPresetChart = unstable_cache(
-  async (presetId: string, range: YahooRange) => {
+  async (presetId: string, range: YahooRange, _holdingsSignature: string) => {
     const preset = mustPreset(presetId)
     return computePresetChart(preset, range)
   },
@@ -21,15 +32,18 @@ const _cachedPresetChart = unstable_cache(
 )
 
 export function getCachedPresetChart1y(presetId: string) {
-  return _cachedPresetChart(presetId, '1y')
+  const preset = mustPreset(presetId)
+  return _cachedPresetChart(presetId, '1y', presetHoldingsSignature(preset))
 }
 
 export function getCachedPresetChartMax(presetId: string) {
-  return _cachedPresetChart(presetId, 'max')
+  const preset = mustPreset(presetId)
+  return _cachedPresetChart(presetId, 'max', presetHoldingsSignature(preset))
 }
 
 export function getCachedPresetChartForRange(presetId: string, range: YahooRange) {
-  return _cachedPresetChart(presetId, range)
+  const preset = mustPreset(presetId)
+  return _cachedPresetChart(presetId, range, presetHoldingsSignature(preset))
 }
 
 /** Uncached compute path — kept for callers that explicitly need a fresh fetch. */

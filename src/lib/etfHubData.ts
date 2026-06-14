@@ -445,7 +445,7 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
     ca(
       'zlb',
       'ZLB.TO - BMO Low Volatility Canadian Equity ETF',
-      'Rules-based Canadian equity sleeve tilted toward historically lower-beta names (low-volatility factor).',
+      'Canadian value and defensive equity sleeve: a low-volatility tilt toward cheaper, cash-generative banks, utilities, and staples.',
       caPath('zlb')
     ),
     ca(

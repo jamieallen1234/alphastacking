@@ -118,6 +118,18 @@
   color: var(--color-gold);
 }
 
+.entryRegion {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(var(--rgb-text), 0.55);
+  border: 0.5px solid var(--color-border);
+  border-radius: 2px;
+  padding: 0.1rem 0.4rem;
+}
+
 .entryTicker {
   font-family: var(--font-mono);
   font-size: 12px;

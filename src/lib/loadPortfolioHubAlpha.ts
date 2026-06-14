@@ -3,6 +3,7 @@ import {
   CA_ALPHA_STACK_PRESET_ID,
   CA_CORE_BH_PRESET_ID,
   CA_FACTOR_FCMO_PRESET_ID,
+  CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   CA_INTL_PRESET_ID,
   CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
   CA_USSL_QQQL_HDGE_PRESET_ID,
@@ -10,6 +11,7 @@ import {
   US_ADVANCED_PRESET_ID,
   US_ALPHA_STACK_PRESET_ID,
   US_CORE_BH_PRESET_ID,
+  US_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   US_GDE_CLSE_BLEND_PRESET_ID,
   US_INTL_PRESET_ID,
   US_UPRO_PREMIA_STACK_PRESET_ID,
@@ -39,12 +41,14 @@ const HUB_SLUG_TO_PRESET_ID: Record<string, string> = {
   'long-short-equity': US_LONG_SHORT_EQUITY_PRESET_ID,
   'letf-stack-2x': US_LETF_STACK_2X_PRESET_ID,
   'letf-stack-3x': US_LETF_STACK_3X_PRESET_ID,
+  'four-alpha-quadrants': US_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   'ca-international': CA_INTL_PRESET_ID,
   'ca-core-buy-hold': CA_CORE_BH_PRESET_ID,
   'ca-factor-fcmo': CA_FACTOR_FCMO_PRESET_ID,
   'ca-ussl-qqql-hdge': CA_USSL_QQQL_HDGE_PRESET_ID,
   'ca-sso-dglm-rgbm-arb': CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
   'ca-alpha-stack': CA_ALPHA_STACK_PRESET_ID,
+  'ca-four-alpha-quadrants': CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
 }
 
 function toScorecardPayload(p: {

@@ -194,6 +194,18 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     addedAt: '2026-05-24',
     weightedBeta: 0.946,
   },
+  {
+    slug: 'four-alpha-quadrants',
+    region: 'us',
+    kind: 'live',
+    hubSection: 'multi-strat',
+    rebalance: 'annual',
+    title: '4 Alpha Quadrants',
+    badge: 'Advanced',
+    description: 'Advanced four-sleeve model, each pairing a shared growth-beta engine with a distinct alpha source: long/short equity, factor premia, systematic premia, and managed futures.',
+    addedAt: '2026-06-14',
+    weightedBeta: 0.99,
+  },
 ]
 
 /** Curated routes for Canada (`/ca/portfolios/...`) */
@@ -277,9 +289,21 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     rebalance: 'annual',
     title: 'Leveraged TSX',
     badge: 'Coming soon',
-    description: 'High-conviction Canadian leveraged sleeve — details coming.',
+    description: 'High-conviction Canadian leveraged sleeve, details coming.',
     sourcePortfolioId: 'ca-aggressive',
     addedAt: '2026-04-15',
+  },
+  {
+    slug: 'ca-four-alpha-quadrants',
+    region: 'ca',
+    kind: 'live',
+    hubSection: 'multi-strat',
+    rebalance: 'annual',
+    title: '4 Alpha Quadrants',
+    badge: 'Advanced',
+    description: 'Advanced four-sleeve model, each pairing a shared growth-beta engine with a distinct alpha source: long/short equity, factor premia, systematic premia, and managed futures.',
+    addedAt: '2026-06-14',
+    weightedBeta: 0.99,
   },
 ]
 

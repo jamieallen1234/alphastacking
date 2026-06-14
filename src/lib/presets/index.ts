@@ -75,8 +75,7 @@ export const usAdvancedHoldings: PresetHolding[] = [
   { ticker: 'ORR', weightPct: 20, beta: 0.5, blurb: 'Lower-beta diversifier.' },
   { ticker: 'CLSE', weightPct: 7.5, beta: 0.6, blurb: 'U.S. long/short equity.' },
   { ticker: 'FLSP', weightPct: 12.5, beta: 0, blurb: 'Risk premia sleeve.' },
-  { ticker: 'IALT', weightPct: 7.5, beta: 0.35, blurb: 'Multi-strategy alternatives sleeve.' },
-  { ticker: 'HFGM', weightPct: 5, beta: 0.55, blurb: 'Global long/short equity (hand-authored page).' },
+  { ticker: 'IALT', weightPct: 12.5, beta: 0.35, blurb: 'Multi-strategy alternatives sleeve.' },
 ]
 
 export const usCoreBuyHoldHoldings: PresetHolding[] = [
@@ -413,6 +412,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
       'annual-rebal',
       'clse-sso-fcmo-vflo-upro-flsp-pfmn-mate-v2',
       'mate-kmlm-chain-v1',
+      'fcmo-spmo-proxy-v1',
     ],
   },
 ]

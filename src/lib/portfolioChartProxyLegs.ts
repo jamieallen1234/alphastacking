@@ -48,6 +48,8 @@ export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, ProxyDef> = {
   WTIB: { legs: ['USO', 'BITO'] },
   /** Pre-listing: similar cash-flow / "cash cows" equity sleeve; extends joint history before VFLO's inception. */
   VFLO: { legs: ['COWZ'] },
+  /** Pre-listing: same US momentum-factor strategy (Fidelity U.S. Momentum vs S&P 500 Momentum); extends joint history before FCMO.TO's inception. */
+  'FCMO.TO': { legs: ['SPMO'] },
   /** Pre-listing: 90% TIPS + 90% gold futures; TIP extends to 2003, GLD to 2004. Gross = 180%. */
   GDT: { legs: ['TIP', 'GLD'], grossExposurePct: 180 },
 }

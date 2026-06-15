@@ -39,7 +39,7 @@ import { buildPortfolioBuilderPrefillHref } from '@/lib/portfolioBuilderPrefill'
 import { HOW_TO_BUILD_SLUG, learnArticlePath } from '@/lib/learnArticles'
 import { portfolioBuilderPath } from '@/lib/siteRegion'
 import StrategyPieChart from '@/components/StrategyPieChart'
-import { pieSlicesForPreset } from '@/lib/strategyPies'
+import { pieConfigForPreset } from '@/lib/strategyPies'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
 
 function PortfolioLearnCue({ backHref }: { backHref: string }) {
@@ -132,7 +132,7 @@ async function LiveLayout({
     portfolioBuilderPath(siteIsCa),
     preset.holdings
   )
-  const pieSlices = pieSlicesForPreset(preset.holdings)
+  const pieConfig = pieConfigForPreset(def.slug, preset.holdings)
 
   return (
     <main className={styles.main}>
@@ -171,7 +171,13 @@ async function LiveLayout({
           </p>
         )}
 
-        {pieSlices.length > 0 ? <StrategyPieChart slices={pieSlices} /> : null}
+        {pieConfig.slices.length > 0 ? (
+          <StrategyPieChart
+            slices={pieConfig.slices}
+            centerLabel={pieConfig.centerLabel}
+            centerSubLabel={pieConfig.centerSubLabel}
+          />
+        ) : null}
       </section>
       <Footer />
     </main>

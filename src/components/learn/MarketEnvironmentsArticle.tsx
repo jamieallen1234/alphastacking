@@ -103,7 +103,7 @@ export default function MarketEnvironmentsArticle({ edition, timestamps, values 
           </div>
 
           <div className={styles.principle}>
-            <span className={styles.principleLabel} style={{ color: '#c9a84c' }}>Choppy/Sideways</span>
+            <span className={styles.principleLabel} style={{ color: '#c9a84c' }}>Sideways Chop</span>
             <p className={styles.principleText}>
               No macro theme is in control. Markets churn between support and resistance, news
               flow reverses trends before they establish, and momentum strategies get whipsawed.

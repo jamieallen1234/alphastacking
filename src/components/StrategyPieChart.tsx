@@ -14,7 +14,7 @@ export interface StrategyPieSlice {
   growthComponent?: string
   /** The alpha this slice brings, e.g. "long/short equity" */
   alpha?: string
-  /** Environments this alpha tends to perform in, e.g. ["Choppy/Sideways", "Growth"] */
+  /** Environments this alpha tends to perform in, e.g. ["Sideways Chop", "Growth"] */
   environments?: string[]
   /** One-line explanation shown on hover */
   description?: string
@@ -24,6 +24,8 @@ interface StrategyPieChartProps {
   slices: StrategyPieSlice[]
   /** Label shown in the donut's center. Default "Growth". */
   centerLabel?: string
+  /** Sub-label shown under the center label when no slice is active. Default "shared core". */
+  centerSubLabel?: string
   /** Outer diameter of the donut in px. Default 220. */
   size?: number
 }
@@ -66,7 +68,18 @@ function donutSlicePaths(startAngle: number, endAngle: number): string[] {
   return [donutSlicePath(startAngle, endAngle)]
 }
 
-export default function StrategyPieChart({ slices, centerLabel = 'Growth', size = 220 }: StrategyPieChartProps) {
+/**
+ * Lay out environment badges 2 per row. Special case: exactly 2 badges stack 1-per-row
+ * (two rows); 3 -> [2,1]; 4 -> [2,2]; etc.
+ */
+function envRows(envs: string[]): string[][] {
+  if (envs.length === 2) return [[envs[0]], [envs[1]]]
+  const rows: string[][] = []
+  for (let i = 0; i < envs.length; i += 2) rows.push(envs.slice(i, i + 2))
+  return rows
+}
+
+export default function StrategyPieChart({ slices, centerLabel = 'Growth', centerSubLabel = 'shared core', size = 220 }: StrategyPieChartProps) {
   const [activeIdx, setActiveIdx] = useState<number | null>(null)
 
   const total = slices.reduce((s, sl) => s + sl.weightPct, 0) || 1
@@ -104,7 +117,7 @@ export default function StrategyPieChart({ slices, centerLabel = 'Growth', size 
             {active ? (
               <span className={styles.centerLabelSub}>{active.weightPct}%</span>
             ) : (
-              <span className={styles.centerLabelSub}>shared core</span>
+              <span className={styles.centerLabelSub}>{centerSubLabel}</span>
             )}
           </div>
         </div>
@@ -117,35 +130,43 @@ export default function StrategyPieChart({ slices, centerLabel = 'Growth', size 
               onMouseEnter={() => setActiveIdx(i)}
               onMouseLeave={() => setActiveIdx(null)}
             >
-              <div className={styles.legendHeader}>
-                <span className={styles.legendSwatch} style={{ background: slice.color }} />
-                <span className={styles.legendLabel}>{slice.label}</span>
-                <span className={styles.legendWeight}>{slice.weightPct}%</span>
+              <div className={styles.legendMain}>
+                <div className={styles.legendHeader}>
+                  <span className={styles.legendSwatch} style={{ background: slice.color }} />
+                  <span className={styles.legendLabel}>{slice.label}</span>
+                </div>
+                {slice.growthComponent || slice.alpha ? (
+                  <div className={styles.legendDetail}>
+                    {slice.alpha ? (
+                      <span>
+                        <span className={styles.legendDetailKey}>Alpha:</span> {slice.alpha}
+                      </span>
+                    ) : null}
+                    {slice.growthComponent ? (
+                      <span>
+                        <span className={styles.legendDetailKey}>Growth:</span> {slice.growthComponent}
+                      </span>
+                    ) : null}
+                  </div>
+                ) : null}
+                {slice.description ? <p className={styles.legendDescription}>{slice.description}</p> : null}
               </div>
-              {slice.growthComponent || slice.alpha ? (
-                <div className={styles.legendDetail}>
-                  {slice.growthComponent ? (
-                    <span>
-                      <span className={styles.legendDetailKey}>Growth:</span> {slice.growthComponent}
-                    </span>
-                  ) : null}
-                  {slice.alpha ? (
-                    <span>
-                      <span className={styles.legendDetailKey}>Alpha:</span> {slice.alpha}
-                    </span>
-                  ) : null}
-                </div>
-              ) : null}
-              {slice.environments && slice.environments.length > 0 ? (
-                <div className={styles.envTags}>
-                  {slice.environments.map((env) => (
-                    <span key={env} className={styles.envTag}>
-                      {env}
-                    </span>
-                  ))}
-                </div>
-              ) : null}
-              {slice.description ? <p className={styles.legendDescription}>{slice.description}</p> : null}
+              <div className={styles.legendRight}>
+                <span className={styles.legendWeight}>{slice.weightPct}%</span>
+                {slice.environments && slice.environments.length > 0 ? (
+                  <div className={styles.envBadges}>
+                    {envRows(slice.environments).map((row, r) => (
+                      <div key={r} className={styles.envRow}>
+                        {row.map((env) => (
+                          <span key={env} className={styles.envTag}>
+                            {env}
+                          </span>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
             </div>
           ))}
         </div>

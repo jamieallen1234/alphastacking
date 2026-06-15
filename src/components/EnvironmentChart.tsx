@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react'
 import styles from './EnvironmentChart.module.css'
 
-export type EnvironmentName = 'Growth' | 'Inflation' | 'Recession' | 'Deflation' | 'Choppy/Sideways'
+export type EnvironmentName = 'Growth' | 'Inflation' | 'Recession' | 'Deflation' | 'Sideways Chop'
 
 interface Region {
   startMs: number
@@ -16,7 +16,7 @@ const ENV_COLORS: Record<EnvironmentName, string> = {
   Inflation: '#e8944a',
   Recession: '#e24b4a',
   Deflation: '#85b7eb',
-  'Choppy/Sideways': '#c9a84c',
+  'Sideways Chop': '#c9a84c',
 }
 
 function d(year: number, month: number, day: number): number {
@@ -25,27 +25,27 @@ function d(year: number, month: number, day: number): number {
 
 /** Historical macro regime classifications. Minimum 3-month duration per region. */
 const REGIONS: Region[] = [
-  { startMs: d(2000, 1, 1),  endMs: d(2001, 2, 28), env: 'Choppy/Sideways' },
+  { startMs: d(2000, 1, 1),  endMs: d(2001, 2, 28), env: 'Sideways Chop' },
   { startMs: d(2001, 3, 1),  endMs: d(2002, 9, 30), env: 'Recession' },
-  { startMs: d(2002, 10, 1), endMs: d(2003, 3, 31), env: 'Choppy/Sideways' },
+  { startMs: d(2002, 10, 1), endMs: d(2003, 3, 31), env: 'Sideways Chop' },
   { startMs: d(2003, 4, 1),  endMs: d(2007, 7, 31), env: 'Growth' },
   { startMs: d(2007, 8, 1),  endMs: d(2008, 8, 31), env: 'Inflation' },
   { startMs: d(2008, 9, 1),  endMs: d(2009, 6, 30), env: 'Recession' },
   { startMs: d(2009, 7, 1),  endMs: d(2011, 4, 30), env: 'Growth' },
-  { startMs: d(2011, 5, 1),  endMs: d(2011, 11, 30), env: 'Choppy/Sideways' },
+  { startMs: d(2011, 5, 1),  endMs: d(2011, 11, 30), env: 'Sideways Chop' },
   { startMs: d(2011, 12, 1), endMs: d(2014, 6, 30), env: 'Growth' },
   { startMs: d(2014, 7, 1),  endMs: d(2016, 1, 31), env: 'Deflation' },
   { startMs: d(2016, 2, 1),  endMs: d(2018, 8, 31), env: 'Growth' },
-  { startMs: d(2018, 9, 1),  endMs: d(2018, 12, 31), env: 'Choppy/Sideways' },
+  { startMs: d(2018, 9, 1),  endMs: d(2018, 12, 31), env: 'Sideways Chop' },
   { startMs: d(2019, 1, 1),  endMs: d(2020, 1, 31), env: 'Growth' },
   { startMs: d(2020, 2, 1),  endMs: d(2020, 4, 30), env: 'Recession' },
   { startMs: d(2020, 5, 1),  endMs: d(2021, 10, 31), env: 'Growth' },
   { startMs: d(2021, 11, 1), endMs: d(2022, 6, 30), env: 'Inflation' },
-  { startMs: d(2022, 7, 1),  endMs: d(2022, 12, 31), env: 'Choppy/Sideways' },
+  { startMs: d(2022, 7, 1),  endMs: d(2022, 12, 31), env: 'Sideways Chop' },
   { startMs: d(2023, 1, 1),  endMs: d(2025, 12, 31), env: 'Growth' },
 ]
 
-const LEGEND_ORDER: EnvironmentName[] = ['Growth', 'Inflation', 'Recession', 'Deflation', 'Choppy/Sideways']
+const LEGEND_ORDER: EnvironmentName[] = ['Growth', 'Inflation', 'Recession', 'Deflation', 'Sideways Chop']
 
 const W = 400
 const H = 70

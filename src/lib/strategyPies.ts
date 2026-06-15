@@ -103,6 +103,22 @@ const ALPHA_PHRASE: Record<string, string> = {
   'Real assets/gold': 'gold / real assets',
 }
 
+/**
+ * Non-growth environments each alpha category adds resilience in, shown as legend badges.
+ * Growth is omitted because it is the implicit shared core of every alpha-stacking book.
+ * Lists stay in the canonical order: Inflation, Recession, Deflation, Sideways Chop.
+ */
+const CATEGORY_ENVIRONMENTS: Record<string, string[]> = {
+  'Long/short': ['Sideways Chop'],
+  Factor: ['Inflation'],
+  'Premia/carry': ['Inflation', 'Sideways Chop'],
+  'Managed futures': ['Inflation', 'Recession', 'Deflation'],
+  'Global macro': ['Inflation', 'Recession', 'Deflation'],
+  Arbitrage: ['Sideways Chop'],
+  'Fixed income': ['Recession', 'Deflation'],
+  'Real assets/gold': ['Inflation', 'Recession', 'Deflation'],
+}
+
 const SLICE_PALETTE = [
   '#7aa6e8',
   '#5dca8a',
@@ -228,37 +244,71 @@ export function buildPairedSlices(holdings: HoldingInput[]): StrategyPieSlice[] 
     const growthTickers = [...new Set(s.growthFunds)].join(', ')
     const alphaTickers = [...new Set(s.alphaFunds)].join(', ')
     const phrase = ALPHA_PHRASE[s.category]
-    const label = s.category.startsWith('Growth core')
-      ? s.category
-      : hasGrowth
-        ? `${s.category} + ${indexLabel}`
-        : s.category
-    const description =
-      phrase && hasGrowth
-        ? `${capitalize(phrase)} paired with ${indexLabel} beta.`
-        : phrase
-          ? `${capitalize(phrase)} sleeve.`
-          : undefined
+    // Title is just the alpha category; the paired index is shown on the "Growth:" line.
+    // No description: the Alpha/Growth lines already say it.
     return {
-      label,
+      label: s.category,
       weightPct: Math.round(s.weight * 10) / 10,
       color: SLICE_PALETTE[i % SLICE_PALETTE.length],
       growthComponent: hasGrowth ? `${indexLabel}${growthTickers ? ` (${growthTickers})` : ''}` : undefined,
       alpha: phrase ? `${phrase}${alphaTickers ? ` (${alphaTickers})` : ''}` : undefined,
-      description,
+      environments: CATEGORY_ENVIRONMENTS[s.category],
     }
   })
 }
 
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1)
+// -------------------- Custom (macro-environment) pies --------------------
+//
+// A couple of portfolios are macro-environment books, not alpha-stacking books, so the
+// derived growth+alpha pie misrepresents them. They use hand-authored regime slices keyed
+// to the macro environments (see EnvironmentChart `ENV_COLORS`).
+
+/** Macro-environment palette (mirrors EnvironmentChart's ENV_COLORS). */
+const ENV_COLORS = {
+  Growth: '#5dca8a',
+  Inflation: '#e8944a',
+  Recession: '#e24b4a',
+  Deflation: '#85b7eb',
+  'Sideways Chop': '#c9a84c',
+} as const
+
+export interface PieConfig {
+  slices: StrategyPieSlice[]
+  centerLabel: string
+  centerSubLabel: string
+}
+
+const CUSTOM_PIE_CONFIG: Record<string, PieConfig> = {
+  '5-4-3-2-1': {
+    centerLabel: 'Macro regimes',
+    centerSubLabel: '5 environments',
+    slices: [
+      { label: 'Growth', weightPct: 35, color: ENV_COLORS.Growth, description: 'RSST: 100% S&P 500 plus 100% managed futures, the growth engine.' },
+      { label: 'Inflation', weightPct: 25, color: ENV_COLORS.Inflation, description: 'GDE: capital-efficient US equity plus a gold overlay, the inflation hedge.' },
+      { label: 'Recession', weightPct: 20, color: ENV_COLORS.Recession, description: 'RSSB: global stocks plus a US Treasury overlay, the recession ballast.' },
+      { label: 'Sideways Chop', weightPct: 15, color: ENV_COLORS['Sideways Chop'], description: 'CLSE: US long/short equity for mean-reverting, range-bound tapes.' },
+      { label: 'Deflation', weightPct: 5, color: ENV_COLORS.Deflation, description: 'ZROZ: 25+ year zero-coupon Treasuries, the deflation ballast.' },
+    ],
+  },
+  'risk-parity': {
+    centerLabel: 'All-Weather',
+    centerSubLabel: '4 quadrants',
+    slices: [
+      { label: 'Growth', weightPct: 40, color: ENV_COLORS.Growth, description: 'NTSD: 90/60 US plus developed-international equity, the growth engine.' },
+      { label: 'Inflation', weightPct: 30, color: ENV_COLORS.Inflation, description: 'GDT (TIPS plus gold) and GDE (equity plus gold), the inflation hedges.' },
+      { label: 'Recession', weightPct: 20, color: ENV_COLORS.Recession, description: 'NTSX: 90/60 US equity plus Treasuries, the recession cushion.' },
+      { label: 'Deflation', weightPct: 10, color: ENV_COLORS.Deflation, description: 'ZROZ: maximum-duration zero-coupon Treasuries, the deflation ballast.' },
+    ],
+  },
 }
 
 /**
- * Pie slices for a portfolio detail page. Every preset (including the Alpha Quadrants)
- * derives its category pie from holdings, so new portfolios get a pie automatically with
- * no per-slug wiring.
+ * Pie configuration for a portfolio detail page. A few macro-environment books use custom
+ * regime slices; every other preset (including the Alpha Quadrants) derives a growth+alpha
+ * category pie from its holdings, so new portfolios get a pie automatically.
  */
-export function pieSlicesForPreset(holdings: HoldingInput[]): StrategyPieSlice[] {
-  return buildPairedSlices(holdings)
+export function pieConfigForPreset(slug: string, holdings: HoldingInput[]): PieConfig {
+  const custom = CUSTOM_PIE_CONFIG[slug]
+  if (custom) return custom
+  return { slices: buildPairedSlices(holdings), centerLabel: 'Growth', centerSubLabel: 'shared core' }
 }

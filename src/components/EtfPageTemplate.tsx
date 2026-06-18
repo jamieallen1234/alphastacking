@@ -45,6 +45,8 @@ export type EtfPageTemplateProps = {
   }
   /** Optional block rendered directly under the meta line (e.g. efficiency badges). */
   metaExtras?: ReactNode
+  /** Humanized similarity-tag labels, rendered as chips under the meta line. */
+  tagChips?: string[]
   /** When true, `lede` is a trusted HTML string (inline tags only). */
   ledeHtml?: boolean
   /** Optional note directly under the chart (e.g. model-portfolio proxy). */
@@ -62,6 +64,7 @@ export default function EtfPageTemplate({
   meta,
   chart,
   metaExtras,
+  tagChips,
   ledeHtml,
   belowChart,
   children,
@@ -77,7 +80,18 @@ export default function EtfPageTemplate({
         <Link href={`${hubBase}#${hubCategoryId}`} className={styles.back}>
           ← ETFs
         </Link>
-        <span className={styles.badge}>{badge}</span>
+        <div className={styles.badgeRow}>
+          <span className={styles.badge}>{badge}</span>
+          {tagChips && tagChips.length > 0 ? (
+            <div className={styles.tagChips}>
+              {tagChips.map((t) => (
+                <span key={t} className={styles.tagChip}>
+                  {t}
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </div>
         <h1 className={styles.heading}>{heading}</h1>
         {ledeHtml && typeof lede === 'string' ? (
           <p className={styles.lede} dangerouslySetInnerHTML={{ __html: lede }} />

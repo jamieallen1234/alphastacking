@@ -213,12 +213,6 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   ],
   'premia-systematic-alternatives': [
     us(
-      'foxy',
-      'FOXY — Simplify Currency Strategy ETF',
-      'Simplify: systematic EM carry trade and G10 mean-reversion strategy, implemented via currency forwards and futures.',
-      usPath('foxy')
-    ),
-    us(
       'flsp',
       'FLSP — Franklin Systematic Style Premia ETF',
       'Active style premia and multi-asset long/short sleeves targeting absolute return.',
@@ -286,6 +280,18 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Technology sector momentum strategy using Dorsey Wright relative-strength rules.',
       usPath('ptf')
     ),
+    us(
+      'sgrt',
+      'SGRT — SMART Earnings Growth 30 ETF',
+      'Concentrated active U.S. large-cap: a roughly 30-name, quant-driven earnings-growth book run with no sector constraints.',
+      usPath('sgrt')
+    ),
+    us(
+      'emeq',
+      'EMEQ — Nomura Focused Emerging Markets Equity ETF',
+      'Actively managed, high-conviction emerging-markets equity: a focused all-cap book selected bottom-up rather than tracking an EM index.',
+      usPath('emeq')
+    ),
   ],
   'managed-futures': [
     us(
@@ -305,6 +311,20 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'KMLM — KraneShares Mount Lucas Managed Futures Index Strategy ETF',
       'Rules-based trend following on the KFA MLM Index—commodity, currency, and global bond futures.',
       usPath('kmlm')
+    ),
+  ],
+  'single-asset-managed-futures': [
+    us(
+      'foxy',
+      'FOXY — Simplify Currency Strategy ETF',
+      'Simplify: systematic EM carry trade and G10 mean-reversion strategy, implemented via currency forwards and futures.',
+      usPath('foxy')
+    ),
+    us(
+      'hard',
+      'HARD — Simplify Commodities Strategy No K-1 ETF',
+      'Systematic long/short hard-assets and commodity futures strategy in an ETF wrapper.',
+      usPath('hard')
     ),
   ],
   'long-short': [
@@ -351,12 +371,6 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'HFGM — Unlimited HFGM Global Macro ETF',
       'Active global macro sleeve targeting hedge-fund-sector return dynamics with ETFs and futures.',
       '/us-etfs/hfgm'
-    ),
-    us(
-      'hard',
-      'HARD — Simplify Commodities Strategy No K-1 ETF',
-      'Systematic long/short hard-assets and commodity futures strategy in an ETF wrapper.',
-      usPath('hard')
     ),
   ],
   arbitrage: [
@@ -462,6 +476,7 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
     ),
   ],
   'managed-futures': [],
+  'single-asset-managed-futures': [],
   'long-short': [
     ca(
       'atsx',

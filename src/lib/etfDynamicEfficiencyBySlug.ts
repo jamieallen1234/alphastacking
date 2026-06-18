@@ -365,6 +365,20 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  sgrt: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'SGRT is a concentrated, quant-driven U.S. large-cap earnings-growth sleeve; capital efficiency measures its return versus SPY for the equity risk it takes.'
+      ),
+    },
+  },
+  emeq: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'EMEQ is an actively managed, focused emerging-markets equity sleeve; capital efficiency measures its return versus SPY for the equity risk it takes.'
+      ),
+    },
+  },
   foxy: {
     alpha: {
       tooltip: insufficientHistoryTooltip(

@@ -230,7 +230,7 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     rebalance: 'none',
     title: 'US & Canada - Low Beta & Long/Short',
     description:
-      'Levered US growth stack with Canadian low-vol equity and preferred income — modeled in CAD.',
+      'Levered US growth stack with Canadian low-vol equity and preferred income.',
     featured: true,
     addedAt: '2026-04-15',
     weightedBeta: 1.011,

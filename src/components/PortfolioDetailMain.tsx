@@ -257,7 +257,7 @@ export default async function PortfolioDetailMain({ slug, backHref, routeSet }: 
       backHref={backHref}
       def={def}
       presetId={presetId}
-      chartHeading="Total return (CAD vs SPY)"
+      chartHeading="Total return (vs SPY)"
     />
   )
 }

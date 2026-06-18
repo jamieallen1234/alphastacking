@@ -139,18 +139,19 @@ Resolution order is fixed: **hand-authored US slug** → **US dynamic registry**
 
 ### Eligibility (actual proxies only)
 
-- Pre-inception **stack** modeling runs only when **`resolveChartProxyLegs`** returns Yahoo legs: **manual** `CHART_STACK_PRODUCT_PROXY_LEGS` **or** auto legs from **`ETF_STACK_EXPOSURE_BY_SLUG`** when the map lists sleeves we can proxy (**equity** `coreBenchmarkSymbol` / **SPY** plus mapped **alpha** sleeves).
+- Pre-inception **stack** modeling runs only when **`resolveChartProxyLegs`** returns Yahoo legs. Resolution order in **`resolveProxyDef`**: (1) **manual** `CHART_STACK_PRODUCT_PROXY_LEGS`; (2) auto legs from **`ETF_STACK_EXPOSURE_BY_SLUG`** when the map lists sleeves we can proxy (**equity** `coreBenchmarkSymbol` / **SPY** plus mapped **alpha** sleeves); (3) **auto similar-ETF proxy** (below).
+- **Auto similar-ETF proxy (short-history funds):** if the first two tiers find nothing **and** the fund's inception is within **`SIMILAR_PROXY_RECENT_INCEPTION_YEARS`** (2y), **`resolveSimilarEtfProxyDef`** extends it with its **best-rated similar ETF** — the highest-scoring peer from `similarEtfSlugsFor` whose own inception predates the fund by at least **`SIMILAR_PROXY_MIN_HISTORY_ADVANTAGE_YEARS`** (1y). That peer is a single **100%** leg (no leverage drag), the next-best real fund an investor could have held. This is automatic; you do **not** hand-add it. It returns nothing when the fund is old enough or has no older same-category peer (e.g. a unique strategy, or its only peer is also brand new).
 - **Mapped sleeves:** bitcoin → **IBIT** (spot / generic sleeve wording) or **BITO** when the sleeve or fund copy clearly refers to **bitcoin futures** (`bitcoinChartProxyYahooFromSleeveName` in **`portfolioChartProxyLegs.ts`**); ethereum → **ETHA**; gold → **GLD**; silver → **SLV**; oil / crude / WTI-style → **USO**. Sleeves such as **managed futures**, **generic futures yield**, or **macro** do **not** auto-map—those funds rely on dedicated merges elsewhere (e.g. **MATE** + **RSST**) or have **no** stack proxy until you add one. Keep **`ETF_STACK_EXPOSURE_BY_SLUG`** sleeve `name` strings honest (e.g. “Bitcoin futures” vs “Bitcoin”) so the chart picks the right leg.
 - **Dual-alpha only** (no equity sleeve), e.g. **bitcoin + gold**: ensure **`slugEligibleForAutoChartProxies`** is satisfied (≥2 mapped non-equity legs); **BTGD**-style rows must name sleeves so **`mapComponentToChartProxyLeg`** can resolve legs.
 - **Cheaper bitcoin ETF:** add **`TICKER: ['IBIT', …]`** (or the right legs) under **`CHART_STACK_PRODUCT_PROXY_LEGS`** so the chart uses **IBIT** as the spot-bitcoin TR proxy.
 - **MATE:** remains **`mate_rsst`** (RSST); optional future variant **SPY × DBMF** + borrow would be a separate explicit merge, not the auto stack map.
 
-### Young listing (under ~2 years) — ask when you cannot proxy
+### Young listing (under ~2 years) — auto similar-ETF proxy, then ask only if it also fails
 
 When adding or completing a new ETF row:
 
-1. After **`ETF_STACK_EXPOSURE_BY_SLUG`** sleeve names / benchmarks and any **`CHART_STACK_PRODUCT_PROXY_LEGS`** override, check **`resolveChartProxyLegs(yahooSymbol)`** in **`portfolioChartProxyLegs.ts`** (and whether each material sleeve maps via **`mapComponentToChartProxyLeg`**).
-2. If **inception is under ~two calendar years** (short joint history on presets/builder) **and** you still **cannot** produce proxy legs—because a sleeve is **unmapped** (e.g. bespoke macro, “futures yield” without a chosen Yahoo series, or unclear bitcoin spot vs futures)—**stop and ask the user** whether they want:
+1. After **`ETF_STACK_EXPOSURE_BY_SLUG`** sleeve names / benchmarks and any **`CHART_STACK_PRODUCT_PROXY_LEGS`** override, check **`resolveChartProxyLegs(yahooSymbol)`** in **`portfolioChartProxyLegs.ts`** (and whether each material sleeve maps via **`mapComponentToChartProxyLeg`**). For a short-history fund this also tries the **auto similar-ETF proxy** automatically once its similarity bundle (§2d) exists, so tag the fund first.
+2. If **inception is under ~two calendar years** **and** `resolveChartProxyLegs` is **still empty** (no stack legs **and** no older same-category peer for the similar-ETF fallback)—e.g. a unique strategy or a sleeve that is **unmapped** (bespoke macro, “futures yield” without a chosen Yahoo series, unclear bitcoin spot vs futures)—**stop and ask the user** whether they want:
    - explicit **`CHART_STACK_PRODUCT_PROXY_LEGS['TICKER']`** Yahoo symbols for each missing asset, or
    - sleeve **`name` / disclosure** updates so auto-mapping applies (e.g. “Bitcoin futures”), or
    - a **one-off** engineering path (e.g. same pattern as **MATE**/**RSST**), or
@@ -167,6 +168,47 @@ List **by name** which sleeves or asset types still lack a proxy so the user can
 ## 2d. Similar ETFs — asset tags (`etfSimilarityTags.ts`)
 
 The **Similar ETFs** block on dynamic ETF pages (`EtfDynamicPageLayout`) is **tag-driven**, not hub-category-driven and **never** hand-listed per ticker in `page.tsx`.
+
+### Tag axes (all ETFs)
+
+Every fund decomposes into **single-concept** tags (no compound tags like `us_large_cap`, `nasdaq100`, `international_small_value`, or `leveraged_equity`). Split geography from size, drop the `equity` suffix, and name the actual asset.
+
+**GATE axes (narrow — a shared tag here makes two funds peers):**
+
+- **Factor:** `value`, `momentum`, `growth`, `quality`, `low_volatility`.
+- **Strategy:** `managed_futures`, `futures_yield`, `global_macro`, `long_short`, `market_neutral`, `arbitrage`, `tail_risk`, `tactical_hedge`, `multi_strategy_alternative`.
+- **Asset:** `gold`, `silver`, `bitcoin`, `ethereum`, `gold_miners`, `metals_miners`, `base_metals`, `commodities`, `commodity_energy`, `treasuries`, `inflation_linked_bonds`, `aaa_clo`, `floating_rate_credit`, `investment_grade_credit`, `preferreds_credit`, `credit`.
+- **Structure:** `return_stacked` (every capital-efficient / return-stacked fund carries it; it bridges the base sleeve so stacked funds with the same overlay peer up).
+- **Leverage:** the `*_leveraged` multiples gate, but `leveragedPeers` groups any two leveraged-beta funds regardless of multiple (so SSO 2x peers UPRO 3x). Without this they would fall through the broad path and match plain large-cap funds.
+
+**RANK axes (broad — refine ordering only, never create a pairing alone; all live in `BROAD_EQUITY_TAGS`):**
+
+- **Geography:** `us`, `canada`, `global`, `developed_ex_us`, `emerging_markets`, `international`.
+- **Size:** `large_cap`, `mid_cap`, `small_cap`, `all_cap`.
+- **Management style:** `active`, `passive`.
+- **Sub-factor:** `fcf_growth`, `earnings_growth`, `competitive_advantage`, `concentrated`.
+- **Leverage multiple:** `1.25x_leveraged`, `1.5x_leveraged`, `1.6x_leveraged`, `1.8x_leveraged`, `2x_leveraged`, `3x_leveraged` (the magnitude; the family gates via `leveragedPeers`).
+- **Treasury duration:** `short_duration`, `medium_duration`, `long_duration` (pair with `treasuries` / `inflation_linked_bonds`).
+
+**Sleeve placement matters — keep the fund's structure mode.** Put base-exposure tags in `equityTags` and the overlay/alpha tags in `alphaTags`; an alpha-only fund (e.g. standalone managed futures) has empty `equityTags`. Do not move a fund across equity-only / alpha-only / dual to chase peers (see Structure isolation below).
+
+**Display:** only tags in `ETF_TAG_DISPLAY_LABELS` render as chips (internal/disambiguator tags are hidden); add a label there for any new tag. Chips sort by axis group, and within an axis the base (equity) sleeve comes before the overlay (alpha) sleeve, so a gold-miners-plus-gold fund reads "Gold miners, Gold" not "Gold, Gold miners".
+
+**Systematic-futures funds (managed futures, currency, commodity):**
+
+- **Hub category:** diversified CTAs that trade the full mix (e.g. DBMF/KMLM/CTA) go in `managed-futures`. Single-asset systematic funds (a currency-only or commodity-only strategy, e.g. FOXY, HARD) go in `single-asset-managed-futures` (badge "Managed futures - single asset"). The CA hub hides both managed-futures categories.
+- **Matching:** diversified CTAs use the real matching tag `managed_futures` (in `alphaTags`) so they peer each other. Single-asset funds (FOXY, HARD) carry **no matching tags at all** (empty `equityTags`/`alphaTags`) so they do not get pulled into the CTA peer group; they show "Managed futures" only as a display chip.
+- **Asset classes, styles, and the single-asset "Managed futures" label are display-only** via `extraDisplayTags` (4th `bundle()` arg): asset classes traded (`equities`, `bonds`, `currencies`, `commodities`), styles (`carry`), and for single-asset funds the `managed_futures` label itself. These render as chips but are **never** used for matching (putting `managed_futures` or an asset class in `alphaTags` would change the similar-ETF results). Tag honestly: DBMF `managed_futures` + all four asset classes; KMLM no `equities`; CTA adds `carry`; FOXY `managed_futures` + `currencies` (all display-only).
+
+**Worked examples:**
+
+- `mate: bundle(['us', 'large_cap', 'return_stacked', '2x_leveraged'], ['managed_futures'], 'sleeve')` — S&P 500 base + managed-futures overlay.
+- `qqql: bundle(['us', 'large_cap', 'growth', '1.25x_leveraged'], [], 'seeded')` — leveraged Nasdaq-100 (Nasdaq decomposes to `us, large_cap, growth`).
+- `pfls: bundle(['global', 'long_short'], [], 'manual')` — moderate-net global long/short equity (no net-exposure sub-tags; geography ranks).
+- `btgd: bundle(['bitcoin', 'return_stacked'], ['gold'], 'sleeve')` — return-stacked bitcoin base + gold overlay.
+- `foxy: bundle([], [], 'manual', ['managed_futures', 'currencies'])` — single-asset systematic futures; `single-asset-managed-futures` hub category; "Managed futures" and "Currencies" are display-only so it stays out of the CTA peer group.
+- `dbmf: bundle([], ['managed_futures'], 'seeded', ['equities', 'bonds', 'currencies', 'commodities'])` — diversified CTA; `managed_futures` matches; `managed-futures` hub category; asset classes are display-only.
+- `sgrt: bundle(['value', 'earnings_growth', 'us', 'large_cap', 'active'], [], 'manual')` — value factor gates; sub-factor / geo / size / style rank.
 
 ### What to add for every new ETF
 
@@ -187,7 +229,7 @@ The **Similar ETFs** block on dynamic ETF pages (`EtfDynamicPageLayout`) is **ta
 - **Listing scope:** **`/us-etfs`** and **`/ca/us-etfs`** compare against **`US_ETF_DYNAMIC_REGISTRY`**. **`/ca/etfs`** compares against **`CA_ETF_DYNAMIC_REGISTRY`** only.
 - **Display format (site standard):** render Similar ETFs as a **table** (not bullet list) with columns **Ticker / Name / Score / MER / AUM**. Include the **current ETF as the first row** (using `primarySimilarityHeadline` score + current `def.mer` / `def.aum`), then peer rows from `similarEtfs`.
 - **Structure isolation:** peers never cross **equity-only** (only `equityTags`), **alpha-only** (only `alphaTags`, e.g. standalone managed futures), and **dual / stacked** (both dimensions). Tag bundles must reflect that shape so pure alpha sleeves are not compared to return-stacked equity+overlay funds.
-- **Precious metals / major crypto (granular):** use **`pm_gold`**, **`pm_silver`**, **`pm_platinum`**, **`pm_palladium`** so any two funds that each carry at least one pm tag can match within that family. Use **`crypto_bitcoin`** and **`crypto_ethereum`** (plus optional umbrella **`crypto_major`**) so spot BTC and spot ETH listings pair; matching is implemented in **`etfSimilarityTags.ts`** (`preciousMetalAssetPeers` / `cryptoMajorAssetPeers`).
+- **Precious metals / major crypto (granular):** use **`gold`**, **`silver`**, **`platinum`**, **`palladium`** so any two funds that each carry at least one precious-metal tag match within that family. Use **`bitcoin`** and **`ethereum`** so spot BTC and spot ETH listings pair. Matching is implemented in **`etfSimilarityTags.ts`** (`preciousMetalAssetPeers` / `cryptoMajorAssetPeers` / `leveragedPeers`).
 - Display score on each row: **stacked** grade if present, else **capital (equity)** grade, else **alpha**, else **N/A** — same priority for the **current ETF** line above the list.
 
 ## 3. Research deep dives (before writing copy)

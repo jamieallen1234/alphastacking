@@ -591,8 +591,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   foxy: {
     yahooSymbol: 'FOXY',
-    hubCategoryId: 'premia-systematic-alternatives',
-    badge: 'Premia and systematic alternatives',
+    hubCategoryId: 'single-asset-managed-futures',
+    badge: 'Managed futures - single asset',
     h1Title: 'FOXY — Simplify Currency Strategy ETF',
     displayTicker: 'FOXY',
     issuer: 'Simplify Asset Management',
@@ -974,6 +974,72 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     officialUrl: 'https://www.mdsassetf.com/',
     officialLabel: 'M.D. Sass Concentrated Value ETF',
+  },
+
+  sgrt: {
+    yahooSymbol: 'SGRT',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'SGRT — SMART Earnings Growth 30 ETF',
+    displayTicker: 'SGRT',
+    issuer: 'SmartWay ETFs',
+    inception: 'Aug 2025',
+    addedToSite: '2026-06-16',
+    structure: 'Concentrated active US large-cap',
+    mer: '0.59%',
+    aum: '~$58M',
+    pageTitle: 'SGRT ETF — Alpha Stacking',
+    description: 'SMART Earnings Growth 30 ETF (SGRT): concentrated active U.S. large-cap growth.',
+    contentFormat: 'html',
+    lede:
+      `SGRT is the SMART Earnings Growth 30 ETF: a concentrated, quant-driven book of roughly 30 U.S. large-cap names chosen for durable earnings growth, run with no sector or industry constraints so the model can lean wherever the strongest growth signals sit.`,
+    strategyParas: [
+      `The sub-adviser ranks U.S. large caps on proprietary earnings-growth and quality signals, then holds the highest-conviction names with no benchmark sector weights. The result is high active share and real single-stock concentration: the top position can run near 9% of the book.`,
+      `Because the model is unconstrained and concentrated, tracking error versus the <strong>S&amp;P 500</strong> is large and a handful of holdings can drive returns. It launched in August 2025, so live history is short; the monthly holdings file is the most current read on positioning and factor tilts.`,
+    ],
+    pedigreeParas: ped(
+      `SGRT is sub-advised by SMART Wealth LLC and issued under the SmartWay ETFs brand on the Tidal platform, with Tidal Investments as adviser and Foreside as distributor. Tidal supplies operations and trading infrastructure to specialist managers, so the edge sits with the SMART Wealth model rather than a legacy fund complex.`,
+      `SMART Wealth is a specialist quantitative shop rather than a mega complex, so consolidated assets are modest and the strategy lives or dies on the model. Verify the latest Form ADV and ETF Facts for personnel, assets, and the exact selection methodology before sizing a position.`,
+    ),
+    outperfParas: [
+      `Outperforms when <strong>earnings-growth leadership broadens</strong> and the market pays up for accelerating fundamentals, a growth environment where the model's highest-ranked names compound faster than the index.`,
+      `Underperforms when leadership rotates to value or low volatility and concentrated growth derates, or in a choppy/sideways tape where a few stalled positions swamp the book; the favorable setup is a durable growth regime with healthy breadth, not a narrow melt-up.`,
+    ],
+    officialUrl: 'https://smartwayetfs.com/sgrt/',
+    officialLabel: 'SmartWay ETFs (SGRT)',
+  },
+
+  emeq: {
+    yahooSymbol: 'EMEQ',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'EMEQ — Nomura Focused Emerging Markets Equity ETF',
+    displayTicker: 'EMEQ',
+    issuer: 'Nomura Asset Management USA',
+    inception: 'Sep 2024',
+    addedToSite: '2026-06-16',
+    structure: 'Active emerging-markets equity',
+    mer: '0.86%',
+    aum: 'see ETF Facts',
+    pageTitle: 'EMEQ ETF — Alpha Stacking',
+    description: 'Nomura Focused Emerging Markets Equity ETF (EMEQ): active emerging-markets equity.',
+    contentFormat: 'html',
+    lede:
+      `EMEQ is the Nomura Focused Emerging Markets Equity ETF: an actively managed, high-conviction book that buys emerging-markets companies with durable competitive advantages (economic moats) at reasonable valuations, run as a focused all-cap portfolio rather than an EM index, with room for large single-country weights including China.`,
+    strategyParas: [
+      `The factor is <strong>competitive advantage</strong>: the team builds the book bottom-up, hunting companies with durable economic moats priced below fair value on discounted cash flow, replacement cost, and multiples. The result is a focused, non-diversified portfolio that can differ sharply from broad EM indexes in country, sector, and single-name weights.`,
+      `Concentration cuts both ways: a few positions or one country can drive returns, and EM liquidity, currency, and governance risk all apply. The fund charges 0.86%; read the ETF Facts and semiannual reports for current China exposure and sector tilts.`,
+    ],
+    pedigreeParas: ped(
+      `EMEQ is advised by Nomura Asset Management USA on the Nomura ETF Trust, with Delaware Management Company in the structure. The fund and trust were rebranded from Macquarie to Nomura effective December 2025 after Nomura acquired Macquarie's U.S. public asset-management business; the emerging-markets team carries over the prior Macquarie fundamental process and sits inside Nomura's large global asset-management group.`,
+      `Versus a passive EM index fund, EMEQ is a manager-skill bet: the edge rests on moat-focused stock selection and valuation discipline holding up across volatile EM cycles. Check the Nomura product page and ETF Facts for current holdings, personnel, and assets before allocating.`,
+    ),
+    outperfParas: [
+      `Outperforms when <strong>active selection is rewarded</strong> in emerging markets: dispersion is high, fundamentals separate winners from index deadweight, and durable-moat names rerate, often a growth environment for EM with stable or weakening dollar funding.`,
+      `Underperforms when EM trades as one passive risk asset, when a large country or single-name bet moves against the book, or when a strong dollar and tightening liquidity hit the whole complex; the favorable backdrop is selective, fundamentally driven EM leadership with orderly currency markets.`,
+    ],
+    officialUrl: 'https://nomuraassetmanagement.com/investments/etf/nomura-focused-emerging-markets-equity-etf',
+    officialLabel: 'Nomura Asset Management (EMEQ)',
   },
 
   cta: {
@@ -1807,8 +1873,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
   },
   hard: {
     yahooSymbol: 'HARD',
-    hubCategoryId: 'global-macro',
-    badge: 'Global macro',
+    hubCategoryId: 'single-asset-managed-futures',
+    badge: 'Managed futures - single asset',
     h1Title: 'HARD — Simplify Commodities Strategy No K-1 ETF',
     displayTicker: 'HARD',
     issuer: 'Simplify Asset Management',

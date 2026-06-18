@@ -13,6 +13,7 @@ import {
 } from '@/components/etfEfficiency/EtfEfficiencyGrades'
 import { capitalEfficiencyMetaLabel, stackExposureLineAvailability } from '@/lib/etfStackExposureBySlug'
 import type { PrimarySimilarityHeadline, SimilarEtfRow } from '@/lib/etfSimilarEtfs'
+import { displayTagLabelsForSlug } from '@/lib/etfSimilarityTags'
 
 function efficiencyGradeToShow(grade: string | null | undefined): string | null {
   const g = grade?.trim()
@@ -122,6 +123,7 @@ export default function EtfDynamicPageLayout({
   primarySimilarityHeadline,
 }: EtfDynamicPageLayoutProps) {
   const categoryValue = def.structure ?? def.badge
+  const tagChips = slug ? displayTagLabelsForSlug(slug, variant) : []
   const isCaHub = hubBase.startsWith('/ca')
   const homePath = isCaHub ? '/ca' : '/'
   const hubLabel = hubBase === '/ca/etfs' ? 'CA ETFs' : 'US ETFs'
@@ -158,6 +160,7 @@ export default function EtfDynamicPageLayout({
         beta: chartBetaDisplay(chart),
       }}
       metaExtras={buildEfficiencyMetaExtras(def, chart, slug)}
+      tagChips={tagChips}
       chart={{
         displayLabel: def.displayTicker,
         headingLabel: def.chartHeadingLabel,

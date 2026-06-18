@@ -189,6 +189,11 @@ export type PreInceptionStackMergeOptions = {
    * Financing drag applies to **max(0, grossExposurePct − 100)** / 100 at `STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE` / 252.
    */
   grossExposurePct?: number
+  /**
+   * Multiplier on each pre-inception session's blended leg return. Used to deleverage a proxy fund to
+   * the target's gross (e.g. HOLD 1.5x via RSST 2x → 0.75). Defaults to 1.
+   */
+  legReturnScale?: number
 }
 
 /**
@@ -234,6 +239,7 @@ export function buildPreInceptionProductStackMerge(
   const excessPct = Math.max(0, gross - 100)
   const borrowDragDaily =
     (excessPct / 100) * (STACKED_PRODUCT_PROXY_ANNUAL_BORROW_PER_OVERLAY_SLICE / 252)
+  const legReturnScale = options?.legReturnScale ?? 1
 
   const mergedMap = new Map<string, number>()
   let syn = 100
@@ -248,7 +254,8 @@ export function buildPreInceptionProductStackMerge(
       if (p0 <= 0 || p1 <= 0) return { series: target, modeling: null, spliced: false }
       factor *= p1 / p0
     }
-    syn *= factor - borrowDragDaily
+    // Scale the blended leg return to the target's leverage, then apply financing drag.
+    syn *= 1 + legReturnScale * (factor - 1) - borrowDragDaily
     mergedMap.set(d1, syn)
   }
   const synBeforeReal = syn

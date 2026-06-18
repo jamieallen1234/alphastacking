@@ -25,6 +25,15 @@
   color: var(--color-gold);
 }
 
+.badgeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.7rem;
+}
+
 .badge {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -32,8 +41,24 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-gold);
-  margin-bottom: 0.7rem;
-  display: block;
+}
+
+.tagChips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+
+.tagChip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(var(--rgb-text), 0.6);
+  border: 0.5px solid var(--color-border);
+  border-radius: 3px;
+  padding: 0.2rem 0.5rem;
 }
 
 .heading {

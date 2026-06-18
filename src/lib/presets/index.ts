@@ -201,7 +201,7 @@ export const usRiskParityHoldings: PresetHolding[] = [
 export const caSsoDglmRgbmArbHoldings: PresetHolding[] = [
   { ticker: 'SSO', weightPct: 35, beta: 2, blurb: '2x daily S&P 500 exposure for high-conviction U.S. beta.' },
   { ticker: 'RSSY', weightPct: 10, beta: 1, blurb: 'Return-stacked equity + managed futures sleeve.' },
-  { ticker: 'MATE', weightPct: 10, beta: 1.6, blurb: 'Equity plus managed-futures stack (CAD-converted in chart pipeline).' },
+  { ticker: 'MATE', weightPct: 10, beta: 1.6, blurb: 'Return-stacked 100% S&P 500 + 100% managed futures.' },
   { ticker: 'DGLM.TO', weightPct: 10, beta: 0.35, blurb: 'Systematic global macro alternatives sleeve.' },
   { ticker: 'RGBM.TO', weightPct: 10, beta: 0.85, blurb: 'Return-stacked global balanced + macro sleeve.' },
   { ticker: 'ARB.TO', weightPct: 25, beta: 0.05, blurb: 'Event-driven merger/SPAC arbitrage diversifier.' },
@@ -291,7 +291,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_INTL_PRESET_ID,
     region: 'ca',
-    cadDenominated: true,
+    cadDenominated: false,
     rebalanceSchedule: 'annual',
     holdings: caInternationalHoldings,
     extraCacheKeyTags: [
@@ -305,7 +305,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_CORE_BH_PRESET_ID,
     region: 'ca',
-    cadDenominated: true,
+    cadDenominated: false,
     rebalanceSchedule: 'none',
     holdings: caCoreBuyHoldHoldings,
     extraCacheKeyTags: [
@@ -319,7 +319,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_FACTOR_FCMO_PRESET_ID,
     region: 'ca',
-    cadDenominated: true,
+    cadDenominated: false,
     rebalanceSchedule: 'none',
     holdings: caFactorFcmoHoldings,
     extraCacheKeyTags: ['buy-hold', 'fcmo-qqql-zlb-vflo-v1'],
@@ -327,7 +327,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_USSL_QQQL_HDGE_PRESET_ID,
     region: 'ca',
-    cadDenominated: true,
+    cadDenominated: false,
     rebalanceSchedule: 'none',
     holdings: caUsslQqqlHdgeHoldings,
     extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'buy-hold', 'ussl-qqql-hdge-60-15-25'],
@@ -343,7 +343,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_ALPHA_STACK_PRESET_ID,
     region: 'ca',
-    cadDenominated: true,
+    cadDenominated: false,
     rebalanceSchedule: 'annual',
     holdings: caAlphaStackHoldings,
     extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'annual-rebal', 'ussl-qqql-dglm-pfmn-v1'],
@@ -383,7 +383,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
     region: 'ca',
-    cadDenominated: true,
+    cadDenominated: false,
     rebalanceSchedule: 'annual',
     holdings: caSsoDglmRgbmArbHoldings,
     extraCacheKeyTags: [
@@ -404,7 +404,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
     region: 'ca',
-    cadDenominated: true,
+    cadDenominated: false,
     rebalanceSchedule: 'annual',
     holdings: caFourAlphaQuadrantsHoldings,
     extraCacheKeyTags: [

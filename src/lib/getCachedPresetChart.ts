@@ -27,7 +27,7 @@ const _cachedPresetChart = unstable_cache(
     const preset = mustPreset(presetId)
     return computePresetChart(preset, range)
   },
-  ['preset-chart', 'chart-proxy-v15'],
+  ['preset-chart', 'chart-proxy-v17-similar-auto'],
   { revalidate: DAY }
 )
 

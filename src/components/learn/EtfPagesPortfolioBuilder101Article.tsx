@@ -20,7 +20,7 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
       <header>
         <div className={styles.headerRow}>
           <span className={styles.eyebrow}>Site guide</span>
-          <span className={styles.readTime}>~5 min read</span>
+          <span className={styles.readTime}>~6 min read</span>
         </div>
         <h1 className={styles.title}>ETF pages, model portfolios, and the portfolio builder</h1>
         <p className={styles.deck}>
@@ -35,7 +35,7 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
         </h2>
         <p className={styles.body}>
           If you&apos;re new to ETFs: a <strong>ticker</strong> (SPY, VFV, etc.) is the symbol for a fund on an
-          exchange. Our write-ups describe what each fund does — they are educational only, not a recommendation to
+          exchange. Our write-ups describe what each fund does. They are educational only, not a recommendation to
           buy or sell anything.
         </p>
         <p className={styles.body}>
@@ -89,6 +89,29 @@ export default function EtfPagesPortfolioBuilder101Article({ edition }: { editio
           Once the percentages add to 100%, hit the Generate button and the tool draws a portfolio chart: switch time
           ranges, compare your line to the benchmark, and read total return and drawdown for the period. Try small
           changes (fewer funds, different weights) to see how sensitive the modeled outcome is.
+        </p>
+      </section>
+
+      <section className={styles.section} aria-labelledby="s-proxy">
+        <h2 id="s-proxy" className={styles.sectionTitle}>
+          How backtests are built
+        </h2>
+        <p className={styles.body}>
+          Many funds we cover launched recently, so their own price history is short. To show a longer chart, we
+          extend the history with a <strong>proxy</strong>. Our proxy is not a simulated or synthetic return stream.
+          It is a real, older ETF in the same category, the next-best fund an investor could actually have held
+          before the newer one existed.
+        </p>
+        <p className={styles.body}>
+          For example, a managed-futures fund launched in 2024 might be extended with an established
+          managed-futures ETF that has traded since 2019. The pre-launch part of the line is that older fund&apos;s
+          actual total return, picked because it is the closest match in the same strategy. When a chart uses a
+          proxy, the page says so in a footnote.
+        </p>
+        <p className={styles.body}>
+          This keeps the backtest honest, but it is not perfect. The proxy and the newer fund differ in fees, exact
+          holdings, and leverage, so the older segment shows what the strategy did, not what this specific fund would
+          have done. Once a fund has enough live history, it stands on its own and the proxy drops away.
         </p>
       </section>
 

@@ -79,6 +79,8 @@ export const ETF_CHART_SYMBOLS = [
   'SPBC',
   'FOXY',
   'WTLS',
+  'SGRT',
+  'EMEQ',
 ] as const
 
 export type EtfChartYahooSymbol = (typeof ETF_CHART_SYMBOLS)[number]

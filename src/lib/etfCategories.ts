@@ -31,6 +31,12 @@ export const ETF_CATEGORY_ROWS = [
       'Trend-following funds that go long or short across equities, bonds, currencies, and commodities based on which direction prices are moving.',
   },
   {
+    id: 'single-asset-managed-futures',
+    title: 'Managed futures - single asset',
+    subtitle:
+      'Systematic futures strategies that trade a single asset class instead of the full managed-futures mix. Currency carry and mean-reversion, or commodity long/short.',
+  },
+  {
     id: 'long-short',
     title: 'Long/short',
     subtitle:
@@ -90,7 +96,8 @@ export function getEtfHubCategoryRows(variant: 'us' | 'ca'): EtfCategoryRow[] {
       (r) =>
         r.id !== 'return-stacked-ge-2x' &&
         r.id !== 'return-stacked-lt-2x' &&
-        r.id !== 'managed-futures'
+        r.id !== 'managed-futures' &&
+        r.id !== 'single-asset-managed-futures'
     ).map((r) => ({ id: r.id, title: r.title, subtitle: r.subtitle })),
   ]
 }

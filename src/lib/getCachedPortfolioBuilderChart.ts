@@ -57,7 +57,7 @@ export async function getCachedPortfolioBuilderChart(params: {
           cadDenominated: params.cadDenominated,
           rebalanceSchedule: 'none',
         }),
-      ['portfolio-builder-chart-v9-zqq-qqql', key],
+      ['portfolio-builder-chart-v10-similar-auto', key],
       { revalidate: DAY }
     )
     // Evict the oldest entry first so the map can't grow without bound under

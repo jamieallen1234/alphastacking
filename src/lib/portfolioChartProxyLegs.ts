@@ -4,6 +4,12 @@ import {
   type EtfStackExposureConfig,
   type SleeveComponent,
 } from '@/lib/etfStackExposureBySlug'
+import {
+  ETF_SIMILARITY_TAGS_BY_SLUG_CA,
+  ETF_SIMILARITY_TAGS_BY_SLUG_US,
+  similarEtfSlugsFor,
+  type EtfSimilarityUniverse,
+} from '@/lib/etfSimilarityTags'
 import { blendPriceSeries } from '@/lib/syntheticProxyMerge'
 import type { PriceSeries } from '@/lib/yahooFinance'
 
@@ -19,6 +25,12 @@ export type ProxyDef = {
    * 100 when the proxy is an existing fund whose borrow cost is already embedded (e.g. RSST for MATE).
    */
   grossExposurePct?: number
+  /**
+   * Multiplier applied to the proxy's daily returns before splicing. Used when the proxy fund has a
+   * different gross leverage than the target (e.g. HOLD 1.5x proxied by RSST 2x → 1.5/2 = 0.75), so the
+   * pre-inception line reflects the target's actual leverage. Defaults to 1 (raw splice).
+   */
+  legReturnScale?: number
 }
 
 /**
@@ -211,16 +223,99 @@ export function collectProxyLeafSymbols(def: ProxyDef): string[] {
   return [...syms]
 }
 
-/** Resolved proxy def for a Yahoo symbol: manual map first, then auto-derives from ETF_STACK_EXPOSURE_BY_SLUG. */
+/** A fund younger than this (in years) gets an auto similar-ETF proxy if no manual / stack proxy exists. */
+export const SIMILAR_PROXY_RECENT_INCEPTION_YEARS = 2
+/** A proxy candidate must predate the new fund by at least this many years to actually extend the backtest. */
+export const SIMILAR_PROXY_MIN_HISTORY_ADVANTAGE_YEARS = 1
+
+const MS_PER_YEAR = 365.25 * 24 * 60 * 60 * 1000
+
+/** Parse registry inception strings: "Feb 7, 2025", "Jun 2006", or a bare year. Returns epoch ms or null. */
+export function parseInceptionTime(s: string): number | null {
+  const direct = Date.parse(s)
+  if (!Number.isNaN(direct)) return direct
+  const monthYear = s.match(/([A-Za-z]{3,})\s+(\d{4})/)
+  if (monthYear) {
+    const t = Date.parse(`${monthYear[1]} 1, ${monthYear[2]}`)
+    if (!Number.isNaN(t)) return t
+  }
+  const year = s.match(/\b(\d{4})\b/)
+  if (year) {
+    const t = Date.parse(`Jan 1, ${year[1]}`)
+    if (!Number.isNaN(t)) return t
+  }
+  return null
+}
+
+type RegistryHit = {
+  slug: string
+  universe: EtfSimilarityUniverse
+  inception: string
+  yahooSymbol: string
+}
+
+function findRegistryHitByYahoo(sym: string): RegistryHit | null {
+  const u = sym.trim().toUpperCase()
+  for (const slug of Object.keys(US_ETF_DYNAMIC_REGISTRY)) {
+    const def = US_ETF_DYNAMIC_REGISTRY[slug as keyof typeof US_ETF_DYNAMIC_REGISTRY]!
+    if (def.yahooSymbol.toUpperCase() === u) {
+      return { slug, universe: 'us', inception: def.inception, yahooSymbol: def.yahooSymbol }
+    }
+  }
+  for (const slug of Object.keys(CA_ETF_DYNAMIC_REGISTRY)) {
+    const def = CA_ETF_DYNAMIC_REGISTRY[slug as keyof typeof CA_ETF_DYNAMIC_REGISTRY]!
+    if (def.yahooSymbol.toUpperCase() === u) {
+      return { slug, universe: 'ca', inception: def.inception, yahooSymbol: def.yahooSymbol }
+    }
+  }
+  return null
+}
+
+/**
+ * Auto proxy for a short-history fund: its best-rated similar ETF (highest similarity score) whose
+ * own history is clearly longer. Picks the next-best real fund an investor could have held — a single
+ * 100% leg (no leverage drag). Returns null when the fund is old enough or no older peer qualifies.
+ */
+export function resolveSimilarEtfProxyDef(yahooSymbol: string, now: number = Date.now()): ProxyDef | null {
+  const hit = findRegistryHitByYahoo(yahooSymbol)
+  if (!hit) return null
+  const incept = parseInceptionTime(hit.inception)
+  if (incept == null) return null
+  if ((now - incept) / MS_PER_YEAR > SIMILAR_PROXY_RECENT_INCEPTION_YEARS) return null
+
+  const tagMap = hit.universe === 'us' ? ETF_SIMILARITY_TAGS_BY_SLUG_US : ETF_SIMILARITY_TAGS_BY_SLUG_CA
+  const registry = hit.universe === 'us' ? US_ETF_DYNAMIC_REGISTRY : CA_ETF_DYNAMIC_REGISTRY
+  const targetGross = grossExposurePctForSlug(hit.slug) ?? 100
+  const peers = similarEtfSlugsFor(hit.slug, hit.universe, Object.keys(tagMap))
+  for (const peerSlug of peers) {
+    const peerDef = registry[peerSlug as keyof typeof registry]
+    if (!peerDef) continue
+    const peerIncept = parseInceptionTime(peerDef.inception)
+    if (peerIncept == null) continue
+    if ((incept - peerIncept) / MS_PER_YEAR >= SIMILAR_PROXY_MIN_HISTORY_ADVANTAGE_YEARS) {
+      // Scale the peer's daily returns to the target's leverage (e.g. HOLD 1.5x via RSST 2x → 0.75).
+      const peerGross = grossExposurePctForSlug(peerSlug) ?? 100
+      const legReturnScale = peerGross > 0 ? targetGross / peerGross : 1
+      return { legs: [peerDef.yahooSymbol.toUpperCase()], grossExposurePct: 100, legReturnScale }
+    }
+  }
+  return null
+}
+
+/**
+ * Resolved proxy def for a Yahoo symbol: manual map first, then auto-derives from
+ * `ETF_STACK_EXPOSURE_BY_SLUG`, then (for short-history funds) the best-rated similar ETF.
+ */
 export function resolveProxyDef(yahooSymbol: string): ProxyDef | null {
   const u = yahooSymbol.trim().toUpperCase()
   const manual = CHART_STACK_PRODUCT_PROXY_LEGS[u]
   if (manual) return manual
   const slug = findSlugByYahooSymbol(u)
-  if (!slug) return null
-  const legs = buildAutoStackProxyLegs(slug)
-  if (!legs) return null
-  return { legs }
+  if (slug) {
+    const legs = buildAutoStackProxyLegs(slug)
+    if (legs) return { legs }
+  }
+  return resolveSimilarEtfProxyDef(u)
 }
 
 /**

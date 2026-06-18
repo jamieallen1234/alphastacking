@@ -251,7 +251,7 @@ export async function computePortfolioChart(params: {
     () => (needDglmDbmfProxy ? fetchDailySeries('DBMF', range, maxWindow) : Promise.resolve(null)),
     () => (needHfgmAsgmProxy ? fetchDailySeries('ASGM', range, maxWindow) : Promise.resolve(null)),
     () =>
-      usslIdx >= 0 && cadDenominated
+      usslIdx >= 0
         ? fetchDailySeries(CAD_UNHEDGED_SP500_PROXY_SYMBOL, range, maxWindow)
         : Promise.resolve(null),
     () => (cadDenominated ? fetchDailySeries(USDCAD_YAHOO_SYMBOL, range, maxWindow) : Promise.resolve(null)),
@@ -354,6 +354,7 @@ export async function computePortfolioChart(params: {
     const gross = def.grossExposurePct ?? grossExposureForChartProxy(symbols[i]!, slug)
     const pin = buildPreInceptionProductStackMerge(seriesMut[i]!, legSeries, {
       grossExposurePct: gross,
+      legReturnScale: def.legReturnScale,
     })
     if (pin.modeling != null && pin.series.timestamps.length >= 2) {
       if (pin.spliced) {
@@ -482,10 +483,8 @@ export async function computePortfolioChart(params: {
   }
 
   if (usslIdx >= 0) {
-    if (cadDenominated) {
-      if (usslVfvExtra == null || usslVfvExtra.timestamps.length < 2) {
-        throw new Error('VFV.TO series required for USSL.TO on CAD-denominated charts')
-      }
+    if (usslVfvExtra != null && usslVfvExtra.timestamps.length >= 2) {
+      // USSL.TO modeled as 1.25x VFV.TO (CAD S&P 500), used in its listing currency.
       pushCad125(usslIdx, usslVfvExtra, USSL_FIRST_REAL_NY_DAY, 'VFV.TO')
     } else {
       pushCad125(usslIdx, benchSeries, USSL_FIRST_REAL_NY_DAY, 'SPY')
@@ -493,9 +492,10 @@ export async function computePortfolioChart(params: {
   }
 
   if (qqqlIdx >= 0) {
-    if (!cadDenominated || zqqMut == null) {
-      throw new Error('QQQL.TO requires a CAD-denominated chart (underlying ZQQ.TO is CAD-listed unhedged Nasdaq-100).')
+    if (zqqMut == null || zqqMut.timestamps.length < 2) {
+      throw new Error('QQQL.TO requires its ZQQ.TO underlying (CAD-listed unhedged Nasdaq-100) to model the 1.25x sleeve.')
     }
+    // QQQL.TO modeled as 1.25x ZQQ.TO (CAD Nasdaq-100), used in its listing currency.
     pushCad125(qqqlIdx, zqqMut, QQQL_FIRST_REAL_NY_DAY, 'ZQQ.TO')
   }
 

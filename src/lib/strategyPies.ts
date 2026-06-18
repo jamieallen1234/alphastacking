@@ -28,12 +28,17 @@ const STACK_SPLIT: Record<string, [string | null, string]> = {
   WTLS: ['S&P 500', 'Long/short'],
 }
 
-/** Long-only factor funds: self-paired (index = growth, the factor itself is the alpha). */
+/**
+ * Long-only factor funds: self-paired. Growth is the fund's OWN equity holdings (not a separate
+ * S&P 500 index sleeve) and the factor tilt is the alpha. In a factor barbell (e.g. momentum + value)
+ * the growth is the equity of those factor holdings; when a real growth engine (LETF in GROWTH_FUNDS)
+ * is also present it adds its own index growth on top.
+ */
 const FACTOR_FUNDS: Record<string, string> = {
-  SPMO: 'S&P 500',
-  VFLO: 'S&P 500',
-  'ZLB.TO': 'S&P 500',
-  'FCMO.TO': 'S&P 500',
+  SPMO: 'US large-cap',
+  VFLO: 'US large-cap',
+  'ZLB.TO': 'Canadian equity',
+  'FCMO.TO': 'US large-cap',
 }
 
 /** Pure-growth funds (levered / plain index): ticker → index label. */

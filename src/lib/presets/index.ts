@@ -107,7 +107,7 @@ export const caInternationalHoldings: PresetHolding[] = [
 export const caCoreBuyHoldHoldings: PresetHolding[] = [
   { ticker: 'USSL.TO', weightPct: 35, beta: 1.25, blurb: '1.25× S&P 500 (charts: 1.25× VFV.TO TR + Canadian borrow on extra 0.25× notional; unhedged S&P proxy for this sleeve).' },
   { ticker: 'QQQL.TO', weightPct: 30, beta: 1.25, blurb: '1.25× Nasdaq-100 (charts: 1.25× QQQ TR in CAD + Canadian borrow on extra 0.25× notional).' },
-  { ticker: 'ZLB.TO', weightPct: 20, beta: 0.63, blurb: 'BMO Low Volatility US Equity (CAD-hedged).' },
+  { ticker: 'ZLB.TO', weightPct: 20, beta: 0.63, blurb: 'BMO Low Volatility Canadian Equity.' },
   { ticker: 'PFLS.TO', weightPct: 15, beta: 0.48, blurb: 'Long/short equity (~160% / ~100% gross).' },
 ]
 
@@ -115,7 +115,7 @@ export const caCoreBuyHoldHoldings: PresetHolding[] = [
 export const caFactorFcmoHoldings: PresetHolding[] = [
   { ticker: 'FCMO.TO', weightPct: 30, beta: 1.0, blurb: 'Fidelity U.S. Momentum ETF — 100-stock U.S. large-cap momentum factor, quarterly rebalanced.' },
   { ticker: 'QQQL.TO', weightPct: 25, beta: 1.25, blurb: '1.25× Nasdaq-100 (charts: 1.25× QQQ TR in CAD + Canadian borrow on extra 0.25× notional).' },
-  { ticker: 'ZLB.TO', weightPct: 25, beta: 0.63, blurb: 'BMO Low Volatility US Equity (CAD-hedged) — defensive low-beta anchor.' },
+  { ticker: 'ZLB.TO', weightPct: 25, beta: 0.63, blurb: 'BMO Low Volatility Canadian Equity, a defensive low-beta anchor.' },
   { ticker: 'VFLO', weightPct: 20, beta: 0.75, blurb: 'Large-cap free-cash-flow quality tilt — value factor via high-FCF yield selection.' },
 ]
 

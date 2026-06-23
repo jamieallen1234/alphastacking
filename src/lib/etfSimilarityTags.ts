@@ -87,6 +87,10 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   emeq: bundle(['quality', 'competitive_advantage', 'emerging_markets', 'all_cap', 'active'], [], 'manual'),
   /** Active concentrated US value (Russell 1000/3000 Value-sourced; not buy-write). */
   sass: bundle(['value', 'concentrated', 'us', 'large_cap', 'active'], [], 'manual'),
+  /** Active concentrated US equity; secular-trend valuation discipline (~30 names). */
+  afos: bundle(['concentrated', 'us', 'all_cap', 'active'], [], 'manual'),
+  /** Quantitative trend-following US large-cap equity (~25 names); long-only momentum. */
+  strn: bundle(['momentum', 'concentrated', 'us', 'large_cap', 'active'], [], 'manual'),
 
   // --- Leveraged beta (equity-only; grouped by `leveragedPeers`, the multiple is display/rank) ---
   sso: bundle(['us', 'large_cap', '2x_leveraged'], [], 'manual'),

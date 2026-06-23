@@ -263,6 +263,18 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('sass')
     ),
     us(
+      'afos',
+      'AFOS — ARS Focused Opportunities Strategy ETF',
+      'Active, concentrated U.S. equity: ~30 high-conviction names chosen for valuation margin of safety and secular-trend exposure.',
+      usPath('afos')
+    ),
+    us(
+      'strn',
+      'STRN — SMART Trend 25 ETF',
+      'Quantitative momentum sleeve: ~25 liquid U.S. large caps selected for technical strength, with sector caps.',
+      usPath('strn')
+    ),
+    us(
       'avdv',
       'AVDV — Avantis International Small Cap Value ETF',
       'Systematic international small-cap value with profitability screens.',

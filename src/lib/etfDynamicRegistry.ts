@@ -976,6 +976,72 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'M.D. Sass Concentrated Value ETF',
   },
 
+  afos: {
+    yahooSymbol: 'AFOS',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'AFOS - ARS Focused Opportunities Strategy ETF',
+    displayTicker: 'AFOS',
+    issuer: 'ARS Investment Partners',
+    inception: 'Jun 25, 2025',
+    addedToSite: '2026-06-22',
+    structure: 'Concentrated active US equity',
+    mer: '0.45%',
+    aum: '~$300M',
+    pageTitle: 'AFOS ETF - Alpha Stacking',
+    description: 'ARS Focused Opportunities Strategy ETF (AFOS): active, concentrated U.S. equity sourced from ARS Investment Partners.',
+    contentFormat: 'html',
+    lede:
+      'AFOS is ARS Investment Partners\' <strong>concentrated active equity</strong> sleeve: roughly 30 high-conviction U.S. names chosen for valuation margin of safety and exposure to durable secular trends, not index replication.',
+    strategyParas: [
+      'AFOS is stock selection, not factor beta. The team buys companies across market caps where it sees the widest gap between price and intrinsic value, tilting toward businesses riding secular tailwinds (semiconductors, energy, industrials) and away from secular losers. At about 30 holdings, single positions and sector bets drive returns, so tracking error to the S&amp;P 500 is high by design.',
+      'The fund can hold underlying ETFs and a cash-equivalent sleeve alongside direct equity, so net exposure and concentration shift with the opportunity set. As a young, concentrated ETF, premium/discount to NAV and bid/ask spreads can widen in stress. Read the prospectus and monthly holdings for current positioning and risk factors.',
+    ],
+    pedigreeParas: ped(
+      `ARS Investment Partners traces to A.R. Schmeidler &amp; Co., founded in 1971, and runs separately managed accounts for high-net-worth and institutional clients. AFOS packages that long-running discretionary process in an ETF wrapper. Lead managers Sean Lawless, P. Ross Taylor III, and Andrew Schmeidler each carry roughly three to four decades of experience.`,
+      `ARS is a specialist boutique rather than a mega-issuer, so consolidated firm AUM is not widely published; verify Form ADV for current assets and personnel. The boutique scale keeps incentives tied to concentrated performance, but distribution and research coverage are thinner than index-house funds.`,
+    ),
+    outperfParas: [
+      'Outperforms when <strong>stock selection is rewarded</strong>: high-dispersion tape where cheap, secular-trend businesses re-rate and the manager\'s valuation discipline separates winners from the index, particularly in a growth environment that favors its tech and energy tilts.',
+      'Underperforms when <strong>narrow index leadership dominates</strong> and a concentrated book lags a cap-weight benchmark, or when one broken thesis swamps a quarter; favorable tape is broad re-rating of undervalued franchises, not passive megacap drift.',
+    ],
+    officialUrl: 'https://arsinvestetfs.com/afos/',
+    officialLabel: 'ARS Investment Partners (AFOS)',
+  },
+
+  strn: {
+    yahooSymbol: 'STRN',
+    hubCategoryId: 'factor',
+    badge: 'Factor',
+    h1Title: 'STRN - SMART Trend 25 ETF',
+    displayTicker: 'STRN',
+    issuer: 'SmartWay ETFs',
+    inception: 'Aug 19, 2025',
+    addedToSite: '2026-06-22',
+    structure: 'Systematic trend-following US large-cap equity',
+    mer: '0.59%',
+    aum: '~$20M',
+    pageTitle: 'STRN ETF - Alpha Stacking',
+    description: 'SMART Trend 25 ETF (STRN): quantitative, trend-following concentrated U.S. large-cap equity.',
+    contentFormat: 'html',
+    lede:
+      'STRN is a <strong>quantitative momentum</strong> equity sleeve: a concentrated book of about 25 highly liquid U.S. large caps selected for technical strength, with sector exposure capped to keep the trend bet diversified across leadership.',
+    strategyParas: [
+      'STRN ranks large-cap U.S. equities on price-trend and technical-strength signals, then holds the highest-scoring names in a tight, roughly 25-stock portfolio. This is a long-only momentum factor expressed through stock selection: it leans into whatever sectors are leading, subject to caps that prevent a single theme from dominating. Turnover is higher than a broad index as the screen rotates into new trends.',
+      'Because the book is concentrated and signal-driven, leadership reversals can hurt quickly: the names with the strongest recent trends are the ones a sharp rotation punishes first. As a young, small ETF, spreads and premium/discount to NAV can widen in stress. The prospectus details the ranking methodology and rebalance cadence.',
+    ],
+    pedigreeParas: ped(
+      `STRN is sub-advised by Smart Wealth LLC and distributed under the SmartWay ETFs brand through Foreside Fund Services. The strategy is rules-based trend following applied to U.S. large caps, so the edge rests on signal design and execution discipline rather than discretionary calls.`,
+      `SmartWay is an emerging specialist issuer, not a mega-complex; firm-wide AUM is not widely published and the fund itself is small, so liquidity is part of the return profile. Verify the prospectus and Form ADV for adviser detail and current assets before allocating meaningful capital.`,
+    ),
+    outperfParas: [
+      'Outperforms when <strong>price trends persist</strong>: one-directional sector leadership that compounds quarter over quarter lets the momentum screen keep riding winners, the classic trending growth environment where strength begets strength.',
+      'Underperforms in <strong>sharp factor rotations</strong> where last quarter\'s leaders become this quarter\'s crowded exits, and in choppy, mean-reverting tape; favorable conditions are durable trends with follow-through, not abrupt reversals that whipsaw a concentrated momentum book.',
+    ],
+    officialUrl: 'https://smartwayetfs.com/strn/',
+    officialLabel: 'SmartWay ETFs (STRN)',
+  },
+
   sgrt: {
     yahooSymbol: 'SGRT',
     hubCategoryId: 'factor',

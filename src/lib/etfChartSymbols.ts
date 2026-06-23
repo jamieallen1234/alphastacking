@@ -35,6 +35,8 @@ export const ETF_CHART_SYMBOLS = [
   'SPMO',
   'VFLO',
   'SASS',
+  'AFOS',
+  'STRN',
   'AVUV',
   'AVDV',
   'COWZ',

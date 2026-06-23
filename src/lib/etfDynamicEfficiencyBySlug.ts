@@ -365,6 +365,20 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  afos: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        'AFOS is a concentrated active U.S. equity sleeve (~30 names). Launched June 2025; insufficient live history to grade capital efficiency vs SPY.'
+      ),
+    },
+  },
+  strn: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        'STRN is a quantitative trend-following U.S. large-cap equity sleeve (~25 names). Launched August 2025; insufficient live history to grade capital efficiency vs SPY.'
+      ),
+    },
+  },
   sgrt: {
     capital: {
       tooltip: capitalEfficiencyTooltip(

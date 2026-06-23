@@ -33,6 +33,7 @@ export const ETF_CHART_SYMBOLS = [
   'QLD',
   'TQQQ',
   'SPMO',
+  'FMTM',
   'VFLO',
   'SASS',
   'AFOS',

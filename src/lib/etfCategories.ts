@@ -19,10 +19,22 @@ export const ETF_CATEGORY_ROWS = [
       'Rules-based funds that harvest persistent return factors — value, carry, momentum, quality — across many markets simultaneously.',
   },
   {
-    id: 'factor',
-    title: 'Factor',
+    id: 'factor-momentum',
+    title: 'Factor - Momentum',
     subtitle:
-      'Equity ETFs that tilt toward specific stock characteristics — momentum, value, quality, small-cap — that have historically outperformed the broad market over long periods.',
+      'Equity ETFs that tilt toward recent relative strength. They ride leadership while a trend persists and rotate when it breaks.',
+  },
+  {
+    id: 'factor-value',
+    title: 'Factor - Value',
+    subtitle:
+      'Equity ETFs that tilt toward cheap, cash-generative companies, including free-cash-flow and small-cap value sleeves.',
+  },
+  {
+    id: 'factor-active',
+    title: 'Factor - Concentrated active',
+    subtitle:
+      'High-conviction active managers running focused books, roughly 20 to 50 names selected bottom-up rather than tracking a factor index.',
   },
   {
     id: 'managed-futures',
@@ -76,7 +88,15 @@ export const ETF_CATEGORY_ROWS = [
 
 export type EtfCategoryRow = { id: string; title: string; subtitle?: string }
 
-/** Hub section list: US keeps "Return Stacked - 2x" and "Lower Leverage"; CA shows a single Return Stacked block. */
+/** Single Factor row used on the CA hub, which collapses the US Momentum / Value / Concentrated active split. */
+const CA_FACTOR_ROW: EtfCategoryRow = {
+  id: 'factor',
+  title: 'Factor',
+  subtitle:
+    'Equity ETFs that tilt toward specific stock characteristics (momentum, value, quality, small-cap) that have historically outperformed the broad market over long periods.',
+}
+
+/** Hub section list: US keeps "Return Stacked - 2x" and "Lower Leverage" plus the split factor sections; CA collapses both. */
 export function getEtfHubCategoryRows(variant: 'us' | 'ca'): EtfCategoryRow[] {
   if (variant === 'us') {
     return ETF_CATEGORY_ROWS.map((r) =>
@@ -97,7 +117,13 @@ export function getEtfHubCategoryRows(variant: 'us' | 'ca'): EtfCategoryRow[] {
         r.id !== 'return-stacked-ge-2x' &&
         r.id !== 'return-stacked-lt-2x' &&
         r.id !== 'managed-futures' &&
-        r.id !== 'single-asset-managed-futures'
-    ).map((r) => ({ id: r.id, title: r.title, subtitle: r.subtitle })),
+        r.id !== 'single-asset-managed-futures' &&
+        r.id !== 'factor-value' &&
+        r.id !== 'factor-active'
+    ).map((r) =>
+      r.id === 'factor-momentum'
+        ? CA_FACTOR_ROW
+        : { id: r.id, title: r.title, subtitle: r.subtitle }
+    ),
   ]
 }

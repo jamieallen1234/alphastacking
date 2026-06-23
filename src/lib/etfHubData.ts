@@ -47,6 +47,12 @@ export function getEtfHubItems(
       ...ETF_HUB_CA['return-stacked-ge-2x'],
       ...ETF_HUB_CA['return-stacked-lt-2x'],
     ]
+  } else if (listing === 'ca' && categoryId === 'factor') {
+    rows = [
+      ...ETF_HUB_CA['factor-momentum'],
+      ...ETF_HUB_CA['factor-value'],
+      ...ETF_HUB_CA['factor-active'],
+    ]
   } else {
     const table = listing === 'ca' ? ETF_HUB_CA : ETF_HUB_US
     rows = table[categoryId as keyof typeof table] ?? []
@@ -66,18 +72,6 @@ const caPath = (key: string) => `/ca/etfs/${key}`
 /** US-listed crypto / digital sleeves (US hub only; CA hub shows “Coming soon” under the same heading) */
 const CRYPTO_HUB_LIST: EtfHubListItem[] = [
   us(
-    'begs',
-    'BEGS — Rareview 2x Bull Cryptocurrency & Precious Metals ETF',
-    'Leveraged long exposure to a blended crypto and precious-metals sleeve (Rareview).',
-    usPath('begs')
-  ),
-  us(
-    'btgd',
-    'BTGD — STKd 100% Bitcoin & 100% Gold ETF',
-    'Stacked ~100% bitcoin and ~100% gold exposure via futures and ETPs (Quantify STKd).',
-    usPath('btgd')
-  ),
-  us(
     'ooqb',
     'OOQB — One+One™ Nasdaq-100® and Bitcoin ETF',
     'Volatility Shares: ~100% Nasdaq-100 and ~100% bitcoin futures exposure in one capital-efficient sleeve (listed as OOQB; often discussed as “QQQ + BTC”).',
@@ -96,16 +90,28 @@ const CRYPTO_HUB_LIST: EtfHubListItem[] = [
     usPath('rssx')
   ),
   us(
+    'spbc',
+    'SPBC — Simplify US Equity PLUS Bitcoin Strategy ETF',
+    'Simplify: 100% S&P 500 equity with a targeted ~10% spot bitcoin overlay via ETPs, rebalanced quarterly.',
+    usPath('spbc')
+  ),
+  us(
     'wtib',
     'WTIB — USCF Oil Plus Bitcoin Strategy Fund',
     'Actively managed crude oil and bitcoin futures/ETP exposure with roughly balanced notional sleeves.',
     usPath('wtib')
   ),
   us(
-    'spbc',
-    'SPBC — Simplify US Equity PLUS Bitcoin Strategy ETF',
-    'Simplify: 100% S&P 500 equity with a targeted ~10% spot bitcoin overlay via ETPs, rebalanced quarterly.',
-    usPath('spbc')
+    'btgd',
+    'BTGD — STKd 100% Bitcoin & 100% Gold ETF',
+    'Stacked ~100% bitcoin and ~100% gold exposure via futures and ETPs (Quantify STKd).',
+    usPath('btgd')
+  ),
+  us(
+    'begs',
+    'BEGS — Rareview 2x Bull Cryptocurrency & Precious Metals ETF',
+    'Leveraged long exposure to a blended crypto and precious-metals sleeve (Rareview).',
+    usPath('begs')
   ),
 ]
 
@@ -113,10 +119,10 @@ const CRYPTO_HUB_LIST: EtfHubListItem[] = [
 export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   'return-stacked-ge-2x': [
     us(
-      'mate',
-      'MATE — Man Active Trend Enhanced ETF',
-      '100% S&P 500 beta stacked with 100% trend-following managed futures.',
-      '/us-etfs/mate'
+      'rssb',
+      'RSSB — Return Stacked® Global Stocks & Bonds ETF',
+      'Global equities stacked with a Treasury bond sleeve in one capital-efficient wrapper.',
+      usPath('rssb')
     ),
     us(
       'rsst',
@@ -125,10 +131,10 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('rsst')
     ),
     us(
-      'rsit',
-      'RSIT — Return Stacked International Stocks & Managed Futures ETF',
-      'For each $1 invested, ~$1 large-cap international equity and ~$1 systematic managed futures (trend) exposure.',
-      usPath('rsit')
+      'rssy',
+      'RSSY — Return Stacked U.S. Stocks & Futures Yield ETF',
+      'Large-cap U.S. equity stacked with a systematic futures yield (carry) sleeve.',
+      '/us-etfs/rssy'
     ),
     us(
       'ctap',
@@ -137,16 +143,10 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('ctap')
     ),
     us(
-      'rssy',
-      'RSSY — Return Stacked U.S. Stocks & Futures Yield ETF',
-      'Large-cap U.S. equity stacked with a systematic futures yield (carry) sleeve.',
-      '/us-etfs/rssy'
-    ),
-    us(
-      'rssb',
-      'RSSB — Return Stacked® Global Stocks & Bonds ETF',
-      'Global equities stacked with a Treasury bond sleeve in one capital-efficient wrapper.',
-      usPath('rssb')
+      'mate',
+      'MATE — Man Active Trend Enhanced ETF',
+      '100% S&P 500 beta stacked with 100% trend-following managed futures.',
+      '/us-etfs/mate'
     ),
     us(
       'rsbt',
@@ -154,13 +154,19 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'For each $1 invested, ~$1 broad U.S. bond exposure and ~$1 systematic managed futures trend exposure.',
       usPath('rsbt')
     ),
+    us(
+      'rsit',
+      'RSIT — Return Stacked International Stocks & Managed Futures ETF',
+      'For each $1 invested, ~$1 large-cap international equity and ~$1 systematic managed futures (trend) exposure.',
+      usPath('rsit')
+    ),
   ],
   'return-stacked-lt-2x': [
     us(
-      'ntsd',
-      'NTSD — WisdomTree Efficient U.S. Plus International Equity Fund',
-      'Capital-efficient 90/60 sleeve: U.S. large-cap equities plus developed international equity index futures.',
-      usPath('ntsd')
+      'gdmn',
+      'GDMN — WisdomTree Efficient Gold Plus Gold Miners Strategy Fund',
+      'Stacks gold miners equity with a leveraged gold-futures sleeve for a concentrated precious-metals expression.',
+      usPath('gdmn')
     ),
     us(
       'gde',
@@ -169,28 +175,16 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('gde')
     ),
     us(
-      'gdmn',
-      'GDMN — WisdomTree Efficient Gold Plus Gold Miners Strategy Fund',
-      'Stacks gold miners equity with a leveraged gold-futures sleeve for a concentrated precious-metals expression.',
-      usPath('gdmn')
-    ),
-    us(
-      'wdig',
-      'WDIG — WisdomTree Efficient Rare Earth Plus Strategic Metals Fund',
-      'Pairs rare earth and strategic metals miners equity with a base-metals futures overlay for critical-minerals exposure.',
-      usPath('wdig')
-    ),
-    us(
-      'gdt',
-      'GDT — WisdomTree Efficient TIPS Plus Gold Fund',
-      'Inflation-linked Treasuries with a gold futures overlay in a lower-leverage efficient structure.',
-      usPath('gdt')
-    ),
-    us(
       'ntsx',
       'NTSX — WisdomTree U.S. Efficient Core Fund',
       '90/60 structure: U.S. equity core plus Treasury futures overlay.',
       usPath('ntsx')
+    ),
+    us(
+      'hold',
+      'HOLD — Harbor Alpha Layering ETF',
+      'Large-cap U.S. equity layered with a trend-following managed-futures sleeve.',
+      usPath('hold')
     ),
     us(
       'ntsi',
@@ -205,19 +199,25 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('ntse')
     ),
     us(
-      'hold',
-      'HOLD — Harbor Alpha Layering ETF',
-      'Large-cap U.S. equity layered with a trend-following managed-futures sleeve.',
-      usPath('hold')
+      'gdt',
+      'GDT — WisdomTree Efficient TIPS Plus Gold Fund',
+      'Inflation-linked Treasuries with a gold futures overlay in a lower-leverage efficient structure.',
+      usPath('gdt')
+    ),
+    us(
+      'ntsd',
+      'NTSD — WisdomTree Efficient U.S. Plus International Equity Fund',
+      'Capital-efficient 90/60 sleeve: U.S. large-cap equities plus developed international equity index futures.',
+      usPath('ntsd')
+    ),
+    us(
+      'wdig',
+      'WDIG — WisdomTree Efficient Rare Earth Plus Strategic Metals Fund',
+      'Pairs rare earth and strategic metals miners equity with a base-metals futures overlay for critical-minerals exposure.',
+      usPath('wdig')
     ),
   ],
   'premia-systematic-alternatives': [
-    us(
-      'flsp',
-      'FLSP — Franklin Systematic Style Premia ETF',
-      'Active style premia and multi-asset long/short sleeves targeting absolute return.',
-      usPath('flsp')
-    ),
     us(
       'ialt',
       'IALT — iShares Systematic Alternatives Active ETF',
@@ -225,10 +225,10 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('ialt')
     ),
     us(
-      'caos',
-      'CAOS — Alpha Architect Tail Risk ETF',
-      'S&P 500 option structures designed as a tail-risk / convexity sleeve alongside equity beta.',
-      usPath('caos')
+      'flsp',
+      'FLSP — Franklin Systematic Style Premia ETF',
+      'Active style premia and multi-asset long/short sleeves targeting absolute return.',
+      usPath('flsp')
     ),
     us(
       'attr',
@@ -236,13 +236,45 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Actively managed U.S. large-cap exposure with tactical tail-risk options overlays aimed at drawdown mitigation.',
       usPath('attr')
     ),
+    us(
+      'caos',
+      'CAOS — Alpha Architect Tail Risk ETF',
+      'S&P 500 option structures designed as a tail-risk / convexity sleeve alongside equity beta.',
+      usPath('caos')
+    ),
   ],
-  factor: [
+  'factor-momentum': [
+    us(
+      'fmtm',
+      'FMTM — MarketDesk Focused U.S. Momentum ETF',
+      'Active quantitative momentum: 30 to 50 large/mid-cap U.S. names on a shorter lookback that rotates between offense and defense.',
+      usPath('fmtm')
+    ),
+    us(
+      'ptf',
+      'PTF — Invesco Dorsey Wright Technology Momentum ETF',
+      'Technology sector momentum strategy using Dorsey Wright relative-strength rules.',
+      usPath('ptf')
+    ),
     us(
       'spmo',
       'SPMO — Invesco S&P 500 Momentum ETF',
       'Tracks the S&P 500 Momentum Index—large-cap U.S. names with stronger risk-adjusted momentum scores.',
       usPath('spmo')
+    ),
+    us(
+      'strn',
+      'STRN — SMART Trend 25 ETF',
+      'Quantitative momentum sleeve: ~25 liquid U.S. large caps selected for technical strength, with sector caps.',
+      usPath('strn')
+    ),
+  ],
+  'factor-value': [
+    us(
+      'avdv',
+      'AVDV — Avantis International Small Cap Value ETF',
+      'Systematic international small-cap value with profitability screens.',
+      usPath('avdv')
     ),
     us(
       'vflo',
@@ -257,10 +289,18 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('avuv')
     ),
     us(
-      'sass',
-      'SASS — M.D. Sass Concentrated Value ETF',
-      'Active, high-conviction U.S. large/mid value—roughly 20–25 names from Russell value universes, out-of-favor and misunderstood stories.',
-      usPath('sass')
+      'cowz',
+      'COWZ — Pacer U.S. Cash Cows 100 ETF',
+      'Rules-based U.S. large-cap free-cash-flow yield factor sleeve.',
+      usPath('cowz')
+    ),
+  ],
+  'factor-active': [
+    us(
+      'emeq',
+      'EMEQ — Nomura Focused Emerging Markets Equity ETF',
+      'Actively managed, high-conviction emerging-markets equity: a focused all-cap book selected bottom-up rather than tracking an EM index.',
+      usPath('emeq')
     ),
     us(
       'afos',
@@ -269,40 +309,16 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('afos')
     ),
     us(
-      'strn',
-      'STRN — SMART Trend 25 ETF',
-      'Quantitative momentum sleeve: ~25 liquid U.S. large caps selected for technical strength, with sector caps.',
-      usPath('strn')
-    ),
-    us(
-      'avdv',
-      'AVDV — Avantis International Small Cap Value ETF',
-      'Systematic international small-cap value with profitability screens.',
-      usPath('avdv')
-    ),
-    us(
-      'cowz',
-      'COWZ — Pacer U.S. Cash Cows 100 ETF',
-      'Rules-based U.S. large-cap free-cash-flow yield factor sleeve.',
-      usPath('cowz')
-    ),
-    us(
-      'ptf',
-      'PTF — Invesco Dorsey Wright Technology Momentum ETF',
-      'Technology sector momentum strategy using Dorsey Wright relative-strength rules.',
-      usPath('ptf')
-    ),
-    us(
       'sgrt',
       'SGRT — SMART Earnings Growth 30 ETF',
       'Concentrated active U.S. large-cap: a roughly 30-name, quant-driven earnings-growth book run with no sector constraints.',
       usPath('sgrt')
     ),
     us(
-      'emeq',
-      'EMEQ — Nomura Focused Emerging Markets Equity ETF',
-      'Actively managed, high-conviction emerging-markets equity: a focused all-cap book selected bottom-up rather than tracking an EM index.',
-      usPath('emeq')
+      'sass',
+      'SASS — M.D. Sass Concentrated Value ETF',
+      'Active, high-conviction U.S. large/mid value—roughly 20–25 names from Russell value universes, out-of-favor and misunderstood stories.',
+      usPath('sass')
     ),
   ],
   'managed-futures': [
@@ -353,12 +369,6 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('orr')
     ),
     us(
-      'vamo',
-      'VAMO — Cambria Value and Momentum ETF',
-      "Cambria's quantitative value and momentum U.S. equity fund with systematic tactical hedging via S&P 500 futures (Cambria Investment Management).",
-      usPath('vamo')
-    ),
-    us(
       'mema',
       'MEMA — Man Active Emerging Markets Alternative ETF',
       'Actively managed emerging-markets long/short equity sleeve using systematic signals plus portfolio-manager discretion.',
@@ -370,19 +380,25 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Capital-efficient 90% U.S. large-cap equity paired with a 90% ML-driven long/short overlay in one wrapper (WisdomTree / AlphaBeta).',
       usPath('wtls')
     ),
+    us(
+      'vamo',
+      'VAMO — Cambria Value and Momentum ETF',
+      "Cambria's quantitative value and momentum U.S. equity fund with systematic tactical hedging via S&P 500 futures (Cambria Investment Management).",
+      usPath('vamo')
+    ),
   ],
   'global-macro': [
-    us(
-      'asgm',
-      'ASGM — Virtus AlphaSimplex Global Macro ETF',
-      'Systematic global macro: equity sleeves plus futures across rates, currencies, and commodities.',
-      usPath('asgm')
-    ),
     us(
       'hfgm',
       'HFGM — Unlimited HFGM Global Macro ETF',
       'Active global macro sleeve targeting hedge-fund-sector return dynamics with ETFs and futures.',
       '/us-etfs/hfgm'
+    ),
+    us(
+      'asgm',
+      'ASGM — Virtus AlphaSimplex Global Macro ETF',
+      'Systematic global macro: equity sleeves plus futures across rates, currencies, and commodities.',
+      usPath('asgm')
     ),
   ],
   arbitrage: [
@@ -395,18 +411,6 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   ],
   'leveraged-equity': [
     us(
-      'sso',
-      'SSO — ProShares Ultra S&P500',
-      '2x daily S&P 500 exposure via derivatives and daily reset leverage.',
-      usPath('sso')
-    ),
-    us(
-      'upro',
-      'UPRO — ProShares UltraPro S&P500',
-      '3x daily S&P 500 exposure designed for tactical high-beta positioning.',
-      usPath('upro')
-    ),
-    us(
       'qld',
       'QLD — ProShares Ultra QQQ',
       '2x daily Nasdaq-100 exposure with daily reset leverage.',
@@ -418,20 +422,32 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       '3x daily Nasdaq-100 leverage for tactical growth-beta expression.',
       usPath('tqqq')
     ),
+    us(
+      'upro',
+      'UPRO — ProShares UltraPro S&P500',
+      '3x daily S&P 500 exposure designed for tactical high-beta positioning.',
+      usPath('upro')
+    ),
+    us(
+      'sso',
+      'SSO — ProShares Ultra S&P500',
+      '2x daily S&P 500 exposure via derivatives and daily reset leverage.',
+      usPath('sso')
+    ),
   ],
   crypto: CRYPTO_HUB_LIST,
   'fixed-income': [
-    us(
-      'jaaa',
-      'JAAA — Janus Henderson AAA CLO ETF',
-      'Actively managed AAA-rated CLO tranche fund: floating-rate senior structured credit with near-zero duration and equity correlation.',
-      usPath('jaaa')
-    ),
     us(
       'cloa',
       'CLOA — iShares AAA CLO Active ETF',
       'BlackRock iShares actively managed fund investing in USD-denominated AAA-rated CLO tranches for floating-rate structured credit income.',
       usPath('cloa')
+    ),
+    us(
+      'jaaa',
+      'JAAA — Janus Henderson AAA CLO ETF',
+      'Actively managed AAA-rated CLO tranche fund: floating-rate senior structured credit with near-zero duration and equity correlation.',
+      usPath('jaaa')
     ),
   ],
 }
@@ -467,12 +483,12 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       caPath('pmm')
     ),
   ],
-  factor: [
+  'factor-momentum': [
     ca(
-      'zlb',
-      'ZLB.TO - BMO Low Volatility Canadian Equity ETF',
-      'Canadian value and defensive equity sleeve: a low-volatility tilt toward cheaper, cash-generative banks, utilities, and staples.',
-      caPath('zlb')
+      'fccm',
+      'FCCM.TO - Fidelity Canadian Momentum ETF',
+      'Rules-based single-factor sleeve: 100 Canadian large-cap names with the strongest momentum signals, rebalanced quarterly.',
+      caPath('fccm')
     ),
     ca(
       'fcmo',
@@ -480,13 +496,16 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Rules-based single-factor sleeve: 100 U.S. large-cap names with the strongest momentum signals, rebalanced quarterly.',
       caPath('fcmo')
     ),
+  ],
+  'factor-value': [
     ca(
-      'fccm',
-      'FCCM.TO - Fidelity Canadian Momentum ETF',
-      'Rules-based single-factor sleeve: 100 Canadian large-cap names with the strongest momentum signals, rebalanced quarterly.',
-      caPath('fccm')
+      'zlb',
+      'ZLB.TO - BMO Low Volatility Canadian Equity ETF',
+      'Canadian value and defensive equity sleeve: a low-volatility tilt toward cheaper, cash-generative banks, utilities, and staples.',
+      caPath('zlb')
     ),
   ],
+  'factor-active': [],
   'managed-futures': [],
   'single-asset-managed-futures': [],
   'long-short': [
@@ -515,16 +534,16 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       caPath('pfls')
     ),
     ca(
-      'pfmn',
-      'PFMN.TO - Picton Mahoney Fortified Market Neutral Alternative Fund ETF',
-      'Actively managed market-neutral long/short equity: Authentic Hedge® style in an ETF.',
-      '/ca/etfs/pfmn'
-    ),
-    ca(
       'tgaf',
       'TGAF.TO - Tralucent Global Alt (Long/Short) Equity Fund ETF',
       'Global long/short equity (~100% long / ~40% short) across 200+ names, active alt sleeve vs. MSCI ACWI NR (CAD).',
       caPath('tgaf')
+    ),
+    ca(
+      'pfmn',
+      'PFMN.TO - Picton Mahoney Fortified Market Neutral Alternative Fund ETF',
+      'Actively managed market-neutral long/short equity: Authentic Hedge® style in an ETF.',
+      '/ca/etfs/pfmn'
     ),
   ],
   'global-macro': [
@@ -545,16 +564,16 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   ],
   'leveraged-equity': [
     ca(
-      'hsu',
-      'HSU.TO - BetaPro S&P 500 2x Daily Bull ETF',
-      '2x daily S&P 500 exposure in CAD for tactical high-beta positioning.',
-      caPath('hsu')
-    ),
-    ca(
       'hqu',
       'HQU.TO - BetaPro NASDAQ-100 2x Daily Bull ETF',
       '2x daily Nasdaq-100 exposure with daily reset leverage.',
       caPath('hqu')
+    ),
+    ca(
+      'qqql',
+      'QQQL.TO - Global X Enhanced NASDAQ-100 Index ETF',
+      'Enhanced-beta Nasdaq-100 sleeve targeting about 1.25x exposure.',
+      caPath('qqql')
     ),
     ca(
       'ussl',
@@ -563,10 +582,10 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       caPath('ussl')
     ),
     ca(
-      'qqql',
-      'QQQL.TO - Global X Enhanced NASDAQ-100 Index ETF',
-      'Enhanced-beta Nasdaq-100 sleeve targeting about 1.25x exposure.',
-      caPath('qqql')
+      'hsu',
+      'HSU.TO - BetaPro S&P 500 2x Daily Bull ETF',
+      '2x daily S&P 500 exposure in CAD for tactical high-beta positioning.',
+      caPath('hsu')
     ),
     ca(
       'heql',

@@ -31,7 +31,14 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, s
   if (!eff) return undefined
   const lines: EtfEfficiencyGradeLine[] = []
   const stackLines = slug ? stackExposureLineAvailability(slug) : null
-  const equityOnlyByCategory = def.hubCategoryId === 'factor' || def.hubCategoryId === 'long-short'
+  const equityOnlyByCategory = [
+    'factor',
+    'factor-momentum',
+    'factor-value',
+    'factor-active',
+    'long-short',
+    'leveraged-equity',
+  ].includes(def.hubCategoryId)
   if (equityOnlyByCategory) {
     const beta = chart.beta1y
     const useAlpha = beta != null && beta < 0.8

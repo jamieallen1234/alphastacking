@@ -723,8 +723,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   sso: {
     yahooSymbol: 'SSO',
-    hubCategoryId: 'factor',
-    badge: 'Factor',
+    hubCategoryId: 'leveraged-equity',
+    badge: 'Leveraged equity ETFs',
     h1Title: 'SSO — ProShares Ultra S&P500',
     displayTicker: 'SSO',
     issuer: 'ProShares',
@@ -753,8 +753,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   upro: {
     yahooSymbol: 'UPRO',
-    hubCategoryId: 'factor',
-    badge: 'Factor',
+    hubCategoryId: 'leveraged-equity',
+    badge: 'Leveraged equity ETFs',
     h1Title: 'UPRO — ProShares UltraPro S&P500',
     displayTicker: 'UPRO',
     issuer: 'ProShares',
@@ -783,8 +783,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   qld: {
     yahooSymbol: 'QLD',
-    hubCategoryId: 'factor',
-    badge: 'Factor',
+    hubCategoryId: 'leveraged-equity',
+    badge: 'Leveraged equity ETFs',
     h1Title: 'QLD — ProShares Ultra QQQ',
     displayTicker: 'QLD',
     issuer: 'ProShares',
@@ -813,8 +813,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   tqqq: {
     yahooSymbol: 'TQQQ',
-    hubCategoryId: 'factor',
-    badge: 'Factor',
+    hubCategoryId: 'leveraged-equity',
+    badge: 'Leveraged equity ETFs',
     h1Title: 'TQQQ — ProShares UltraPro QQQ',
     displayTicker: 'TQQQ',
     issuer: 'ProShares',
@@ -873,6 +873,39 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialUrl:
       'https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=SPMO',
     officialLabel: 'Invesco (SPMO)',
+  },
+
+  fmtm: {
+    yahooSymbol: 'FMTM',
+    hubCategoryId: 'factor-momentum',
+    badge: 'Factor - Momentum',
+    h1Title: 'FMTM - MarketDesk Focused U.S. Momentum ETF',
+    displayTicker: 'FMTM',
+    issuer: 'MarketDesk',
+    inception: 'Mar 20, 2025',
+    addedToSite: '2026-06-22',
+    structure: 'Active quantitative US momentum',
+    mer: '0.45%',
+    aum: '~$186M',
+    pageTitle: 'FMTM ETF - Alpha Stacking',
+    description: 'MarketDesk Focused U.S. Momentum ETF (FMTM): active, quantitative U.S. momentum with a shorter lookback that rotates between offense and defense.',
+    contentFormat: 'html',
+    lede:
+      'FMTM is an active <strong>quantitative momentum</strong> sleeve: a focused book of 30 to 50 large and mid-cap U.S. names ranked on relative strength, using a shorter lookback so the portfolio can rotate toward defensive leaders during drawdowns rather than staying pinned to last year\'s winners.',
+    strategyParas: [
+      'MarketDesk Indices ranks U.S. large and mid caps on relative momentum, then holds the strongest 30 to 50 names. The shorter lookback is the design choice: it reacts faster to leadership changes than a standard 12-month momentum screen, so the book can shift from offense to defense when the tape turns, at the cost of higher turnover and more sensitivity to short-term noise.',
+      'Concentration and faster signals cut both ways. In a clean trend the focused book compounds leadership; in choppy tape the quick rotation can buy into moves that immediately reverse. As a young ETF, spreads and premium/discount to NAV can widen in stress. The methodology and rebalance cadence are in the prospectus.',
+    ],
+    pedigreeParas: ped(
+      `MarketDesk Indices LLC is the sub-adviser and signal provider; the fund runs on the Empowered Funds (ETF Architect) operating platform with PINE Distributors handling distribution. That splits the roles cleanly: MarketDesk owns the momentum research, ETF Architect owns the regulatory and trading infrastructure.`,
+      `MarketDesk is a specialist research shop rather than a mega-issuer, and firm-wide AUM is not widely published; the fund itself is small, so liquidity is part of the return profile. Verify the prospectus and Form ADV for adviser detail and current assets before allocating meaningful capital.`,
+    ),
+    outperfParas: [
+      'Outperforms when <strong>price trends persist</strong>: durable sector or megacap leadership that compounds quarter over quarter lets the momentum screen keep riding winners, the trending growth environment where strength begets strength.',
+      'Underperforms in <strong>sharp factor rotations</strong> and choppy, mean-reverting tape where the shorter lookback rotates into moves that immediately reverse; favorable conditions are orderly trends with follow-through, not whipsaw that punishes a fast, focused momentum book.',
+    ],
+    officialUrl: 'https://www.marketdeskindices.com/fmtm',
+    officialLabel: 'MarketDesk (FMTM)',
   },
 
   vflo: {

@@ -79,6 +79,8 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   // --- Factor / style (equity-only; factor tag gates, geo/size/style/sub-factor rank) ---
   spmo: bundle(['momentum', 'us', 'large_cap', 'passive'], [], 'manual'),
   ptf: bundle(['momentum', 'us', 'large_cap', 'passive'], [], 'manual'),
+  /** Active quantitative US large/mid-cap momentum (shorter lookback; 30-50 names). */
+  fmtm: bundle(['momentum', 'us', 'large_cap', 'active'], [], 'manual'),
   vflo: bundle(['value', 'fcf_growth', 'us', 'large_cap', 'passive'], [], 'manual'),
   cowz: bundle(['value', 'fcf_growth', 'us', 'large_cap', 'passive'], [], 'manual'),
   avuv: bundle(['value', 'us', 'small_cap', 'active'], [], 'manual'),

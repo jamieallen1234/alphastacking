@@ -344,6 +344,13 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  fmtm: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        'FMTM is an active quantitative U.S. momentum sleeve (30-50 names, shorter lookback). Launched March 2025; insufficient live history to grade capital efficiency vs SPY.'
+      ),
+    },
+  },
   vflo: {
     capital: {
       tooltip: capitalEfficiencyTooltip(

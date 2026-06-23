@@ -166,6 +166,77 @@
   color: var(--color-gold-hover);
 }
 
+.holdingsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.holdingsGroup {
+  flex: 0 1 16rem;
+  min-width: 0;
+}
+
+.holdingsGroupHeading {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 0.5rem;
+}
+
+.holdingsTableWrap {
+  width: 100%;
+  border: 0.5px solid var(--color-border-faint);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.holdingsTable {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: rgba(var(--rgb-text), 0.015);
+}
+
+.holdingsTable th,
+.holdingsTable td {
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  border-bottom: 0.5px solid var(--color-border-faint);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(var(--rgb-text), 0.78);
+}
+
+.holdingsTable th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: rgba(var(--rgb-text), 0.03);
+}
+
+.holdingsWeight {
+  white-space: nowrap;
+}
+
+/* Weight takes a balanced share (~38%) so it sits near the asset name, not floated far right. */
+/* Vertical divider between Asset and Weight columns. */
+.holdingsTable th:last-child,
+.holdingsTable td:last-child {
+  width: 38%;
+  border-left: 0.5px solid var(--color-border-faint);
+}
+
+.holdingsTable tr:last-child td {
+  border-bottom: 0;
+}
+
 .similarEtfList {
   margin: 0;
   padding-left: 1.1rem;

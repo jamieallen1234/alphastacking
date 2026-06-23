@@ -96,6 +96,29 @@
   );
 }
 
+/* A / A+ overall ratings get a faint gold card tint, mirroring the portfolio hub. */
+.etfRowA {
+  border-color: rgba(232, 213, 132, 0.32);
+  background: linear-gradient(
+    165deg,
+    rgba(232, 213, 132, 0.09) 0%,
+    rgba(var(--rgb-text), 0.03) 100%
+  );
+}
+
+.etfRowAPlus {
+  border-color: rgba(245, 233, 122, 0.48);
+  background: linear-gradient(
+    165deg,
+    rgba(245, 233, 122, 0.08) 0%,
+    rgba(var(--rgb-text), 0.02) 100%
+  );
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 8px 24px rgba(0, 0, 0, 0.35),
+    0 0 0 0.5px rgba(245, 233, 122, 0.2);
+}
+
 a.etfRow {
   cursor: pointer;
 }
@@ -105,11 +128,42 @@ a.etfRow:focus-visible {
   outline-offset: 2px;
 }
 
+.etfHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
 .etfName {
   font-family: var(--font-serif);
   font-size: 1.12rem;
   color: var(--color-text);
-  margin: 0 0 0.35rem;
+  margin: 0;
+}
+
+.ratingGrade {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--color-gold);
+}
+
+.ratingGradeA {
+  color: #e8d584;
+  font-size: 12px;
+  text-shadow: 0 0 8px rgba(232, 213, 132, 0.45);
+}
+
+.ratingGradeAPlus {
+  color: #f5e97a;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(245, 233, 122, 0.65);
 }
 
 .etfDesc {

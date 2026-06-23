@@ -2002,11 +2002,6 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialUrl: 'https://www.simplify.us/etfs/hard-simplify-commodities-strategy-no-k1-etf',
     officialLabel: 'Simplify (HARD)',
     efficiency: {
-      capital: {
-        tooltip: capitalEfficiencyTooltip(
-          'HARD runs a long/short hard-assets and commodities strategy. The capital line scores live return versus benchmark net of costs.'
-        ),
-      },
       alpha: {
         tooltip: alphaEfficiencyUnstackedTooltip(
           'Alpha comes from directional and relative-value positioning across commodity futures markets, not from broad equity beta.'

@@ -4,6 +4,8 @@ import Footer from '@/components/Footer'
 import Link from 'next/link'
 import { getEtfHubCategoryRows } from '@/lib/etfCategories'
 import { getEtfHubItems, type EtfHubListItem } from '@/lib/etfHubData'
+import { getEtfHubOverallRatings } from '@/lib/etfHubOverallRatings'
+import { gradeRank, type PortfolioLetterGrade } from '@/lib/portfolioHubGrade'
 import EtfPageHubNav from '@/components/EtfPageHubNav'
 import styles from './EtfHub.module.css'
 
@@ -14,23 +16,38 @@ export interface EtfHubProps {
   edition: 'us' | 'ca'
 }
 
-function EtfRow({ item }: { item: EtfHubListItem }) {
-  const inner = (
-    <>
-      <p className={styles.etfName}>{item.nameLine}</p>
-      <p className={styles.etfDesc}>{item.desc}</p>
-    </>
-  )
+function EtfRow({ item, grade }: { item: EtfHubListItem; grade: PortfolioLetterGrade | null }) {
+  const gradeClass = [
+    styles.ratingGrade,
+    grade === 'A+' ? styles.ratingGradeAPlus : grade === 'A' ? styles.ratingGradeA : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+  const cardClass = [
+    styles.etfRow,
+    grade === 'A+' ? styles.etfRowAPlus : grade === 'A' ? styles.etfRowA : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
-    <Link href={item.href} className={styles.etfRow}>
-      {inner}
+    <Link href={item.href} className={cardClass}>
+      <div className={styles.etfHeader}>
+        <p className={styles.etfName}>{item.nameLine}</p>
+        {grade != null ? (
+          <span className={gradeClass} aria-label={`Overall efficiency rating ${grade}`}>
+            {grade}
+          </span>
+        ) : null}
+      </div>
+      <p className={styles.etfDesc}>{item.desc}</p>
     </Link>
   )
 }
 
-export default function EtfHub({ listing, edition }: EtfHubProps) {
+export default async function EtfHub({ listing, edition }: EtfHubProps) {
   const categoryRows = getEtfHubCategoryRows(listing)
+  const ratings = await getEtfHubOverallRatings(listing)
 
   return (
     <main className={styles.main}>
@@ -54,6 +71,8 @@ export default function EtfHub({ listing, edition }: EtfHubProps) {
         <div className={styles.categories}>
           {categoryRows.map((cat) => {
             const items = getEtfHubItems(listing, cat.id, edition)
+              .map((item) => ({ item, grade: ratings[item.key] ?? null }))
+              .sort((a, b) => gradeRank(a.grade) - gradeRank(b.grade))
             return (
               <section
                 key={cat.id}
@@ -71,9 +90,9 @@ export default function EtfHub({ listing, edition }: EtfHubProps) {
                   <p className={styles.comingSoon}>Coming soon</p>
                 ) : (
                   <ul className={styles.etfList}>
-                    {items.map((item) => (
+                    {items.map(({ item, grade }) => (
                       <li key={item.key}>
-                        <EtfRow item={item} />
+                        <EtfRow item={item} grade={grade} />
                       </li>
                     ))}
                   </ul>

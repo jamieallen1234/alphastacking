@@ -11,7 +11,11 @@ import {
   EtfEfficiencyPageFootnotes,
   type EtfEfficiencyGradeLine,
 } from '@/components/etfEfficiency/EtfEfficiencyGrades'
-import { capitalEfficiencyMetaLabel, stackExposureLineAvailability } from '@/lib/etfStackExposureBySlug'
+import {
+  ETF_STACK_EXPOSURE_BY_SLUG,
+  capitalEfficiencyMetaLabel,
+  stackExposureLineAvailability,
+} from '@/lib/etfStackExposureBySlug'
 import type { PrimarySimilarityHeadline, SimilarEtfRow } from '@/lib/etfSimilarEtfs'
 import { displayTagLabelsForSlug } from '@/lib/etfSimilarityTags'
 
@@ -107,6 +111,50 @@ function buildEfficiencyMetaExtras(def: EtfDynamicDef, chart: EtfChartPayload, s
   return <EtfEfficiencyMetaExtras lines={lines} notes={eff.notes} />
 }
 
+/** Per-sleeve holdings table from the stack map. Returns undefined for unmapped funds. */
+function buildHoldingsSection(slug?: string): ReactNode {
+  const cfg = slug ? ETF_STACK_EXPOSURE_BY_SLUG[slug] : undefined
+  if (!cfg || cfg.components.length === 0) return undefined
+
+  const capital = cfg.components.filter((c) => c.bucket === 'capital')
+  const alpha = cfg.components.filter((c) => c.bucket === 'alpha')
+
+  const groups = [
+    { label: 'Base sleeve', items: capital },
+    { label: 'Stacked sleeve', items: alpha },
+  ].filter((g) => g.items.length > 0)
+
+  if (groups.length === 0) return undefined
+
+  return (
+    <div className={styles.holdingsRow}>
+      {groups.map((group) => (
+        <div key={group.label} className={styles.holdingsGroup}>
+          <h3 className={styles.holdingsGroupHeading}>{group.label}</h3>
+          <div className={styles.holdingsTableWrap}>
+            <table className={styles.holdingsTable}>
+              <thead>
+                <tr>
+                  <th>Asset</th>
+                  <th>Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                {group.items.map((c) => (
+                  <tr key={c.name}>
+                    <td>{c.name}</td>
+                    <td className={styles.holdingsWeight}>{c.pct}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export interface EtfDynamicPageLayoutProps {
   variant: 'us' | 'ca'
   hubBase: EtfPageHubBase
@@ -193,6 +241,16 @@ export default function EtfDynamicPageLayout({
           )
         )}
       </div>
+
+      {(() => {
+        const holdings = buildHoldingsSection(slug)
+        return holdings ? (
+          <div className={styles.bodySection}>
+            <h2>Holdings</h2>
+            {holdings}
+          </div>
+        ) : null
+      })()}
 
       <div className={styles.bodySection}>
         <h2>Manager and Issuer Pedigree</h2>

@@ -79,6 +79,12 @@ export const ETF_CATEGORY_ROWS = [
       'ETFs that invest in bonds, structured credit, and floating-rate instruments. Includes AAA CLO funds, investment-grade credit, and bond strategies used as collateral or yield sleeves in portfolio construction.',
   },
   {
+    id: 'volatility',
+    title: 'Volatility',
+    subtitle:
+      'Instruments that express volatility risk without VIX futures drag. Includes tail-risk options structures that pay off in crash events and HFT market-makers whose revenue accelerates when spreads widen.',
+  },
+  {
     id: 'crypto',
     title: 'Crypto & digital assets',
     subtitle:
@@ -119,7 +125,8 @@ export function getEtfHubCategoryRows(variant: 'us' | 'ca'): EtfCategoryRow[] {
         r.id !== 'managed-futures' &&
         r.id !== 'single-asset-managed-futures' &&
         r.id !== 'factor-value' &&
-        r.id !== 'factor-active'
+        r.id !== 'factor-active' &&
+        r.id !== 'volatility'
     ).map((r) =>
       r.id === 'factor-momentum'
         ? CA_FACTOR_ROW

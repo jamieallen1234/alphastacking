@@ -230,18 +230,6 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Active style premia and multi-asset long/short sleeves targeting absolute return.',
       usPath('flsp')
     ),
-    us(
-      'attr',
-      'ATTR — Arin Tactical Tail Risk ETF',
-      'Actively managed U.S. large-cap exposure with tactical tail-risk options overlays aimed at drawdown mitigation.',
-      usPath('attr')
-    ),
-    us(
-      'caos',
-      'CAOS — Alpha Architect Tail Risk ETF',
-      'S&P 500 option structures designed as a tail-risk / convexity sleeve alongside equity beta.',
-      usPath('caos')
-    ),
   ],
   'factor-momentum': [
     us(
@@ -435,6 +423,26 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('sso')
     ),
   ],
+  volatility: [
+    us(
+      'virt',
+      'VIRT — Virtu Financial',
+      'The only pure-play HFT stock: market-making revenue accelerates when volatility spikes, without the roll drag that erodes traditional VIX ETFs over time.',
+      usPath('virt')
+    ),
+    us(
+      'caos',
+      'CAOS — Alpha Architect Tail Risk ETF',
+      'S&P 500 option structures designed as a tail-risk / convexity sleeve alongside equity beta.',
+      usPath('caos')
+    ),
+    us(
+      'attr',
+      'ATTR — Arin Tactical Tail Risk ETF',
+      'Actively managed U.S. large-cap exposure with tactical tail-risk options overlays aimed at drawdown mitigation.',
+      usPath('attr')
+    ),
+  ],
   crypto: CRYPTO_HUB_LIST,
   'fixed-income': [
     us(
@@ -594,6 +602,7 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       caPath('heql')
     ),
   ],
+  volatility: [],
   crypto: [
     ca(
       'btccb',

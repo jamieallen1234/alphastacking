@@ -647,6 +647,15 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     },
   },
 
+  // --- Volatility ---
+  virt: {
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
+        "VIRT is Virtu Financial's common stock, not an ETF. Alpha is scored as annualized total return above the risk-free rate: the right hurdle for a spread-capture business with no market-directional beta. Returns are lumpy, high in volatile years and modest when vol is compressed."
+      ),
+    },
+  },
+
   // --- Fixed income / structured credit ---
   jaaa: {
     alpha: {
@@ -842,13 +851,19 @@ export function mergeDynamicEtfEfficiency(
 ): EtfDynamicDef {
   const map = universe === 'us' ? US_ETF_DYNAMIC_EFFICIENCY : CA_ETF_DYNAMIC_EFFICIENCY
   const staticEff = def.efficiency ?? map[slug]
+
+  if (!staticEff) return def
+
+  // When monthly recompute is disabled, static grades are editorial and must not be wiped.
+  if (def.monthlyGradeRecompute === false) {
+    return { ...def, efficiency: attachStackedEfficiency(def, staticEff, slug) }
+  }
+
   const patch = snapshot
     ? universe === 'us'
       ? snapshot.us[slug] ?? null
       : snapshot.ca[slug] ?? null
     : null
-
-  if (!staticEff) return def
 
   const merged = applyMonthlyEfficiencyGradePatch(staticEff, patch)
   return { ...def, efficiency: attachStackedEfficiency(def, merged, slug) }
@@ -864,6 +879,10 @@ export function mergeDynamicEtfEfficiencyWithPatch(
   const map = universe === 'us' ? US_ETF_DYNAMIC_EFFICIENCY : CA_ETF_DYNAMIC_EFFICIENCY
   const staticEff = def.efficiency ?? map[slug]
   if (!staticEff) return def
+  // When monthly recompute is disabled, static grades are editorial and must not be wiped.
+  if (def.monthlyGradeRecompute === false) {
+    return { ...def, efficiency: attachStackedEfficiency(def, staticEff, slug) }
+  }
   const merged = applyMonthlyEfficiencyGradePatch(staticEff, patch)
   return { ...def, efficiency: attachStackedEfficiency(def, merged, slug) }
 }

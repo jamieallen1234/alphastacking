@@ -26,6 +26,8 @@ export interface UpdateEntry {
   title: string
   href: string
   blurb: string
+  /** Override the displayed kind label (e.g. "Stock" for single-equity entries). */
+  kindLabel?: string
 }
 
 export interface UpdateDay {
@@ -76,6 +78,7 @@ function etfEntries(
   const out: UpdateEntry[] = []
   for (const [slug, def] of Object.entries(registry)) {
     if (!def.addedToSite) continue
+    const isStock = def.structure?.toLowerCase().includes('single stock') ?? false
     out.push({
       kind: 'etf',
       region,
@@ -85,6 +88,7 @@ function etfEntries(
       title: etfDisplayTitle(def),
       href: `${hrefPrefix}/${slug}`,
       blurb: etfBlurb(def),
+      ...(isStock ? { kindLabel: 'Stock' } : {}),
     })
   }
   return out

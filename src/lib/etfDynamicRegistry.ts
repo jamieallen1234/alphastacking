@@ -690,8 +690,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   caos: {
     yahooSymbol: 'CAOS',
-    hubCategoryId: 'premia-systematic-alternatives',
-    badge: 'Premia and systematic alternatives',
+    hubCategoryId: 'volatility',
+    badge: 'Volatility',
     h1Title: 'CAOS — Alpha Architect Tail Risk ETF',
     displayTicker: 'CAOS',
     issuer: 'Alpha Architect',
@@ -1487,8 +1487,8 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
 
   attr: {
     yahooSymbol: 'ATTR',
-    hubCategoryId: 'premia-systematic-alternatives',
-    badge: 'Premia and systematic alternatives',
+    hubCategoryId: 'volatility',
+    badge: 'Volatility',
     h1Title: 'ATTR — Arin Tactical Tail Risk ETF',
     displayTicker: 'ATTR',
     issuer: 'ETF Architect / Arin Risk Advisors',
@@ -2124,6 +2124,49 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     officialUrl: 'https://www.ishares.com/us/products/336360/ishares-aaa-clo-active-etf',
     officialLabel: 'iShares (CLOA)',
+  },
+
+  virt: {
+    yahooSymbol: 'VIRT',
+    hubCategoryId: 'volatility',
+    badge: 'Volatility',
+    h1Title: 'VIRT — Virtu Financial',
+    displayTicker: 'VIRT',
+    issuer: 'Virtu Financial',
+    inception: 'Apr 2015',
+    addedToSite: '2026-06-30',
+    structure: 'HFT market-maker (single stock)',
+    mer: 'N/A (common stock)',
+    aum: '~$5B market cap',
+    pageTitle: 'VIRT — Virtu Financial — Alpha Stacking',
+    description:
+      'Virtu Financial (VIRT): the only pure-play HFT market-maker stock. How Virtu profits from volatility spikes without the roll drag that erodes VIX ETFs.',
+    contentFormat: 'html',
+    lede:
+      'VIRT is a single equity, not an ETF, but it is the only pure-play expression of <strong>high-frequency market-making</strong> available to retail investors. Virtu Financial earns by quoting bid/ask spreads across thousands of instruments; when volatility spikes and spreads widen, revenue accelerates without the persistent roll drag that eats into traditional VIX futures ETFs over time.',
+    strategyParas: [
+      'Virtu makes money from the bid/ask spread it provides as a market-maker. In low-volatility environments spreads compress and so does revenue. When <strong>volatility spikes</strong> — whether from macro shock, earnings season, or a liquidity event — spreads widen and trade volumes surge, both of which directly expand Virtu\'s capture. The business earns most in the environments traditional investors find most painful.',
+      'The comparison to VIX ETFs is structural. VIX futures roll from the front month to the next each week; in the typical upward-sloping (contango) VIX futures curve, that roll costs roughly 5 to 10 percent per month in quiet periods. VIRT does not carry this drag. The trade-off is that VIRT is a single operating company with its own cost structure, competitive pressures, and execution risk, not a passive index product. AUM concentration, regulatory changes to market-maker obligations, and technology investment cycles all affect realized returns in ways that differ from a derivatives sleeve.',
+    ],
+    pedigreeParas: ped(
+      `Virtu Financial was founded in 2008 and went public on Nasdaq in April 2015. The firm operates as one of the largest electronic market-makers globally, quoting across equities, options, ETFs, fixed income, currencies, and commodities. Its 2017 acquisition of KCG Holdings made it the dominant HFT market-maker in U.S. equities by volume.`,
+      `Virtu's reported adjusted net trading income is highly sensitive to industry-wide realized volatility, as disclosed in its quarterly earnings. The firm runs a proprietary technology stack and holds FINRA broker-dealer registration; its competitive moat is speed, co-location infrastructure, and regulatory relationships rather than human capital. Verify the most recent 10-K for current revenue mix and capital allocation policy before sizing a position.`,
+    ),
+    outperfParas: [
+      'Outperforms when <strong>realized volatility is elevated and sustained</strong>: macro dislocations, acute risk-off events, or active earnings seasons that push spreads wide across many instruments simultaneously. Unlike VIX futures vehicles, there is no roll cost eroding gains while the market is in stress.',
+      'Underperforms in <strong>compressed, low-volatility melt-up tapes</strong> where spreads narrow across markets and trade volumes thin. The business is also exposed to competitive pressure from rival HFT firms and regulatory changes to market-structure rules, which can compress margins independently of volatility levels.',
+    ],
+    officialUrl: 'https://ir.virtu.com',
+    officialLabel: 'Virtu Financial (IR)',
+    monthlyGradeRecompute: false,
+    efficiency: {
+      alpha: {
+        grade: 'A',
+        tooltip: alphaEfficiencyUnstackedTooltip(
+          'Alpha is scored as VIRT\'s annualized total return above the risk-free rate. Virtu\'s spread-capture business is not market-directional, so excess return over T-bills is the right hurdle rather than equity beta. Returns are lumpy: very high in volatile years (2018, 2020, 2022) and modest when vol is compressed.'
+        ),
+      },
+    },
   },
 }
 

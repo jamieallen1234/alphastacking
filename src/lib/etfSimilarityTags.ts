@@ -120,6 +120,10 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   kmlm: bundle([], ['managed_futures'], 'seeded', ['bonds', 'currencies', 'commodities']),
   hard: bundle([], [], 'manual', ['managed_futures', 'commodities']),
 
+  // --- Volatility ---
+  /** VIRT is a single-stock HFT market-maker; no matching tags — unique strategy with no ETF peers. Display-only: volatility category. */
+  virt: bundle([], [], 'manual'),
+
   // --- Fixed income / structured credit ---
   /** Pure AAA CLO fund: no equity sleeve; alpha is carry spread above SOFR. */
   jaaa: bundle([], ['aaa_clo', 'floating_rate_credit', 'investment_grade_credit'], 'seeded'),

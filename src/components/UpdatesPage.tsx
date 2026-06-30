@@ -33,13 +33,14 @@ export default function UpdatesPage({ edition }: { edition: UpdatesPageEdition }
                       <Link href={entry.href} className={styles.entryCard}>
                         <div className={styles.entryMeta}>
                           <span className={styles.entryKind}>
-                            {entry.kind === 'etf'
-                              ? 'ETF'
-                              : entry.kind === 'portfolio'
-                                ? 'Portfolio'
-                                : entry.kind === 'feature'
-                                  ? 'Site update'
-                                  : 'Learn'}
+                            {entry.kindLabel ??
+                              (entry.kind === 'etf'
+                                ? 'ETF'
+                                : entry.kind === 'portfolio'
+                                  ? 'Portfolio'
+                                  : entry.kind === 'feature'
+                                    ? 'Site update'
+                                    : 'Learn')}
                           </span>
                           {isCa ? (
                             <span className={styles.entryRegion}>

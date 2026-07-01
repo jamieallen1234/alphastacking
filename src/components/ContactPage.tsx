@@ -1,6 +1,5 @@
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
-import ContactForm from '@/components/ContactForm'
 import styles from './ContactPage.module.css'
 
 export default function ContactPage() {
@@ -14,10 +13,12 @@ export default function ContactPage() {
           Share corrections, ideas for the ETF pages or portfolio tools, requests for chart proxies (e.g. portfolio
           builder or preset back-tests), or anything else that would make this site more useful.
         </p>
-        <ContactForm />
-        <p className={styles.privacy}>
-          If you include an email, it is only used to reply to this message. Submissions are sent through a mail
-          provider; see their privacy policy for how they process messages in transit.
+        <p className={styles.lede}>
+          Email{' '}
+          <a href="mailto:contact@alphastacking.co" className={styles.emailLink}>
+            contact@alphastacking.co
+          </a>
+          .
         </p>
       </section>
       <Footer />

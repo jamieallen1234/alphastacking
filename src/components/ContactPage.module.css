@@ -39,6 +39,16 @@
   max-width: 38rem;
 }
 
+.emailLink {
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.emailLink:hover {
+  color: var(--color-gold-hover);
+}
+
 .privacy {
   font-size: 12px;
   line-height: 1.55;

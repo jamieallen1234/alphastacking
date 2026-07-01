@@ -1,9 +1,9 @@
-import Link from 'next/link'
-import { contactPath } from '@/lib/siteRegion'
 import styles from './FeedbackInlineLink.module.css'
 
+const FEEDBACK_EMAIL = 'contact@alphastacking.co'
+
 export default function FeedbackInlineLink({
-  isCa,
+  isCa: _isCa,
   context,
   showDivider = true,
 }: {
@@ -11,15 +11,13 @@ export default function FeedbackInlineLink({
   context: 'builder' | 'etf'
   showDivider?: boolean
 }) {
-  const href = contactPath(isCa)
-
   if (context === 'builder') {
     return (
       <p className={showDivider ? styles.wrapBuilder : styles.wrapBuilderNoDivider}>
         Want a ticker in the builder or have a feature idea?{' '}
-        <Link href={href} className={styles.link}>
+        <a href={`mailto:${FEEDBACK_EMAIL}`} className={styles.link}>
           Send feedback
-        </Link>
+        </a>
         .
       </p>
     )
@@ -29,9 +27,9 @@ export default function FeedbackInlineLink({
     <div className={styles.etfPreFooterShell}>
       <p className={styles.etfPreFooterText}>
         Missing an ETF on the hub?{' '}
-        <Link href={href} className={styles.link}>
+        <a href={`mailto:${FEEDBACK_EMAIL}`} className={styles.link}>
           Send feedback
-        </Link>
+        </a>
         .
       </p>
     </div>

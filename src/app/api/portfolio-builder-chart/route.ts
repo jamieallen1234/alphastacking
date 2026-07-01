@@ -8,11 +8,15 @@ import type { YahooRange } from '@/lib/yahooFinance'
 
 const ALLOWED_RANGES: YahooRange[] = ['1mo', 'ytd', '1y', '2y', '3y', '5y', 'max']
 
+const ALLOWED_REBALANCE = ['none', 'quarterly', 'annual'] as const
+type RebalanceSchedule = (typeof ALLOWED_REBALANCE)[number]
+
 type BuilderChartRequest = {
   symbols?: string[]
   weights?: number[]
   range?: YahooRange
   edition?: 'us' | 'ca'
+  rebalanceSchedule?: RebalanceSchedule
 }
 
 function normalizeSymbols(raw: unknown): string[] {
@@ -55,6 +59,10 @@ export async function POST(req: Request) {
 
   const range = ALLOWED_RANGES.includes(body.range ?? '1y') ? (body.range ?? '1y') : '1y'
   const cadDenominated = body.edition === 'ca'
+  const rebalanceSchedule: RebalanceSchedule =
+    ALLOWED_REBALANCE.includes(body.rebalanceSchedule as RebalanceSchedule)
+      ? (body.rebalanceSchedule as RebalanceSchedule)
+      : 'none'
 
   try {
     const payload = await getCachedPortfolioBuilderChart({
@@ -62,6 +70,7 @@ export async function POST(req: Request) {
       weights,
       range,
       cadDenominated,
+      rebalanceSchedule,
     })
     return chartJsonResponse(payload)
   } catch (e) {

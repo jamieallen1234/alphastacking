@@ -28,13 +28,14 @@ function cacheKeyFor(
   symbols: string[],
   weights: number[],
   range: YahooRange,
-  cadDenominated: boolean
+  cadDenominated: boolean,
+  rebalanceSchedule: 'none' | 'quarterly' | 'annual'
 ): string {
   const s = normalizeSymbols(symbols).join(',')
   const w = normalizeWeights(weights)
     .map((x) => x.toFixed(6))
     .join(',')
-  return `${cadDenominated ? 'ca' : 'us'}:${range}:${s}:${w}`
+  return `${cadDenominated ? 'ca' : 'us'}:${range}:${s}:${w}:${rebalanceSchedule}`
 }
 
 export async function getCachedPortfolioBuilderChart(params: {
@@ -42,10 +43,12 @@ export async function getCachedPortfolioBuilderChart(params: {
   weights: number[]
   range: YahooRange
   cadDenominated: boolean
+  rebalanceSchedule?: 'none' | 'quarterly' | 'annual'
 }): Promise<PortfolioChartPayload> {
   const symbols = normalizeSymbols(params.symbols)
   const weights = normalizeWeights(params.weights)
-  const key = cacheKeyFor(symbols, weights, params.range, params.cadDenominated)
+  const rebalanceSchedule = params.rebalanceSchedule ?? 'none'
+  const key = cacheKeyFor(symbols, weights, params.range, params.cadDenominated, rebalanceSchedule)
   let loader = chartLoaderByKey.get(key)
   if (!loader) {
     loader = unstable_cache(
@@ -55,7 +58,7 @@ export async function getCachedPortfolioBuilderChart(params: {
           weights,
           range: params.range,
           cadDenominated: params.cadDenominated,
-          rebalanceSchedule: 'none',
+          rebalanceSchedule,
         }),
       ['portfolio-builder-chart-v10-similar-auto', key],
       { revalidate: DAY }

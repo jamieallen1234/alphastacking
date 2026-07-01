@@ -19,6 +19,7 @@ import styles from './PortfolioBuilderTool.module.css'
 
 type EfficiencyKind = 'capital' | 'alpha' | 'stacked' | 'all'
 type BuilderEdition = 'us' | 'ca'
+type RebalanceSchedule = 'none' | 'quarterly' | 'annual'
 
 type BuilderRow = {
   id: string
@@ -323,6 +324,118 @@ function weightedPortfolioBeta(
   return usedAny ? sum : null
 }
 
+const REBALANCE_OPTIONS: { value: RebalanceSchedule; label: string }[] = [
+  { value: 'none', label: 'None (buy & hold)' },
+  { value: 'quarterly', label: 'Quarterly' },
+  { value: 'annual', label: 'Yearly' },
+]
+
+function usePortfolioSlot(
+  edition: BuilderEdition,
+  initialRows: BuilderRow[],
+  initialNextId: number
+) {
+  const [rows, setRows] = useState<BuilderRow[]>(initialRows)
+  const [nextId, setNextId] = useState(initialNextId)
+  const [rebalanceSchedule, setRebalanceSchedule] = useState<RebalanceSchedule>('none')
+  const [payload, setPayload] = useState<PortfolioChartPayload | null>(null)
+  const [activeRange, setActiveRange] = useState<YahooRange>('1y')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const buildRequestBody = useCallback(
+    (range: YahooRange) => {
+      const legs = rows
+        .map((r) => ({
+          sym: r.symbol.trim().toUpperCase(),
+          w: (parseAllocation(r.allocation) ?? 0) / 100,
+        }))
+        .filter((x) => x.sym !== '' && x.w > 0)
+      return {
+        edition,
+        range,
+        symbols: legs.map((x) => x.sym),
+        weights: legs.map((x) => x.w),
+        rebalanceSchedule,
+      }
+    },
+    [edition, rows, rebalanceSchedule]
+  )
+
+  const loadChart = useCallback(
+    async (range: YahooRange) => {
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await fetch('/api/portfolio-builder-chart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store',
+          body: JSON.stringify(buildRequestBody(range)),
+        })
+        const data = (await res.json()) as PortfolioChartPayload & { error?: string }
+        if (!res.ok) {
+          setError(data.error || 'Could not generate chart.')
+          return
+        }
+        setPayload(data)
+        setActiveRange(range)
+      } catch {
+        setError('Could not generate chart.')
+      } finally {
+        setLoading(false)
+      }
+    },
+    [buildRequestBody]
+  )
+
+  const addRow = useCallback(() => {
+    setRows((prev) => {
+      if (prev.length >= MAX_ROWS) return prev
+      const tourPrefill = shouldPrefillNewRowWeightForPortfolioTutorial(edition)
+      const allocation = tourPrefill ? '50' : '0'
+      const efficiencyKind: EfficiencyKind = tourPrefill ? 'alpha' : 'all'
+      return [
+        ...prev,
+        { ...newRow(nextId), allocation, efficiencyKind, category: 'all', symbol: '' },
+      ]
+    })
+    setNextId((n) => n + 1)
+  }, [edition, nextId])
+
+  const updateRow = useCallback((id: string, patch: Partial<BuilderRow>) => {
+    setRows((prev) => prev.map((r) => (r.id === id ? { ...r, ...patch } : r)))
+  }, [])
+
+  const removeRow = useCallback((id: string) => {
+    setRows((prev) => (prev.length <= 1 ? prev : prev.filter((r) => r.id !== id)))
+  }, [])
+
+  const resetAll = useCallback(() => {
+    setRows(defaultRows())
+    setNextId(2)
+    setPayload(null)
+    setError(null)
+    setActiveRange('1y')
+    setRebalanceSchedule('none')
+  }, [])
+
+  return {
+    rows,
+    rebalanceSchedule,
+    setRebalanceSchedule,
+    payload,
+    activeRange,
+    loading,
+    error,
+    loadChart,
+    addRow,
+    updateRow,
+    removeRow,
+    resetAll,
+  }
+}
+
 export default function PortfolioBuilderTool({
   edition,
   options,
@@ -332,22 +445,27 @@ export default function PortfolioBuilderTool({
   options: PortfolioBuilderEtfOption[]
   initialPrefill?: PortfolioPrefillHolding[] | null
 }) {
-  const [rows, setRows] = useState<BuilderRow[]>(() => {
-    if (initialPrefill && initialPrefill.length > 0) {
-      return prefillRowsFromHoldings(initialPrefill)
-    }
-    return defaultRows()
-  })
-  const [nextId, setNextId] = useState(() => {
-    if (initialPrefill && initialPrefill.length > 0) {
-      return initialPrefill.length + 1
-    }
-    return 2
-  })
-  const [payload, setPayload] = useState<PortfolioChartPayload | null>(null)
-  const [activeRange, setActiveRange] = useState<YahooRange>('1y')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const initialRowsA = useMemo(
+    () =>
+      initialPrefill && initialPrefill.length > 0
+        ? prefillRowsFromHoldings(initialPrefill)
+        : defaultRows(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+  const initialNextIdA = initialPrefill && initialPrefill.length > 0 ? initialPrefill.length + 1 : 2
+
+  const slotA = usePortfolioSlot(edition, initialRowsA, initialNextIdA)
+  const slotB = usePortfolioSlot(edition, defaultRows(), 2)
+  const [comparisonEnabled, setComparisonEnabled] = useState(false)
+  const [nameA, setNameA] = useState('Portfolio A')
+  const [nameB, setNameB] = useState('Portfolio B')
+
+  // Derive rows/payload aliases for brevity in the tour logic below
+  const rows = slotA.rows
+  const payload = slotA.payload
+  const loading = slotA.loading
+  const error = slotA.error
 
   const totalAllocation = useMemo(
     () =>
@@ -407,7 +525,7 @@ export default function PortfolioBuilderTool({
     if (!allocationValid || hasIncompleteRow) return null
     if (weightedBeta == null) return null
     if (weightedBeta > 2.5) {
-      return `Weighted portfolio beta is ${weightedBeta.toFixed(2)} — very high versus a market-like book.`
+      return `Weighted portfolio beta is ${weightedBeta.toFixed(2)}. Very high versus a market-like book.`
     }
     if (weightedBeta > 1.5) {
       return `Weighted portfolio beta is ${weightedBeta.toFixed(2)}. Above 1.5 increases drawdown risk versus a market-like book.`
@@ -424,104 +542,85 @@ export default function PortfolioBuilderTool({
   )
   const rangeOptions = useMemo(() => availablePresetChartRanges(overlapDays), [overlapDays])
 
-  const buildRequestBody = useCallback((range: YahooRange) => {
-    const legs = rows
-      .map((r) => ({
-        sym: r.symbol.trim().toUpperCase(),
-        w: (parseAllocation(r.allocation) ?? 0) / 100,
-      }))
-      .filter((x) => x.sym !== '' && x.w > 0)
-    return {
-      edition,
-      range,
-      symbols: legs.map((x) => x.sym),
-      weights: legs.map((x) => x.w),
-    }
-  }, [edition, rows])
+  // Portfolio B range options
+  const overlapDaysB = useMemo(
+    () =>
+      slotB.payload?.limitingFirstTradeDate
+        ? overlapCalendarDaysForPresetUi(slotB.payload.limitingFirstTradeDate)
+        : 0,
+    [slotB.payload?.limitingFirstTradeDate]
+  )
+  const rangeOptionsB = useMemo(() => availablePresetChartRanges(overlapDaysB), [overlapDaysB])
 
-  const loadChart = useCallback(
-    async (range: YahooRange) => {
-      setLoading(true)
-      setError(null)
-      try {
-        const res = await fetch('/api/portfolio-builder-chart', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          cache: 'no-store',
-          body: JSON.stringify(buildRequestBody(range)),
-        })
-        const data = (await res.json()) as PortfolioChartPayload & { error?: string }
-        if (!res.ok) {
-          setError(data.error || 'Could not generate chart.')
-          return
-        }
-        setPayload(data)
-        setActiveRange(range)
-      } catch {
-        setError('Could not generate chart.')
-      } finally {
-        setLoading(false)
-      }
-    },
-    [buildRequestBody]
+  const totalAllocationB = useMemo(
+    () =>
+      slotB.rows.reduce((sum, r) => {
+        const n = parseAllocation(r.allocation)
+        return n == null ? sum : sum + n
+      }, 0),
+    [slotB.rows]
+  )
+  const hasIncompleteRowB = useMemo(
+    () =>
+      slotB.rows.some((r) => {
+        const alloc = parseAllocation(r.allocation)
+        if (alloc == null) return true
+        if (alloc === 0) return false
+        return !r.symbol.trim()
+      }),
+    [slotB.rows]
+  )
+  const allocationValidB = totalAllocationB === 100
+  const canGenerateB =
+    !hasIncompleteRowB && allocationValidB && slotB.rows.length > 0 && !slotB.loading
+  const builderErrorB = useMemo(() => {
+    if (slotB.error) return slotB.error
+    if (!allocationValidB) return 'Allocation must total exactly 100% before generating.'
+    if (hasIncompleteRowB)
+      return 'Each line with a weight above 0% needs an ETF ticker before generating.'
+    return null
+  }, [slotB.error, allocationValidB, hasIncompleteRowB])
+  const weightedBetaB = useMemo(
+    () => weightedPortfolioBeta(slotB.rows, options),
+    [slotB.rows, options]
   )
 
-  const addRow = useCallback(() => {
-    setRows((prev) => {
-      if (prev.length >= MAX_ROWS) return prev
-      const tourPrefill = shouldPrefillNewRowWeightForPortfolioTutorial(edition)
-      const allocation = tourPrefill ? '50' : '0'
-      const efficiencyKind: EfficiencyKind = tourPrefill ? 'alpha' : 'all'
-      return [
-        ...prev,
-        { ...newRow(nextId), allocation, efficiencyKind, category: 'all', symbol: '' },
-      ]
-    })
-    setNextId((n) => n + 1)
-  }, [edition, nextId])
-
-  const updateRow = useCallback((id: string, patch: Partial<BuilderRow>) => {
-    setRows((prev) => prev.map((r) => (r.id === id ? { ...r, ...patch } : r)))
-  }, [])
-
-  const removeRow = useCallback((id: string) => {
-    setRows((prev) => (prev.length <= 1 ? prev : prev.filter((r) => r.id !== id)))
-  }, [])
-
-  const resetAll = useCallback(() => {
-    setRows(defaultRows())
-    setNextId(2)
-    setPayload(null)
-    setError(null)
-    setActiveRange('1y')
-  }, [])
-
-  return (
-    <div className={styles.panel}>
-      <div className={styles.topMeta}>
-        <h2 className={styles.title}>Portfolio builder</h2>
-      </div>
-
+  function renderRowList(
+    slot: ReturnType<typeof usePortfolioSlot>,
+    totalAlloc: number,
+    allocValid: boolean,
+    wBeta: number | null,
+    tourIds: boolean
+  ) {
+    return (
       <div className={styles.rowList}>
-        <div id="portfolio-builder-tour-intro" className={styles.tourIntroAnchor} aria-hidden="true" />
+        {tourIds ? (
+          <div id="portfolio-builder-tour-intro" className={styles.tourIntroAnchor} aria-hidden="true" />
+        ) : null}
         <div className={styles.holdingHeadWrap}>
           <div className={styles.holdingHeadInner}>
             <div className={styles.holdingRow}>
-              <div className={styles.colHead} id="portfolio-builder-h-alloc">
+              <div className={styles.colHead} id={tourIds ? 'portfolio-builder-h-alloc' : undefined}>
                 WEIGHT
               </div>
-              <div className={styles.filterHeadPair} id="portfolio-builder-tour-filters">
-                <div className={styles.colHead} id="portfolio-builder-h-eff">
+              <div
+                className={styles.filterHeadPair}
+                id={tourIds ? 'portfolio-builder-tour-filters' : undefined}
+              >
+                <div className={styles.colHead} id={tourIds ? 'portfolio-builder-h-eff' : undefined}>
                   Efficiency
                 </div>
-                <div className={styles.colHead} id="portfolio-builder-h-category">
+                <div className={styles.colHead} id={tourIds ? 'portfolio-builder-h-category' : undefined}>
                   Category
                 </div>
               </div>
-              <div className={styles.colHead} id="portfolio-builder-h-etf">
+              <div className={styles.colHead} id={tourIds ? 'portfolio-builder-h-etf' : undefined}>
                 ETF
               </div>
-              <div className={`${styles.colHead} ${styles.colHeadBeta}`} id="portfolio-builder-h-beta">
+              <div
+                className={`${styles.colHead} ${styles.colHeadBeta}`}
+                id={tourIds ? 'portfolio-builder-h-beta' : undefined}
+              >
                 1Y BETA
               </div>
             </div>
@@ -529,10 +628,11 @@ export default function PortfolioBuilderTool({
           <div className={styles.holdingSideRail} aria-hidden="true" />
         </div>
 
-        {rows.map((row, rowIndex) => {
+        {slot.rows.map((row, rowIndex) => {
           const isFirstRow = rowIndex === 0
           const categoryOptions = rowCategoryOptions(options, row)
-          const isCategoryStillValid = row.category === 'all' || categoryOptions.some((o) => o.value === row.category)
+          const isCategoryStillValid =
+            row.category === 'all' || categoryOptions.some((o) => o.value === row.category)
           const eligible = rowEligibleOptions(options, row)
           const isSymbolStillValid = row.symbol && eligible.some((o) => o.symbol === row.symbol)
           const rowBetaText = formatRowBeta(row, options)
@@ -542,11 +642,11 @@ export default function PortfolioBuilderTool({
               <div className={styles.holdingCell}>
                 <BuilderThemedSelect
                   id={
-                    rowIndex === rows.length - 1 && rowIndex > 0
+                    tourIds && rowIndex === slot.rows.length - 1 && rowIndex > 0
                       ? 'portfolio-builder-tour-new-row-eff'
                       : `${row.id}-eff`
                   }
-                  ariaLabelledBy="portfolio-builder-h-eff"
+                  ariaLabelledBy={tourIds ? 'portfolio-builder-h-eff' : undefined}
                   value={row.efficiencyKind}
                   options={[
                     { value: 'all', label: 'All' },
@@ -556,19 +656,22 @@ export default function PortfolioBuilderTool({
                   ]}
                   placeholder="All"
                   onChange={(v) =>
-                    updateRow(row.id, { efficiencyKind: v as EfficiencyKind, category: 'all', symbol: '' })
+                    slot.updateRow(row.id, {
+                      efficiencyKind: v as EfficiencyKind,
+                      category: 'all',
+                      symbol: '',
+                    })
                   }
                 />
               </div>
-
               <div className={styles.holdingCell}>
                 <BuilderThemedSelect
                   id={`${row.id}-category`}
-                  ariaLabelledBy="portfolio-builder-h-category"
+                  ariaLabelledBy={tourIds ? 'portfolio-builder-h-category' : undefined}
                   value={isCategoryStillValid ? row.category : 'all'}
                   options={categoryOptions}
                   placeholder="All"
-                  onChange={(category) => updateRow(row.id, { category, symbol: '' })}
+                  onChange={(category) => slot.updateRow(row.id, { category, symbol: '' })}
                 />
               </div>
             </>
@@ -579,21 +682,30 @@ export default function PortfolioBuilderTool({
                 <div className={styles.holdingRow}>
                   <div className={styles.holdingCell}>
                     <input
-                      id={isFirstRow ? 'portfolio-builder-tour-first-alloc' : `${row.id}-alloc`}
+                      id={
+                        tourIds && isFirstRow
+                          ? 'portfolio-builder-tour-first-alloc'
+                          : `${row.id}-alloc`
+                      }
                       className={styles.input}
                       inputMode="numeric"
                       pattern="[0-9]*"
                       value={row.allocation}
                       onChange={(e) =>
-                        updateRow(row.id, { allocation: sanitizeAllocationInput(e.target.value) })
+                        slot.updateRow(row.id, {
+                          allocation: sanitizeAllocationInput(e.target.value),
+                        })
                       }
                       placeholder="e.g. 15"
-                      aria-labelledby="portfolio-builder-h-alloc"
+                      aria-labelledby={tourIds ? 'portfolio-builder-h-alloc' : undefined}
                     />
                   </div>
 
                   {isFirstRow ? (
-                    <div className={styles.firstRowFilterPair} id="portfolio-builder-tour-first-filters">
+                    <div
+                      className={styles.firstRowFilterPair}
+                      id={tourIds ? 'portfolio-builder-tour-first-filters' : undefined}
+                    >
                       {efficiencyCategoryCells}
                     </div>
                   ) : (
@@ -602,14 +714,14 @@ export default function PortfolioBuilderTool({
 
                   <div
                     className={`${styles.holdingCell} ${styles.holdingCellGrow} ${styles.holdingCellSleeve}`}
-                    id={isFirstRow ? 'portfolio-builder-tour-first-etf' : undefined}
+                    id={tourIds && isFirstRow ? 'portfolio-builder-tour-first-etf' : undefined}
                   >
                     <span id={`${row.id}-sleeve-ctx`} className={styles.srOnly}>
                       {row.efficiencyKind} sleeve
                     </span>
                     <BuilderThemedSelect
                       id={`${row.id}-symbol`}
-                      ariaLabelledBy={`portfolio-builder-h-etf ${row.id}-sleeve-ctx`}
+                      ariaLabelledBy={`${tourIds ? 'portfolio-builder-h-etf ' : ''}${row.id}-sleeve-ctx`}
                       triggerClassName={styles.selectEtfTrigger}
                       searchable
                       searchPlaceholder="Type symbol or ETF name"
@@ -630,7 +742,7 @@ export default function PortfolioBuilderTool({
                             ]
                       }
                       placeholder={eligible.length ? 'Select ETF' : 'No eligible ETFs'}
-                      onChange={(symbol) => updateRow(row.id, { symbol })}
+                      onChange={(symbol) => slot.updateRow(row.id, { symbol })}
                       disabled={eligible.length === 0}
                     />
                   </div>
@@ -638,7 +750,7 @@ export default function PortfolioBuilderTool({
                   <div className={`${styles.holdingCell} ${styles.holdingCellBeta}`}>
                     <div
                       className={`${styles.betaReadout} ${rowBetaMuted ? styles.betaReadoutMuted : ''}`}
-                      aria-labelledby="portfolio-builder-h-beta"
+                      aria-labelledby={tourIds ? 'portfolio-builder-h-beta' : undefined}
                     >
                       {rowBetaText}
                     </div>
@@ -649,8 +761,8 @@ export default function PortfolioBuilderTool({
                 <button
                   type="button"
                   className={`${styles.btn} ${styles.btnSquareIcon}`}
-                  disabled={rows.length <= 1}
-                  onClick={() => removeRow(row.id)}
+                  disabled={slot.rows.length <= 1}
+                  onClick={() => slot.removeRow(row.id)}
                   aria-label="Remove this line"
                 >
                   X
@@ -662,45 +774,48 @@ export default function PortfolioBuilderTool({
 
         <div className={styles.totalFieldRow}>
           <div className={styles.holdingWrap}>
-            <fieldset className={`${styles.holding} ${styles.totalHolding}`} aria-label="Portfolio totals">
+            <fieldset
+              className={`${styles.holding} ${styles.totalHolding}`}
+              aria-label="Portfolio totals"
+            >
               <div className={styles.holdingRow}>
                 <div className={styles.totalOutCell}>
                   <output
-                    id="portfolio-builder-total-pct"
-                    className={`${styles.totalOutput} ${allocationValid ? '' : styles.totalOutputMismatch}`}
-                    aria-label={`Total allocation ${totalAllocation} percent of 100 percent`}
+                    id={tourIds ? 'portfolio-builder-total-pct' : undefined}
+                    className={`${styles.totalOutput} ${allocValid ? '' : styles.totalOutputMismatch}`}
+                    aria-label={`Total allocation ${totalAlloc} percent of 100 percent`}
                     aria-live="polite"
                     aria-atomic="true"
                   >
-                    {totalAllocation} / 100%
+                    {totalAlloc} / 100%
                   </output>
                 </div>
                 <div className={styles.totalMidSpacer} aria-hidden="true" />
                 <div className={`${styles.holdingCell} ${styles.holdingCellBeta}`}>
                   <div
-                    id="portfolio-builder-total-beta"
+                    id={tourIds ? 'portfolio-builder-total-beta' : undefined}
                     role="status"
-                    className={`${styles.betaReadout} ${weightedBeta == null ? styles.betaReadoutMuted : ''}`}
+                    className={`${styles.betaReadout} ${wBeta == null ? styles.betaReadoutMuted : ''}`}
                     aria-label={
-                      weightedBeta != null
-                        ? `Weighted portfolio beta ${weightedBeta.toFixed(2)}`
+                      wBeta != null
+                        ? `Weighted portfolio beta ${wBeta.toFixed(2)}`
                         : 'Weighted portfolio beta not shown; add at least one line with allocation, ETF selection, and an available beta.'
                     }
                     aria-live="polite"
                     aria-atomic="true"
                   >
-                    {weightedBeta != null ? weightedBeta.toFixed(2) : ''}
+                    {wBeta != null ? wBeta.toFixed(2) : ''}
                   </div>
                 </div>
               </div>
             </fieldset>
             <div className={styles.holdingSideRail}>
               <button
-                id="portfolio-builder-tour-add-row"
+                id={tourIds ? 'portfolio-builder-tour-add-row' : undefined}
                 type="button"
                 className={`${styles.btn} ${styles.btnSquareIcon}`}
-                onClick={addRow}
-                disabled={rows.length >= MAX_ROWS}
+                onClick={slot.addRow}
+                disabled={slot.rows.length >= MAX_ROWS}
                 aria-label="Add row"
                 title="Add row"
               >
@@ -710,18 +825,115 @@ export default function PortfolioBuilderTool({
           </div>
         </div>
       </div>
+    )
+  }
+
+  return (
+    <div className={styles.panel}>
+      <div className={styles.topMeta}>
+        <h2 className={styles.title}>Portfolio builder</h2>
+      </div>
+
+      {/* Portfolio A */}
+      {comparisonEnabled ? (
+        <input
+          type="text"
+          className={styles.slotNameInput}
+          value={nameA}
+          onChange={(e) => setNameA(e.target.value)}
+          aria-label="Portfolio A name"
+        />
+      ) : null}
+
+      {renderRowList(slotA, totalAllocation, allocationValid, weightedBeta, true)}
+
+      <div className={styles.rebalanceRow}>
+        <span className={styles.rebalanceLabel}>Rebalance</span>
+        <div className={styles.rebalanceSelect}>
+          <BuilderThemedSelect
+            id="portfolio-builder-rebalance-a"
+            value={slotA.rebalanceSchedule}
+            options={REBALANCE_OPTIONS}
+            placeholder="None (buy & hold)"
+            onChange={(v) => slotA.setRebalanceSchedule(v as RebalanceSchedule)}
+          />
+        </div>
+      </div>
+
+      {/* Add comparison toggle / Portfolio B */}
+      {!comparisonEnabled ? (
+        <button
+          type="button"
+          className={styles.addComparisonBtn}
+          onClick={() => setComparisonEnabled(true)}
+        >
+          + Add comparison portfolio
+        </button>
+      ) : (
+        <div className={styles.portfolioB}>
+          <div className={styles.slotDivider} aria-hidden="true" />
+          <div className={styles.slotBHeader}>
+            <input
+              type="text"
+              className={styles.slotNameInput}
+              value={nameB}
+              onChange={(e) => setNameB(e.target.value)}
+              aria-label="Portfolio B name"
+            />
+            <button
+              type="button"
+              className={styles.removeComparisonBtn}
+              onClick={() => {
+                setComparisonEnabled(false)
+                slotB.resetAll()
+                setNameA('Portfolio A')
+                setNameB('Portfolio B')
+              }}
+            >
+              Remove
+            </button>
+          </div>
+
+          {renderRowList(slotB, totalAllocationB, allocationValidB, weightedBetaB, false)}
+
+          <div className={styles.rebalanceRow}>
+            <span className={styles.rebalanceLabel}>Rebalance</span>
+            <div className={styles.rebalanceSelect}>
+              <BuilderThemedSelect
+                id="portfolio-builder-rebalance-b"
+                value={slotB.rebalanceSchedule}
+                options={REBALANCE_OPTIONS}
+                placeholder="None (buy & hold)"
+                onChange={(v) => slotB.setRebalanceSchedule(v as RebalanceSchedule)}
+              />
+            </div>
+          </div>
+
+          {builderErrorB ? <p className={styles.error}>{builderErrorB}</p> : null}
+        </div>
+      )}
 
       <div className={styles.controls}>
         <button
           id="portfolio-builder-tour-generate"
           type="button"
           className={`${styles.btn} ${styles.btnPrimary}`}
-          disabled={!canGenerate}
-          onClick={() => void loadChart(activeRange)}
+          disabled={!canGenerate || (comparisonEnabled && !canGenerateB)}
+          onClick={() => {
+            void slotA.loadChart(slotA.activeRange)
+            if (comparisonEnabled) void slotB.loadChart(slotB.activeRange)
+          }}
         >
-          {loading ? 'Generating…' : 'Generate'}
+          {loading || slotB.loading ? 'Generating…' : 'Generate'}
         </button>
-        <button type="button" className={styles.btn} onClick={resetAll}>
+        <button
+          type="button"
+          className={styles.btn}
+          onClick={() => {
+            slotA.resetAll()
+            if (comparisonEnabled) slotB.resetAll()
+          }}
+        >
           Reset
         </button>
       </div>
@@ -736,7 +948,7 @@ export default function PortfolioBuilderTool({
             <span className={styles.rangeLabel}>Range</span>
             {rangeOptions.map(({ range, label, disabled }) => {
               const inactive = loading || disabled
-              const showActive = activeRange === range && !disabled
+              const showActive = slotA.activeRange === range && !disabled
               const minDays = PRESET_RANGE_MIN_DAYS[range as keyof typeof PRESET_RANGE_MIN_DAYS]
               return (
                 <button
@@ -751,7 +963,7 @@ export default function PortfolioBuilderTool({
                   }
                   onClick={() => {
                     if (disabled || loading) return
-                    void loadChart(range)
+                    void slotA.loadChart(range)
                   }}
                 >
                   {label}
@@ -761,7 +973,7 @@ export default function PortfolioBuilderTool({
           </div>
           <PresetPortfolioChart
             payload={payload}
-            portfolioLabel="Custom portfolio"
+            portfolioLabel={comparisonEnabled ? (nameA.trim() || 'Portfolio A') : 'Custom portfolio'}
             weightedBeta={weightedBeta}
             showScorecard
             exposureSummary={exposureSummary}
@@ -771,6 +983,8 @@ export default function PortfolioBuilderTool({
                 weightPct: parseAllocation(r.allocation) ?? 0,
               }))
               .filter((h) => h.ticker !== '' && h.weightPct > 0)}
+            comparisonPayload={comparisonEnabled && slotB.payload ? slotB.payload : undefined}
+            comparisonLabel={nameB.trim() || 'Portfolio B'}
           />
         </>
       ) : null}

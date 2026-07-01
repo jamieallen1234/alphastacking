@@ -276,6 +276,10 @@ interface PresetPortfolioChartProps {
   maxSharpeRatio?: number | null
   /** Fixed Sortino from MAX range — overrides the active-range payload value so the display doesn't change per tab. */
   maxSortinoRatio?: number | null
+  /** Optional second portfolio payload to render as a third chart line. */
+  comparisonPayload?: PortfolioChartPayload | null
+  /** Label for the comparison portfolio line (default "Portfolio B"). */
+  comparisonLabel?: string
 }
 
 type LetterGrade = PortfolioLetterGrade
@@ -339,6 +343,8 @@ export default function PresetPortfolioChart({
   scorecardPayloads = null,
   maxSharpeRatio = null,
   maxSortinoRatio = null,
+  comparisonPayload = null,
+  comparisonLabel = 'Portfolio B',
 }: PresetPortfolioChartProps) {
   const [asOfMs] = useState(() => Date.now())
   const pathname = usePathname()
@@ -409,6 +415,14 @@ export default function PresetPortfolioChart({
         ? styles.metricBigPos
         : styles.metricBigNeg
 
+  const comparisonSeries: { values: number[]; color: string; label: string } | null =
+    comparisonPayload &&
+    comparisonPayload.values &&
+    comparisonPayload.values.length >= 2 &&
+    comparisonPayload.values.length === (comparisonPayload.timestamps ?? []).length
+      ? { values: comparisonPayload.values, color: 'var(--color-green)', label: comparisonLabel }
+      : null
+
   const chartSeries =
     values &&
     benchmarkValues &&
@@ -418,6 +432,7 @@ export default function PresetPortfolioChart({
     values.length >= 2
       ? [
           { values, color: 'var(--color-gold)', label: portfolioLabel },
+          ...(comparisonSeries ? [comparisonSeries] : []),
           {
             values: benchmarkValues,
             color: 'var(--color-blue)',
@@ -576,6 +591,12 @@ export default function PresetPortfolioChart({
             <span className={styles.legendSwatch} style={{ background: 'var(--color-gold)' }} />
             {portfolioLabel}
           </span>
+          {comparisonSeries ? (
+            <span className={styles.legendItem}>
+              <span className={styles.legendSwatch} style={{ background: 'var(--color-green)' }} />
+              {comparisonLabel}
+            </span>
+          ) : null}
           <span className={styles.legendItem}>
             <span className={styles.legendSwatch} style={{ background: 'var(--color-blue)' }} />
             {benchmarkSymbol}

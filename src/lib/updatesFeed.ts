@@ -127,6 +127,12 @@ interface SiteFeatureDef {
 /** One-off site features worth announcing on `/updates`, outside the registry-driven feeds. */
 const SITE_FEATURES: SiteFeatureDef[] = [
   {
+    date: '2026-07-01',
+    slug: 'portfolio-builder-comparison',
+    title: 'Portfolio builder: compare two portfolios',
+    blurb: 'The portfolio builder now supports a second portfolio for side-by-side comparison. Add a comparison portfolio, set independent rebalance schedules (none, quarterly, or yearly) for each, and generate both at once to see all three lines on the same chart.',
+  },
+  {
     date: '2026-06-07',
     slug: 'light-mode',
     title: 'Light mode',

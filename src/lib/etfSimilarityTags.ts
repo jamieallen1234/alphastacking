@@ -51,7 +51,6 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   rsst: bundle(['us', 'large_cap', 'return_stacked', '2x_leveraged'], ['managed_futures'], 'sleeve'),
   rsbt: bundle([], ['treasuries', 'medium_duration', 'managed_futures', 'return_stacked', '2x_leveraged'], 'sleeve'),
   rsit: bundle(['developed_ex_us', 'large_cap', 'return_stacked', '2x_leveraged'], ['managed_futures'], 'sleeve'),
-  ctap: bundle(['us', 'large_cap', 'return_stacked', '2x_leveraged'], ['managed_futures'], 'sleeve'),
   hold: bundle(['us', 'large_cap', 'return_stacked', '1.5x_leveraged'], ['managed_futures'], 'sleeve'),
   rssy: bundle(['us', 'large_cap', 'return_stacked', '2x_leveraged'], ['futures_yield'], 'sleeve'),
   rssb: bundle(['global', 'large_cap', 'return_stacked', '2x_leveraged'], ['treasuries', 'medium_duration'], 'sleeve'),
@@ -86,6 +85,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   avuv: bundle(['value', 'us', 'small_cap', 'active'], [], 'manual'),
   avdv: bundle(['value', 'developed_ex_us', 'small_cap', 'active'], [], 'manual'),
   sgrt: bundle(['value', 'earnings_growth', 'us', 'large_cap', 'active'], [], 'manual'),
+  copy: bundle(['value', 'global', 'large_cap', 'active'], [], 'seeded'),
   emeq: bundle(['quality', 'competitive_advantage', 'emerging_markets', 'all_cap', 'active'], [], 'manual'),
   /** Active concentrated US value (Russell 1000/3000 Value-sourced; not buy-write). */
   sass: bundle(['value', 'concentrated', 'us', 'large_cap', 'active'], [], 'manual'),

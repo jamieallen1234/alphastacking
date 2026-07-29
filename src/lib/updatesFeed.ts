@@ -127,6 +127,12 @@ interface SiteFeatureDef {
 /** One-off site features worth announcing on `/updates`, outside the registry-driven feeds. */
 const SITE_FEATURES: SiteFeatureDef[] = [
   {
+    date: '2026-07-28',
+    slug: 'ctap-removed',
+    title: 'CTAP removed from the site',
+    blurb: 'CTAP (Simplify US Equity PLUS Managed Futures Strategy ETF) has been removed. The fund replaced its S&P 500 equity sleeve with a covered call ETF, which caps upside and carries a higher fee than plain large-cap exposure, so it no longer fits the return-stacked category it was listed under.',
+  },
+  {
     date: '2026-07-01',
     slug: 'portfolio-builder-comparison',
     title: 'Portfolio builder: compare two portfolios',

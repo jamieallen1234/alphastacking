@@ -71,14 +71,6 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     capitalMarketBenchmarkSymbol: 'SPY',
     coreBenchmarkSymbol: 'SPDW',
   },
-  ctap: {
-    components: [
-      { name: 'S&P 500 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
-      { name: 'Managed futures', pct: 100, bucket: 'alpha', assetClass: 'alternatives' },
-    ],
-    capitalMarketBenchmarkSymbol: 'SPY',
-    coreBenchmarkSymbol: 'SPY',
-  },
   rssy: {
     components: [
       { name: 'S&P 500 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },

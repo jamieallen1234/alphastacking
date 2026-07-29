@@ -51,7 +51,6 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   GDT: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 180 },
   MATE: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
   RSST: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
-  CTAP: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
   RSSY: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
   RSSB: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 100 },
   HOLD: { longEquityPct: 75, shortEquityPct: 0, alphaPct: 75 },

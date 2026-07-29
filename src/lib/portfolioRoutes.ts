@@ -111,7 +111,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     rebalance: 'annual',
     title: 'Leveraged Premia',
     badge: 'Aggressive',
-    description: 'UPRO + SSO + MATE + CTAP. High-octane LETF core with return-stacked alts.',
+    description: 'UPRO + SSO + MATE. High-octane LETF core with return-stacked alts.',
     sourcePortfolioId: 'leveraged-premia',
     addedAt: '2026-04-15',
   },

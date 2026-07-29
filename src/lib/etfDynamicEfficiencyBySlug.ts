@@ -358,6 +358,13 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  copy: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'COPY is a global deep-value equity sleeve filtered for insider buying and buybacks. The grade scores this stock-selection process versus a broad benchmark after costs.'
+      ),
+    },
+  },
   avuv: {
     capital: {
       tooltip: capitalEfficiencyTooltip(
@@ -531,18 +538,6 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     alpha: {
       tooltip: alphaEfficiencyStackedTooltip(
         "The alpha sleeve is Unlimited's factor-model replication of diversified hedge-fund global macro strategies."
-      ),
-    },
-  },
-  ctap: {
-    capital: {
-      tooltip: insufficientHistoryTooltip(
-        'CTAP stacks 100% U.S. equity and 100% managed futures on the same capital using the Simplify implementation. Launched December 2025; insufficient live history to grade capital efficiency.'
-      ),
-    },
-    alpha: {
-      tooltip: insufficientHistoryTooltip(
-        'The alpha sleeve is a managed futures overlay across rates, FX, commodities, and equity index futures. Launched December 2025; insufficient live history to grade alpha efficiency.'
       ),
     },
   },

@@ -13,7 +13,6 @@ export const ETF_CHART_SYMBOLS = [
   'RSBT',
   'RSST',
   'RSIT',
-  'CTAP',
   'RSSY',
   'RSSB',
   'NTSD',
@@ -85,6 +84,7 @@ export const ETF_CHART_SYMBOLS = [
   'SGRT',
   'EMEQ',
   'VIRT',
+  'COPY',
 ] as const
 
 export type EtfChartYahooSymbol = (typeof ETF_CHART_SYMBOLS)[number]

@@ -36,6 +36,10 @@ function cryptoLede(ticker: string, thesis: string): string {
   return `${ticker} ${thesis}`
 }
 
+/** Shared caution paragraph appended to every Simplify Asset Management fund's pedigree. */
+const SIMPLIFY_PEDIGREE_CAUTION =
+  'Simplify has drawn criticism for fee layering: several of its ETFs hold other Simplify funds internally, adding acquired-fund fees on top of the headline expense ratio, and its 2025 SBIL launch (repackaging an internal cash-management function as a standalone fund) was called a "money grab" by ETF industry analysts. CTAP, once a straightforward S&amp;P 500 plus managed-futures stack, was quietly restructured to hold ~73% of its equity sleeve in Simplify\'s own SPUC covered-call fund, capping upside and adding a second layer of fees. Verify current holdings against the fund\'s official page before investing rather than relying on the launch-date strategy description.'
+
 const HFGM_PROXY_NOTE_HTML = `Model portfolio charts on this site extend HFGM before its first listed session using 1.5× ASGM (Virtus AlphaSimplex Global Macro) daily total returns minus ~${(HFGM_ASGM_SYNTHETIC_ANNUAL_DRAG * 100).toFixed(1)}% annual drag as a proxy; the chart above is HFGM-only (Yahoo adjusted close).`
 
 const TIDAL_RETURN_STACKED_PEDIGREE_PARAS = ped(
@@ -301,6 +305,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pedigreeParas: ped(
       `Simplify Asset Management was co-founded in 2020 by Paul Kim (CEO) and David Berns, PhD (CIO), with Michael Green (Managing Director and Chief Strategist) also serving as a portfolio manager for SPBC. The firm built its reputation on options-enhanced and convexity-aware ETF structures before expanding into stacked and bitcoin-overlay products; it manages approximately $6.1B in ETF assets across its complex.`,
       `Berns holds a PhD in physics from MIT with a background in quantum computation; Green is widely followed for macro and market-structure research. The team's orientation is toward engineering exposures precisely rather than replicating index conventions: SPBC's quarterly rebalance cadence and explicit bitcoin cap reflect that design-first philosophy.`,
+      SIMPLIFY_PEDIGREE_CAUTION,
     ),
     outperfParas: [
       'Outperforms when U.S. large-cap equities trend higher and bitcoin captures an independent <strong>digital-scarcity bid</strong>: the 10% sleeve adds meaningful convexity to the upside without proportionally increasing drawdown drag because the notional is modest.',
@@ -405,53 +410,6 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     officialUrl: 'https://www.returnstackedetfs.com/rsit/',
     officialLabel: 'Return Stacked ETFs (RSIT)',
-  },
-
-  ctap: {
-    yahooSymbol: 'CTAP',
-    hubCategoryId: 'return-stacked-ge-2x',
-    badge: 'Return Stacked - 2x',
-    h1Title: 'CTAP — Simplify US Equity PLUS Managed Futures Strategy ETF',
-    displayTicker: 'CTAP',
-    issuer: 'Simplify Asset Management',
-    inception: 'Dec 8, 2025',
-    addedToSite: '2026-05-05',
-    structure: 'Return-stacked US equity + managed futures',
-    capitalBucketExposurePct: 100,
-    alphaBucketExposurePct: 100,
-    mer: '~0.95%',
-    aum: '~$167M',
-    pageTitle: 'CTAP ETF — Alpha Stacking',
-    description: 'Simplify US Equity PLUS Managed Futures Strategy ETF (CTAP).',
-    contentFormat: 'html',
-    lede:
-      'CTAP layers roughly dollar-for-dollar U.S. large-cap equity and systematic managed-futures exposure in one capital-efficient ETF wrapper.',
-    strategyParas: [
-      'The equity sleeve is implemented through large-cap U.S. stocks, ETFs, and index futures. The alpha sleeve is effectively a full managed-futures (CTA) sleeve, primarily via swaps linked to Simplify’s CTA strategy across rates, FX, equities, and commodities.',
-      'For each dollar invested, the fund targets about one dollar of equity exposure plus one dollar of managed-futures exposure. Reported net/gross expense ratios are fund-level; they do not fully capture all embedded derivative and CTA implementation drag.',
-    ],
-    pedigreeParas: ped(
-      `Simplify is a derivatives-focused ETF sponsor that packages institutional-style overlays inside listed wrappers with daily liquidity and transparent disclosures.`,
-      `CTAP extends Simplify’s “PLUS” lineup by combining a broad U.S. equity core with the firm’s managed-futures toolkit, aiming for portfolio-level diversification without reducing core equity notional.`,
-    ),
-    outperfParas: [
-      'Outperforms when U.S. equities participate and managed-futures trends are persistent enough to add non-correlated return, especially in macro tapes with directional moves across rates, commodities, and currencies.',
-      'Underperforms in fast mean-reversion and correlation spikes where trend models repeatedly reverse, because the overlay can lag while still carrying financing and implementation drag.',
-    ],
-    officialUrl: 'https://www.simplify.us/etfs/ctap-simplify-us-equity-plus-managed-futures-strategy-etf',
-    officialLabel: 'Simplify (CTAP)',
-    efficiency: {
-      capital: {
-        tooltip: capitalEfficiencyTooltip(
-          'CTAP targets roughly 100% U.S. large-cap equity exposure as the capital sleeve. The grade scores that equity component versus SPY under the site framework.'
-        ),
-      },
-      alpha: {
-        tooltip: alphaEfficiencyStackedTooltip(
-          'The second sleeve is a systematic managed-futures program implemented through swaps/futures. The alpha grade scores whether that overlay clears hurdle versus costs.'
-        ),
-      },
-    },
   },
 
   ntsd: {
@@ -612,6 +570,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pedigreeParas: ped(
       `FOXY is managed by the Simplify Asset Management investment team: David Berns, PhD (CIO) and Ken Miller (Portfolio Manager) co-managed the fund from its February 2025 launch; Chris Getter (Emerging Markets Strategist) was added in October 2025 to deepen the EM currency capability. Simplify manages approximately $6.1B in ETF assets, built primarily on derivatives-centric structures across volatility, convexity, and systematic strategies.`,
       `The EM carry trade is one of the most documented return premia in institutional FX literature, with decades of evidence across macro hedge funds and systematic currency programs. FOXY's contribution is packaging it alongside G10 mean reversion in a no-K-1 listed wrapper accessible to RIA and retail portfolios that have historically lacked a clean standalone currency vehicle.`,
+      SIMPLIFY_PEDIGREE_CAUTION,
     ),
     outperfParas: [
       'Outperforms when EM interest rate differentials are <strong>wide and stable</strong>: the carry trade captures the rate spread in calm risk-on environments, and G10 currencies revert from trend-extended levels without sudden macro gaps.',
@@ -1108,6 +1067,46 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'SmartWay ETFs (SGRT)',
   },
 
+  copy: {
+    yahooSymbol: 'COPY',
+    hubCategoryId: 'factor-value',
+    badge: 'Factor - Value',
+    h1Title: 'COPY — Tweedy, Browne Insider + Value ETF',
+    displayTicker: 'COPY',
+    issuer: 'Tweedy, Browne Company',
+    inception: 'Dec 27, 2024',
+    addedToSite: '2026-07-28',
+    structure: 'Global deep-value equity with insider-buying overlay',
+    mer: '0.80%',
+    aum: '~$367M',
+    pageTitle: 'COPY ETF — Alpha Stacking',
+    description: 'Tweedy, Browne Insider + Value ETF (COPY): global deep-value stock selection filtered for corporate insider buying and share buybacks.',
+    contentFormat: 'html',
+    lede:
+      'COPY combines <strong>Benjamin Graham-style deep value</strong> screens with a signal most quant funds ignore: whether the people running the company are buying its stock with their own money.',
+    strategyParas: [
+      'The fund screens global equities on balance sheet and income statement value criteria, then filters that universe for corporate events that historically precede outperformance: insider purchases, particularly from chairmen and officer-directors, and active share buybacks. The premise is that insiders and boards spending real money on their own stock are a more credible undervaluation signal than a price-to-book screen alone.',
+      'COPY is fully transparent and actively managed, avoiding mega-cap technology names that dominate cap-weighted indexes. Because insider-buying windows are episodic and value baskets can lag during momentum-led markets, the portfolio composition shifts as new insider activity and buyback announcements surface rather than on a fixed rebalance calendar.',
+    ],
+    pedigreeParas: ped(
+      `Tweedy, Browne has practiced value investing since 1920 and traces its intellectual lineage directly to Benjamin Graham, who was a client and collaborator of the firm decades before "value investing" was a category. Managing directors Roger de Bree, Jay Hill, Thomas Shrager, and John Spears run COPY, applying the same balance-sheet-first discipline the firm has used across its mutual funds for over 40 years.`,
+      `The firm managed approximately $7.1B in discretionary client assets as of Dec. 31, 2025, down from over $12B in 2022 as value strategies broadly saw outflows during the growth-led market. COPY, launched December 2024, is Tweedy Browne's first ETF and a bet that its research process translates to a transparent, actively managed wrapper.`,
+    ),
+    outperfParas: [
+      'Outperforms when value leadership broadens and cheap, cash-generative companies rerate, especially when that rotation is confirmed by a pickup in insider buying and buyback activity, a signal that tends to cluster near market bottoms and sector-specific dislocations rather than at valuation peaks.',
+      'Underperforms during narrow, momentum-led melt-ups concentrated in mega-cap growth, where cheap statistically does not mean cheap for a reason and the fund\'s avoidance of the largest index names creates a persistent headwind versus cap-weighted benchmarks.',
+    ],
+    officialUrl: 'https://www.tweedyetfs.com/etf-overview/',
+    officialLabel: 'Tweedy, Browne ETFs (COPY)',
+    efficiency: {
+      capital: {
+        tooltip: capitalEfficiencyTooltip(
+          'COPY is a global deep-value equity sleeve filtered for insider buying and buybacks. The grade scores this stock-selection process versus a broad benchmark after costs.'
+        ),
+      },
+    },
+  },
+
   emeq: {
     yahooSymbol: 'EMEQ',
     hubCategoryId: 'factor',
@@ -1165,6 +1164,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pedigreeParas: ped(
       `Simplify built its brand on convexity and hedged equity ETFs before expanding into pure CTA sleeves; the firm markets complexity with unusually clear options diagrams—CTA inherits that education-first distribution style.`,
       `Simplify’s complex is commonly quoted in the mid-single-digit billions USD—large enough for serious prime brokerage relationships but still nimble versus integrated banks.`,
+      SIMPLIFY_PEDIGREE_CAUTION,
     ),
     outperfParas: [
       'Outperforms when <strong>macro variables persist</strong>: directional rates, sustained dollar moves, or commodity curves that trend long enough for models to load size.',
@@ -1994,6 +1994,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pedigreeParas: ped(
       `Simplify is an alternatives-focused ETF sponsor that packages institutional-style derivatives strategies in listed wrappers with daily liquidity and transparent disclosures.`,
       `HARD extends that lineup into hard-assets with a no-K-1 design, giving taxable-account investors commodity strategy access in 1099 form without commodity partnership reporting complexity.`,
+      SIMPLIFY_PEDIGREE_CAUTION,
     ),
     outperfParas: [
       'Outperforms when cross-commodity dispersion and trend strength are high enough for long/short positioning to harvest both relative-value and directional opportunities.',

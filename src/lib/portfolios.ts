@@ -33,7 +33,7 @@ export const portfolios: Portfolio[] = [
     id: 'leveraged-premia',
     badge: 'Aggressive',
     name: 'Leveraged Premia',
-    description: 'UPRO + SSO + MATE + CTAP. High-octane LETF core with return-stacked alts.',
+    description: 'UPRO + SSO + MATE. High-octane LETF core with return-stacked alts.',
     sparkPoints: '0,45 15,50 30,35 50,40 70,20 85,30 100,15 120,25 140,10 160,18 180,6 200,3',
     sparkColor: '#5dca8a',
     metrics: { return1y: '+26.1%', returnPositive: true, sharpe: '1.18', maxDD: '-22.7%' },

@@ -137,12 +137,6 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       '/us-etfs/rssy'
     ),
     us(
-      'ctap',
-      'CTAP — Simplify US Equity PLUS Managed Futures Strategy ETF',
-      '100% U.S. large-cap equity plus 100% systematic managed futures in one return-stacked wrapper.',
-      usPath('ctap')
-    ),
-    us(
       'mate',
       'MATE — Man Active Trend Enhanced ETF',
       '100% S&P 500 beta stacked with 100% trend-following managed futures.',
@@ -281,6 +275,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'COWZ — Pacer U.S. Cash Cows 100 ETF',
       'Rules-based U.S. large-cap free-cash-flow yield factor sleeve.',
       usPath('cowz')
+    ),
+    us(
+      'copy',
+      'COPY — Tweedy, Browne Insider + Value ETF',
+      'Global deep-value stock selection filtered for corporate insider buying and share buybacks.',
+      usPath('copy')
     ),
   ],
   'factor-active': [

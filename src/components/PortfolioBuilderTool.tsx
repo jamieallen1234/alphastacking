@@ -584,13 +584,24 @@ export default function PortfolioBuilderTool({
     () => weightedPortfolioBeta(slotB.rows, options),
     [slotB.rows, options]
   )
+  const exposureSummaryB = useMemo(() => {
+    const weightedTickers = slotB.rows
+      .map((r) => {
+        const pct = parseAllocation(r.allocation)
+        return { ticker: r.symbol, weightPct: pct ?? 0 }
+      })
+      .filter((r) => r.ticker.trim() !== '' && r.weightPct > 0)
+    return buildExposureSummaryFromWeightedTickers(weightedTickers)
+  }, [slotB.rows])
 
   function renderRowList(
     slot: ReturnType<typeof usePortfolioSlot>,
     totalAlloc: number,
     allocValid: boolean,
     wBeta: number | null,
-    tourIds: boolean
+    tourIds: boolean,
+    /** Distinguishes DOM ids between slot A and slot B, whose BuilderRow ids otherwise collide (both start at "row-1"). */
+    slotPrefix: string
   ) {
     return (
       <div className={styles.rowList}>
@@ -644,7 +655,7 @@ export default function PortfolioBuilderTool({
                   id={
                     tourIds && rowIndex === slot.rows.length - 1 && rowIndex > 0
                       ? 'portfolio-builder-tour-new-row-eff'
-                      : `${row.id}-eff`
+                      : `${slotPrefix}${row.id}-eff`
                   }
                   ariaLabelledBy={tourIds ? 'portfolio-builder-h-eff' : undefined}
                   value={row.efficiencyKind}
@@ -666,7 +677,7 @@ export default function PortfolioBuilderTool({
               </div>
               <div className={styles.holdingCell}>
                 <BuilderThemedSelect
-                  id={`${row.id}-category`}
+                  id={`${slotPrefix}${row.id}-category`}
                   ariaLabelledBy={tourIds ? 'portfolio-builder-h-category' : undefined}
                   value={isCategoryStillValid ? row.category : 'all'}
                   options={categoryOptions}
@@ -685,7 +696,7 @@ export default function PortfolioBuilderTool({
                       id={
                         tourIds && isFirstRow
                           ? 'portfolio-builder-tour-first-alloc'
-                          : `${row.id}-alloc`
+                          : `${slotPrefix}${row.id}-alloc`
                       }
                       className={styles.input}
                       inputMode="numeric"
@@ -716,12 +727,12 @@ export default function PortfolioBuilderTool({
                     className={`${styles.holdingCell} ${styles.holdingCellGrow} ${styles.holdingCellSleeve}`}
                     id={tourIds && isFirstRow ? 'portfolio-builder-tour-first-etf' : undefined}
                   >
-                    <span id={`${row.id}-sleeve-ctx`} className={styles.srOnly}>
+                    <span id={`${slotPrefix}${row.id}-sleeve-ctx`} className={styles.srOnly}>
                       {row.efficiencyKind} sleeve
                     </span>
                     <BuilderThemedSelect
-                      id={`${row.id}-symbol`}
-                      ariaLabelledBy={`${tourIds ? 'portfolio-builder-h-etf ' : ''}${row.id}-sleeve-ctx`}
+                      id={`${slotPrefix}${row.id}-symbol`}
+                      ariaLabelledBy={`${tourIds ? 'portfolio-builder-h-etf ' : ''}${slotPrefix}${row.id}-sleeve-ctx`}
                       triggerClassName={styles.selectEtfTrigger}
                       searchable
                       searchPlaceholder="Type symbol or ETF name"
@@ -845,7 +856,7 @@ export default function PortfolioBuilderTool({
         />
       ) : null}
 
-      {renderRowList(slotA, totalAllocation, allocationValid, weightedBeta, true)}
+      {renderRowList(slotA, totalAllocation, allocationValid, weightedBeta, true, 'a-')}
 
       <div className={styles.rebalanceRow}>
         <span className={styles.rebalanceLabel}>Rebalance</span>
@@ -894,7 +905,7 @@ export default function PortfolioBuilderTool({
             </button>
           </div>
 
-          {renderRowList(slotB, totalAllocationB, allocationValidB, weightedBetaB, false)}
+          {renderRowList(slotB, totalAllocationB, allocationValidB, weightedBetaB, false, 'b-')}
 
           <div className={styles.rebalanceRow}>
             <span className={styles.rebalanceLabel}>Rebalance</span>
@@ -910,6 +921,36 @@ export default function PortfolioBuilderTool({
           </div>
 
           {builderErrorB ? <p className={styles.error}>{builderErrorB}</p> : null}
+
+          {slotB.payload ? (
+            <div className={styles.rangeRow}>
+              <span className={styles.rangeLabel}>Range</span>
+              {rangeOptionsB.map(({ range, label, disabled }) => {
+                const inactive = slotB.loading || disabled
+                const showActive = slotB.activeRange === range && !disabled
+                const minDays = PRESET_RANGE_MIN_DAYS[range as keyof typeof PRESET_RANGE_MIN_DAYS]
+                return (
+                  <button
+                    key={range}
+                    type="button"
+                    className={`${styles.rangeBtn} ${showActive ? styles.rangeBtnActive : ''} ${disabled ? styles.rangeBtnUnavailable : ''}`}
+                    disabled={inactive}
+                    title={
+                      disabled && minDays > 0
+                        ? `Needs at least ${minDays} calendar days of joint history`
+                        : undefined
+                    }
+                    onClick={() => {
+                      if (disabled || slotB.loading) return
+                      void slotB.loadChart(range)
+                    }}
+                  >
+                    {label}
+                  </button>
+                )
+              })}
+            </div>
+          ) : null}
         </div>
       )}
 
@@ -985,6 +1026,14 @@ export default function PortfolioBuilderTool({
               .filter((h) => h.ticker !== '' && h.weightPct > 0)}
             comparisonPayload={comparisonEnabled && slotB.payload ? slotB.payload : undefined}
             comparisonLabel={nameB.trim() || 'Portfolio B'}
+            comparisonWeightedBeta={weightedBetaB}
+            comparisonExposureSummary={exposureSummaryB}
+            comparisonHoldings={slotB.rows
+              .map((r) => ({
+                ticker: r.symbol.trim().toUpperCase(),
+                weightPct: parseAllocation(r.allocation) ?? 0,
+              }))
+              .filter((h) => h.ticker !== '' && h.weightPct > 0)}
           />
         </>
       ) : null}

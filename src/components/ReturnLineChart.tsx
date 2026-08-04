@@ -67,6 +67,11 @@ export default function ReturnLineChart({
     tipLeft: number
   } | null>(null)
 
+  // Series may come from independently-fetched portfolios with different limiting
+  // tickers, so lengths (and the underlying dates) can legitimately differ. The
+  // primary (first) series still drives the shared timestamp axis and hover/tooltip;
+  // any other series is plotted by its own relative position (index / length) so it
+  // doesn't need to share exact dates with the primary series.
   const valid = series.filter((s) => s.values.length >= 2)
   const n = valid[0]?.values.length ?? 0
 
@@ -100,7 +105,7 @@ export default function ReturnLineChart({
     )
   }
 
-  if (valid.some((s) => s.values.length !== n) || timestampsSec.length !== n) {
+  if (timestampsSec.length !== n) {
     return (
       <div
         style={{
@@ -130,6 +135,13 @@ export default function ReturnLineChart({
     const x = PAD_X + (i / (vals.length - 1)) * (W - PAD_X * 2)
     const y = plotBottom - ((vals[i]! - min) / span) * plotH
     return { x, y }
+  }
+
+  /** Maps a hover index on the primary series' axis to the nearest index on `vals`, by relative position. */
+  function alignedIndex(vals: number[], hoverIdx: number): number {
+    if (vals.length === n) return hoverIdx
+    const ratio = n <= 1 ? 0 : hoverIdx / (n - 1)
+    return Math.round(ratio * (vals.length - 1))
   }
 
   function buildPoints(vals: number[]): string {
@@ -197,7 +209,7 @@ export default function ReturnLineChart({
         ))}
         {hi != null &&
           valid.map((s, i) => {
-            const { x, y } = xyForIndex(s.values, hi)
+            const { x, y } = xyForIndex(s.values, alignedIndex(s.values, hi))
             return (
               <circle
                 key={`dot-${i}`}
@@ -225,7 +237,7 @@ export default function ReturnLineChart({
             <div key={s.label} className={styles.tooltipRow}>
               <span className={styles.tooltipLabel}>{s.label}</span>
               <span className={styles.tooltipVal}>
-                {formatTooltipValue(s.values[hi]!, chartCurrency)}
+                {formatTooltipValue(s.values[alignedIndex(s.values, hi)]!, chartCurrency)}
               </span>
             </div>
           ))}

@@ -280,6 +280,16 @@ interface PresetPortfolioChartProps {
   comparisonPayload?: PortfolioChartPayload | null
   /** Label for the comparison portfolio line (default "Portfolio B"). */
   comparisonLabel?: string
+  /** Weighted beta for the comparison portfolio's own scorecard. */
+  comparisonWeightedBeta?: number | null
+  /** Exposure summary for the comparison portfolio's own scorecard. */
+  comparisonExposureSummary?: {
+    grossLongEquityPct: number
+    grossShortEquityPct: number
+    grossAlphaExposurePct: number
+  } | null
+  /** Holdings for the comparison portfolio's own scorecard. */
+  comparisonHoldings?: Array<{ ticker: string; weightPct: number }>
 }
 
 type LetterGrade = PortfolioLetterGrade
@@ -331,43 +341,43 @@ function betaPoints(betaEdge: number): number {
   return 0
 }
 
-export default function PresetPortfolioChart({
+function PortfolioMetricsAndScorecard({
   payload,
-  portfolioLabel = 'Portfolio',
-  footnote = 'default',
-  showMaxDrawdown = true,
-  weightedBeta = null,
-  showScorecard = false,
-  exposureSummary = null,
-  holdings = [],
-  scorecardPayloads = null,
-  maxSharpeRatio = null,
-  maxSortinoRatio = null,
-  comparisonPayload = null,
-  comparisonLabel = 'Portfolio B',
-}: PresetPortfolioChartProps) {
-  const [asOfMs] = useState(() => Date.now())
-  const pathname = usePathname()
-  const hubBase: PortfolioUsEtfHubBase = useMemo(
-    () => (pathname.startsWith('/ca') ? '/ca/us-etfs' : '/us-etfs'),
-    [pathname]
-  )
-
+  portfolioLabel,
+  showMaxDrawdown,
+  weightedBeta,
+  showScorecard,
+  exposureSummary,
+  holdings,
+  scorecardPayloads,
+  maxSharpeRatio,
+  maxSortinoRatio,
+  asOfMs,
+}: {
+  payload: PortfolioChartPayload
+  portfolioLabel: string
+  showMaxDrawdown: boolean
+  weightedBeta: number | null
+  showScorecard: boolean
+  exposureSummary: {
+    grossLongEquityPct: number
+    grossShortEquityPct: number
+    grossAlphaExposurePct: number
+  } | null
+  holdings: Array<{ ticker: string; weightPct: number }>
+  scorecardPayloads: { payload1y: ScorecardPayload; payloadMax: ScorecardPayload } | null
+  maxSharpeRatio: number | null
+  maxSortinoRatio: number | null
+  asOfMs: number
+}) {
   const {
-    values,
-    benchmarkValues,
-    timestamps,
     totalReturnPercent,
     benchmarkTotalReturnPercent,
     excessAlphaPercent: excessAlphaFromPayload = null,
     maxDrawdownPortfolioPercent = null,
     maxDrawdownBenchmarkPercent = null,
     benchmarkSymbol,
-    chartStartDate,
-    limitingSymbol,
     limitingFirstTradeDate,
-    syntheticModeling = [],
-    chartCurrency = 'USD',
     sharpeRatio: payloadSharpeRatio = null,
     sortinoRatio: payloadSortinoRatio = null,
   } = payload
@@ -415,46 +425,6 @@ export default function PresetPortfolioChart({
         ? styles.metricBigPos
         : styles.metricBigNeg
 
-  const comparisonSeries: { values: number[]; color: string; label: string } | null =
-    comparisonPayload &&
-    comparisonPayload.values &&
-    comparisonPayload.values.length >= 2 &&
-    comparisonPayload.values.length === (comparisonPayload.timestamps ?? []).length
-      ? { values: comparisonPayload.values, color: 'var(--color-green)', label: comparisonLabel }
-      : null
-
-  const chartSeries =
-    values &&
-    benchmarkValues &&
-    timestamps &&
-    values.length === benchmarkValues.length &&
-    values.length === timestamps.length &&
-    values.length >= 2
-      ? [
-          { values, color: 'var(--color-gold)', label: portfolioLabel },
-          ...(comparisonSeries ? [comparisonSeries] : []),
-          {
-            values: benchmarkValues,
-            color: 'var(--color-blue)',
-            label: benchmarkSymbol,
-          },
-        ]
-      : null
-
-  if (!chartSeries || !chartStartDate || !limitingSymbol || !limitingFirstTradeDate) {
-    return null
-  }
-
-  const limitingFootnote = (
-    <>
-      <ProxyLink ticker={limitingSymbol} hubBase={hubBase}>
-        {limitingSymbol}
-      </ProxyLink>
-      {"'s inception date of "}
-      {limitingFirstTradeDate} is limiting the backtest.
-    </>
-  )
-
   const alphaEdge =
     totalReturnPercent != null &&
     benchmarkTotalReturnPercent != null &&
@@ -470,6 +440,7 @@ export default function PresetPortfolioChart({
   const betaEdge = weightedBeta != null ? 1 - weightedBeta : null
 
   const underOneYear = (() => {
+    if (!limitingFirstTradeDate) return false
     const ts = Date.parse(`${limitingFirstTradeDate}T00:00:00Z`)
     if (!Number.isFinite(ts)) return false
     const days = (asOfMs - ts) / (1000 * 60 * 60 * 24)
@@ -520,7 +491,7 @@ export default function PresetPortfolioChart({
       : rangeOverallGrade
 
   return (
-    <div className={styles.chartBlock}>
+    <>
       <div className={styles.metricsRow}>
         <div>
           <div className={`${styles.metricBig} ${trClass}`}>
@@ -584,29 +555,6 @@ export default function PresetPortfolioChart({
             Excess return above the 4.5% risk-free rate divided by annualised downside deviation (penalises losses only).{'\n'}Above 1.5 is good; above 3.0 is excellent.
           </span>
         </div>
-      </div>
-      <div className={styles.legendChartWrap}>
-        <div className={styles.legend}>
-          <span className={styles.legendItem}>
-            <span className={styles.legendSwatch} style={{ background: 'var(--color-gold)' }} />
-            {portfolioLabel}
-          </span>
-          {comparisonSeries ? (
-            <span className={styles.legendItem}>
-              <span className={styles.legendSwatch} style={{ background: 'var(--color-green)' }} />
-              {comparisonLabel}
-            </span>
-          ) : null}
-          <span className={styles.legendItem}>
-            <span className={styles.legendSwatch} style={{ background: 'var(--color-blue)' }} />
-            {benchmarkSymbol}
-          </span>
-        </div>
-        <ReturnLineChart
-          series={chartSeries}
-          timestampsSec={timestamps}
-          chartCurrency={chartCurrency}
-        />
       </div>
       {showScorecard ? (
         <div className={styles.scorecard}>
@@ -685,6 +633,143 @@ export default function PresetPortfolioChart({
               )}
             </div>
           </div>
+        </div>
+      ) : null}
+    </>
+  )
+}
+
+export default function PresetPortfolioChart({
+  payload,
+  portfolioLabel = 'Portfolio',
+  footnote = 'default',
+  showMaxDrawdown = true,
+  weightedBeta = null,
+  showScorecard = false,
+  exposureSummary = null,
+  holdings = [],
+  scorecardPayloads = null,
+  maxSharpeRatio = null,
+  maxSortinoRatio = null,
+  comparisonPayload = null,
+  comparisonLabel = 'Portfolio B',
+  comparisonWeightedBeta = null,
+  comparisonExposureSummary = null,
+  comparisonHoldings = [],
+}: PresetPortfolioChartProps) {
+  const [asOfMs] = useState(() => Date.now())
+  const pathname = usePathname()
+  const hubBase: PortfolioUsEtfHubBase = useMemo(
+    () => (pathname.startsWith('/ca') ? '/ca/us-etfs' : '/us-etfs'),
+    [pathname]
+  )
+
+  const {
+    values,
+    benchmarkValues,
+    timestamps,
+    benchmarkSymbol,
+    chartStartDate,
+    limitingSymbol,
+    limitingFirstTradeDate,
+    syntheticModeling = [],
+    chartCurrency = 'USD',
+  } = payload
+
+  const comparisonSeries: { values: number[]; color: string; label: string } | null =
+    comparisonPayload &&
+    comparisonPayload.values &&
+    comparisonPayload.values.length >= 2 &&
+    comparisonPayload.values.length === (comparisonPayload.timestamps ?? []).length
+      ? { values: comparisonPayload.values, color: 'var(--color-green)', label: comparisonLabel }
+      : null
+
+  const chartSeries =
+    values &&
+    benchmarkValues &&
+    timestamps &&
+    values.length === benchmarkValues.length &&
+    values.length === timestamps.length &&
+    values.length >= 2
+      ? [
+          { values, color: 'var(--color-gold)', label: portfolioLabel },
+          ...(comparisonSeries ? [comparisonSeries] : []),
+          {
+            values: benchmarkValues,
+            color: 'var(--color-blue)',
+            label: benchmarkSymbol,
+          },
+        ]
+      : null
+
+  if (!chartSeries || !chartStartDate || !limitingSymbol || !limitingFirstTradeDate) {
+    return null
+  }
+
+  const limitingFootnote = (
+    <>
+      <ProxyLink ticker={limitingSymbol} hubBase={hubBase}>
+        {limitingSymbol}
+      </ProxyLink>
+      {"'s inception date of "}
+      {limitingFirstTradeDate} is limiting the backtest.
+    </>
+  )
+
+  return (
+    <div className={styles.chartBlock}>
+      <PortfolioMetricsAndScorecard
+        payload={payload}
+        portfolioLabel={portfolioLabel}
+        showMaxDrawdown={showMaxDrawdown}
+        weightedBeta={weightedBeta}
+        showScorecard={showScorecard}
+        exposureSummary={exposureSummary}
+        holdings={holdings}
+        scorecardPayloads={scorecardPayloads}
+        maxSharpeRatio={maxSharpeRatio}
+        maxSortinoRatio={maxSortinoRatio}
+        asOfMs={asOfMs}
+      />
+      <div className={styles.legendChartWrap}>
+        <div className={styles.legend}>
+          <span className={styles.legendItem}>
+            <span className={styles.legendSwatch} style={{ background: 'var(--color-gold)' }} />
+            {portfolioLabel}
+          </span>
+          {comparisonSeries ? (
+            <span className={styles.legendItem}>
+              <span className={styles.legendSwatch} style={{ background: 'var(--color-green)' }} />
+              {comparisonLabel}
+            </span>
+          ) : null}
+          <span className={styles.legendItem}>
+            <span className={styles.legendSwatch} style={{ background: 'var(--color-blue)' }} />
+            {benchmarkSymbol}
+          </span>
+        </div>
+        <ReturnLineChart
+          series={chartSeries}
+          timestampsSec={timestamps}
+          chartCurrency={chartCurrency}
+        />
+      </div>
+      {comparisonPayload ? (
+        <div className={styles.comparisonStats}>
+          <div className={styles.comparisonStatsDivider} aria-hidden="true" />
+          <PortfolioMetricsAndScorecard
+            payload={comparisonPayload}
+            portfolioLabel={comparisonLabel}
+            showMaxDrawdown={showMaxDrawdown}
+            weightedBeta={comparisonWeightedBeta}
+            showScorecard={showScorecard}
+            exposureSummary={comparisonExposureSummary}
+            holdings={comparisonHoldings}
+            scorecardPayloads={null}
+            maxSharpeRatio={null}
+            maxSortinoRatio={null}
+            asOfMs={asOfMs}
+          />
         </div>
       ) : null}
       {footnote !== 'none' ? (

@@ -167,6 +167,15 @@
   transition: opacity 0.15s;
 }
 
+.comparisonStats {
+  margin-top: 0.65rem;
+}
+
+.comparisonStatsDivider {
+  border-top: 0.5px dashed var(--color-border-faint);
+  margin-bottom: 0.65rem;
+}
+
 .scorecard {
   margin-top: 0;
   border: 0.5px solid var(--color-border);

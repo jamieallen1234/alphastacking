@@ -34,7 +34,6 @@ export const ETF_CHART_SYMBOLS = [
   'SPMO',
   'FMTM',
   'VFLO',
-  'SASS',
   'AFOS',
   'STRN',
   'AVUV',
@@ -85,6 +84,8 @@ export const ETF_CHART_SYMBOLS = [
   'EMEQ',
   'VIRT',
   'COPY',
+  'GARP',
+  'SFLO',
 ] as const
 
 export type EtfChartYahooSymbol = (typeof ETF_CHART_SYMBOLS)[number]

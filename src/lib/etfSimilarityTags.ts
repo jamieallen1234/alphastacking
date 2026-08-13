@@ -81,6 +81,8 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   /** Active quantitative US large/mid-cap momentum (shorter lookback; 30-50 names). */
   fmtm: bundle(['momentum', 'us', 'large_cap', 'active'], [], 'manual'),
   vflo: bundle(['value', 'fcf_growth', 'us', 'large_cap', 'passive'], [], 'manual'),
+  sflo: bundle(['value', 'fcf_growth', 'us', 'small_cap', 'passive'], [], 'manual'),
+  garp: bundle(['value', 'quality', 'growth', 'us', 'large_cap', 'passive'], [], 'manual'),
   cowz: bundle(['value', 'fcf_growth', 'us', 'large_cap', 'passive'], [], 'manual'),
   avuv: bundle(['value', 'us', 'small_cap', 'active'], [], 'manual'),
   avdv: bundle(['value', 'developed_ex_us', 'small_cap', 'active'], [], 'manual'),
@@ -88,7 +90,6 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   copy: bundle(['value', 'global', 'large_cap', 'active'], [], 'seeded'),
   emeq: bundle(['quality', 'competitive_advantage', 'emerging_markets', 'all_cap', 'active'], [], 'manual'),
   /** Active concentrated US value (Russell 1000/3000 Value-sourced; not buy-write). */
-  sass: bundle(['value', 'concentrated', 'us', 'large_cap', 'active'], [], 'manual'),
   /** Active concentrated US equity; secular-trend valuation discipline (~30 names). */
   afos: bundle(['concentrated', 'us', 'all_cap', 'active'], [], 'manual'),
   /** Quantitative trend-following US large-cap equity (~25 names); long-only momentum. */

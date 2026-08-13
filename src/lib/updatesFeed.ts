@@ -127,6 +127,12 @@ interface SiteFeatureDef {
 /** One-off site features worth announcing on `/updates`, outside the registry-driven feeds. */
 const SITE_FEATURES: SiteFeatureDef[] = [
   {
+    date: '2026-08-12',
+    slug: 'sass-removed',
+    title: 'SASS removed from the site',
+    blurb: 'SASS (M.D. Sass Concentrated Value ETF) has been removed. Its live track record has shown no alpha edge over a broad benchmark, and it carries a D capital-efficiency grade, so it no longer earns a place in the factor lineup.',
+  },
+  {
     date: '2026-07-28',
     slug: 'ctap-removed',
     title: 'CTAP removed from the site',

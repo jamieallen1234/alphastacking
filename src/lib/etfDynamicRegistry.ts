@@ -935,39 +935,6 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'Avantis (AVUV)',
   },
 
-  sass: {
-    yahooSymbol: 'SASS',
-    hubCategoryId: 'factor',
-    badge: 'Factor',
-    h1Title: 'SASS — M.D. Sass Concentrated Value ETF',
-    displayTicker: 'SASS',
-    issuer: 'M.D. Sass',
-    inception: 'Mar 2026',
-    addedToSite: '2026-04-18',
-    structure: 'Concentrated active US value',
-    mer: '0.75%',
-    aum: '~$70M',
-    pageTitle: 'SASS ETF — Alpha Stacking',
-    description: 'M.D. Sass Concentrated Value ETF (SASS): active concentrated U.S. value.',
-    contentFormat: 'html',
-    lede:
-      'SASS is M.D. Sass’s concentrated U.S. value sleeve—a high-conviction book of about 20–25 large and mid-cap names sourced from Russell 1000/3000 Value, emphasizing misunderstood or out-of-favor situations.',
-    strategyParas: [
-      'SASS is stock-picking, not factor beta: the team hunts corporate events, sum-of-the-parts discounts, and balance-sheet repair stories inside a tight 20–25 name sleeve—position sizes and overlap with passive value ETFs will be low.',
-      'As a young, concentrated ETF, bid/ask spreads and premium/discount to NAV can widen during stress. Monthly holdings downloads are the most current picture of positioning.',
-    ],
-    pedigreeParas: ped(
-      `M.D. Sass has operated as an independent New York value shop for decades—culture is Graham-and-Dodd security analysis with institutional client roots rather than ETF-first marketing.`,
-      `Regulatory AUM is mid-market versus mega complexes; that keeps incentives aligned with concentrated performance but means operational resources are leaner—verify Form ADV for personnel and assets before allocating meaningful capital.`,
-    ),
-    outperfParas: [
-      'Outperforms when <strong>catalysts reprice misunderstood franchises</strong>: spin-offs close, capital returns accelerate, or complex structures simplify while fundamentals stay intact.',
-      'Underperforms when one <strong>broken thesis</strong> can swamp a quarter; favorable tape is high dispersion value with functioning credit markets, not passive factor drift.',
-    ],
-    officialUrl: 'https://www.mdsassetf.com/',
-    officialLabel: 'M.D. Sass Concentrated Value ETF',
-  },
-
   afos: {
     yahooSymbol: 'AFOS',
     hubCategoryId: 'factor',
@@ -1065,6 +1032,86 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     officialUrl: 'https://smartwayetfs.com/sgrt/',
     officialLabel: 'SmartWay ETFs (SGRT)',
+  },
+
+  garp: {
+    yahooSymbol: 'GARP',
+    hubCategoryId: 'factor-value',
+    badge: 'Factor - Value',
+    h1Title: 'GARP — iShares MSCI USA Quality GARP ETF',
+    displayTicker: 'GARP',
+    issuer: 'BlackRock iShares',
+    inception: 'Jan 14, 2020',
+    addedToSite: '2026-08-12',
+    structure: 'US large/mid quality-growth-at-a-reasonable-price',
+    mer: '0.15%',
+    aum: '~$2.6B',
+    pageTitle: 'GARP ETF — Alpha Stacking',
+    description: 'iShares MSCI USA Quality GARP ETF (GARP): quality growth-at-a-reasonable-price U.S. equity sleeve.',
+    contentFormat: 'html',
+    lede:
+      'GARP tracks the <strong>MSCI USA Quality GARP Select Index</strong>, screening U.S. large- and mid-caps for high quality and durable earnings growth, then tilting toward the names still trading at a reasonable valuation rather than the most expensive growth leaders.',
+    strategyParas: [
+      'The index scores the eligible universe on three axes: a quality score (return on equity, debt to equity, earnings variability), a growth score (forward and historical EPS and sales growth), and a value score (forward P/E, price to book, EV to operating cash flow). Securities are weighted by market cap combined with a tilt score built from those three factors, with issuer and sector caps to limit concentration.',
+      'The screen structurally lands on richly valued growth sectors: technology alone runs above half the portfolio, with communication services and consumer cyclical rounding out the growth tilt. GARP is not a value fund in the traditional sense, it buys growth companies whose valuations have not fully detached from their fundamentals, which is a narrower and more concentrated bet than a broad quality or value index.',
+    ],
+    pedigreeParas: ped(
+      `GARP is managed by BlackRock Fund Advisors on the iShares platform, the same index-replication infrastructure BlackRock runs across its core and factor ETF lineup. The MSCI USA Quality GARP Select Index methodology is MSCI's, so index construction, rebalancing, and factor definitions sit outside BlackRock's direct control, which is standard for iShares' factor suite.`,
+      `BlackRock reported approximately $14.0 trillion in total assets under management at Dec. 31, 2025, making it the largest asset manager in the world. That scale gives GARP tight bid/ask spreads and deep primary-market liquidity even though the fund itself, at roughly $2.6B, is a mid-sized name within iShares' broader factor shelf.`,
+    ),
+    outperfParas: [
+      'Outperforms when the market rewards <strong>durable earnings growth at a discount to the most expensive names</strong>, a growth environment where quality and valuation discipline both matter, letting the fund capture upside from technology and communication-services leadership without paying peak multiples for it.',
+      'Underperforms when leadership rotates to small-cap, deep value, or low-volatility names, or when the highest-multiple growth stocks the index deliberately screens out keep outrunning everything else; the favorable backdrop is broad, fundamentals-driven growth leadership rather than a narrow multiple-expansion melt-up.',
+    ],
+    officialUrl: 'https://www.ishares.com/us/products/312212/ishares-msci-usa-quality-garp-etf',
+    officialLabel: 'iShares (GARP)',
+    efficiency: {
+      capital: {
+        tooltip: capitalEfficiencyTooltip(
+          'GARP is a quality growth-at-a-reasonable-price U.S. large/mid equity sleeve. The grade scores its return versus SPY for the equity risk it takes.'
+        ),
+      },
+    },
+  },
+
+  sflo: {
+    yahooSymbol: 'SFLO',
+    hubCategoryId: 'factor-value',
+    badge: 'Factor - Value',
+    h1Title: 'SFLO — VictoryShares Small Cap Free Cash Flow ETF',
+    displayTicker: 'SFLO',
+    issuer: 'Victory Capital',
+    inception: 'Dec 21, 2023',
+    addedToSite: '2026-08-12',
+    structure: 'US small-cap free-cash-flow factor',
+    mer: '0.49%',
+    aum: '~$481M',
+    pageTitle: 'SFLO ETF — Alpha Stacking',
+    description: 'VictoryShares Small Cap Free Cash Flow ETF (SFLO): small-cap cash-cows / FCF sleeve.',
+    contentFormat: 'html',
+    lede:
+      'SFLO applies Victory\'s <strong>free-cash-flow yield</strong> screen to the small-cap universe, targeting profitable, cash-generative companies trading at a discount rather than the broad small-cap index\'s usual mix of speculative and unprofitable names.',
+    strategyParas: [
+      'The Victory U.S. Small Cap Free Cash Flow Index first applies profitability screens, then ranks the surviving universe on free-cash-flow yield, calculated as expected free cash flow (the average of trailing 12-month and forward 12-month FCF) divided by enterprise value, favoring names with the strongest yield that also show growth. The index rebalances and reconstitutes quarterly, with liquidity requirements built in to keep trading efficient.',
+      'Small-cap FCF investing is a bet that cash conversion, not just accounting earnings, separates durable businesses from index deadweight. Because the screen is quantitative and quarterly, a sharp change in a holding\'s cash flow between rebalances will not be reflected until the next reconstitution.',
+    ],
+    pedigreeParas: ped(
+      `SFLO is issued by Victory Capital under the VictoryShares brand, using the same free-cash-flow methodology as the firm's large-cap sibling VFLO, extended down into small caps where balance-sheet quality varies far more widely across constituents.`,
+      `Victory Capital reported approximately $345.1 billion in total assets under management as of July 31, 2026. Victory operates as a multi-affiliate holding company with shared index governance and capital-markets infrastructure across its VictoryShares ETF lineup, giving a small-cap factor fund institutional-grade creation and redemption support.`,
+    ),
+    outperfParas: [
+      'Outperforms when the market rewards <strong>profitable, cash-generative small caps</strong> over speculative or unprofitable ones, typically late-cycle or credit-tightening environments where balance-sheet quality and self-funded growth get repriced above story stocks.',
+      'Underperforms in speculative small-cap rallies driven by low-quality, cash-burning names, or when rate cuts fuel a broad small-cap beta rally that does not discriminate on fundamentals; the favorable setup is a small-cap tape where quality and cash flow actually drive dispersion.',
+    ],
+    officialUrl: 'https://advisor.vcm.com/products/victoryshares-etfs/victoryshares-etfs-list/victoryshares-small-cap-free-cash-flow-etf',
+    officialLabel: 'VictoryShares (SFLO)',
+    efficiency: {
+      capital: {
+        tooltip: capitalEfficiencyTooltip(
+          'SFLO screens for profitable, cash-generative U.S. small caps by free-cash-flow yield. The grade scores its return versus SPY for the equity risk it takes.'
+        ),
+      },
+    },
   },
 
   copy: {
@@ -1258,6 +1305,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pageTitle: 'MEMA ETF — Alpha Stacking',
     description:
       'Man Active Emerging Markets Alternative ETF (MEMA): active EM long/short equity combining systematic signals with discretionary portfolio management.',
+    contentFormat: 'html',
     lede:
       'MEMA is Man Group’s actively managed emerging-markets long/short equity ETF: the portfolio can hold both longs and shorts across EM issuers, aiming to compound stock-selection alpha with lower market dependence than a plain long-only EM index sleeve.',
     strategyParas: [
@@ -1303,6 +1351,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pageTitle: 'CLSE ETF — Alpha Stacking',
     description:
       'Convergence Long/Short Equity ETF (CLSE): net-long U.S. long/short equity. Strategy, manager, when it earns, and its role in an alpha stacking portfolio.',
+    contentFormat: 'html',
     lede:
       'CLSE is a net-long U.S. equity fund that goes long businesses Convergence expects to outperform and short businesses it expects to deteriorate — returns depend on individual stock selection, not on which way the market moves.',
     strategyParas: [
@@ -1336,6 +1385,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pageTitle: 'VAMO ETF - Alpha Stacking',
     description:
       'Cambria Value and Momentum ETF (VAMO): quantitative U.S. equity fund combining value and momentum factor selection with systematic tactical hedging via S&P 500 futures.',
+    contentFormat: 'html',
     lede:
       'VAMO is a quantitative long U.S. equity fund combining value and momentum signals to select roughly 100 holdings, with a systematic overlay that can hedge up to 100% of the long book with S&P 500 futures when markets look expensive or trend turns negative.',
     strategyParas: [
@@ -1369,6 +1419,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pageTitle: 'WTLS ETF - Alpha Stacking',
     description:
       'WisdomTree Efficient Long/Short U.S. Equity Fund (WTLS): capital-efficient 90% U.S. equity plus 90% ML-driven long/short overlay in one wrapper.',
+    contentFormat: 'html',
     lede:
       '<strong>WTLS</strong> pairs broad U.S. large-cap equity with a machine-learning-driven long/short overlay in a single capital-efficient wrapper, targeting incremental return above benchmark without requiring investors to reduce existing equity exposure.',
     strategyParas: [
@@ -1402,6 +1453,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pageTitle: 'ORR ETF — Alpha Stacking',
     description:
       'Militia Long/Short Equity ETF (ORR): actively managed, higher-turnover fundamental long/short global equity—David Orr’s team runs the same style as Militia’s hedge-fund complex inside a Nasdaq-listed wrapper.',
+    contentFormat: 'html',
     lede:
       'ORR is Militia’s global long/short equity ETF: higher-turnover, fundamental stock selection across regions—longs in mispriced franchises, shorts funding pairs and hedges—with capital appreciation as the objective rather than tracking an index.',
     strategyParas: [
@@ -1437,6 +1489,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     pageTitle: 'ASGM ETF — Alpha Stacking',
     description:
       'Virtus AlphaSimplex Global Macro ETF (ASGM): systematic global macro sleeve that pairs dedicated equity risk with futures across rates, FX, and commodities—Virtus lists AlphaSimplex as sub-adviser.',
+    contentFormat: 'html',
     lede:
       'ASGM packages AlphaSimplex’s research-driven global macro sleeve inside Virtus’s ETF shelf: a strategic equity sleeve plus systematic futures across rates, currencies, and commodities, so macro risk can rotate without loading everything on a single equity factor.',
     strategyParas: [

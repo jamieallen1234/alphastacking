@@ -259,10 +259,22 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       usPath('avdv')
     ),
     us(
+      'garp',
+      'GARP — iShares MSCI USA Quality GARP ETF',
+      'Quality growth-at-a-reasonable-price U.S. large/mid sleeve: earnings growth and quality screens tilted toward reasonable valuation.',
+      usPath('garp')
+    ),
+    us(
       'vflo',
       'VFLO — VictoryShares Free Cash Flow ETF',
       'Large-cap U.S. cash-cows sleeve: rules-based free-cash-flow yield vs. a broad large/mid benchmark.',
       usPath('vflo')
+    ),
+    us(
+      'sflo',
+      'SFLO — VictoryShares Small Cap Free Cash Flow ETF',
+      'Small-cap U.S. cash-cows sleeve: profitability and free-cash-flow yield screens vs. a broad small-cap benchmark.',
+      usPath('sflo')
     ),
     us(
       'avuv',
@@ -301,12 +313,6 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'SGRT — SMART Earnings Growth 30 ETF',
       'Concentrated active U.S. large-cap: a roughly 30-name, quant-driven earnings-growth book run with no sector constraints.',
       usPath('sgrt')
-    ),
-    us(
-      'sass',
-      'SASS — M.D. Sass Concentrated Value ETF',
-      'Active, high-conviction U.S. large/mid value—roughly 20–25 names from Russell value universes, out-of-favor and misunderstood stories.',
-      usPath('sass')
     ),
   ],
   'managed-futures': [

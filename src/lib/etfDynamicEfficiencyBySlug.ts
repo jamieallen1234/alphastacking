@@ -372,13 +372,6 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
-  sass: {
-    capital: {
-      tooltip: insufficientHistoryTooltip(
-        'SASS is a concentrated U.S. value sleeve (~20–25 names); capital efficiency vs SPY is assessed after the minimum live NAV window is met.'
-      ),
-    },
-  },
   afos: {
     capital: {
       tooltip: insufficientHistoryTooltip(

@@ -141,6 +141,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_CA: Record<string, EtfSimilarityTagBund
   zlb: bundle(['low_volatility', 'canada', 'large_cap', 'passive'], [], 'manual'),
   fcmo: bundle(['momentum', 'us', 'large_cap', 'passive'], [], 'manual'),
   fccm: bundle(['momentum', 'canada', 'large_cap', 'passive'], [], 'manual'),
+  finn: bundle(['momentum', 'concentrated', 'global', 'all_cap', 'active'], [], 'manual'),
   /** Systematic multi-asset market-neutral; ~0 net directional bias. */
   pmm: bundle(['global'], ['market_neutral'], 'seeded'),
   atsx: bundle(['canada', 'long_short'], [], 'manual'),

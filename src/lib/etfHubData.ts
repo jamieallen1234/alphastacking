@@ -510,6 +510,12 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Rules-based single-factor sleeve: 100 U.S. large-cap names with the strongest momentum signals, rebalanced quarterly.',
       caPath('fcmo')
     ),
+    ca(
+      'finn',
+      'FINN.NE - Fidelity Global Innovators ETF',
+      'Concentrated, actively managed global equity book run by Mark Schmehl, benchmarked to the Nasdaq Composite with a momentum-driven, high-conviction process.',
+      caPath('finn')
+    ),
   ],
   'factor-value': [
     ca(

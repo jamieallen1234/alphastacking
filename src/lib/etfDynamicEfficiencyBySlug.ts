@@ -709,6 +709,13 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  finn: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'FINN is Mark Schmehl\'s actively managed, concentrated global equity book benchmarked to the Nasdaq Composite, tilted toward disruptive and innovative companies. Capital efficiency grades the sleeve versus a CAD-hedged S&P 500 proxy (XSP.TO).'
+      ),
+    },
+  },
   pmm: {
     alpha: {
       tooltip: alphaEfficiencyUnstackedTooltip(

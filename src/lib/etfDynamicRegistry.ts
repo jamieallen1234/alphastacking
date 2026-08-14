@@ -2532,6 +2532,41 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'Fidelity Canada (FCCM)',
   },
 
+  finn: {
+    yahooSymbol: 'FINN.NE',
+    betaBenchmarkSymbol: 'XSP.TO',
+    hubCategoryId: 'factor-momentum',
+    badge: 'Factor',
+    h1Title: 'FINN.NE - Fidelity Global Innovators ETF',
+    displayTicker: 'FINN / FINN.U',
+    issuer: 'Fidelity Investments Canada',
+    inception: 'May 19, 2023',
+    addedToSite: '2026-08-14',
+    structure: 'Active concentrated global innovation equity',
+    mer: '1.09%',
+    aum: '~$3.0B CAD',
+    pageTitle: 'FINN.NE ETF - Alpha Stacking',
+    description:
+      'Fidelity Global Innovators ETF (FINN.NE): concentrated, actively managed global equity sleeve run by Mark Schmehl, benchmarked to the Nasdaq Composite.',
+    contentFormat: 'html',
+    lede:
+      'FINN is Mark Schmehl\'s <strong>concentrated, actively managed</strong> global equity book: high-conviction bets on disruptive, innovative companies across market caps, benchmarked to the Nasdaq Composite rather than a broad global index.',
+    strategyParas: [
+      'Schmehl runs a flexible, high-turnover process: he leans into companies with improving fundamentals or accelerating growth expectations, drawing on Fidelity\'s global research bench across developed and emerging markets, small- to large-cap, and select private names. The fund benchmarks to the Nasdaq Composite, not MSCI World, which signals the growth and technology center of gravity. As of mid-2026 the top ten holdings (Amazon, Nvidia, Microsoft, Apple, TSMC, Alphabet, Intel, SK Hynix, AppLovin) run about 57% of the portfolio, with Information Technology alone near half the book.',
+      'This is a momentum-tilted, high-conviction strategy, not a diversified core holding: concentration in a handful of semiconductor and platform names means single-stock earnings misses can move the fund meaningfully, and the process favors names already re-rating higher over statistically cheap laggards. The 1.09% MER prices in active management and Schmehl\'s trading cadence versus a passive index sleeve.',
+    ],
+    pedigreeParas: ped(
+      `Mark Schmehl has run the Global Innovators strategy since its November 2017 mutual-fund inception (the ETF series launched May 2023 as a listed share class of the same mandate), delivering roughly 22% annualized since inception through early 2026, with 2022's -30% drawdown a reminder that the same momentum bias that drives outperformance in strong markets amplifies losses when growth and tech sell off together. Schmehl joined Fidelity in 1999, holds an MBA from Columbia and a CFA charter, and was Investment Executive's 2017 Mutual Fund Manager of the Year.`,
+      `Fidelity Investments Canada ULC reported roughly $413 billion CAD in assets under management as of July 2026, giving the fund deep operational and research infrastructure behind a single-manager, high-conviction mandate. That scale supports execution and liquidity, but the return stream itself lives and dies with Schmehl's stock-picking, not index replication.`,
+    ),
+    outperfParas: [
+      'Outperforms when <strong>growth and innovation names are re-rating higher</strong>: AI capex cycles, semiconductor upcycles, and platform-company earnings beats reward a concentrated book that leans into improving fundamentals and momentum rather than waiting for cheap valuations.',
+      'Underperforms in <strong>sharp growth-to-value rotations</strong> or broad tech drawdowns, where concentrated momentum names fall together and high turnover cannot rotate out fast enough; favorable tape is a trending growth environment with follow-through, not a choppy or recessionary tape that punishes crowded winners.',
+    ],
+    officialUrl: 'https://www.fidelity.ca/en/products/etfs/finn/',
+    officialLabel: 'Fidelity Canada (FINN)',
+  },
+
   atsx: {
     yahooSymbol: 'ATSX.TO',
     betaBenchmarkSymbol: 'XSP.TO',

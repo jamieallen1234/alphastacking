@@ -63,6 +63,7 @@ export const ETF_CHART_SYMBOLS = [
   'ZLB.TO',
   'FCMO.TO',
   'FCCM.TO',
+  'FINN.NE',
   'PMM.TO',
   'ATSX.TO',
   'PFAE.TO',

@@ -110,7 +110,11 @@ export default function EtfChartPanel({ symbol, initialPayload }: EtfChartPanelP
         <ReturnLineChart
           series={[{ values: payload.values, color: 'var(--color-gold)', label: payload.symbol }]}
           timestampsSec={payload.timestamps}
-          chartCurrency={symbol.toUpperCase().endsWith('.TO') ? 'CAD' : 'USD'}
+          chartCurrency={
+            symbol.toUpperCase().endsWith('.TO') || symbol.toUpperCase().endsWith('.NE')
+              ? 'CAD'
+              : 'USD'
+          }
         />
       </div>
 

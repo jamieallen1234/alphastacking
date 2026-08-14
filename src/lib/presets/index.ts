@@ -46,8 +46,8 @@ export const CA_CORE_BH_PRESET_ID = 'ca-core-bh-v6'
 export const CA_USSL_QQQL_HDGE_PRESET_ID = 'ca-ussl-qqql-hdge-v3'
 export const CA_SSO_DGLM_RGBM_ARB_PRESET_ID = 'ca-sso-dglm-rgbm-arb-v3'
 export const US_ALPHA_STACK_PRESET_ID = 'us-alpha-stack-v2'
-export const CA_ALPHA_STACK_PRESET_ID = 'ca-alpha-stack-v6'
-export const CA_FACTOR_FCMO_PRESET_ID = 'ca-factor-fcmo-v2'
+export const CA_ALPHA_STACK_PRESET_ID = 'ca-alpha-stack-v7'
+export const CA_FACTOR_FCMO_PRESET_ID = 'ca-factor-fcmo-v3'
 export const US_RISK_PARITY_PRESET_ID = 'us-risk-parity-v4'
 export const US_LONG_SHORT_EQUITY_PRESET_ID = 'us-long-short-equity-v1'
 export const US_LETF_STACK_2X_PRESET_ID = 'us-letf-stack-2x-v1'
@@ -111,9 +111,10 @@ export const caCoreBuyHoldHoldings: PresetHolding[] = [
   { ticker: 'PFLS.TO', weightPct: 15, beta: 0.48, blurb: 'Long/short equity (~160% / ~100% gross).' },
 ]
 
-/** 30 / 25 / 25 / 20 buy-and-hold: CAD momentum + Nasdaq growth + Canadian low-vol + US small-cap value. 60% growth, 40% value. */
+/** 20 / 10 / 25 / 25 / 20 buy-and-hold: concentrated active momentum (FINN) + rules-based momentum (FCMO) + Nasdaq growth + Canadian low-vol + US small-cap value. */
 export const caFactorFcmoHoldings: PresetHolding[] = [
-  { ticker: 'FCMO.TO', weightPct: 30, beta: 1.0, blurb: 'Fidelity U.S. Momentum ETF — 100-stock U.S. large-cap momentum factor, quarterly rebalanced.' },
+  { ticker: 'FINN.NE', weightPct: 20, beta: 1.53, blurb: 'Fidelity Global Innovators ETF — Mark Schmehl\'s concentrated, actively managed global momentum sleeve, benchmarked to the Nasdaq Composite.' },
+  { ticker: 'FCMO.TO', weightPct: 10, beta: 1.0, blurb: 'Fidelity U.S. Momentum ETF — 100-stock U.S. large-cap momentum factor, quarterly rebalanced.' },
   { ticker: 'QQQL.TO', weightPct: 25, beta: 1.25, blurb: '1.25× Nasdaq-100 (charts: 1.25× QQQ TR in CAD + Canadian borrow on extra 0.25× notional).' },
   { ticker: 'ZLB.TO', weightPct: 25, beta: 0.63, blurb: 'BMO Low Volatility Canadian Equity, a defensive low-beta anchor.' },
   { ticker: 'VFLO', weightPct: 20, beta: 0.75, blurb: 'Large-cap free-cash-flow quality tilt — value factor via high-FCF yield selection.' },
@@ -145,10 +146,11 @@ export const uproPremaStackHoldings: PresetHolding[] = [
   { ticker: 'FOXY', weightPct: 33, beta: 0.05, blurb: 'Systematic EM carry + G10 mean-reversion currency sleeve.' },
 ]
 
-/** 45 / 25 / 20 / 10 annual-rebalance: USSL + QQQL leveraged core + managed futures + market-neutral. Weighted beta ~0.96. */
+/** 35 / 20 / 15 / 20 / 10 annual-rebalance: USSL + QQQL leveraged core, FINN concentrated momentum, managed futures, market-neutral. Weighted beta ~1.00. */
 export const caAlphaStackHoldings: PresetHolding[] = [
-  { ticker: 'USSL.TO', weightPct: 45, beta: 1.25, blurb: '1.25x S&P 500 (proxied via 1.25x VFV.TO in CAD).' },
-  { ticker: 'QQQL.TO', weightPct: 25, beta: 1.25, blurb: '1.25x Nasdaq-100 — tech growth tilt alongside S&P 500 core.' },
+  { ticker: 'USSL.TO', weightPct: 35, beta: 1.25, blurb: '1.25x S&P 500 (proxied via 1.25x VFV.TO in CAD).' },
+  { ticker: 'QQQL.TO', weightPct: 20, beta: 1.25, blurb: '1.25x Nasdaq-100 — tech growth tilt alongside S&P 500 core.' },
+  { ticker: 'FINN.NE', weightPct: 15, beta: 1.53, blurb: 'Fidelity Global Innovators ETF — concentrated, actively managed global momentum sleeve run by Mark Schmehl.' },
   { ticker: 'DGLM.TO', weightPct: 20, beta: 0.35, blurb: 'Systematic global macro managed futures sleeve.' },
   { ticker: 'PFMN.TO', weightPct: 10, beta: 0.12, blurb: 'Market-neutral long/short equity.' },
 ]
@@ -322,7 +324,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     cadDenominated: false,
     rebalanceSchedule: 'none',
     holdings: caFactorFcmoHoldings,
-    extraCacheKeyTags: ['buy-hold', 'fcmo-qqql-zlb-vflo-v1'],
+    extraCacheKeyTags: ['buy-hold', 'finn-fcmo-qqql-zlb-vflo-v1'],
   },
   {
     id: CA_USSL_QQQL_HDGE_PRESET_ID,
@@ -346,7 +348,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     cadDenominated: false,
     rebalanceSchedule: 'annual',
     holdings: caAlphaStackHoldings,
-    extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'annual-rebal', 'ussl-qqql-dglm-pfmn-v1'],
+    extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'annual-rebal', 'ussl-qqql-finn-dglm-pfmn-v1'],
   },
   {
     id: US_LETF_STACK_2X_PRESET_ID,

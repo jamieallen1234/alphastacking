@@ -28,6 +28,24 @@ const YAHOO_UA =
 /** Yahoo `range=` often omits `3y`; use explicit daily bounds (calendar years, NY-style horizon). */
 const THREE_CALENDAR_YEAR_SEC = Math.floor(3 * 365.25 * 86400)
 
+/**
+ * Retry a Yahoo fetch a few times with backoff. Yahoo's public chart endpoint intermittently
+ * returns empty/errored responses under load (e.g. from datacenter IPs during a Vercel build),
+ * so a single failed attempt should not be treated as "symbol has no data."
+ */
+async function withYahooRetry<T>(fn: () => Promise<T>, attempts = 3): Promise<T> {
+  let lastErr: unknown
+  for (let i = 0; i < attempts; i++) {
+    if (i > 0) await new Promise<void>((resolve) => setTimeout(resolve, 500 * i))
+    try {
+      return await fn()
+    } catch (e) {
+      lastErr = e
+    }
+  }
+  throw lastErr
+}
+
 /** Drop bars before `minSec` (unix seconds, inclusive). */
 export function clipSeriesFromTime(s: PriceSeries, minSec: number): PriceSeries {
   const timestamps: number[] = []
@@ -42,35 +60,37 @@ export function clipSeriesFromTime(s: PriceSeries, minSec: number): PriceSeries 
 }
 
 export async function fetchFirstTradeDateSec(symbol: string): Promise<number> {
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
-    symbol.trim()
-  )}?interval=1d&range=5d`
+  return withYahooRetry(async () => {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+      symbol.trim()
+    )}?interval=1d&range=5d`
 
-  const res = await fetch(url, {
-    headers: { 'User-Agent': YAHOO_UA, Accept: 'application/json' },
-    next: { revalidate: 86400 },
-  })
+    const res = await fetch(url, {
+      headers: { 'User-Agent': YAHOO_UA, Accept: 'application/json' },
+      next: { revalidate: 86400 },
+    })
 
-  if (!res.ok) {
-    throw new Error(`Yahoo Finance HTTP ${res.status} for ${symbol}`)
-  }
-
-  const data: unknown = await res.json()
-  const chart = data as {
-    chart?: {
-      error?: { description?: string }
-      result?: Array<{ meta?: { firstTradeDate?: number } }>
+    if (!res.ok) {
+      throw new Error(`Yahoo Finance HTTP ${res.status} for ${symbol}`)
     }
-  }
 
-  const err = chart.chart?.error?.description
-  if (err) throw new Error(err)
+    const data: unknown = await res.json()
+    const chart = data as {
+      chart?: {
+        error?: { description?: string }
+        result?: Array<{ meta?: { firstTradeDate?: number } }>
+      }
+    }
 
-  const ft = chart.chart?.result?.[0]?.meta?.firstTradeDate
-  if (ft == null || !Number.isFinite(ft)) {
-    throw new Error(`No first trade date for ${symbol}`)
-  }
-  return ft
+    const err = chart.chart?.error?.description
+    if (err) throw new Error(err)
+
+    const ft = chart.chart?.result?.[0]?.meta?.firstTradeDate
+    if (ft == null || !Number.isFinite(ft)) {
+      throw new Error(`No first trade date for ${symbol}`)
+    }
+    return ft
+  })
 }
 
 /**
@@ -82,80 +102,82 @@ export async function fetchDailySeries(
   range: YahooRange,
   maxWindow?: { fromSec: number; toSec: number }
 ): Promise<PriceSeries> {
-  const sym = symbol.trim()
-  const nowSec = Math.floor(Date.now() / 1000)
-  const maxPeriod =
-    range === 'max' && maxWindow != null && maxWindow.toSec > maxWindow.fromSec
-  const threeYearPeriod = range === '3y'
-  const url =
-    maxPeriod
-      ? `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
-          sym
-        )}?interval=1d&period1=${Math.floor(maxWindow.fromSec)}&period2=${Math.floor(maxWindow.toSec)}`
-      : threeYearPeriod
+  return withYahooRetry(async () => {
+    const sym = symbol.trim()
+    const nowSec = Math.floor(Date.now() / 1000)
+    const maxPeriod =
+      range === 'max' && maxWindow != null && maxWindow.toSec > maxWindow.fromSec
+    const threeYearPeriod = range === '3y'
+    const url =
+      maxPeriod
         ? `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
             sym
-          )}?interval=1d&period1=${nowSec - THREE_CALENDAR_YEAR_SEC}&period2=${nowSec}`
-        : `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
-            sym
-          )}?interval=1d&range=${range}`
+          )}?interval=1d&period1=${Math.floor(maxWindow.fromSec)}&period2=${Math.floor(maxWindow.toSec)}`
+        : threeYearPeriod
+          ? `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+              sym
+            )}?interval=1d&period1=${nowSec - THREE_CALENDAR_YEAR_SEC}&period2=${nowSec}`
+          : `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+              sym
+            )}?interval=1d&range=${range}`
 
-  const res = await fetch(url, {
-    headers: { 'User-Agent': YAHOO_UA, Accept: 'application/json' },
-    next: { revalidate: 3600 },
+    const res = await fetch(url, {
+      headers: { 'User-Agent': YAHOO_UA, Accept: 'application/json' },
+      next: { revalidate: 3600 },
+    })
+
+    if (!res.ok) {
+      throw new Error(`Yahoo Finance HTTP ${res.status} for ${symbol}`)
+    }
+
+    const data: unknown = await res.json()
+    const chart = data as {
+      chart?: {
+        error?: { description?: string }
+        result?: Array<{
+          timestamp: number[]
+          indicators?: {
+            adjclose?: Array<{ adjclose?: Array<number | null> }>
+            quote?: Array<{ close?: Array<number | null> }>
+          }
+        }>
+      }
+    }
+
+    const err = chart.chart?.error?.description
+    if (err) throw new Error(err)
+
+    const result = chart.chart?.result?.[0]
+    if (!result?.timestamp?.length) {
+      throw new Error(`No price data for ${symbol}`)
+    }
+
+    const ts = result.timestamp
+    const adj = result.indicators?.adjclose?.[0]?.adjclose
+    const close = result.indicators?.quote?.[0]?.close
+
+    const prices: number[] = []
+    const timestamps: number[] = []
+
+    for (let i = 0; i < ts.length; i++) {
+      const p =
+        adj?.[i] != null && !Number.isNaN(adj[i]!)
+          ? adj[i]!
+          : close?.[i] != null && !Number.isNaN(close[i]!)
+            ? close[i]!
+            : null
+      if (p != null && p > 0) {
+        timestamps.push(ts[i]!)
+        prices.push(p)
+      }
+    }
+
+    if (!timestamps.length) {
+      throw new Error(`No usable closes for ${symbol}`)
+    }
+
+    return { symbol, timestamps, prices }
   })
-
-  if (!res.ok) {
-    throw new Error(`Yahoo Finance HTTP ${res.status} for ${symbol}`)
-  }
-
-  const data: unknown = await res.json()
-  const chart = data as {
-    chart?: {
-      error?: { description?: string }
-      result?: Array<{
-        timestamp: number[]
-        indicators?: {
-          adjclose?: Array<{ adjclose?: Array<number | null> }>
-          quote?: Array<{ close?: Array<number | null> }>
-        }
-      }>
-    }
-  }
-
-  const err = chart.chart?.error?.description
-  if (err) throw new Error(err)
-
-  const result = chart.chart?.result?.[0]
-  if (!result?.timestamp?.length) {
-    throw new Error(`No price data for ${symbol}`)
-  }
-
-  const ts = result.timestamp
-  const adj = result.indicators?.adjclose?.[0]?.adjclose
-  const close = result.indicators?.quote?.[0]?.close
-
-  const prices: number[] = []
-  const timestamps: number[] = []
-
-  for (let i = 0; i < ts.length; i++) {
-    const p =
-      adj?.[i] != null && !Number.isNaN(adj[i]!)
-        ? adj[i]!
-        : close?.[i] != null && !Number.isNaN(close[i]!)
-          ? close[i]!
-          : null
-    if (p != null && p > 0) {
-      timestamps.push(ts[i]!)
-      prices.push(p)
-    }
-  }
-
-  if (!timestamps.length) {
-    throw new Error(`No usable closes for ${symbol}`)
-  }
-
-  return { symbol, timestamps, prices }
 }
 
 /**

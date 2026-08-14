@@ -67,20 +67,29 @@ function toScorecardPayload(p: {
   }
 }
 
+/**
+ * One preset's Yahoo fetch failing (rate limiting, a transient outage) must not fail the whole
+ * hub page's static prerender — skip that slug's card rather than rejecting the entire batch.
+ */
 export async function loadPortfolioHubAlphaBySlug(): Promise<Record<string, PortfolioHubSlugData>> {
   const entries = await Promise.all(
     Object.entries(HUB_SLUG_TO_PRESET_ID).map(async ([slug, presetId]) => {
-      const [p1y, pMax] = await Promise.all([
-        getCachedPresetChart1y(presetId),
-        getCachedPresetChartMax(presetId),
-      ])
-      const data: PortfolioHubSlugData = {
-        excessAlphaPercent: p1y.excessAlphaPercent ?? null,
-        payload1y: toScorecardPayload(p1y),
-        payloadMax: toScorecardPayload(pMax),
+      try {
+        const [p1y, pMax] = await Promise.all([
+          getCachedPresetChart1y(presetId),
+          getCachedPresetChartMax(presetId),
+        ])
+        const data: PortfolioHubSlugData = {
+          excessAlphaPercent: p1y.excessAlphaPercent ?? null,
+          payload1y: toScorecardPayload(p1y),
+          payloadMax: toScorecardPayload(pMax),
+        }
+        return [slug, data] as const
+      } catch (e) {
+        console.error(`loadPortfolioHubAlphaBySlug: failed to load "${slug}" (${presetId})`, e)
+        return null
       }
-      return [slug, data] as const
     })
   )
-  return Object.fromEntries(entries)
+  return Object.fromEntries(entries.filter((e): e is [string, PortfolioHubSlugData] => e !== null))
 }

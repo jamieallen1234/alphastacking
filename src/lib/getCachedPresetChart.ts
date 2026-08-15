@@ -13,7 +13,7 @@ const DAY = 86400
  */
 function presetHoldingsSignature(preset: PresetDefinition): string {
   const holdingsKey = preset.holdings.map((h) => `${h.ticker}:${h.weightPct}:${h.beta}`).join(',')
-  return `${holdingsKey}|${preset.extraCacheKeyTags.join(',')}`
+  return `${holdingsKey}|${preset.extraCacheKeyTags.join(',')}|${preset.benchmarkSymbol ?? ''}`
 }
 
 /**
@@ -57,6 +57,7 @@ function computePresetChart(preset: PresetDefinition, range: YahooRange) {
     symbols: presetSymbols(preset),
     weights: presetWeights(preset),
     range,
+    benchmarkSymbol: preset.benchmarkSymbol,
     cadDenominated: preset.cadDenominated || undefined,
     rebalanceSchedule: preset.rebalanceSchedule,
   })

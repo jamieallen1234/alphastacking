@@ -1,6 +1,7 @@
 import { getCachedPresetChart1y, getCachedPresetChartMax } from '@/lib/getCachedPresetChart'
 import {
   CA_ALPHA_STACK_PRESET_ID,
+  CA_BOND_ALT_PRESET_ID,
   CA_CORE_BH_PRESET_ID,
   CA_FACTOR_FCMO_PRESET_ID,
   CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
@@ -10,6 +11,7 @@ import {
   US_5_4_3_2_1_PRESET_ID,
   US_ADVANCED_PRESET_ID,
   US_ALPHA_STACK_PRESET_ID,
+  US_BOND_ALT_PRESET_ID,
   US_CORE_BH_PRESET_ID,
   US_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   US_GDE_CLSE_BLEND_PRESET_ID,
@@ -49,6 +51,8 @@ const HUB_SLUG_TO_PRESET_ID: Record<string, string> = {
   'ca-sso-dglm-rgbm-arb': CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
   'ca-alpha-stack': CA_ALPHA_STACK_PRESET_ID,
   'ca-four-alpha-quadrants': CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
+  'us-bond-alternative': US_BOND_ALT_PRESET_ID,
+  'ca-bond-alternative': CA_BOND_ALT_PRESET_ID,
 }
 
 function toScorecardPayload(p: {

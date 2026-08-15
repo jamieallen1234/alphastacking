@@ -174,10 +174,11 @@ export async function computePortfolioChart(params: {
   const { symbols, weights, range } = params
   const rebalanceSchedule = params.rebalanceSchedule ?? 'none'
   const cadDenominated = params.cadDenominated ?? false
+  const usedDefaultBenchmark = params.benchmarkSymbol == null
   const benchmarkFetchSymbol =
     params.benchmarkSymbol ?? (cadDenominated ? CAD_SPY_PROXY_SYMBOL : DEFAULT_BENCHMARK)
-  /** CAD charts pull XSP.TO (hedged) but present the line as SPY (S&P 500) to match user language. */
-  const benchmarkSymbol = cadDenominated ? 'SPY' : benchmarkFetchSymbol
+  /** CAD charts pull XSP.TO (hedged) but present the default line as SPY (S&P 500) to match user language. */
+  const benchmarkSymbol = cadDenominated && usedDefaultBenchmark ? 'SPY' : benchmarkFetchSymbol
 
   if (symbols.length !== weights.length) {
     throw new Error('Symbol count must match weight count')

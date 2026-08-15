@@ -14,6 +14,7 @@ export type PortfolioHubSection =
   | 'trend'
   | 'risk-parity'
   | 'long-short'
+  | 'retirement'
 
 export interface PortfolioHubCategoryDef {
   id: PortfolioHubSection
@@ -30,6 +31,7 @@ export const US_PORTFOLIO_CATEGORIES: PortfolioHubCategoryDef[] = [
   { id: 'trend', title: 'Trend / CTA', subtitle: 'Managed futures and systematic alternatives as the primary alpha engine.' },
   { id: 'risk-parity', title: 'Risk Parity', subtitle: 'All-weather diversification across equity, bonds, and real assets.' },
   { id: 'long-short', title: 'Long/Short', subtitle: 'Net-long long/short equity across US and global markets.' },
+  { id: 'retirement', title: 'Retirement', subtitle: 'Low-beta bond alternatives for capital preservation.' },
 ]
 
 export interface PortfolioRouteDef {
@@ -206,6 +208,17 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     addedAt: '2026-06-14',
     weightedBeta: 0.99,
   },
+  {
+    slug: 'us-bond-alternative',
+    region: 'us',
+    kind: 'live',
+    hubSection: 'retirement',
+    rebalance: 'none',
+    title: 'Bond Alternative',
+    description: 'Four low-beta, non-equity-directional strategies built to outrun the aggregate bond index without equity-level risk.',
+    addedAt: '2026-08-14',
+    weightedBeta: 0.09,
+  },
 ]
 
 /** Curated routes for Canada (`/ca/portfolios/...`) */
@@ -305,6 +318,17 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     addedAt: '2026-06-14',
     weightedBeta: 0.99,
   },
+  {
+    slug: 'ca-bond-alternative',
+    region: 'ca',
+    kind: 'live',
+    hubSection: 'retirement',
+    rebalance: 'none',
+    title: 'Bond Alternative',
+    description: 'Four low-beta, non-equity-directional strategies built to outrun the aggregate bond index without equity-level risk.',
+    addedAt: '2026-08-14',
+    weightedBeta: 0.055,
+  },
 ]
 
 export const HUB_SECTION_LABEL: Record<
@@ -351,6 +375,10 @@ export const HUB_SECTION_LABEL: Record<
   'long-short': {
     heading: 'Long/Short',
     blurb: 'Net-long long/short equity across US and global markets.',
+  },
+  'retirement': {
+    heading: 'Retirement',
+    blurb: 'Low-beta bond alternatives for capital preservation.',
   },
 }
 

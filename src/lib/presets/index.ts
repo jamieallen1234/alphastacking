@@ -19,6 +19,8 @@ export interface PresetDefinition {
   holdings: PresetHolding[]
   /** Per-preset stable cache invariants (e.g. synthetic-series version, proxy notes). */
   extraCacheKeyTags: readonly string[]
+  /** Yahoo symbol for the comparison line on this preset's chart. Defaults to SPY (or its CAD proxy) when unset. */
+  benchmarkSymbol?: string
 }
 
 /** Σ wᵢβᵢ with weights as fractions */
@@ -54,6 +56,8 @@ export const US_LETF_STACK_2X_PRESET_ID = 'us-letf-stack-2x-v1'
 export const US_LETF_STACK_3X_PRESET_ID = 'us-letf-stack-3x-v1'
 export const US_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'us-four-alpha-quadrants-v1'
 export const CA_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'ca-four-alpha-quadrants-v1'
+export const US_BOND_ALT_PRESET_ID = 'us-bond-alt-v1'
+export const CA_BOND_ALT_PRESET_ID = 'ca-bond-alt-v1'
 
 // -------------------- Holdings --------------------
 export const usInternationalHoldings: PresetHolding[] = [
@@ -240,6 +244,22 @@ export const caFourAlphaQuadrantsHoldings: PresetHolding[] = [
   { ticker: 'MATE', weightPct: 25, beta: 1, blurb: '[Growth + Alpha] Return-stacked 100% S&P 500 + 100% managed futures, growth core and trend-following alpha in one fund.' },
 ]
 
+/** 25 / 25 / 25 / 25 buy-and-hold: four non-equity-directional strategies, benchmarked against AGG (US Total Bond Market) instead of SPY. Weighted beta ~0.09. */
+export const usBondAltHoldings: PresetHolding[] = [
+  { ticker: 'DBMF', weightPct: 25, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
+  { ticker: 'FLSP', weightPct: 25, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
+  { ticker: 'FOXY', weightPct: 25, beta: 0.05, blurb: 'Systematic currency carry and mean-reversion, an uncorrelated FX alpha source.' },
+  { ticker: 'VAMO', weightPct: 25, beta: 0.26, blurb: 'Cambria value and momentum stock selection with a systematic 0-100% S&P 500 futures hedge.' },
+]
+
+/** 25 / 25 / 25 / 25 buy-and-hold: four non-equity-directional strategies, benchmarked against XBB.TO (Canadian aggregate bond index) instead of SPY. Weighted beta ~0.055. */
+export const caBondAltHoldings: PresetHolding[] = [
+  { ticker: 'DBMF', weightPct: 25, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
+  { ticker: 'FLSP', weightPct: 25, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
+  { ticker: 'FOXY', weightPct: 25, beta: 0.05, blurb: 'Systematic currency carry and mean-reversion, an uncorrelated FX alpha source.' },
+  { ticker: 'PFMN.TO', weightPct: 25, beta: 0.12, blurb: 'Market-neutral long/short equity, a beta-neutral premia complement to the trend and carry sleeves.' },
+]
+
 // -------------------- Registry --------------------
 export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
@@ -416,6 +436,24 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
       'mate-kmlm-chain-v1',
       'fcmo-spmo-proxy-v1',
     ],
+  },
+  {
+    id: US_BOND_ALT_PRESET_ID,
+    region: 'us',
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+    holdings: usBondAltHoldings,
+    benchmarkSymbol: 'AGG',
+    extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-foxy-vamo-v1'],
+  },
+  {
+    id: CA_BOND_ALT_PRESET_ID,
+    region: 'ca',
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+    holdings: caBondAltHoldings,
+    benchmarkSymbol: 'XBB.TO',
+    extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-foxy-pfmn-v1'],
   },
 ]
 

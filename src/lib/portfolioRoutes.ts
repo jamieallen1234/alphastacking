@@ -215,9 +215,9 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     hubSection: 'retirement',
     rebalance: 'none',
     title: 'Bond Alternative',
-    description: 'Four low-beta, non-equity-directional strategies built to outrun the aggregate bond index without equity-level risk.',
+    description: 'Five low-beta, non-equity-directional strategies built to outrun the aggregate bond index without equity-level risk.',
     addedAt: '2026-08-14',
-    weightedBeta: 0.09,
+    weightedBeta: 0.088,
   },
 ]
 
@@ -325,9 +325,9 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     hubSection: 'retirement',
     rebalance: 'none',
     title: 'Bond Alternative',
-    description: 'Four low-beta, non-equity-directional strategies built to outrun the aggregate bond index without equity-level risk.',
+    description: 'Five low-beta, non-equity-directional strategies built to outrun the aggregate bond index without equity-level risk.',
     addedAt: '2026-08-14',
-    weightedBeta: 0.055,
+    weightedBeta: 0.107,
   },
 ]
 

@@ -244,20 +244,22 @@ export const caFourAlphaQuadrantsHoldings: PresetHolding[] = [
   { ticker: 'MATE', weightPct: 25, beta: 1, blurb: '[Growth + Alpha] Return-stacked 100% S&P 500 + 100% managed futures, growth core and trend-following alpha in one fund.' },
 ]
 
-/** 25 / 25 / 25 / 25 buy-and-hold: four non-equity-directional strategies, benchmarked against AGG (US Total Bond Market) instead of SPY. Weighted beta ~0.09. */
+/** 10 / 10 / 25 / 20 / 35 buy-and-hold: five non-equity-directional strategies, benchmarked against AGG (US Total Bond Market) instead of SPY. DBMF and FLSP anchor the trend/premia thesis but are held small since each carries a ~19% standalone drawdown; MRGR, IALT, and JAAA are sized to counteract that risk and keep the portfolio-level drawdown under 4%. Weighted beta ~0.09, max drawdown ~3.8%. */
 export const usBondAltHoldings: PresetHolding[] = [
-  { ticker: 'DBMF', weightPct: 25, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
-  { ticker: 'FLSP', weightPct: 25, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
-  { ticker: 'FOXY', weightPct: 25, beta: 0.05, blurb: 'Systematic currency carry and mean-reversion, an uncorrelated FX alpha source.' },
-  { ticker: 'VAMO', weightPct: 25, beta: 0.26, blurb: 'Cambria value and momentum stock selection with a systematic 0-100% S&P 500 futures hedge.' },
+  { ticker: 'DBMF', weightPct: 10, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
+  { ticker: 'FLSP', weightPct: 10, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
+  { ticker: 'MRGR', weightPct: 25, beta: 0.05, blurb: 'Merger arbitrage, a shallow-drawdown event-driven diversifier with a long track record since 2013.' },
+  { ticker: 'IALT', weightPct: 20, beta: 0.35, blurb: 'Systematic multi-strategy alternatives sleeve blending trend and premia with a shallower realized drawdown.' },
+  { ticker: 'JAAA', weightPct: 35, beta: 0, blurb: 'AAA-rated CLO floating-rate credit, bond-like income with minimal duration or equity risk.' },
 ]
 
-/** 25 / 25 / 25 / 25 buy-and-hold: four non-equity-directional strategies, benchmarked against XBB.TO (Canadian aggregate bond index) instead of SPY. Weighted beta ~0.055. */
+/** 15 / 15 / 30 / 30 / 10 buy-and-hold: five non-equity-directional strategies, benchmarked against XBB.TO (Canadian aggregate bond index) instead of SPY. FOXY and VAMO were excluded for carrying outsized historical drawdowns at meaningful weight. DBMF and FLSP are held small since each carries a ~19% standalone drawdown; PFMN.TO, ARB.TO, and PFLS.TO (all CAD-listed) are sized to counteract that risk and keep the portfolio-level drawdown under 4%. Weighted beta ~0.11, max drawdown ~3.5%. */
 export const caBondAltHoldings: PresetHolding[] = [
-  { ticker: 'DBMF', weightPct: 25, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
-  { ticker: 'FLSP', weightPct: 25, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
-  { ticker: 'FOXY', weightPct: 25, beta: 0.05, blurb: 'Systematic currency carry and mean-reversion, an uncorrelated FX alpha source.' },
-  { ticker: 'PFMN.TO', weightPct: 25, beta: 0.12, blurb: 'Market-neutral long/short equity, a beta-neutral premia complement to the trend and carry sleeves.' },
+  { ticker: 'DBMF', weightPct: 15, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
+  { ticker: 'FLSP', weightPct: 15, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
+  { ticker: 'PFMN.TO', weightPct: 30, beta: 0.12, blurb: 'Market-neutral long/short equity, a beta-neutral premia complement to the trend and carry sleeves.' },
+  { ticker: 'ARB.TO', weightPct: 30, beta: 0.05, blurb: 'Event-driven merger and SPAC arbitrage, a shallow-drawdown diversifier that anchors the sleeve.' },
+  { ticker: 'PFLS.TO', weightPct: 10, beta: 0.48, blurb: 'Global long/short equity with moderate net exposure, a Canadian-listed diversifier alongside the market-neutral and arbitrage sleeves.' },
 ]
 
 // -------------------- Registry --------------------
@@ -444,7 +446,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     rebalanceSchedule: 'none',
     holdings: usBondAltHoldings,
     benchmarkSymbol: 'AGG',
-    extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-foxy-vamo-v1'],
+    extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-mrgr-ialt-jaaa-v4'],
   },
   {
     id: CA_BOND_ALT_PRESET_ID,
@@ -453,7 +455,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     rebalanceSchedule: 'none',
     holdings: caBondAltHoldings,
     benchmarkSymbol: 'XBB.TO',
-    extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-foxy-pfmn-v1'],
+    extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-pfmn-arb-pfls-v3'],
   },
 ]
 

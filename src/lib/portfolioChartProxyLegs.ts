@@ -10,7 +10,7 @@ import {
   similarEtfSlugsFor,
   type EtfSimilarityUniverse,
 } from '@/lib/etfSimilarityTags'
-import { blendPriceSeries } from '@/lib/syntheticProxyMerge'
+import { blendPriceSeriesMulti } from '@/lib/syntheticProxyMerge'
 import type { PriceSeries } from '@/lib/yahooFinance'
 
 export type BlendComponent = { symbol: string; weight: number }
@@ -58,12 +58,19 @@ export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, ProxyDef> = {
   OOSB: { legs: ['SPY', 'BITO'] },
   RSSX: { legs: ['SPY', 'BITO', 'GLD'] },
   WTIB: { legs: ['USO', 'BITO'] },
-  /** Pre-listing: similar cash-flow / "cash cows" equity sleeve; extends joint history before VFLO's inception. */
-  VFLO: { legs: ['COWZ'] },
+  /** Pre-listing: 50% cash-flow "cash cows" value + 50% quality-GARP blend; extends joint history before VFLO's inception. */
+  VFLO: { legs: [{ blend: [{ symbol: 'COWZ', weight: 0.5 }, { symbol: 'GARP', weight: 0.5 }] }] },
   /** Pre-listing: same US momentum-factor strategy (Fidelity U.S. Momentum vs S&P 500 Momentum); extends joint history before FCMO.TO's inception. */
   'FCMO.TO': { legs: ['SPMO'] },
   /** Pre-listing: 90% TIPS + 90% gold futures; TIP extends to 2003, GLD to 2004. Gross = 180%. */
   GDT: { legs: ['TIP', 'GLD'], grossExposurePct: 180 },
+  /** Pre-listing: US-listed merger arbitrage; extends joint history before ARB.TO's inception (MRGR live since 2013). */
+  'ARB.TO': { legs: ['MRGR'] },
+  /** Pre-listing: 50% Convergence long/short + 50% international small-cap value, net of a 25% small-cap-beta short (IWM) to approximate ORR's long/short net exposure; extends joint history before ORR's inception. */
+  ORR: {
+    legs: [{ blend: [{ symbol: 'CLSE', weight: 0.5 }, { symbol: 'AVDV', weight: 0.5 }, { symbol: 'IWM', weight: -0.25 }] }],
+    grossExposurePct: 100,
+  },
 }
 
 /** CME-style bitcoin futures exposure → BITO; otherwise spot-style proxy → IBIT (see sleeve `name` in stack map). */
@@ -321,7 +328,7 @@ export function resolveProxyDef(yahooSymbol: string): ProxyDef | null {
 /**
  * Resolves a ProxyDef's legs to PriceSeries[] for buildPreInceptionProductStackMerge.
  * String legs: look up in seriesBySymbol (Phase 1 may have already extended chain-proxy entries).
- * BlendSpec legs: blend the two components into one series (currently supports exactly 2 components).
+ * BlendSpec legs: blend all components (2 or more; weights may be negative for a short leg) into one series.
  * Returns null if any required series is missing or too short.
  */
 export function buildResolvedStackLegs(
@@ -335,12 +342,14 @@ export function buildResolvedStackLegs(
       if (ser == null || ser.timestamps.length < 2) return null
       result.push(ser)
     } else {
-      if (leg.blend.length !== 2) return null
-      const serA = seriesBySymbol.get(leg.blend[0]!.symbol.toUpperCase())
-      const serB = seriesBySymbol.get(leg.blend[1]!.symbol.toUpperCase())
-      if (serA == null || serA.timestamps.length < 2) return null
-      if (serB == null || serB.timestamps.length < 2) return null
-      result.push(blendPriceSeries(serA, leg.blend[0]!.weight, serB, leg.blend[1]!.weight))
+      if (leg.blend.length < 2) return null
+      const resolvedLegs: { series: PriceSeries; weight: number }[] = []
+      for (const component of leg.blend) {
+        const ser = seriesBySymbol.get(component.symbol.toUpperCase())
+        if (ser == null || ser.timestamps.length < 2) return null
+        resolvedLegs.push({ series: ser, weight: component.weight })
+      }
+      result.push(blendPriceSeriesMulti(resolvedLegs))
     }
   }
   return result.length >= 1 ? result : null

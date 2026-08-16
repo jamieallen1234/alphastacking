@@ -18,6 +18,7 @@ import {
   CA_FACTOR_FCMO_PRESET_ID,
   CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   CA_INTL_PRESET_ID,
+  CA_SIXTY_FORTY_PRESET_ID,
   CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
   CA_USSL_QQQL_HDGE_PRESET_ID,
   US_5_4_3_2_1_PRESET_ID,
@@ -28,6 +29,7 @@ import {
   US_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   US_GDE_CLSE_BLEND_PRESET_ID,
   US_INTL_PRESET_ID,
+  US_SIXTY_FORTY_PRESET_ID,
   US_UPRO_PREMIA_STACK_PRESET_ID,
   US_RISK_PARITY_PRESET_ID,
   US_LONG_SHORT_EQUITY_PRESET_ID,
@@ -67,6 +69,7 @@ const US_SLUG_TO_PRESET_ID: Record<string, string> = {
   'letf-stack-3x': US_LETF_STACK_3X_PRESET_ID,
   'four-alpha-quadrants': US_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   'us-bond-alternative': US_BOND_ALT_PRESET_ID,
+  'us-sixty-forty': US_SIXTY_FORTY_PRESET_ID,
 }
 
 const CA_SLUG_TO_PRESET_ID: Record<string, string> = {
@@ -78,6 +81,7 @@ const CA_SLUG_TO_PRESET_ID: Record<string, string> = {
   'ca-alpha-stack': CA_ALPHA_STACK_PRESET_ID,
   'ca-four-alpha-quadrants': CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   'ca-bond-alternative': CA_BOND_ALT_PRESET_ID,
+  'ca-sixty-forty': CA_SIXTY_FORTY_PRESET_ID,
 }
 
 function StubLayout({

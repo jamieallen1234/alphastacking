@@ -121,22 +121,22 @@ function forwardFillTargetOnUnderlyingDays(
 }
 
 /**
- * Blends two price series by weight using daily returns.
- * Output starts at 100 on the first shared trading day; both series must be adjusted closes (total return).
- * Days present in only one series are skipped (union intersection).
+ * Blends two or more price series by weight using daily returns. Weights may be negative to
+ * simulate a short leg (e.g. 0.5 CLSE + 0.5 AVUV - 0.25 IWM).
+ * Output starts at 100 on the first shared trading day; all series must be adjusted closes (total return).
+ * Days not present in every series are skipped (full intersection across all legs).
  */
-export function blendPriceSeries(
-  a: PriceSeries,
-  weightA: number,
-  b: PriceSeries,
-  weightB: number
-): PriceSeries {
-  const aM = seriesToNyDayPriceMap(a)
-  const bM = seriesToNyDayPriceMap(b)
-  const days = [...aM.keys()].filter((d) => bM.has(d)).sort()
+export function blendPriceSeriesMulti(legs: { series: PriceSeries; weight: number }[]): PriceSeries {
+  if (legs.length < 2) {
+    throw new Error('blendPriceSeriesMulti: at least two legs required')
+  }
+  const maps = legs.map((leg) => seriesToNyDayPriceMap(leg.series))
+  const days = [...maps[0]!.keys()]
+    .filter((d) => maps.every((m) => m.has(d)))
+    .sort()
 
   if (days.length < 2) {
-    throw new Error('blendPriceSeries: insufficient overlapping days between the two series')
+    throw new Error('blendPriceSeriesMulti: insufficient overlapping days across all legs')
   }
 
   const timestamps: number[] = []
@@ -148,14 +148,35 @@ export function blendPriceSeries(
   for (let i = 1; i < days.length; i++) {
     const prev = days[i - 1]!
     const cur = days[i]!
-    const ra = aM.get(cur)! / aM.get(prev)! - 1
-    const rb = bM.get(cur)! / bM.get(prev)! - 1
-    level *= 1 + weightA * ra + weightB * rb
+    const blendedReturn = legs.reduce((sum, leg, j) => {
+      const m = maps[j]!
+      const r = m.get(cur)! / m.get(prev)! - 1
+      return sum + leg.weight * r
+    }, 0)
+    level *= 1 + blendedReturn
     timestamps.push(dayKeyToUtcNoonUnix(cur))
     prices.push(level)
   }
 
-  return { symbol: `blend(${a.symbol}x${weightA},${b.symbol}x${weightB})`, timestamps, prices }
+  const label = legs.map((leg) => `${leg.series.symbol}x${leg.weight}`).join(',')
+  return { symbol: `blend(${label})`, timestamps, prices }
+}
+
+/**
+ * Blends two price series by weight using daily returns.
+ * Output starts at 100 on the first shared trading day; both series must be adjusted closes (total return).
+ * Days present in only one series are skipped (union intersection).
+ */
+export function blendPriceSeries(
+  a: PriceSeries,
+  weightA: number,
+  b: PriceSeries,
+  weightB: number
+): PriceSeries {
+  return blendPriceSeriesMulti([
+    { series: a, weight: weightA },
+    { series: b, weight: weightB },
+  ])
 }
 
 /** Joint history for HFGM: ASGM launched after HFGM (Aug 2025 vs Apr 2025), so it provides no pre-inception extension. Use HFGM’s own first trade as the effective start. */

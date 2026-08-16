@@ -58,6 +58,8 @@ export const US_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'us-four-alpha-quadrants-v1'
 export const CA_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'ca-four-alpha-quadrants-v1'
 export const US_BOND_ALT_PRESET_ID = 'us-bond-alt-v1'
 export const CA_BOND_ALT_PRESET_ID = 'ca-bond-alt-v1'
+export const US_SIXTY_FORTY_PRESET_ID = 'us-sixty-forty-v1'
+export const CA_SIXTY_FORTY_PRESET_ID = 'ca-sixty-forty-v1'
 
 // -------------------- Holdings --------------------
 export const usInternationalHoldings: PresetHolding[] = [
@@ -262,6 +264,29 @@ export const caBondAltHoldings: PresetHolding[] = [
   { ticker: 'PFLS.TO', weightPct: 10, beta: 0.48, blurb: 'Global long/short equity with moderate net exposure, a Canadian-listed diversifier alongside the market-neutral and arbitrage sleeves.' },
 ]
 
+/** 20 / 15 / 15 / 15 / 10 / 10 / 15 buy-and-hold, benchmarked against AOR. No leveraged equity; MATE anchors the growth sleeve, VFLO adds value-factor equity, CLSE/ORR add long/short, DBMF/FLSP/MRGR round out the Bond Alternative-style diversifiers. Weighted beta ~0.50, max drawdown ~12.5% (beats AOR's ~17.8%). */
+export const usSixtyFortyHoldings: PresetHolding[] = [
+  { ticker: 'MATE', weightPct: 20, beta: 1.0, blurb: 'Return-stacked 100% S&P 500 + 100% managed futures, the growth engine and trend-following alpha in one fund.' },
+  { ticker: 'VFLO', weightPct: 15, beta: 0.75, blurb: 'Large-cap free-cash-flow value tilt, an unleveraged equity growth sleeve with a shallower drawdown than pure momentum or deep-value funds.' },
+  { ticker: 'CLSE', weightPct: 15, beta: 0.6, blurb: 'US long/short equity, security selection and dispersion with a lower-net-correlation drawdown buffer.' },
+  { ticker: 'ORR', weightPct: 15, beta: 0.55, blurb: 'Militia global long/short equity, fundamental stock selection across regions.' },
+  { ticker: 'DBMF', weightPct: 10, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
+  { ticker: 'FLSP', weightPct: 10, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
+  { ticker: 'MRGR', weightPct: 15, beta: 0.05, blurb: 'Merger arbitrage, a shallow-drawdown event-driven diversifier with a long track record since 2013.' },
+]
+
+/** 20 / 15 / 15 / 10 / 10 / 10 / 10 / 10 buy-and-hold, benchmarked against VBAL. No leveraged equity; MATE anchors the growth sleeve, VFLO adds value-factor equity, ORR (long/short) and PFLS.TO/ARB.TO/PFMN.TO (Canadian-listed diversifiers) stand in for the traditional bond sleeve. Weighted beta ~0.47, max drawdown ~11.4% (beats VBAL's ~12.3%). */
+export const caSixtyFortyHoldings: PresetHolding[] = [
+  { ticker: 'MATE', weightPct: 20, beta: 1.0, blurb: 'Return-stacked 100% S&P 500 + 100% managed futures, the growth engine and trend-following alpha in one fund.' },
+  { ticker: 'VFLO', weightPct: 15, beta: 0.75, blurb: 'Large-cap free-cash-flow value tilt, an unleveraged equity growth sleeve with a shallower drawdown than pure momentum or deep-value funds.' },
+  { ticker: 'ORR', weightPct: 15, beta: 0.55, blurb: 'Militia global long/short equity, fundamental stock selection across regions.' },
+  { ticker: 'PFLS.TO', weightPct: 10, beta: 0.48, blurb: 'Global long/short equity with moderate net exposure, a Canadian-listed diversifier with a real track record back to 2020.' },
+  { ticker: 'DBMF', weightPct: 10, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
+  { ticker: 'FLSP', weightPct: 10, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
+  { ticker: 'ARB.TO', weightPct: 10, beta: 0.05, blurb: 'Event-driven merger and SPAC arbitrage, a shallow-drawdown diversifier.' },
+  { ticker: 'PFMN.TO', weightPct: 10, beta: 0.12, blurb: 'Market-neutral long/short equity, a Canadian-listed beta-neutral premia complement.' },
+]
+
 // -------------------- Registry --------------------
 export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
@@ -456,6 +481,24 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     holdings: caBondAltHoldings,
     benchmarkSymbol: 'XBB.TO',
     extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-pfmn-arb-pfls-v3'],
+  },
+  {
+    id: US_SIXTY_FORTY_PRESET_ID,
+    region: 'us',
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+    holdings: usSixtyFortyHoldings,
+    benchmarkSymbol: 'AOR',
+    extraCacheKeyTags: ['buy-hold', 'mate-cowz-clse-orr-dbmf-flsp-mrgr-v1'],
+  },
+  {
+    id: CA_SIXTY_FORTY_PRESET_ID,
+    region: 'ca',
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+    holdings: caSixtyFortyHoldings,
+    benchmarkSymbol: 'VBAL.TO',
+    extraCacheKeyTags: ['buy-hold', 'mate-cowz-clse-pfls-dbmf-flsp-pfmn-arb-v1'],
   },
 ]
 

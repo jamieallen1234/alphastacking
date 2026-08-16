@@ -219,6 +219,17 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     addedAt: '2026-08-14',
     weightedBeta: 0.088,
   },
+  {
+    slug: 'us-sixty-forty',
+    region: 'us',
+    kind: 'live',
+    hubSection: 'retirement',
+    rebalance: 'none',
+    title: '60/40 Alpha Stack',
+    description: 'Unleveraged equity paired with long/short and trend diversifiers, built for lower drawdown than a traditional 60/40 without giving up return.',
+    addedAt: '2026-08-16',
+    weightedBeta: 0.497,
+  },
 ]
 
 /** Curated routes for Canada (`/ca/portfolios/...`) */
@@ -328,6 +339,17 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     description: 'Five low-beta, non-equity-directional strategies built to outrun the aggregate bond index without equity-level risk.',
     addedAt: '2026-08-14',
     weightedBeta: 0.107,
+  },
+  {
+    slug: 'ca-sixty-forty',
+    region: 'ca',
+    kind: 'live',
+    hubSection: 'retirement',
+    rebalance: 'none',
+    title: '60/40 Alpha Stack',
+    description: 'Unleveraged equity paired with long/short and trend diversifiers, built for lower drawdown than a traditional 60/40 without giving up return.',
+    addedAt: '2026-08-16',
+    weightedBeta: 0.465,
   },
 ]
 

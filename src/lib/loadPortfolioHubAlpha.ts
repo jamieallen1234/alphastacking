@@ -32,8 +32,8 @@ export interface PortfolioHubSlugData {
   payloadMax: ScorecardPayload
 }
 
-/** Live hub slugs → preset IDs (1Y preset charts; alpha = portfolio TR% minus SPY TR% over the same window). */
-const HUB_SLUG_TO_PRESET_ID: Record<string, string> = {
+/** Live portfolio route slugs mapped to their holdings presets. */
+export const HUB_SLUG_TO_PRESET_ID: Record<string, string> = {
   'us-international': US_INTL_PRESET_ID,
   'us-advanced': US_ADVANCED_PRESET_ID,
   'us-core-buy-hold': US_CORE_BH_PRESET_ID,

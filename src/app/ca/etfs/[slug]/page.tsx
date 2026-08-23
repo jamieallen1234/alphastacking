@@ -7,6 +7,7 @@ import { getCachedMonthlyEfficiencyPatchForSlug } from '@/lib/getCachedMonthlyEt
 import { CA_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
 import { getCachedEtfChart } from '@/lib/getCachedEtfChart'
 import { buildPrimarySimilarityHeadline, loadSimilarEtfRows } from '@/lib/etfSimilarEtfs'
+import { loadPortfolioEtfMemberships } from '@/lib/portfolioEtfMembership'
 
 export function generateStaticParams() {
   return Object.keys(CA_ETF_DYNAMIC_REGISTRY).map((slug) => ({ slug }))
@@ -42,6 +43,10 @@ export default async function CaEtfDynamicPage({
   const similarEtfs = await loadSimilarEtfRows(slug, 'ca')
   const primarySimilarityHeadline =
     similarEtfs.length > 0 ? buildPrimarySimilarityHeadline(def) : undefined
+  const [portfolioMemberships, canadianPortfolioMemberships] = await Promise.all([
+    loadPortfolioEtfMemberships(def.yahooSymbol, 'us'),
+    loadPortfolioEtfMemberships(def.yahooSymbol, 'ca'),
+  ])
   return (
     <EtfDynamicPageLayout
       variant="ca"
@@ -51,6 +56,8 @@ export default async function CaEtfDynamicPage({
       slug={slug}
       similarEtfs={similarEtfs}
       primarySimilarityHeadline={primarySimilarityHeadline}
+      portfolioMemberships={portfolioMemberships}
+      canadianPortfolioMemberships={canadianPortfolioMemberships}
     />
   )
 }

@@ -90,11 +90,11 @@ function underOneYear(limitingFirstTradeDate: string): boolean {
  * If 1Y data is unavailable (< 1 year history), falls back to 100% MAX.
  * Under-1-year penalty downgrades the final blended grade by one letter.
  */
-export function computeBlendedGrade(
+export function computeBlendedScore(
   payload1y: ScorecardPayload | null,
   payloadMax: ScorecardPayload | null,
   weightedBeta: number,
-): PortfolioLetterGrade | null {
+): number | null {
   const score1y = payload1y ? scorePayload(payload1y, weightedBeta) : null
   const scoreMax = payloadMax ? scorePayload(payloadMax, weightedBeta) : null
 
@@ -108,6 +108,17 @@ export function computeBlendedGrade(
   } else {
     return null
   }
+
+  return blended
+}
+
+export function computeBlendedGrade(
+  payload1y: ScorecardPayload | null,
+  payloadMax: ScorecardPayload | null,
+  weightedBeta: number,
+): PortfolioLetterGrade | null {
+  const blended = computeBlendedScore(payload1y, payloadMax, weightedBeta)
+  if (blended == null) return null
 
   const rawGrade = pointsToLetter(blended)
 

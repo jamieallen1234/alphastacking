@@ -18,6 +18,7 @@ import {
 } from '@/lib/etfStackExposureBySlug'
 import type { PrimarySimilarityHeadline, SimilarEtfRow } from '@/lib/etfSimilarEtfs'
 import { displayTagLabelsForSlug } from '@/lib/etfSimilarityTags'
+import type { PortfolioEtfMembership } from '@/lib/portfolioEtfMembership'
 
 function efficiencyGradeToShow(grade: string | null | undefined): string | null {
   const g = grade?.trim()
@@ -155,6 +156,50 @@ function buildHoldingsSection(slug?: string): ReactNode {
   )
 }
 
+function PortfolioMembershipSection({
+  heading,
+  memberships,
+  portfolioBase,
+}: {
+  heading: string
+  memberships: PortfolioEtfMembership[]
+  portfolioBase: string
+}) {
+  if (memberships.length === 0) return null
+
+  return (
+    <div className={styles.bodySection}>
+      <h2>{heading}</h2>
+      <div className={styles.portfolioMembershipTableWrap}>
+        <table className={styles.portfolioMembershipTable}>
+          <thead>
+            <tr>
+              <th>Portfolio</th>
+              <th>Category</th>
+              <th>Portfolio rating</th>
+              <th>Allocation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {memberships.map((portfolio) => (
+              <tr key={portfolio.slug}>
+                <td>
+                  <a href={`${portfolioBase}/${portfolio.slug}`}>{portfolio.title}</a>
+                </td>
+                <td>{portfolio.category}</td>
+                <td>
+                  <strong>{portfolio.grade ?? 'Not rated'}</strong>
+                </td>
+                <td>{portfolio.weightPct}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
 export interface EtfDynamicPageLayoutProps {
   variant: 'us' | 'ca'
   hubBase: EtfPageHubBase
@@ -166,6 +211,10 @@ export interface EtfDynamicPageLayoutProps {
   similarEtfs?: SimilarEtfRow[]
   /** Primary ETF efficiency line (same score priority as peer rows) shown above the list. */
   primarySimilarityHeadline?: PrimarySimilarityHeadline
+  /** Live model portfolios that include this ETF as a holding. */
+  portfolioMemberships?: PortfolioEtfMembership[]
+  /** Canadian model portfolios that include this ETF, shown on Canadian ETF pages. */
+  canadianPortfolioMemberships?: PortfolioEtfMembership[]
 }
 
 export default function EtfDynamicPageLayout({
@@ -176,6 +225,8 @@ export default function EtfDynamicPageLayout({
   slug,
   similarEtfs,
   primarySimilarityHeadline,
+  portfolioMemberships,
+  canadianPortfolioMemberships,
 }: EtfDynamicPageLayoutProps) {
   const categoryValue = def.structure ?? def.badge
   const tagChips = slug ? displayTagLabelsForSlug(slug, variant) : []
@@ -318,6 +369,21 @@ export default function EtfDynamicPageLayout({
             </table>
           </div>
         </div>
+      ) : null}
+
+      {portfolioMemberships != null ? (
+        <PortfolioMembershipSection
+          heading={`Top ${isCaHub ? 'US ' : ''}portfolios that hold ${def.displayTicker}`}
+          memberships={portfolioMemberships}
+          portfolioBase={`${isCaHub ? '/ca' : ''}/portfolios`}
+        />
+      ) : null}
+      {canadianPortfolioMemberships != null ? (
+        <PortfolioMembershipSection
+          heading={`Top Canadian portfolios that hold ${def.displayTicker}`}
+          memberships={canadianPortfolioMemberships}
+          portfolioBase="/ca/portfolios"
+        />
       ) : null}
 
       <div className={styles.bodySection}>

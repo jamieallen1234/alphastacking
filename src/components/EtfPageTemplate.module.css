@@ -287,6 +287,44 @@
   border-bottom: 0;
 }
 
+.portfolioMembershipTableWrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 0.5px solid var(--color-border-faint);
+  border-radius: 4px;
+}
+
+.portfolioMembershipTable {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  background: rgba(var(--rgb-text), 0.015);
+}
+
+.portfolioMembershipTable th,
+.portfolioMembershipTable td {
+  padding: 0.6rem 0.7rem;
+  text-align: left;
+  border-bottom: 0.5px solid var(--color-border-faint);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(var(--rgb-text), 0.78);
+  vertical-align: top;
+}
+
+.portfolioMembershipTable th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: rgba(var(--rgb-text), 0.03);
+}
+
+.portfolioMembershipTable tr:last-child td {
+  border-bottom: 0;
+}
+
 @media (max-width: 900px) {
   .section {
     padding: 3rem 1.5rem 3.5rem;

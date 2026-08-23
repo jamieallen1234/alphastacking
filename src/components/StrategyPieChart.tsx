@@ -40,6 +40,12 @@ function polarToXY(angleDeg: number, r: number): [number, number] {
   return [CENTER + r * Math.cos(rad), CENTER + r * Math.sin(rad)]
 }
 
+/** Keep the server-rendered and browser-rendered SVG attributes identical. */
+function svgNumber(value: number): string {
+  const rounded = Math.round(value * 1_000_000) / 1_000_000
+  return (Object.is(rounded, -0) ? 0 : rounded).toString()
+}
+
 function donutSlicePath(startAngle: number, endAngle: number): string {
   const largeArc = endAngle - startAngle > 180 ? 1 : 0
   const [ox1, oy1] = polarToXY(startAngle, OUTER_R)
@@ -47,10 +53,10 @@ function donutSlicePath(startAngle: number, endAngle: number): string {
   const [ix1, iy1] = polarToXY(endAngle, INNER_R)
   const [ix2, iy2] = polarToXY(startAngle, INNER_R)
   return [
-    `M ${ox1} ${oy1}`,
-    `A ${OUTER_R} ${OUTER_R} 0 ${largeArc} 1 ${ox2} ${oy2}`,
-    `L ${ix1} ${iy1}`,
-    `A ${INNER_R} ${INNER_R} 0 ${largeArc} 0 ${ix2} ${iy2}`,
+    `M ${svgNumber(ox1)} ${svgNumber(oy1)}`,
+    `A ${OUTER_R} ${OUTER_R} 0 ${largeArc} 1 ${svgNumber(ox2)} ${svgNumber(oy2)}`,
+    `L ${svgNumber(ix1)} ${svgNumber(iy1)}`,
+    `A ${INNER_R} ${INNER_R} 0 ${largeArc} 0 ${svgNumber(ix2)} ${svgNumber(iy2)}`,
     'Z',
   ].join(' ')
 }
@@ -83,13 +89,18 @@ export default function StrategyPieChart({ slices, centerLabel = 'Growth', cente
   const [activeIdx, setActiveIdx] = useState<number | null>(null)
 
   const total = slices.reduce((s, sl) => s + sl.weightPct, 0) || 1
-  let cumulative = 0
-  const arcs = slices.map((slice) => {
-    const startAngle = (cumulative / total) * 360
-    cumulative += slice.weightPct
+  const arcs = slices.reduce<{
+    arcs: Array<{ slice: StrategyPieSlice; startAngle: number; endAngle: number }>
+    cumulative: number
+  }>((result, slice) => {
+    const startAngle = (result.cumulative / total) * 360
+    const cumulative = result.cumulative + slice.weightPct
     const endAngle = (cumulative / total) * 360
-    return { slice, startAngle, endAngle }
-  })
+    return {
+      cumulative,
+      arcs: [...result.arcs, { slice, startAngle, endAngle }],
+    }
+  }, { arcs: [], cumulative: 0 }).arcs
 
   const active = activeIdx != null ? slices[activeIdx] : null
 

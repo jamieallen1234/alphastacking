@@ -9,8 +9,9 @@ import {
   portfolioHubRoutes,
   usPortfolioRoutes,
 } from '@/lib/portfolioRoutes'
-import type { PortfolioHubSlugData } from '@/lib/loadPortfolioHubAlpha'
+import { HUB_SLUG_TO_PRESET_ID, type PortfolioHubSlugData } from '@/lib/loadPortfolioHubAlpha'
 import { computeBlendedGrade, gradeRank, type PortfolioLetterGrade } from '@/lib/portfolioHubGrade'
+import { getPresetById } from '@/lib/presets'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
 
 export type PortfoliosHubEdition = 'us' | 'ca'
@@ -27,6 +28,11 @@ function formatHubAlpha(pct: number): string {
 function resolveGrade(route: PortfolioRouteDef, data: PortfolioHubSlugData | undefined): PortfolioLetterGrade | null {
   if (!data || route.weightedBeta == null) return null
   return computeBlendedGrade(data.payload1y, data.payloadMax, route.weightedBeta)
+}
+
+function benchmarkLabel(route: PortfolioRouteDef): string {
+  const presetId = HUB_SLUG_TO_PRESET_ID[route.slug]
+  return (presetId ? getPresetById(presetId)?.benchmarkSymbol : undefined) ?? 'SPY'
 }
 
 function sortByGradeThenDate(
@@ -56,6 +62,7 @@ function portfolioGrid(
         const data = hubDataBySlug[p.slug]
         const alpha = data?.excessAlphaPercent ?? null
         const grade = resolveGrade(p, data)
+        const benchmark = benchmarkLabel(p)
         return (
           <Link
             key={p.slug}
@@ -76,7 +83,7 @@ function portfolioGrid(
             </div>
             <h2 className={styles.cardTitle}>{p.title}</h2>
             <p className={styles.cardDesc}>{p.description}</p>
-            <div className={styles.cardAlphaRow} aria-label="One-year alpha versus S and P 500 total return">
+            <div className={styles.cardAlphaRow} aria-label={`One-year alpha versus ${benchmark} total return`}>
               {alpha != null ? (
                 <>
                   <span
@@ -84,10 +91,10 @@ function portfolioGrid(
                   >
                     {formatHubAlpha(alpha)}
                   </span>
-                  <span className={styles.cardAlphaLab}>1Y alpha vs SPY</span>
+                  <span className={styles.cardAlphaLab}>1Y alpha vs {benchmark}</span>
                 </>
               ) : (
-                <span className={styles.cardAlphaUnavailable}>1Y alpha —</span>
+                <span className={styles.cardAlphaUnavailable}>1Y alpha vs {benchmark}: unavailable</span>
               )}
             </div>
             <div className={styles.cardCta}>View portfolio →</div>

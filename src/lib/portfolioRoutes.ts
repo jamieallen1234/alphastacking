@@ -31,7 +31,7 @@ export const US_PORTFOLIO_CATEGORIES: PortfolioHubCategoryDef[] = [
   { id: 'trend', title: 'Trend / CTA', subtitle: 'Managed futures and systematic alternatives as the primary alpha engine.' },
   { id: 'risk-parity', title: 'Risk Parity', subtitle: 'All-weather diversification across equity, bonds, and real assets.' },
   { id: 'long-short', title: 'Long/Short', subtitle: 'Net-long long/short equity across US and global markets.' },
-  { id: 'retirement', title: 'Retirement', subtitle: 'Low-beta bond alternatives for capital preservation.' },
+  { id: 'retirement', title: 'Retirement', subtitle: 'Bond-alternative and balanced-allocation models, each measured against its own benchmark.' },
 ]
 
 export interface PortfolioRouteDef {
@@ -400,7 +400,7 @@ export const HUB_SECTION_LABEL: Record<
   },
   'retirement': {
     heading: 'Retirement',
-    blurb: 'Low-beta bond alternatives for capital preservation.',
+    blurb: 'Bond-alternative and balanced-allocation models, each measured against its own benchmark.',
   },
 }
 

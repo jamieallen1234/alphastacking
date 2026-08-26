@@ -330,6 +330,17 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     weightedBeta: 0.99,
   },
   {
+    slug: 'ca-grandmas-portfolio',
+    region: 'ca',
+    kind: 'live',
+    hubSection: 'retirement',
+    rebalance: 'none',
+    title: "Grandma's Portfolio",
+    description: 'Canadian equity and alternatives paired with AAA CLO income, measured against VGRO.',
+    addedAt: '2026-08-26',
+    weightedBeta: 0.669,
+  },
+  {
     slug: 'ca-bond-alternative',
     region: 'ca',
     kind: 'live',

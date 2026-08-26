@@ -23,6 +23,17 @@ function toScorecardPayload(p: PortfolioChartPayload): ScorecardPayload {
   }
 }
 
+/**
+ * Range payloads reflect model assumptions that can change with a deployment. Never let the
+ * browser reuse an old response for the same preset/range URL after those assumptions change.
+ * Server-side `unstable_cache` still deduplicates the expensive chart calculation.
+ */
+function fetchPresetChart(presetId: string, range: YahooRange) {
+  return fetch(`/api/preset-chart?${new URLSearchParams({ preset: presetId, range })}`, {
+    cache: 'no-store',
+  })
+}
+
 interface PresetIntlChartPanelProps {
   presetId: string
   initialPayload: PortfolioChartPayload
@@ -67,7 +78,7 @@ export default function PresetIntlChartPanel({
   useEffect(() => {
     if (bestInitialRange === initialPayload.range) return
     setLoading(true)
-    void fetch(`/api/preset-chart?${new URLSearchParams({ preset: presetId, range: bestInitialRange })}`)
+    void fetchPresetChart(presetId, bestInitialRange)
       .then((r) => r.json())
       .then((data: PortfolioChartPayload & { error?: string }) => {
         setPayload(data)
@@ -81,7 +92,7 @@ export default function PresetIntlChartPanel({
   useEffect(() => {
     const initialRange = initialPayload.range
     // MAX first (needed for scorecard blend); stagger others after
-    void fetch(`/api/preset-chart?${new URLSearchParams({ preset: presetId, range: 'max' })}`)
+    void fetchPresetChart(presetId, 'max')
       .then((r) => r.json())
       .then((data: PortfolioChartPayload) => setMaxPayload(data))
       .catch(() => undefined)
@@ -92,9 +103,7 @@ export default function PresetIntlChartPanel({
     const timers = toWarm.map((range, i) =>
       setTimeout(
         () =>
-          void fetch(`/api/preset-chart?${new URLSearchParams({ preset: presetId, range })}`).catch(
-            () => undefined
-          ),
+          void fetchPresetChart(presetId, range).catch(() => undefined),
         2000 + i * 3000
       )
     )
@@ -108,9 +117,7 @@ export default function PresetIntlChartPanel({
       setLoading(true)
       setError(null)
       try {
-        const res = await fetch(
-          `/api/preset-chart?${new URLSearchParams({ preset: presetId, range })}`
-        )
+        const res = await fetchPresetChart(presetId, range)
         const data = (await res.json()) as PortfolioChartPayload & { error?: string }
         if (!res.ok) {
           setError(data.error || 'Could not load chart')

@@ -61,6 +61,7 @@ export const ETF_CHART_SYMBOLS = [
   'ONEC.TO',
   'PFAA.TO',
   'ZLB.TO',
+  'TEC.TO',
   'FCMO.TO',
   'FCCM.TO',
   'FINN.NE',

@@ -142,7 +142,7 @@ const DAY = 86400
 
 export const getCachedPortfolioBuilderOptionsUs = unstable_cache(
   async () => buildOptionsForUniverse('us'),
-  ['portfolio-builder-options-v12-precious-meta-bitoproxy', 'us'],
+  ['portfolio-builder-options-v13-tec', 'us'],
   { revalidate: DAY }
 )
 
@@ -154,7 +154,6 @@ export const getCachedPortfolioBuilderOptionsCa = unstable_cache(
     ])
     return [...ca, ...us].sort((a, b) => a.displayTicker.localeCompare(b.displayTicker))
   },
-  ['portfolio-builder-options-v12-precious-meta-bitoproxy', 'ca'],
+  ['portfolio-builder-options-v13-tec', 'ca'],
   { revalidate: DAY }
 )
-

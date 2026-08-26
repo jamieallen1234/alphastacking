@@ -40,6 +40,8 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   COWZ: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 0 },
   PTF: { longEquityPct: 100, shortEquityPct: 0, alphaPct: 0 },
   'ZLB.TO': { longEquityPct: 100, shortEquityPct: 0, alphaPct: 0 },
+  'FINN.NE': { longEquityPct: 100, shortEquityPct: 0, alphaPct: 0 },
+  'TEC.TO': { longEquityPct: 100, shortEquityPct: 0, alphaPct: 0 },
 
   // Stacked / capital-efficient
   NTSD: { longEquityPct: 150, shortEquityPct: 0, alphaPct: 0 },
@@ -89,6 +91,7 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   'PFAA.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   MRGR: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   'ARB.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
+  'BAAA.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
 }
 
 function modelForTicker(ticker: string): ExposureModel | null {

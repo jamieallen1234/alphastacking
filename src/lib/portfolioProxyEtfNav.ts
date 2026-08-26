@@ -14,6 +14,8 @@ const OFFICIAL_ETF_HOME: Record<string, string> = {
   QQQ: 'https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Individual&ticker=QQQ',
   'VFV.TO': 'https://www.vanguard.ca/en/product/etf/series/vanguard-sp-500-index-etf',
   'XSP.TO': 'https://www.ishares.com/ca/en/products/239729/ishares-core-sp-500-index-etf',
+  'XIU.TO': 'https://www.ishares.com/ca/products/239832/ishares-sptsx-60-index-etf',
+  'TEC.TO': 'https://www.td.com/ca/en/asset-management/funds/solutions/etfs/fundcard?fundId=7113',
   'HEQT.TO': 'https://www.globalx.ca/product/heqt',
 }
 

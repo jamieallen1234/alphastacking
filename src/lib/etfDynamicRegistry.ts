@@ -2567,6 +2567,42 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'Fidelity Canada (FINN)',
   },
 
+  tec: {
+    yahooSymbol: 'TEC.TO',
+    betaBenchmarkSymbol: 'XSP.TO',
+    hubCategoryId: 'factor-momentum',
+    badge: 'Factor',
+    h1Title: 'TEC.TO - TD Global Technology Leaders Index ETF',
+    displayTicker: 'TEC',
+    issuer: 'TD Asset Management',
+    inception: 'May 7, 2019',
+    addedToSite: '2026-08-26',
+    structure: 'Global technology sector equity index ETF',
+    mer: '0.39%',
+    aum: '~$5.0B CAD',
+    pageTitle: 'TEC.TO ETF - Alpha Stacking',
+    description:
+      'TD Global Technology Leaders Index ETF (TEC.TO): Canadian-listed global technology equity exposure.',
+    contentFormat: 'html',
+    lede:
+      'TEC is a Canadian-listed <strong>global technology equity</strong> ETF. It is a concentrated sector-beta sleeve, not a broad-market core: U.S. mega-cap technology is the center of gravity.',
+    strategyParas: [
+      'TEC tracks the Solactive Global Technology Leaders Index, holding global mid- and large-cap companies tied to technology. It owns a broad set of names, but the economic bet remains concentrated in technology earnings, AI capital expenditure, semiconductor cycles, and long-duration growth multiples.',
+      'The CAD trading line does not turn this into a Canadian equity fund. TD reports that the portfolio is predominantly U.S. equity, with a smaller international allocation. That makes TEC useful when you deliberately want global technology leadership, but it overlaps heavily with the largest growth companies already present in broad U.S. and global equity funds.',
+    ],
+    pedigreeParas: ped(
+      'TD Asset Management runs TEC as a passive index mandate. The fund launched in 2019, has roughly $5.0B CAD in assets, and is managed within TDAM\'s passive-investing platform rather than by a single-stock manager.',
+      'The listed Canadian wrapper offers CAD trading and registered-account eligibility, but the underlying exposure is global technology equities. The relevant implementation risks are sector concentration, valuation sensitivity, and trading costs, not manager discretion.'
+    ),
+    outperfParas: [
+      'Favorable tape: <strong>persistent technology leadership</strong>, where AI investment, semiconductor demand, and platform-company earnings keep compounding faster than the broad market. In that environment, TEC\'s structural concentration is an advantage rather than a diversification problem.',
+      'Hostile tape: <strong>a sharp duration-led reversal</strong>, where real yields rise, growth multiples compress, or leadership rotates toward value, energy, and financials. The same mega-cap clustering that drives upside can make TEC fall with the rest of the technology complex.',
+    ],
+    officialUrl:
+      'https://www.td.com/ca/en/asset-management/funds/solutions/etfs/fundcard?fundId=7113',
+    officialLabel: 'TD Asset Management (TEC)',
+  },
+
   atsx: {
     yahooSymbol: 'ATSX.TO',
     betaBenchmarkSymbol: 'XSP.TO',

@@ -6,14 +6,20 @@ import type { YahooRange } from '@/lib/yahooFinance'
 const DAY = 86400
 
 /**
- * Stable fingerprint of a preset's holdings (ticker, weight, beta) plus its
- * `extraCacheKeyTags`. Passed into `unstable_cache` as a cache-key argument so editing a
- * preset's holdings automatically invalidates its cached chart, without relying on
- * remembering to bump a version tag by hand.
+ * Stable fingerprint of every chart-affecting preset setting. Passed into `unstable_cache` as a
+ * cache-key argument so editing holdings, currency, rebalancing, or benchmark settings
+ * automatically invalidates its cached chart, without relying on remembering to bump a version
+ * tag by hand.
  */
 function presetHoldingsSignature(preset: PresetDefinition): string {
   const holdingsKey = preset.holdings.map((h) => `${h.ticker}:${h.weightPct}:${h.beta}`).join(',')
-  return `${holdingsKey}|${preset.extraCacheKeyTags.join(',')}|${preset.benchmarkSymbol ?? ''}`
+  return [
+    holdingsKey,
+    preset.extraCacheKeyTags.join(','),
+    preset.benchmarkSymbol ?? '',
+    preset.cadDenominated ? 'cad' : 'usd',
+    preset.rebalanceSchedule,
+  ].join('|')
 }
 
 /**
@@ -24,10 +30,12 @@ function presetHoldingsSignature(preset: PresetDefinition): string {
  */
 const _cachedPresetChart = unstable_cache(
   async (presetId: string, range: YahooRange, _holdingsSignature: string) => {
+    // The signature is intentionally an argument so it participates in the cache key.
+    void _holdingsSignature
     const preset = mustPreset(presetId)
     return computePresetChart(preset, range)
   },
-  ['preset-chart', 'chart-proxy-v17-similar-auto'],
+  ['preset-chart', 'chart-proxy-v22-pfae-130-30-full-capital'],
   { revalidate: DAY }
 )
 

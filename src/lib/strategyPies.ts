@@ -39,6 +39,8 @@ const FACTOR_FUNDS: Record<string, string> = {
   VFLO: 'US large-cap',
   'ZLB.TO': 'Canadian equity',
   'FCMO.TO': 'US large-cap',
+  'FINN.NE': 'Global equity',
+  'TEC.TO': 'Global technology equity',
 }
 
 /** Pure-growth funds (levered / plain index): ticker → index label. */
@@ -70,6 +72,7 @@ const ALPHA_FUNDS: Record<string, string> = {
   CLSE: 'Long/short',
   ORR: 'Long/short',
   'HDGE.TO': 'Long/short',
+  'PFAE.TO': 'Long/short',
   'PFLS.TO': 'Long/short',
   // Market-neutral (beta ~0.12): behaves like a premia/carry sleeve, not directional long/short.
   'PFMN.TO': 'Premia/carry',
@@ -81,6 +84,7 @@ const ALPHA_FUNDS: Record<string, string> = {
   HARD: 'Global macro',
   'DGLM.TO': 'Global macro',
   'ARB.TO': 'Arbitrage',
+  'BAAA.TO': 'Fixed income',
   ZROZ: 'Fixed income',
   GLD: 'Real assets/gold',
 }

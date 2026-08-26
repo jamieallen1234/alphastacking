@@ -29,7 +29,10 @@ export async function GET(req: Request) {
 
   try {
     const payload = await getCachedPresetChartForRange(presetId, range)
-    return chartJsonResponse(payload, 'public-1h')
+    // The computation itself is cached by getCachedPresetChart. Do not additionally cache this
+    // HTTP response in the browser or CDN, otherwise a newly deployed proxy model can leave a
+    // range tab displaying an older calculation for up to an hour.
+    return chartJsonResponse(payload)
   } catch (e) {
     return chartErrorResponse(e, 'Failed to load preset chart')
   }

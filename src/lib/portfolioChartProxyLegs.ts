@@ -62,10 +62,32 @@ export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, ProxyDef> = {
   VFLO: { legs: [{ blend: [{ symbol: 'COWZ', weight: 0.5 }, { symbol: 'GARP', weight: 0.5 }] }] },
   /** Pre-listing: same US momentum-factor strategy (Fidelity U.S. Momentum vs S&P 500 Momentum); extends joint history before FCMO.TO's inception. */
   'FCMO.TO': { legs: ['SPMO'] },
+  /** Pre-listing: Canadian-listed global technology ETF used for FINN's innovation-heavy global equity sleeve. */
+  'FINN.NE': { legs: ['TEC.TO'] },
   /** Pre-listing: 90% TIPS + 90% gold futures; TIP extends to 2003, GLD to 2004. Gross = 180%. */
   GDT: { legs: ['TIP', 'GLD'], grossExposurePct: 180 },
+  /**
+   * Pre-listing: Canadian 130/30 long/short equity proxy. The 100% capital allocation is
+   * 23% XSP, 35% XIU, 30% PFLS, and 12% SSO. This produces 130% long exposure
+   * (23 + 35 + 48 from PFLS + 24 from SSO) and 30% short exposure from PFLS.
+   * The real PFAE series takes over at its first listed session.
+   */
+  'PFAE.TO': {
+    legs: [
+      {
+        blend: [
+          { symbol: 'XSP.TO', weight: 0.23 },
+          { symbol: 'PFLS.TO', weight: 0.3 },
+          { symbol: 'XIU.TO', weight: 0.35 },
+          { symbol: 'SSO', weight: 0.12 },
+        ],
+      },
+    ],
+  },
   /** Pre-listing: US-listed merger arbitrage; extends joint history before ARB.TO's inception (MRGR live since 2013). */
   'ARB.TO': { legs: ['MRGR'] },
+  /** Pre-listing: US-listed AAA CLO ETF, used to extend BAAA.TO's floating-rate credit sleeve. */
+  'BAAA.TO': { legs: ['JAAA'] },
   /** Pre-listing: 50% Convergence long/short + 50% international small-cap value, net of a 25% small-cap-beta short (IWM) to approximate ORR's long/short net exposure; extends joint history before ORR's inception. */
   ORR: {
     legs: [{ blend: [{ symbol: 'CLSE', weight: 0.5 }, { symbol: 'AVDV', weight: 0.5 }, { symbol: 'IWM', weight: -0.25 }] }],

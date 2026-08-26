@@ -516,6 +516,12 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Concentrated, actively managed global equity book run by Mark Schmehl, benchmarked to the Nasdaq Composite with a momentum-driven, high-conviction process.',
       caPath('finn')
     ),
+    ca(
+      'tec',
+      'TEC.TO - TD Global Technology Leaders Index ETF',
+      'Canadian-listed global technology equity ETF tracking mid- and large-cap technology leaders, with substantial U.S. mega-cap exposure.',
+      caPath('tec')
+    ),
   ],
   'factor-value': [
     ca(

@@ -60,6 +60,7 @@ export const US_BOND_ALT_PRESET_ID = 'us-bond-alt-v1'
 export const CA_BOND_ALT_PRESET_ID = 'ca-bond-alt-v1'
 export const US_SIXTY_FORTY_PRESET_ID = 'us-sixty-forty-v1'
 export const CA_SIXTY_FORTY_PRESET_ID = 'ca-sixty-forty-v1'
+export const CA_GRANDMAS_PORTFOLIO_PRESET_ID = 'ca-grandmas-portfolio-v1'
 
 // -------------------- Holdings --------------------
 export const usInternationalHoldings: PresetHolding[] = [
@@ -287,6 +288,18 @@ export const caSixtyFortyHoldings: PresetHolding[] = [
   { ticker: 'PFMN.TO', weightPct: 10, beta: 0.12, blurb: 'Market-neutral long/short equity, a Canadian-listed beta-neutral premia complement.' },
 ]
 
+/** 15 / 10 / 15 / 20 / 10 / 10 / 10 / 10 buy-and-hold, benchmarked against VGRO.TO. A Canadian equity and alternatives mix with a 20% long/short core and AAA CLO income sleeve. */
+export const caGrandmasPortfolioHoldings: PresetHolding[] = [
+  { ticker: 'FINN.NE', weightPct: 15, beta: 1.53, blurb: 'Fidelity Global Innovators ETF, a concentrated global equity sleeve.' },
+  { ticker: 'VFLO', weightPct: 10, beta: 0.75, blurb: 'Large-cap free-cash-flow value tilt.' },
+  { ticker: 'ZLB.TO', weightPct: 15, beta: 0.63, blurb: 'Canadian low-volatility equity.' },
+  { ticker: 'PFAE.TO', weightPct: 20, beta: 1.0, blurb: 'Canadian 130/30 long/short equity with about full-market net exposure.' },
+  { ticker: 'PFLS.TO', weightPct: 10, beta: 0.48, blurb: 'Global long/short equity diversifier.' },
+  { ticker: 'PFMN.TO', weightPct: 10, beta: 0.12, blurb: 'Market-neutral long/short equity.' },
+  { ticker: 'ARB.TO', weightPct: 10, beta: 0.05, blurb: 'Event-driven merger and SPAC arbitrage.' },
+  { ticker: 'BAAA.TO', weightPct: 10, beta: 0.05, blurb: 'AAA CLO floating-rate credit income.' },
+]
+
 // -------------------- Registry --------------------
 export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
@@ -499,6 +512,15 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     holdings: caSixtyFortyHoldings,
     benchmarkSymbol: 'VBAL.TO',
     extraCacheKeyTags: ['buy-hold', 'mate-cowz-clse-pfls-dbmf-flsp-pfmn-arb-v1'],
+  },
+  {
+    id: CA_GRANDMAS_PORTFOLIO_PRESET_ID,
+    region: 'ca',
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+    holdings: caGrandmasPortfolioHoldings,
+    benchmarkSymbol: 'VGRO.TO',
+    extraCacheKeyTags: ['buy-hold', 'finn-vflo-zlb-pfae-pfls-pfmn-arb-baaa-v7-pfae-130-30-full-capital-no-fx'],
   },
 ]
 

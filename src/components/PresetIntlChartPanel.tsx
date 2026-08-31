@@ -60,7 +60,7 @@ export default function PresetIntlChartPanel({
   const [payload, setPayload] = useState(initialPayload)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // MAX payload for blended scorecard (fetched once on mount)
+  // MAX payload for the blended scorecard (fetched once on mount).
   const [maxPayload, setMaxPayload] = useState<PortfolioChartPayload | null>(null)
 
   const overlapDays = useMemo(
@@ -175,8 +175,6 @@ export default function PresetIntlChartPanel({
             ? { payload1y: toScorecardPayload(initialPayload), payloadMax: toScorecardPayload(maxPayload) }
             : null
         }
-        maxSharpeRatio={maxPayload?.sharpeRatio ?? null}
-        maxSortinoRatio={maxPayload?.sortinoRatio ?? null}
       />
     </div>
   )

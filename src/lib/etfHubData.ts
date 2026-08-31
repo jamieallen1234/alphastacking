@@ -500,7 +500,7 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   'factor-momentum': [
     ca(
       'fccm',
-      'FCCM.TO - Fidelity Canadian Momentum ETF',
+      'FCCM - Fidelity Canadian Momentum ETF',
       'Rules-based single-factor sleeve: 100 Canadian large-cap names with the strongest momentum signals, rebalanced quarterly.',
       caPath('fccm')
     ),
@@ -598,7 +598,7 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   'leveraged-equity': [
     ca(
       'hqu',
-      'HQU.TO - BetaPro NASDAQ-100 2x Daily Bull ETF',
+      'QQU.TO - BetaPro NASDAQ-100 2x Daily Bull ETF',
       '2x daily Nasdaq-100 exposure with daily reset leverage.',
       caPath('hqu')
     ),

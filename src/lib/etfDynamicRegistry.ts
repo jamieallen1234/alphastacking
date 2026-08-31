@@ -2599,11 +2599,11 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
   },
 
   fccm: {
-    yahooSymbol: 'FCCM.TO',
+    yahooSymbol: 'FCCM.NE',
     betaBenchmarkSymbol: 'XSP.TO',
     hubCategoryId: 'factor',
     badge: 'Factor',
-    h1Title: 'FCCM.TO - Fidelity Canadian Momentum ETF',
+    h1Title: 'FCCM - Fidelity Canadian Momentum ETF',
     displayTicker: 'FCCM / FCCM-U',
     issuer: 'Fidelity Investments Canada',
     inception: 'Jun 5, 2020',
@@ -2611,14 +2611,14 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     structure: 'Rules-based Canadian large-cap momentum factor',
     mer: '0.38%',
     aum: '~$1.1B CAD',
-    pageTitle: 'FCCM.TO ETF - Alpha Stacking',
-    description: 'Fidelity Canadian Momentum ETF (FCCM.TO): single-factor Canadian equity momentum in a listed wrapper.',
+    pageTitle: 'FCCM ETF - Alpha Stacking',
+    description: 'Fidelity Canadian Momentum ETF (FCCM): single-factor Canadian equity momentum in a listed wrapper.',
     contentFormat: 'html',
     lede:
       'FCCM tracks the Fidelity Canada Canadian Momentum Index: a rules-based, <strong>single-factor</strong> sleeve of 100 Canadian large-cap names ranked on positive momentum signals, rebalanced quarterly.',
     strategyParas: [
       'The index selects stocks from the Canadian large-cap universe scoring highest on proprietary momentum signals developed by Fidelity Product Services. Quarterly rebalancing aims to capture medium-term trend persistence while managing turnover. At 100 holdings the portfolio is concentrated enough that sector-level leadership tilts dominate any individual stock moves.',
-      'Momentum is a self-correcting factor: it tends to work until it doesn\'t, and rotations in Canadian equity (from energy to financials, or resources to industrials) can flip the portfolio\'s sector weight sharply at each rebalance. <strong>Note:</strong> Yahoo Finance data for FCCM.TO begins April 2024; the on-page chart reflects partial history. Full returns since the June 2020 inception are at Fidelity Canada.',
+      'Momentum is a self-correcting factor: it tends to work until it doesn\'t, and rotations in Canadian equity (from energy to financials, or resources to industrials) can flip the portfolio\'s sector weight sharply at each rebalance. <strong>Note:</strong> Yahoo Finance data for FCCM.NE begins after the Cboe Canada migration; the on-page chart reflects partial history. Full returns since the June 2020 inception are at Fidelity Canada.',
     ],
     pedigreeParas: ped(
       `Fidelity Investments Canada manages around $380 billion CAD (April 2026), giving it institutional distribution and operational depth. The FCCM index is proprietary to Fidelity Product Services, so index methodology is disclosed in prospectus and ETF Facts documents rather than a third-party provider.`,
@@ -2896,26 +2896,27 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
   },
 
   hqu: {
-    yahooSymbol: 'HQU.TO',
+    // HQU was renamed to QQU on the TSX. Yahoo keeps the current QQU.TO series.
+    yahooSymbol: 'QQU.TO',
     betaBenchmarkSymbol: 'QQQ',
     hubCategoryId: 'leveraged-equity',
     badge: 'Leveraged equity ETFs (advanced)',
-    h1Title: 'HQU.TO - BetaPro NASDAQ-100 2x Daily Bull ETF',
-    displayTicker: 'HQU',
+    h1Title: 'QQU.TO - BetaPro NASDAQ-100 2x Daily Bull ETF',
+    displayTicker: 'QQU',
     issuer: 'Global X Investments Canada',
     inception: 'Jan 8, 2010',
     addedToSite: '2026-04-25',
     structure: '2x daily Nasdaq-100 leverage',
     mer: '1.44%',
     aum: '~$400M CAD',
-    pageTitle: 'HQU.TO ETF - Alpha Stacking',
-    description: 'BetaPro NASDAQ-100 2x Daily Bull ETF (HQU.TO).',
+    pageTitle: 'QQU.TO ETF - Alpha Stacking',
+    description: 'BetaPro NASDAQ-100 2x Daily Bull ETF (QQU.TO, formerly HQU.TO).',
     contentFormat: 'html',
     lede:
-      'HQU is a daily-reset 2x Nasdaq-100 exposure sleeve in Canada, designed for tactical growth-beta positioning rather than long-horizon buy-and-hold allocation.',
+      'QQU, formerly HQU, is a daily-reset 2x Nasdaq-100 exposure sleeve in Canada, designed for tactical growth-beta positioning rather than long-horizon buy-and-hold allocation.',
     strategyParas: [
       'The fund aims for roughly two times the NASDAQ-100 daily return before fees. As with all daily leveraged ETFs, realized multi-day performance depends on sequence of returns, volatility, and rebalance math, not just start-to-end index change.',
-      'Because the index is tech-heavy and duration-sensitive, HQU’s risk profile is tightly linked to rates environment, mega-cap concentration, and momentum persistence. Position sizing and holding period discipline matter more than ticker selection alone.',
+      'Because the index is tech-heavy and duration-sensitive, QQU’s risk profile is tightly linked to rates environment, mega-cap concentration, and momentum persistence. Position sizing and holding period discipline matter more than ticker selection alone.',
     ],
     pedigreeParas: fb.GLOBAL_X_INVESTMENTS_CANADA_PEDIGREE_PARAS_HTML,
     outperfParas: [
@@ -2923,7 +2924,7 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
       'Underperforms in <strong>violent rotations and chop</strong>, where reversal-driven compounding drag can erode returns quickly.',
     ],
     officialUrl: 'https://www.globalx.ca/product/hqu',
-    officialLabel: 'Global X Canada (HQU)',
+    officialLabel: 'Global X Canada (QQU)',
   },
 
   ussl: {

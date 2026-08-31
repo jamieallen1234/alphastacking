@@ -1,6 +1,10 @@
 import { unstable_cache } from 'next/cache'
 import { CA_ETF_DYNAMIC_REGISTRY, US_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
-import { mergeDynamicEtfEfficiencyWithPatch } from '@/lib/etfDynamicEfficiencyBySlug'
+import {
+  CA_ETF_DYNAMIC_EFFICIENCY,
+  mergeDynamicEtfEfficiencyWithPatch,
+  US_ETF_DYNAMIC_EFFICIENCY,
+} from '@/lib/etfDynamicEfficiencyBySlug'
 import { getCachedMonthlyEfficiencyPatchForSlug } from '@/lib/getCachedMonthlyEtfEfficiencyGrades'
 import { stackExposureLineAvailability } from '@/lib/etfStackExposureBySlug'
 import type { PortfolioLetterGrade } from '@/lib/portfolioHubGrade'
@@ -41,15 +45,43 @@ async function buildRatingsForUniverse(universe: 'us' | 'ca'): Promise<EtfHubOve
 
 const DAY = 86400
 
+/**
+ * `unstable_cache` includes function arguments in its key. Keep the rating cache tied to the
+ * registry inventory so a newly added ETF cannot inherit a day-old ratings map that predates it.
+ */
+function ratingRegistrySignature(universe: 'us' | 'ca'): string {
+  const registry = universe === 'us' ? US_ETF_DYNAMIC_REGISTRY : CA_ETF_DYNAMIC_REGISTRY
+  const efficiencyMap = universe === 'us' ? US_ETF_DYNAMIC_EFFICIENCY : CA_ETF_DYNAMIC_EFFICIENCY
+  return Object.entries(registry)
+    .map(([slug, def]) => {
+      const efficiency = def.efficiency ?? efficiencyMap[slug]
+      return [
+      slug,
+      def.yahooSymbol,
+      def.hubCategoryId,
+      efficiency?.capital != null ? 'capital' : '',
+      efficiency?.alpha != null ? 'alpha' : '',
+      efficiency?.stacked != null ? 'stacked' : '',
+      ].join(':')
+    })
+    .join('|')
+}
+
 const getCachedRatingsUs = unstable_cache(
-  async () => buildRatingsForUniverse('us'),
-  ['etf-hub-overall-ratings-v1', 'us'],
+  async (registrySignature: string) => {
+    void registrySignature
+    return buildRatingsForUniverse('us')
+  },
+  ['etf-hub-overall-ratings-v2', 'us'],
   { revalidate: DAY }
 )
 
 const getCachedRatingsCa = unstable_cache(
-  async () => buildRatingsForUniverse('ca'),
-  ['etf-hub-overall-ratings-v1', 'ca'],
+  async (registrySignature: string) => {
+    void registrySignature
+    return buildRatingsForUniverse('ca')
+  },
+  ['etf-hub-overall-ratings-v2', 'ca'],
   { revalidate: DAY }
 )
 
@@ -60,7 +92,10 @@ const getCachedRatingsCa = unstable_cache(
 export async function getEtfHubOverallRatings(
   listing: 'us' | 'ca'
 ): Promise<EtfHubOverallRatings> {
-  if (listing === 'us') return getCachedRatingsUs()
-  const [ca, us] = await Promise.all([getCachedRatingsCa(), getCachedRatingsUs()])
+  if (listing === 'us') return getCachedRatingsUs(ratingRegistrySignature('us'))
+  const [ca, us] = await Promise.all([
+    getCachedRatingsCa(ratingRegistrySignature('ca')),
+    getCachedRatingsUs(ratingRegistrySignature('us')),
+  ])
   return { ...us, ...ca }
 }

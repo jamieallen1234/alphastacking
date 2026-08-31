@@ -709,6 +709,13 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  tec: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'TEC tracks a global technology equity index with substantial U.S. mega-cap exposure. Capital efficiency grades this concentrated sector-equity sleeve versus a CAD-hedged S&P 500 proxy (XSP.TO).'
+      ),
+    },
+  },
   finn: {
     capital: {
       tooltip: capitalEfficiencyTooltip(
@@ -769,7 +776,7 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
   hqu: {
     capital: {
       tooltip: capitalEfficiencyTooltip(
-        'HQU is a 2x daily Nasdaq-100 leverage sleeve. Capital efficiency depends on trend persistence versus volatility drag from daily-reset leverage.'
+        'QQU, formerly HQU, is a 2x daily Nasdaq-100 leverage sleeve. Capital efficiency depends on trend persistence versus volatility drag from daily-reset leverage.'
       ),
     },
   },

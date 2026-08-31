@@ -27,7 +27,8 @@ function pruneSlugLoaders(currentMonthKey: string) {
 }
 
 /**
- * Monthly Yahoo-based grade patch for **one** ETF page. Cached per (NY month, universe, slug).
+ * Monthly Yahoo-based grade patch for **one** ETF page. Cached per current grade inputs,
+ * so a ticker migration or newly defined efficiency line cannot retain an older N/A result.
  * Avoids loading all tickers on every detail view (that was ~15s+ with sequential Yahoo pacing).
  */
 export async function getCachedMonthlyEfficiencyPatchForSlug(
@@ -48,7 +49,13 @@ export async function getCachedMonthlyEfficiencyPatchForSlug(
       : CA_ETF_DYNAMIC_EFFICIENCY[slug as keyof typeof CA_ETF_DYNAMIC_EFFICIENCY]) ??
     undefined
 
-  const cacheKey = `${monthKey}:${universe}:${slug}`
+  const gradeInputSignature = [
+    def.yahooSymbol,
+    def.hubCategoryId,
+    staticEff?.capital != null ? 'capital' : '',
+    staticEff?.alpha != null ? 'alpha' : '',
+  ].join(':')
+  const cacheKey = `${monthKey}:${universe}:${slug}:${gradeInputSignature}`
   let loader = slugLoaderByKey.get(cacheKey)
   if (!loader) {
     loader = unstable_cache(
@@ -57,7 +64,13 @@ export async function getCachedMonthlyEfficiencyPatchForSlug(
         const rf5y = await fetchDailySeries('^IRX', '5y')
         return computeMonthlyEfficiencyPatchForSlug(def, staticEff, spy5y, rf5y, slug)
       },
-      ['etf-efficiency-monthly-per-slug-v25-under12m-step-plus-b-plus-cap', monthKey, universe, slug],
+      [
+        'etf-efficiency-monthly-per-slug-v26-grade-input-signature',
+        monthKey,
+        universe,
+        slug,
+        gradeInputSignature,
+      ],
       { revalidate: MONTHLY_EFFICIENCY_REVALIDATE_SEC }
     )
     slugLoaderByKey.set(cacheKey, loader)

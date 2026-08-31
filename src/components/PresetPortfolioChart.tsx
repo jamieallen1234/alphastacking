@@ -272,10 +272,6 @@ interface PresetPortfolioChartProps {
    * If only one range has data, that range is weighted 100%.
    */
   scorecardPayloads?: { payload1y: ScorecardPayload; payloadMax: ScorecardPayload } | null
-  /** Fixed Sharpe from MAX range — overrides the active-range payload value so the display doesn't change per tab. */
-  maxSharpeRatio?: number | null
-  /** Fixed Sortino from MAX range — overrides the active-range payload value so the display doesn't change per tab. */
-  maxSortinoRatio?: number | null
   /** Optional second portfolio payload to render as a third chart line. */
   comparisonPayload?: PortfolioChartPayload | null
   /** Label for the comparison portfolio line (default "Portfolio B"). */
@@ -350,8 +346,6 @@ function PortfolioMetricsAndScorecard({
   exposureSummary,
   holdings,
   scorecardPayloads,
-  maxSharpeRatio,
-  maxSortinoRatio,
   asOfMs,
 }: {
   payload: PortfolioChartPayload
@@ -366,8 +360,6 @@ function PortfolioMetricsAndScorecard({
   } | null
   holdings: Array<{ ticker: string; weightPct: number }>
   scorecardPayloads: { payload1y: ScorecardPayload; payloadMax: ScorecardPayload } | null
-  maxSharpeRatio: number | null
-  maxSortinoRatio: number | null
   asOfMs: number
 }) {
   const {
@@ -382,8 +374,8 @@ function PortfolioMetricsAndScorecard({
     sortinoRatio: payloadSortinoRatio = null,
   } = payload
 
-  const sharpeRatio = maxSharpeRatio !== null ? maxSharpeRatio : payloadSharpeRatio
-  const sortinoRatio = maxSortinoRatio !== null ? maxSortinoRatio : payloadSortinoRatio
+  const sharpeRatio = payloadSharpeRatio
+  const sortinoRatio = payloadSortinoRatio
 
   const trClass =
     totalReturnPercent == null
@@ -649,8 +641,6 @@ export default function PresetPortfolioChart({
   exposureSummary = null,
   holdings = [],
   scorecardPayloads = null,
-  maxSharpeRatio = null,
-  maxSortinoRatio = null,
   comparisonPayload = null,
   comparisonLabel = 'Portfolio B',
   comparisonWeightedBeta = null,
@@ -727,8 +717,6 @@ export default function PresetPortfolioChart({
         exposureSummary={exposureSummary}
         holdings={holdings}
         scorecardPayloads={scorecardPayloads}
-        maxSharpeRatio={maxSharpeRatio}
-        maxSortinoRatio={maxSortinoRatio}
         asOfMs={asOfMs}
       />
       <div className={styles.legendChartWrap}>
@@ -766,8 +754,6 @@ export default function PresetPortfolioChart({
             exposureSummary={comparisonExposureSummary}
             holdings={comparisonHoldings}
             scorecardPayloads={null}
-            maxSharpeRatio={null}
-            maxSortinoRatio={null}
             asOfMs={asOfMs}
           />
         </div>

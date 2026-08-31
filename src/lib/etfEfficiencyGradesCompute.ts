@@ -382,7 +382,13 @@ export async function computeMonthlyEfficiencyPatchForSlug(
     hasAlpha = inferred.hasAlpha && nonEquityN > 0
   }
 
-  const equityOnlyByCategory = def.hubCategoryId === 'factor' || def.hubCategoryId === 'long-short'
+  const equityOnlyByCategory = [
+    'factor',
+    'factor-momentum',
+    'factor-value',
+    'factor-active',
+    'long-short',
+  ].includes(def.hubCategoryId)
   const mappedStackResidual =
     !equityOnlyByCategory && Boolean(mapped && equityN > 0 && nonEquityN > 0)
   const mappedStackEquityOnly =

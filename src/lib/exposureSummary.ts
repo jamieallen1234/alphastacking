@@ -26,7 +26,7 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   QLD: { longEquityPct: 200, shortEquityPct: 0, alphaPct: 0 },
   TQQQ: { longEquityPct: 300, shortEquityPct: 0, alphaPct: 0 },
   'HSU.TO': { longEquityPct: 200, shortEquityPct: 0, alphaPct: 0 },
-  'HQU.TO': { longEquityPct: 200, shortEquityPct: 0, alphaPct: 0 },
+  'QQU.TO': { longEquityPct: 200, shortEquityPct: 0, alphaPct: 0 },
   'USSL.TO': { longEquityPct: 125, shortEquityPct: 0, alphaPct: 0 },
   'QQQL.TO': { longEquityPct: 125, shortEquityPct: 0, alphaPct: 0 },
   'HEQL.TO': { longEquityPct: 125, shortEquityPct: 0, alphaPct: 0 },

@@ -138,6 +138,28 @@
   color: var(--color-text);
 }
 
+.entryRating {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-gold);
+}
+
+.entryRatingA {
+  color: #e8d584;
+  font-size: 12px;
+  text-shadow: 0 0 8px rgba(232, 213, 132, 0.45);
+}
+
+.entryRatingAPlus {
+  color: #f5e97a;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(245, 233, 122, 0.65);
+}
+
 .entryTitle {
   font-family: var(--font-serif);
   font-size: 1.1rem;

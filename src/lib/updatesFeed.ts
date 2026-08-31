@@ -28,6 +28,8 @@ export interface UpdateEntry {
   blurb: string
   /** Override the displayed kind label (e.g. "Stock" for single-equity entries). */
   kindLabel?: string
+  /** Portfolio-only beta input used to compute the same blended grade as the portfolio hub. */
+  weightedBeta?: number
 }
 
 export interface UpdateDay {
@@ -112,6 +114,7 @@ function portfolioEntries(
       title: route.title,
       href: `${hrefPrefix}/${route.slug}`,
       blurb: route.description,
+      weightedBeta: route.weightedBeta,
     })
   }
   return out

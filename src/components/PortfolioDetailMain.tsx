@@ -15,6 +15,7 @@ import {
   CA_ALPHA_STACK_PRESET_ID,
   CA_BOND_ALT_PRESET_ID,
   CA_CORE_BH_PRESET_ID,
+  CA_DIVIDENDS_PRESET_ID,
   CA_FACTOR_FCMO_PRESET_ID,
   CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   CA_GRANDMAS_PORTFOLIO_PRESET_ID,
@@ -82,6 +83,7 @@ const CA_SLUG_TO_PRESET_ID: Record<string, string> = {
   'ca-alpha-stack': CA_ALPHA_STACK_PRESET_ID,
   'ca-four-alpha-quadrants': CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   'ca-grandmas-portfolio': CA_GRANDMAS_PORTFOLIO_PRESET_ID,
+  'ca-dividends': CA_DIVIDENDS_PRESET_ID,
   'ca-bond-alternative': CA_BOND_ALT_PRESET_ID,
   'ca-sixty-forty': CA_SIXTY_FORTY_PRESET_ID,
 }
@@ -159,6 +161,8 @@ async function LiveLayout({
         <PresetHoldingsTable
           holdings={preset.holdings}
           weightedBeta={wb}
+          estimatedDistributionYieldPct={preset.estimatedDistributionYieldPct}
+          distributionYieldAsOf={preset.distributionYieldAsOf}
           copyBuilderHref={builderCopyHref}
         />
 

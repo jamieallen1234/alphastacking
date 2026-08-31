@@ -26,6 +26,23 @@ const LETF_SYMBOLS = new Set([
   'QQQL.TO',
 ])
 
+/**
+ * Funds used by live model portfolios that do not yet have an on-site ETF research page.
+ * Keeping these options here makes model-portfolio prefill links fully editable in the builder
+ * without inventing a full ETF profile before its research write-up is ready.
+ */
+const CA_PORTFOLIO_SUPPLEMENTAL_OPTIONS = [
+  {
+    slug: 'hpr-preferred-share',
+    symbol: 'HPR.TO',
+    displayTicker: 'HPR',
+    title: 'Horizons Active Preferred Share ETF',
+    category: 'Fixed income',
+    capitalEligible: false,
+    alphaEligible: true,
+  },
+] as const
+
 function builderCategoryFor(def: { yahooSymbol: string; badge: string }): string {
   if (LETF_SYMBOLS.has(def.yahooSymbol.toUpperCase())) return 'LETF'
   if (def.badge.startsWith('Return Stacked')) return 'Return Stacked'
@@ -135,14 +152,38 @@ async function buildOptionsForUniverse(universe: 'us' | 'ca'): Promise<Portfolio
       } satisfies PortfolioBuilderEtfOption
     })
   )
-  return rows.sort((a, b) => a.displayTicker.localeCompare(b.displayTicker))
+  if (universe === 'us') return rows.sort((a, b) => a.displayTicker.localeCompare(b.displayTicker))
+
+  const supplementalRows = await Promise.all(
+    CA_PORTFOLIO_SUPPLEMENTAL_OPTIONS.map(async (def) => {
+      const benchmark = defaultBetaBenchmarkForSymbol(def.symbol)
+      const [etf1y, bench1y] = await Promise.all([
+        fetchDailySeries(def.symbol, '1y').catch(() => null),
+        loadBenchmark1y(benchmark),
+      ])
+      return {
+        ...def,
+        universe: 'ca' as const,
+        stackedEligible: false,
+        capitalGrade: null,
+        alphaGrade: null,
+        stackedGrade: null,
+        beta: etf1y && bench1y ? computeBetaVsBenchmark(etf1y, bench1y) : null,
+        netEquityPct: netListedEquityPctForTicker(def.symbol),
+        hasCryptoExposure: false,
+        hasPreciousMetalsExposure: false,
+      } satisfies PortfolioBuilderEtfOption
+    })
+  )
+
+  return [...rows, ...supplementalRows].sort((a, b) => a.displayTicker.localeCompare(b.displayTicker))
 }
 
 const DAY = 86400
 
 export const getCachedPortfolioBuilderOptionsUs = unstable_cache(
   async () => buildOptionsForUniverse('us'),
-  ['portfolio-builder-options-v13-tec', 'us'],
+  ['portfolio-builder-options-v14-dividends', 'us'],
   { revalidate: DAY }
 )
 
@@ -154,6 +195,6 @@ export const getCachedPortfolioBuilderOptionsCa = unstable_cache(
     ])
     return [...ca, ...us].sort((a, b) => a.displayTicker.localeCompare(b.displayTicker))
   },
-  ['portfolio-builder-options-v13-tec', 'ca'],
+  ['portfolio-builder-options-v14-dividends', 'ca'],
   { revalidate: DAY }
 )

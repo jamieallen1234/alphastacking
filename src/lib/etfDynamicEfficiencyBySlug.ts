@@ -698,7 +698,7 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
   fcmo: {
     capital: {
       tooltip: capitalEfficiencyTooltip(
-        'FCMO tracks the Fidelity Canada U.S. Momentum Index: 100 U.S. large-cap names ranked on positive momentum signals, quarterly rebalanced. Capital efficiency grades the sleeve versus a CAD-hedged S&P 500 proxy (XSP.TO).'
+          'FCMO tracks the Fidelity Canada U.S. Momentum Index: 100 U.S. large-cap names ranked on positive momentum signals, quarterly rebalanced. Capital efficiency grades the sleeve versus a CAD-hedged S&P 500 proxy (XSP.TO).'
       ),
     },
   },

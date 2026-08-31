@@ -51,6 +51,8 @@ export interface PortfolioRouteDef {
   weightedBeta?: number
   /** Rebalance cadence — used to render subsection labels within a category. */
   rebalance?: 'annual' | 'none'
+  /** Optional fixed position within a hub section. Lower values appear first. */
+  hubOrder?: number
 }
 
 /** Curated routes for US (`/portfolios/...`) */
@@ -330,17 +332,6 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     weightedBeta: 0.99,
   },
   {
-    slug: 'ca-grandmas-portfolio',
-    region: 'ca',
-    kind: 'live',
-    hubSection: 'retirement',
-    rebalance: 'none',
-    title: "Grandma's Portfolio",
-    description: 'Canadian equity and alternatives paired with AAA CLO income, measured against VGRO.',
-    addedAt: '2026-08-26',
-    weightedBeta: 0.669,
-  },
-  {
     slug: 'ca-bond-alternative',
     region: 'ca',
     kind: 'live',
@@ -349,7 +340,8 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     title: 'Bond Alternative',
     description: 'Five low-beta, non-equity-directional strategies built to outrun the aggregate bond index without equity-level risk.',
     addedAt: '2026-08-14',
-    weightedBeta: 0.107,
+    weightedBeta: 0.117,
+    hubOrder: 1,
   },
   {
     slug: 'ca-sixty-forty',
@@ -361,6 +353,32 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     description: 'Unleveraged equity paired with long/short and trend diversifiers, built for lower drawdown than a traditional 60/40 without giving up return.',
     addedAt: '2026-08-16',
     weightedBeta: 0.465,
+    hubOrder: 2,
+  },
+  {
+    slug: 'ca-grandmas-portfolio',
+    region: 'ca',
+    kind: 'live',
+    hubSection: 'retirement',
+    rebalance: 'none',
+    title: "Grandma's Portfolio",
+    description: 'Canadian equity income and alternatives paired with AAA CLO income, measured against VGRO.',
+    addedAt: '2026-08-26',
+    weightedBeta: 0.669,
+    hubOrder: 3,
+  },
+  {
+    slug: 'ca-dividends',
+    region: 'ca',
+    kind: 'live',
+    hubSection: 'retirement',
+    rebalance: 'none',
+    title: 'Dividends',
+    badge: 'Retirement',
+    description: 'Canadian income, preferred-share, convertible-bond, arbitrage, and AAA CLO sleeves measured against XBB.',
+    addedAt: '2026-08-30',
+    weightedBeta: 0.249,
+    hubOrder: 4,
   },
 ]
 

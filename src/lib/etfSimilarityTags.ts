@@ -139,6 +139,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_CA: Record<string, EtfSimilarityTagBund
   pfaa: bundle(['multi_strategy_alternative'], ['multi_strategy_alternative'], 'seeded'),
   pfae: bundle(['canada', 'long_short'], [], 'manual'),
   zlb: bundle(['low_volatility', 'canada', 'large_cap', 'passive'], [], 'manual'),
+  eit: bundle(['canada', 'us', 'large_cap', 'active'], [], 'manual'),
   fcmo: bundle(['momentum', 'us', 'large_cap', 'passive'], [], 'manual'),
   fccm: bundle(['momentum', 'canada', 'large_cap', 'passive'], [], 'manual'),
   finn: bundle(['momentum', 'concentrated', 'global', 'all_cap', 'active'], [], 'manual'),
@@ -160,6 +161,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_CA: Record<string, EtfSimilarityTagBund
   hdge: bundle(['us', 'large_cap', 'long_short'], [], 'manual'),
   pfmn: bundle(['preferreds_credit'], ['credit'], 'seeded'),
   arb: bundle(['arbitrage'], ['arbitrage'], 'seeded'),
+  cvd: bundle([], ['convertible_bonds', 'credit'], 'manual'),
   /** Pure AAA CLO structured credit; no equity sleeve. Peers with other credit-alpha sleeves. */
   baaa: bundle([], ['aaa_clo', 'floating_rate_credit', 'investment_grade_credit'], 'seeded'),
 }

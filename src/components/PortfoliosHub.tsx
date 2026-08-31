@@ -40,6 +40,9 @@ function sortByGradeThenDate(
   hubDataBySlug: Record<string, PortfolioHubSlugData>,
 ): PortfolioRouteDef[] {
   return [...routes].sort((a, b) => {
+    if (a.hubOrder != null || b.hubOrder != null) {
+      return (a.hubOrder ?? Number.MAX_SAFE_INTEGER) - (b.hubOrder ?? Number.MAX_SAFE_INTEGER)
+    }
     const ga = resolveGrade(a, hubDataBySlug[a.slug])
     const gb = resolveGrade(b, hubDataBySlug[b.slug])
     const rankDiff = gradeRank(ga) - gradeRank(gb)

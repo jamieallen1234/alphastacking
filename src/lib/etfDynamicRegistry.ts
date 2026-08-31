@@ -2258,6 +2258,56 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     officialUrl: 'https://www.bromptongroup.com/product/brompton-wellington-square-aaa-clo-etf/',
     officialLabel: 'Brompton Funds (BAAA)',
+    efficiency: {
+      alpha: {
+        tooltip: alphaEfficiencyUnstackedTooltip(
+          'BAAA.TO is a floating-rate AAA CLO income sleeve, intended to diversify traditional duration and equity risk rather than add directional market beta.'
+        ),
+      },
+    },
+  },
+
+  cvd: {
+    yahooSymbol: 'CVD.TO',
+    hubCategoryId: 'fixed-income',
+    badge: 'Fixed income',
+    h1Title: 'CVD.TO - iShares Convertible Bond Index ETF',
+    displayTicker: 'CVD',
+    issuer: 'BlackRock Canada',
+    inception: 'Jun 14, 2011',
+    addedToSite: '2026-08-30',
+    structure: 'Canadian convertible-bond index ETF',
+    mer: '0.50%',
+    aum: '~$126M CAD (Aug. 2026)',
+    pageTitle: 'CVD.TO ETF - Alpha Stacking',
+    description:
+      'iShares Convertible Bond Index ETF (CVD.TO): Canadian convertible-bond exposure with monthly distributions.',
+    contentFormat: 'html',
+    chartHeadingLabel: 'total return',
+    lede:
+      'CVD is a <strong>Canadian convertible-bond sleeve</strong> that holds the small domestic convertibles market, pairing coupon income with <strong>embedded equity optionality</strong> rather than behaving like a broad aggregate-bond fund.',
+    strategyParas: [
+      'CVD tracks the FTSE Canada Convertible Bond Index, holding a concentrated pool of Canadian-dollar convertible bonds. Convertibles are corporate debt with an option to convert into the issuer\'s equity, so they can participate in an issuer\'s upside while retaining a claim ahead of common equity. That hybrid payoff is why CVD can diversify a bond alternative portfolio, but it is still exposed to corporate credit and equity stress.',
+      'The portfolio had 21 holdings and an effective duration near one year in late August 2026. The short duration limits sensitivity to broad rate moves, but it does not eliminate downside: a concentrated issuer market, widening credit spreads, and a falling share price can all hurt at once. The monthly distribution should be viewed as portfolio income, not as a guaranteed yield.',
+    ],
+    pedigreeParas: ped(
+      'BlackRock Asset Management Canada Limited manages CVD on the iShares platform, with BlackRock Institutional Trust Company, N.A. as sub-advisor. The fund launched in 2011 and gives Canadian investors listed access to an otherwise thin, dealer-driven convertible-bond market.',
+      'This is a rules-based index ETF, not an active credit mandate. The FTSE Canada Convertible Bond Index applies issuer and industry limits, but a 21-security portfolio still carries meaningful issuer concentration. The low headline duration should not be confused with cash-like risk when the underlying companies face a credit or equity shock.'
+    ),
+    outperfParas: [
+      'Outperforms when <strong>credit remains stable and the equity option appreciates</strong>: coupon income carries the position while improving issuer share prices make the conversion feature more valuable.',
+      'Underperforms when <strong>credit spreads widen and equity optionality deflates</strong>: a risk-off tape can pressure both the bond claim and the embedded equity upside at once. Favorable tape: stable corporate credit with improving issuer fundamentals. Hostile tape: stressed corporate credit with falling issuer equities.',
+    ],
+    officialUrl:
+      'https://www.blackrock.com/ca/investors/en/products/239435/ishares-convertible-bond-index-etf',
+    officialLabel: 'iShares Canada (CVD)',
+    efficiency: {
+      alpha: {
+        tooltip: alphaEfficiencyUnstackedTooltip(
+          'CVD.TO tracks Canadian convertible bonds, combining corporate-bond carry with issuer-specific equity optionality. It is scored as a fixed-income return source rather than broad market beta.'
+        ),
+      },
+    },
   },
 
   rgbm: {
@@ -2354,6 +2404,13 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialUrl:
       'https://casl.pictonmahoney.com/en/Solutions/Fortified-Alternative-Funds-Solutions.aspx',
     officialLabel: 'Picton Mahoney (Fortified alternatives, PFAA)',
+    efficiency: {
+      alpha: {
+        tooltip: alphaEfficiencyUnstackedTooltip(
+          'PFAA.TO combines long/short equity, relative-value credit, and macro sleeves, making it an alternatives return source rather than a broad equity allocation.'
+        ),
+      },
+    },
   },
 
   pmm: {
@@ -2464,12 +2521,55 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'BMO ETFs (ZLB)',
   },
 
+  eit: {
+    yahooSymbol: 'EIT-UN.TO',
+    betaBenchmarkSymbol: 'XSP.TO',
+    hubCategoryId: 'factor-active',
+    badge: 'Active income',
+    h1Title: 'EIT.UN - Canoe EIT Income Fund',
+    displayTicker: 'EIT.UN',
+    issuer: 'Canoe Financial',
+    inception: 'Aug 7, 1997',
+    addedToSite: '2026-08-30',
+    structure: 'Closed-end actively managed income fund',
+    mer: '1.1% management fee',
+    aum: '~$3.1B CAD (Jan. 2025)',
+    pageTitle: 'EIT.UN ETF - Alpha Stacking',
+    description:
+      'Canoe EIT Income Fund (EIT.UN): actively managed closed-end income fund with monthly distributions.',
+    contentFormat: 'html',
+    chartHeadingLabel: 'total return',
+    lede:
+      'EIT.UN is a <strong>closed-end income fund</strong> that runs an actively managed book of equities and other income-producing securities, targeting <strong>monthly distributions and NAV growth</strong> rather than a rules-based dividend index.',
+    strategyParas: [
+      'EIT holds income-generating and capital-growth securities across sectors and market capitalizations. The mandate can combine common equity, preferred shares, debt, and related instruments, so it is an active allocation vehicle, not a plain Canadian dividend ETF. The fund may borrow up to 20% of total assets, which lifts both the income engine and drawdown risk.',
+      'The monthly cash distribution is a policy choice, not a coupon. Canoe says it can be supported by dividends, interest, realized and unrealized gains, and return of capital. Read the annual tax breakdown and the fund\'s market-price discount or premium to NAV before treating the stated distribution rate as investment yield.',
+    ],
+    pedigreeParas: ped(
+      'Canoe Financial has managed EIT since Robert Taylor became portfolio manager in July 2013. The fund began in 1997 and reported about $3.1 billion in total assets in January 2025, making it one of Canada\'s larger closed-end income funds.',
+      'This is a closed-end trust, not an open-end ETF. Units trade at a market price and Canoe offers an annual capped redemption of up to 10% of outstanding units at 95% of NAV. That structure can leave a persistent discount or premium to NAV, and permitted borrowing makes its distribution mandate a capital-allocation decision, not a passive index result.'
+    ),
+    outperfParas: [
+      'Outperforms when <strong>equity income compounds and the discount narrows</strong>: the active portfolio earns dividends and gains while investors reward its distribution policy, adding market-price appreciation above underlying NAV movement.',
+      'Underperforms when <strong>equity income disappoints and the discount widens</strong>: an equity selloff, weaker gains, or lost appetite for closed-end income vehicles can hit both NAV and the market-price discount. Favorable tape: active equity income with a stable or narrowing discount. Hostile tape: falling equity income with a widening discount.',
+    ],
+    officialUrl: 'https://www.canoefinancial.com/eit-income-fund',
+    officialLabel: 'Canoe Financial (EIT.UN)',
+    efficiency: {
+      capital: {
+        tooltip: capitalEfficiencyTooltip(
+          'EIT.UN is Canoe\'s actively managed closed-end income fund, holding a diversified book of income-generating and capital-growth securities with permitted leverage. Capital efficiency grades its equity-like return against the CAD-hedged S&P 500 proxy (XSP.TO).'
+        ),
+      },
+    },
+  },
+
   fcmo: {
-    yahooSymbol: 'FCMO.TO',
+    yahooSymbol: 'FCMO.NE',
     betaBenchmarkSymbol: 'XSP.TO',
     hubCategoryId: 'factor',
     badge: 'Factor',
-    h1Title: 'FCMO.TO - Fidelity U.S. Momentum ETF',
+    h1Title: 'FCMO - Fidelity U.S. Momentum ETF',
     displayTicker: 'FCMO / FCMO-U',
     issuer: 'Fidelity Investments Canada',
     inception: 'Jun 5, 2020',
@@ -2477,8 +2577,8 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     structure: 'Rules-based U.S. large-cap momentum factor',
     mer: '0.38%',
     aum: '~$2.2B CAD',
-    pageTitle: 'FCMO.TO ETF - Alpha Stacking',
-    description: 'Fidelity U.S. Momentum ETF (FCMO.TO): single-factor U.S. equity momentum in a Canadian-listed wrapper.',
+    pageTitle: 'FCMO ETF - Alpha Stacking',
+    description: 'Fidelity U.S. Momentum ETF (FCMO): single-factor U.S. equity momentum in a Canadian-listed wrapper.',
     contentFormat: 'html',
     lede:
       'FCMO tracks the Fidelity Canada U.S. Momentum Index: a rules-based, <strong>single-factor</strong> sleeve that tilts a 100-stock portfolio toward U.S. large caps exhibiting strong positive momentum signals, rebalanced quarterly.',

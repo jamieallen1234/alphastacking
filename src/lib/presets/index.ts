@@ -21,6 +21,10 @@ export interface PresetDefinition {
   extraCacheKeyTags: readonly string[]
   /** Yahoo symbol for the comparison line on this preset's chart. Defaults to SPY (or its CAD proxy) when unset. */
   benchmarkSymbol?: string
+  /** Weighted distribution yield estimate shown on the portfolio detail page. */
+  estimatedDistributionYieldPct?: number
+  /** Date used for the distribution-yield estimate. */
+  distributionYieldAsOf?: string
 }
 
 /** Σ wᵢβᵢ with weights as fractions */
@@ -49,7 +53,7 @@ export const CA_USSL_QQQL_HDGE_PRESET_ID = 'ca-ussl-qqql-hdge-v3'
 export const CA_SSO_DGLM_RGBM_ARB_PRESET_ID = 'ca-sso-dglm-rgbm-arb-v3'
 export const US_ALPHA_STACK_PRESET_ID = 'us-alpha-stack-v2'
 export const CA_ALPHA_STACK_PRESET_ID = 'ca-alpha-stack-v7'
-export const CA_FACTOR_FCMO_PRESET_ID = 'ca-factor-fcmo-v3'
+export const CA_FACTOR_FCMO_PRESET_ID = 'ca-factor-fcmo-v4'
 export const US_RISK_PARITY_PRESET_ID = 'us-risk-parity-v4'
 export const US_LONG_SHORT_EQUITY_PRESET_ID = 'us-long-short-equity-v1'
 export const US_LETF_STACK_2X_PRESET_ID = 'us-letf-stack-2x-v1'
@@ -57,10 +61,11 @@ export const US_LETF_STACK_3X_PRESET_ID = 'us-letf-stack-3x-v1'
 export const US_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'us-four-alpha-quadrants-v1'
 export const CA_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'ca-four-alpha-quadrants-v1'
 export const US_BOND_ALT_PRESET_ID = 'us-bond-alt-v1'
-export const CA_BOND_ALT_PRESET_ID = 'ca-bond-alt-v1'
+export const CA_BOND_ALT_PRESET_ID = 'ca-bond-alt-v2'
 export const US_SIXTY_FORTY_PRESET_ID = 'us-sixty-forty-v1'
 export const CA_SIXTY_FORTY_PRESET_ID = 'ca-sixty-forty-v1'
-export const CA_GRANDMAS_PORTFOLIO_PRESET_ID = 'ca-grandmas-portfolio-v1'
+export const CA_GRANDMAS_PORTFOLIO_PRESET_ID = 'ca-grandmas-portfolio-v2'
+export const CA_DIVIDENDS_PRESET_ID = 'ca-dividends-v1'
 
 // -------------------- Holdings --------------------
 export const usInternationalHoldings: PresetHolding[] = [
@@ -121,7 +126,7 @@ export const caCoreBuyHoldHoldings: PresetHolding[] = [
 /** 20 / 10 / 25 / 25 / 20 buy-and-hold: concentrated active momentum (FINN) + rules-based momentum (FCMO) + Nasdaq growth + Canadian low-vol + US small-cap value. */
 export const caFactorFcmoHoldings: PresetHolding[] = [
   { ticker: 'FINN.NE', weightPct: 20, beta: 1.53, blurb: 'Fidelity Global Innovators ETF — Mark Schmehl\'s concentrated, actively managed global momentum sleeve, benchmarked to the Nasdaq Composite.' },
-  { ticker: 'FCMO.TO', weightPct: 10, beta: 1.0, blurb: 'Fidelity U.S. Momentum ETF — 100-stock U.S. large-cap momentum factor, quarterly rebalanced.' },
+  { ticker: 'FCMO.NE', weightPct: 10, beta: 1.0, blurb: 'Fidelity U.S. Momentum ETF, a 100-stock U.S. large-cap momentum factor rebalanced quarterly.' },
   { ticker: 'QQQL.TO', weightPct: 25, beta: 1.25, blurb: '1.25× Nasdaq-100 (charts: 1.25× QQQ TR in CAD + Canadian borrow on extra 0.25× notional).' },
   { ticker: 'ZLB.TO', weightPct: 25, beta: 0.63, blurb: 'BMO Low Volatility Canadian Equity, a defensive low-beta anchor.' },
   { ticker: 'VFLO', weightPct: 20, beta: 0.75, blurb: 'Large-cap free-cash-flow quality tilt — value factor via high-FCF yield selection.' },
@@ -239,7 +244,7 @@ export const usFourAlphaQuadrantsHoldings: PresetHolding[] = [
 export const caFourAlphaQuadrantsHoldings: PresetHolding[] = [
   { ticker: 'CLSE', weightPct: 16, beta: 0.6, blurb: '[Alpha] US long/short equity, security selection and dispersion, low-net-correlation drawdown buffer.' },
   { ticker: 'SSO', weightPct: 9, beta: 2, blurb: '[Growth] 2x S&P 500, leveraged beta paired with the long/short alpha sleeve.' },
-  { ticker: 'FCMO.TO', weightPct: 18, beta: 1.0, blurb: '[Growth] Fidelity U.S. Momentum ETF, Canadian-listed momentum growth engine for this quadrant.' },
+  { ticker: 'FCMO.NE', weightPct: 18, beta: 1.0, blurb: '[Growth] Fidelity U.S. Momentum ETF, Canadian-listed momentum growth engine for this quadrant.' },
   { ticker: 'VFLO', weightPct: 7, beta: 0.75, blurb: '[Alpha] Large-cap free-cash-flow value tilt, factor-premia alpha alongside momentum.' },
   { ticker: 'UPRO', weightPct: 7.5, beta: 3, blurb: '[Growth] 3x S&P 500, high-conviction leveraged beta paired with the systematic premia sleeves.' },
   { ticker: 'FLSP', weightPct: 9, beta: 0, blurb: '[Alpha] Systematic long/short equity and style premia sleeve.' },
@@ -256,13 +261,14 @@ export const usBondAltHoldings: PresetHolding[] = [
   { ticker: 'JAAA', weightPct: 35, beta: 0, blurb: 'AAA-rated CLO floating-rate credit, bond-like income with minimal duration or equity risk.' },
 ]
 
-/** 15 / 15 / 30 / 30 / 10 buy-and-hold: five non-equity-directional strategies, benchmarked against XBB.TO (Canadian aggregate bond index) instead of SPY. FOXY and VAMO were excluded for carrying outsized historical drawdowns at meaningful weight. DBMF and FLSP are held small since each carries a ~19% standalone drawdown; PFMN.TO, ARB.TO, and PFLS.TO (all CAD-listed) are sized to counteract that risk and keep the portfolio-level drawdown under 4%. Weighted beta ~0.11, max drawdown ~3.5%. */
+/** 15 / 15 / 30 / 15 / 10 / 15 buy-and-hold: low-beta return sources and Canadian convertible bonds, benchmarked against XBB.TO. FOXY and VAMO were excluded for carrying outsized historical drawdowns at meaningful weight. CVD.TO replaces half of the prior ARB.TO allocation while preserving a sub-0.15 model beta and a shallow historical drawdown. */
 export const caBondAltHoldings: PresetHolding[] = [
   { ticker: 'DBMF', weightPct: 15, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
   { ticker: 'FLSP', weightPct: 15, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
   { ticker: 'PFMN.TO', weightPct: 30, beta: 0.12, blurb: 'Market-neutral long/short equity, a beta-neutral premia complement to the trend and carry sleeves.' },
-  { ticker: 'ARB.TO', weightPct: 30, beta: 0.05, blurb: 'Event-driven merger and SPAC arbitrage, a shallow-drawdown diversifier that anchors the sleeve.' },
+  { ticker: 'ARB.TO', weightPct: 15, beta: 0.05, blurb: 'Event-driven merger and SPAC arbitrage, retained as a low-beta diversifier.' },
   { ticker: 'PFLS.TO', weightPct: 10, beta: 0.48, blurb: 'Global long/short equity with moderate net exposure, a Canadian-listed diversifier alongside the market-neutral and arbitrage sleeves.' },
+  { ticker: 'CVD.TO', weightPct: 15, beta: 0.12, blurb: 'Canadian convertible bonds, an income sleeve with lower duration than broad bond funds.' },
 ]
 
 /** 20 / 15 / 15 / 15 / 10 / 10 / 15 buy-and-hold, benchmarked against AOR. No leveraged equity; MATE anchors the growth sleeve, VFLO adds value-factor equity, CLSE/ORR add long/short, DBMF/FLSP/MRGR round out the Bond Alternative-style diversifiers. Weighted beta ~0.50, max drawdown ~12.5% (beats AOR's ~17.8%). */
@@ -288,16 +294,26 @@ export const caSixtyFortyHoldings: PresetHolding[] = [
   { ticker: 'PFMN.TO', weightPct: 10, beta: 0.12, blurb: 'Market-neutral long/short equity, a Canadian-listed beta-neutral premia complement.' },
 ]
 
-/** 15 / 10 / 15 / 20 / 10 / 10 / 10 / 10 buy-and-hold, benchmarked against VGRO.TO. A Canadian equity and alternatives mix with a 20% long/short core and AAA CLO income sleeve. */
+/** 15 / 10 / 15 / 20 / 10 / 10 / 10 / 10 buy-and-hold, benchmarked against VGRO.TO. A Canadian equity-income and alternatives mix with a 20% long/short core and AAA CLO income sleeve. */
 export const caGrandmasPortfolioHoldings: PresetHolding[] = [
   { ticker: 'FINN.NE', weightPct: 15, beta: 1.53, blurb: 'Fidelity Global Innovators ETF, a concentrated global equity sleeve.' },
   { ticker: 'VFLO', weightPct: 10, beta: 0.75, blurb: 'Large-cap free-cash-flow value tilt.' },
-  { ticker: 'ZLB.TO', weightPct: 15, beta: 0.63, blurb: 'Canadian low-volatility equity.' },
+  { ticker: 'EIT-UN.TO', weightPct: 15, beta: 0.63, blurb: 'Canoe EIT Income Fund, Canadian equity income.' },
   { ticker: 'PFAE.TO', weightPct: 20, beta: 1.0, blurb: 'Canadian 130/30 long/short equity with about full-market net exposure.' },
   { ticker: 'PFLS.TO', weightPct: 10, beta: 0.48, blurb: 'Global long/short equity diversifier.' },
   { ticker: 'PFMN.TO', weightPct: 10, beta: 0.12, blurb: 'Market-neutral long/short equity.' },
   { ticker: 'ARB.TO', weightPct: 10, beta: 0.05, blurb: 'Event-driven merger and SPAC arbitrage.' },
   { ticker: 'BAAA.TO', weightPct: 10, beta: 0.05, blurb: 'AAA CLO floating-rate credit income.' },
+]
+
+/** 30 / 15 / 10 / 20 / 10 / 15 buy-and-hold Canadian income portfolio, benchmarked against XBB.TO. ARB.TO and BAAA.TO use their established MRGR and JAAA pre-listing proxies in portfolio charts. Weighted beta ~0.25. */
+export const caDividendsHoldings: PresetHolding[] = [
+  { ticker: 'EIT-UN.TO', weightPct: 30, beta: 0.63, blurb: 'Canoe EIT Income Fund, the equity-income core.' },
+  { ticker: 'HPR.TO', weightPct: 15, beta: 0.23, blurb: 'Active preferred-share income, sized below the equity-income core.' },
+  { ticker: 'CVD.TO', weightPct: 10, beta: 0.12, blurb: 'Canadian convertible bonds, income with lower duration than broad bonds.' },
+  { ticker: 'PFAA.TO', weightPct: 20, beta: 0, blurb: 'Multi-strategy alternatives, a low-beta return diversifier.' },
+  { ticker: 'ARB.TO', weightPct: 10, beta: 0.09, blurb: 'Merger arbitrage, a low-beta event-driven return source.' },
+  { ticker: 'BAAA.TO', weightPct: 15, beta: 0.02, blurb: 'AAA CLO floating-rate income, with JAAA used for pre-listing chart history.' },
 ]
 
 // -------------------- Registry --------------------
@@ -384,7 +400,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     cadDenominated: false,
     rebalanceSchedule: 'none',
     holdings: caFactorFcmoHoldings,
-    extraCacheKeyTags: ['buy-hold', 'finn-fcmo-qqql-zlb-vflo-v1'],
+    extraCacheKeyTags: ['buy-hold', 'finn-fcmo-ne-qqql-zlb-vflo-v2'],
   },
   {
     id: CA_USSL_QQQL_HDGE_PRESET_ID,
@@ -472,7 +488,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     extraCacheKeyTags: [
       'cad-xsp-bench-vfv-ussl-proxy',
       'annual-rebal',
-      'clse-sso-fcmo-vflo-upro-flsp-pfmn-mate-v2',
+      'clse-sso-fcmo-ne-vflo-upro-flsp-pfmn-mate-v3',
       'mate-kmlm-chain-v1',
       'fcmo-spmo-proxy-v1',
     ],
@@ -493,7 +509,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     rebalanceSchedule: 'none',
     holdings: caBondAltHoldings,
     benchmarkSymbol: 'XBB.TO',
-    extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-pfmn-arb-pfls-v3'],
+    extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-pfmn-arb-pfls-cvd-v4'],
   },
   {
     id: US_SIXTY_FORTY_PRESET_ID,
@@ -520,7 +536,18 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     rebalanceSchedule: 'none',
     holdings: caGrandmasPortfolioHoldings,
     benchmarkSymbol: 'VGRO.TO',
-    extraCacheKeyTags: ['buy-hold', 'finn-vflo-zlb-pfae-pfls-pfmn-arb-baaa-v7-pfae-130-30-full-capital-no-fx'],
+    extraCacheKeyTags: ['buy-hold', 'finn-vflo-eit-pfae-pfls-pfmn-arb-baaa-v8-pfae-130-30-full-capital-no-fx'],
+  },
+  {
+    id: CA_DIVIDENDS_PRESET_ID,
+    region: 'ca',
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+    holdings: caDividendsHoldings,
+    benchmarkSymbol: 'XBB.TO',
+    estimatedDistributionYieldPct: 4.9,
+    distributionYieldAsOf: 'August 28, 2026',
+    extraCacheKeyTags: ['buy-hold', 'eit-hpr-cvd-pfaa-arb-mrgr-baaa-jaaa-v1'],
   },
 ]
 

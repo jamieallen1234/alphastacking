@@ -38,7 +38,7 @@ const FACTOR_FUNDS: Record<string, string> = {
   SPMO: 'US large-cap',
   VFLO: 'US large-cap',
   'ZLB.TO': 'Canadian equity',
-  'FCMO.TO': 'US large-cap',
+  'FCMO.NE': 'US large-cap',
   'FINN.NE': 'Global equity',
   'TEC.TO': 'Global technology equity',
 }
@@ -53,6 +53,7 @@ const GROWTH_FUNDS: Record<string, string> = {
   'QQQL.TO': 'Nasdaq-100',
   'HEQL.TO': 'Global',
   NTSD: 'S&P 500/Intl',
+  'EIT-UN.TO': 'Canadian equity',
 }
 
 /** Leverage multiple per growth fund (drives high-vs-moderate pairing). */
@@ -74,8 +75,8 @@ const ALPHA_FUNDS: Record<string, string> = {
   'HDGE.TO': 'Long/short',
   'PFAE.TO': 'Long/short',
   'PFLS.TO': 'Long/short',
-  // Market-neutral (beta ~0.12): behaves like a premia/carry sleeve, not directional long/short.
-  'PFMN.TO': 'Premia/carry',
+  // Market-neutral implementation, but the return source is paired long and short equity selection.
+  'PFMN.TO': 'Long/short',
   'ATSX.TO': 'Long/short',
   FLSP: 'Premia/carry',
   FOXY: 'Premia/carry',
@@ -85,6 +86,9 @@ const ALPHA_FUNDS: Record<string, string> = {
   'DGLM.TO': 'Global macro',
   'ARB.TO': 'Arbitrage',
   'BAAA.TO': 'Fixed income',
+  'HPR.TO': 'Fixed income',
+  'CVD.TO': 'Fixed income',
+  'PFAA.TO': 'Premia/carry',
   ZROZ: 'Fixed income',
   GLD: 'Real assets/gold',
 }

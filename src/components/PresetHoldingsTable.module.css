@@ -40,7 +40,7 @@
   line-height: 1.5;
 }
 
-.betaRow {
+.summaryRow {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -48,12 +48,19 @@
   margin-top: 1rem;
 }
 
+.summaryText {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
 .betaRowText {
   margin: 0;
   font-size: 12px;
   color: rgba(var(--rgb-text), 0.5);
-  flex: 1 1 12rem;
-  min-width: 0;
+}
+
+.betaRowText + .betaRowText {
+  margin-top: 0.3rem;
 }
 
 .betaRowText strong {

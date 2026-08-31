@@ -60,8 +60,8 @@ export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, ProxyDef> = {
   WTIB: { legs: ['USO', 'BITO'] },
   /** Pre-listing: 50% cash-flow "cash cows" value + 50% quality-GARP blend; extends joint history before VFLO's inception. */
   VFLO: { legs: [{ blend: [{ symbol: 'COWZ', weight: 0.5 }, { symbol: 'GARP', weight: 0.5 }] }] },
-  /** Pre-listing: same US momentum-factor strategy (Fidelity U.S. Momentum vs S&P 500 Momentum); extends joint history before FCMO.TO's inception. */
-  'FCMO.TO': { legs: ['SPMO'] },
+  /** Pre-listing: same US momentum-factor strategy (Fidelity U.S. Momentum vs S&P 500 Momentum); extends joint history before FCMO.NE's inception. */
+  'FCMO.NE': { legs: ['SPMO'] },
   /** Pre-listing: Canadian-listed global technology ETF used for FINN's innovation-heavy global equity sleeve. */
   'FINN.NE': { legs: ['TEC.TO'] },
   /** Pre-listing: 90% TIPS + 90% gold futures; TIP extends to 2003, GLD to 2004. Gross = 180%. */

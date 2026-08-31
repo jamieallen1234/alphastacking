@@ -42,6 +42,7 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   'ZLB.TO': { longEquityPct: 100, shortEquityPct: 0, alphaPct: 0 },
   'FINN.NE': { longEquityPct: 100, shortEquityPct: 0, alphaPct: 0 },
   'TEC.TO': { longEquityPct: 100, shortEquityPct: 0, alphaPct: 0 },
+  'EIT-UN.TO': { longEquityPct: 100, shortEquityPct: 0, alphaPct: 0 },
 
   // Stacked / capital-efficient
   NTSD: { longEquityPct: 150, shortEquityPct: 0, alphaPct: 0 },
@@ -89,6 +90,8 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   'DGLM.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   'ONEC.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   'PFAA.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
+  'HPR.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
+  'CVD.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   MRGR: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   'ARB.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   'BAAA.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },

@@ -506,7 +506,7 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
     ),
     ca(
       'fcmo',
-      'FCMO.TO - Fidelity U.S. Momentum ETF',
+      'FCMO - Fidelity U.S. Momentum ETF',
       'Rules-based single-factor sleeve: 100 U.S. large-cap names with the strongest momentum signals, rebalanced quarterly.',
       caPath('fcmo')
     ),
@@ -531,7 +531,14 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       caPath('zlb')
     ),
   ],
-  'factor-active': [],
+  'factor-active': [
+    ca(
+      'eit',
+      'EIT.UN - Canoe EIT Income Fund',
+      'Actively managed closed-end income fund, diversified across Canadian and U.S. equities and other income-producing securities.',
+      caPath('eit')
+    ),
+  ],
   'managed-futures': [],
   'single-asset-managed-futures': [],
   'long-short': [
@@ -641,6 +648,12 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'BAAA.TO - Brompton Wellington Square AAA CLO ETF',
       'Actively managed portfolio of primarily AAA-rated CLO bonds: structured credit income with floating-rate coupons and low equity correlation.',
       caPath('baaa')
+    ),
+    ca(
+      'cvd',
+      'CVD.TO - iShares Convertible Bond Index ETF',
+      'Canadian convertible bonds: corporate bond income with issuer-specific equity optionality and short broad-rate duration.',
+      caPath('cvd')
     ),
   ],
 }

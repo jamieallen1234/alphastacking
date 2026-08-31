@@ -21,6 +21,25 @@ export interface PortfoliosHubProps {
   hubDataBySlug: Record<string, PortfolioHubSlugData>
 }
 
+function portfolioNavCategories(
+  routes: PortfolioRouteDef[],
+  idPrefix: string,
+  countryLabel?: string
+) {
+  return US_PORTFOLIO_CATEGORIES
+    .filter((category) => routes.some((route) => route.hubSection === category.id))
+    .map((category) => ({
+      id: `${idPrefix}${category.id}`,
+      title: countryLabel ? `${countryLabel}: ${category.title}` : category.title,
+    }))
+}
+
+const US_PORTFOLIO_NAV_CATEGORIES = portfolioNavCategories(usPortfolioRoutes, '')
+const CA_PORTFOLIO_NAV_CATEGORIES = [
+  ...portfolioNavCategories(caPortfolioRoutes, 'ca-', 'Canada'),
+  ...portfolioNavCategories(usPortfolioRoutes, 'ca-us-', 'United States'),
+]
+
 function formatHubAlpha(pct: number): string {
   return `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`
 }
@@ -119,11 +138,12 @@ export default function PortfoliosHub({ edition, hubDataBySlug }: PortfoliosHubP
     return (
       <main className={styles.main}>
         <Nav />
+        <div className={styles.hubNavTop}>
+          <PortfolioHubNav categories={US_PORTFOLIO_NAV_CATEGORIES} base="/portfolios" compact />
+        </div>
         <section className={styles.section}>
           <div className={styles.sectionLabel}>US portfolios</div>
           <h1 className={styles.heading}>Model portfolios</h1>
-
-          <PortfolioHubNav categories={US_PORTFOLIO_CATEGORIES} base="/portfolios" />
 
           {US_PORTFOLIO_CATEGORIES.map((cat, catIdx) => {
             const live = portfolioHubRoutes(
@@ -187,6 +207,9 @@ export default function PortfoliosHub({ edition, hubDataBySlug }: PortfoliosHubP
   return (
     <main className={styles.main}>
       <Nav />
+      <div className={styles.hubNavTop}>
+        <PortfolioHubNav categories={CA_PORTFOLIO_NAV_CATEGORIES} base="/ca/portfolios" compact />
+      </div>
       <section className={styles.section}>
         <div className={styles.sectionLabel}>Canadian edition</div>
         <h1 className={styles.heading}>Model portfolios</h1>
@@ -252,7 +275,7 @@ export default function PortfoliosHub({ edition, hubDataBySlug }: PortfoliosHubP
           United States
         </h2>
 
-        {US_PORTFOLIO_CATEGORIES.map((cat, catIdx) => {
+        {US_PORTFOLIO_CATEGORIES.map((cat) => {
           const live = portfolioHubRoutes(
             usPortfolioRoutes.filter((r) => r.hubSection === cat.id)
           )

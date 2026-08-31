@@ -2,15 +2,21 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { PortfolioHubCategoryDef } from '@/lib/portfolioRoutes'
 import styles from './EtfPageHubNav.module.css'
 
-export interface PortfolioHubNavProps {
-  categories: PortfolioHubCategoryDef[]
-  base: string
+export interface PortfolioHubNavCategory {
+  id: string
+  title: string
 }
 
-export default function PortfolioHubNav({ categories, base }: PortfolioHubNavProps) {
+export interface PortfolioHubNavProps {
+  categories: PortfolioHubNavCategory[]
+  base: string
+  compact?: boolean
+}
+
+/** Jump-to-category dropdown for the portfolio hub. */
+export default function PortfolioHubNav({ categories, base, compact = false }: PortfolioHubNavProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -32,8 +38,8 @@ export default function PortfolioHubNav({ categories, base }: PortfolioHubNavPro
   }, [open])
 
   return (
-    <nav className={styles.nav} aria-label="Portfolio categories">
-      <span className={styles.label}>Browse categories</span>
+    <nav className={compact ? styles.navCompact : styles.nav} aria-label="Portfolio categories">
+      <span className={styles.label}>Portfolio categories</span>
       <div ref={rootRef} className={styles.root}>
         <button
           type="button"

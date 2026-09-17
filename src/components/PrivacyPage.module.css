@@ -1,0 +1,79 @@
+.main {
+  min-height: 100vh;
+}
+
+.inner {
+  box-sizing: border-box;
+  max-width: var(--home-content-max);
+  margin-inline: auto;
+  padding: 3rem 3rem 4rem;
+  width: 100%;
+}
+
+.kicker,
+.updated {
+  color: var(--color-gold);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.kicker {
+  margin-bottom: 0.75rem;
+}
+
+.h1 {
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+
+.updated {
+  color: var(--color-text-faint);
+  margin-bottom: 2rem;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  max-width: 46rem;
+}
+
+.body h2 {
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.55rem;
+  text-transform: uppercase;
+}
+
+.body p {
+  color: var(--color-text-muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.body a {
+  color: var(--color-gold);
+  text-underline-offset: 3px;
+}
+
+.body code {
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+  .inner {
+    padding: 2rem 1.5rem 3rem;
+  }
+}

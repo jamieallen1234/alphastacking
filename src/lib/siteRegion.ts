@@ -42,3 +42,7 @@ export function contactPath(isCa: boolean): string {
 export function disclaimersPath(isCa: boolean): string {
   return isCa ? '/ca/disclaimers' : '/disclaimers'
 }
+
+export function privacyPath(isCa: boolean): string {
+  return isCa ? '/ca/privacy' : '/privacy'
+}

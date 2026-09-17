@@ -23,6 +23,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/ca/us-etfs',
     '/contact',
     '/ca/contact',
+    '/disclaimers',
+    '/ca/disclaimers',
+    '/privacy',
+    '/ca/privacy',
+    '/portfolio-builder',
+    '/ca/portfolio-builder',
+    '/updates',
+    '/ca/updates',
     '/learn',
     '/ca/learn',
     '/learn/what-is-alpha-stacking',
@@ -35,6 +43,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/ca/learn/why-alpha-stacking',
     '/learn/efficiency-grades',
     '/ca/learn/efficiency-grades',
+    '/learn/market-environments',
+    '/ca/learn/market-environments',
+    '/learn/portfolio-score',
+    '/ca/learn/portfolio-score',
+    '/learn/return-stacking-explained',
+    '/ca/learn/return-stacking-explained',
   ])
 
   for (const slug of Object.keys(US_ETF_DYNAMIC_REGISTRY)) {

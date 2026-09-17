@@ -7,9 +7,17 @@ export const dynamic = 'force-dynamic'
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const caDef = caPortfolioRoutes.find((r) => r.slug === slug)
-  if (caDef) return { title: `${caDef.title} — Alpha Stacking` }
+  if (caDef) {
+    return {
+      title: `${caDef.title} — Alpha Stacking`,
+      description: caDef.description,
+    }
+  }
   const usDef = usPortfolioRoutes.find((r) => r.slug === slug)
-  return { title: usDef ? `${usDef.title} — Alpha Stacking` : 'Portfolio' }
+  return {
+    title: usDef ? `${usDef.title} — Alpha Stacking` : 'Portfolio',
+    description: usDef?.description,
+  }
 }
 
 export default async function CaPortfolioDetailPage({

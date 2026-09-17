@@ -9,6 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const def = usPortfolioRoutes.find((r) => r.slug === slug)
   return {
     title: def ? `${def.title} — Alpha Stacking` : 'Portfolio',
+    description: def?.description,
   }
 }
 

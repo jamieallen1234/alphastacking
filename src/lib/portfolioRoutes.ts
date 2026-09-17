@@ -388,9 +388,9 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     rebalance: 'none',
     title: 'Low Beta Income',
     badge: 'TSX-listed',
-    description: 'TSX-listed AAA CLOs, ultra-short investment-grade bonds, convertible bonds, arbitrage, equity income, and multi-strategy alternatives. Estimated 4.5% distribution yield with beta near 0.10, measured against XBB.',
+    description: 'TSX-listed AAA CLOs, ultra-short investment-grade bonds, convertible bonds, arbitrage, and equity income. Estimated 4.7% distribution yield with beta near 0.11, measured against XBB.',
     addedAt: '2026-09-16',
-    weightedBeta: 0.105,
+    weightedBeta: 0.107,
     hubOrder: 5,
   },
 ]

@@ -317,14 +317,13 @@ export const caDividendsHoldings: PresetHolding[] = [
   { ticker: 'BAAA.TO', weightPct: 15, beta: 0.02, blurb: 'AAA CLO floating-rate income, with JAAA used for pre-listing chart history.' },
 ]
 
-/** 25 / 15 / 15 / 10 / 10 / 25 buy-and-hold Canadian-listed income portfolio, benchmarked against XBB.TO. AAA CLOs, ultra-short investment-grade credit, and merger arbitrage anchor the defensive book; EIT adds equity income while PFAA offsets part of that added equity beta. The allocation targets a roughly 4.5% distribution yield with modeled equity beta near 0.10. */
+/** 30 / 15 / 15 / 10 / 30 buy-and-hold Canadian-listed income portfolio, benchmarked against XBB.TO. AAA CLOs and ultra-short investment-grade credit anchor the defensive book, while EIT adds equity income and merger arbitrage diversifies the return sources. The allocation targets a roughly 4.7% distribution yield with modeled equity beta near 0.11. */
 export const caLowBetaIncomeHoldings: PresetHolding[] = [
-  { ticker: 'BAAA.TO', weightPct: 25, beta: 0.02, blurb: 'AAA CLO floating-rate income, the portfolio’s primary stability anchor, with JAAA used for pre-listing chart history.' },
+  { ticker: 'BAAA.TO', weightPct: 30, beta: 0.02, blurb: 'AAA CLO floating-rate income, the portfolio’s primary stability anchor, with JAAA used for pre-listing chart history.' },
   { ticker: 'CVD.TO', weightPct: 15, beta: 0.12, blurb: 'Canadian convertible bonds, a smaller income sleeve with short effective duration and some equity optionality.' },
   { ticker: 'ARB.TO', weightPct: 15, beta: 0.09, blurb: 'Merger and SPAC arbitrage, a low-beta event-driven income diversifier.' },
   { ticker: 'EIT-UN.TO', weightPct: 10, beta: 0.63, blurb: 'Canoe EIT Income Fund, a Canadian equity-income closed-end fund with monthly distributions.' },
-  { ticker: 'PFAA.TO', weightPct: 10, beta: 0, blurb: 'Multi-strategy alternatives, intended to offset part of EIT’s added equity beta.' },
-  { ticker: 'HFR.TO', weightPct: 25, beta: 0.02, blurb: 'Ultra-short investment-grade corporate bonds with duration generally below one year.' },
+  { ticker: 'HFR.TO', weightPct: 30, beta: 0.02, blurb: 'Ultra-short investment-grade corporate bonds with duration generally below one year.' },
 ]
 
 // -------------------- Registry --------------------
@@ -567,9 +566,9 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     rebalanceSchedule: 'none',
     holdings: caLowBetaIncomeHoldings,
     benchmarkSymbol: 'XBB.TO',
-    estimatedDistributionYieldPct: 4.5,
+    estimatedDistributionYieldPct: 4.7,
     distributionYieldAsOf: 'September 10, 2026',
-    extraCacheKeyTags: ['buy-hold', 'baaa-cvd-arb-eit-pfaa-hfr-low-beta-income-v7'],
+    extraCacheKeyTags: ['buy-hold', 'baaa-cvd-arb-eit-hfr-low-beta-income-v8'],
   },
 ]
 

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { portfoliosPath, learnPath, usEtfHubPath } from '@/lib/siteRegion'
+import { WHY_ALPHA_STACKING_SLUG, learnArticlePath } from '@/lib/learnArticles'
 import styles from './LearnArticle.module.css'
 
 export default function ReturnStackingExplainedArticle({ edition }: { edition: 'us' | 'ca' }) {
@@ -7,55 +8,98 @@ export default function ReturnStackingExplainedArticle({ edition }: { edition: '
   const portfoliosHref = portfoliosPath(isCa)
   const learnHref = learnPath(isCa)
   const etfHref = usEtfHubPath(isCa)
+  const rsstHref = isCa ? '/ca/us-etfs/rsst' : '/us-etfs/rsst'
+  const rssbHref = isCa ? '/ca/us-etfs/rssb' : '/us-etfs/rssb'
+  const ntsxHref = isCa ? '/ca/us-etfs/ntsx' : '/us-etfs/ntsx'
+  const alphaComparisonHref = learnArticlePath(isCa, WHY_ALPHA_STACKING_SLUG)
 
   return (
     <article className={styles.article}>
       <header>
         <div className={styles.headerRow}>
           <span className={styles.eyebrow}>Concepts</span>
-          <span className={styles.readTime}>~3 min read</span>
+          <span className={styles.readTime}>~5 min read</span>
         </div>
-        <h1 className={styles.title}>Return stacking explained</h1>
+        <h1 className={styles.title}>What is return stacking?</h1>
         <p className={styles.deck}>
-          Hold two investments at once without selling one to pay for the other. Here is how it
-          works and when it hurts you.
+          Return stacking puts two investment exposures on the same dollar. Alpha stacking uses that
+          capital-efficiency tool to build beyond one overlay, with several return sources that must
+          justify their place in the portfolio.
         </p>
       </header>
 
       <section className={styles.section} aria-labelledby="s1">
         <h2 id="s1" className={styles.sectionTitle}>
-          The idea
+          Return stacking in one sentence
         </h2>
         <p className={styles.body}>
-          Normally, adding a second investment means selling something to make room. Return stacking
-          avoids that by using leverage: you hold both at once, and your stocks stay untouched. The
-          catch is that leverage has a cost, and the second investment has to earn enough to cover it.
+          Return stacking uses leverage to layer a second investment return on top of a core
+          allocation, so one dollar of capital supports more than one dollar of market exposure.
+          Instead of selling stocks to make room for a diversifier, an investor can keep the stock
+          exposure and add the diversifier through a capital-efficient fund.
         </p>
       </section>
 
       <section className={styles.section} aria-labelledby="s2">
         <h2 id="s2" className={styles.sectionTitle}>
-          The main flavors
+          How return stacked ETFs work
         </h2>
         <p className={styles.body}>
-          <strong>100/100 funds</strong> give you a full stock position plus a full second sleeve on
-          the same dollar. RSST (stocks + managed futures) and RSSB (stocks + bonds) work this way.
-          You pay borrowing costs for the extra leverage.
+          A return stacked ETF commonly uses futures, swaps, and cash collateral to create its
+          exposures. The fund may target $1 of stock exposure and $1 of managed-futures exposure for
+          every $1 invested. You own one fund, but its economic exposure is closer to two sleeves
+          than one.
         </p>
         <p className={styles.body}>
-          <strong>Lower-ratio funds</strong>{' '}use less leverage. WisdomTree&apos;s NTSX holds 90%
-          equities with a 60% bond sleeve. Other WisdomTree variants run 90/90. Less borrowing cost,
-          but less of the second sleeve too.
-        </p>
-        <p className={styles.body}>
-          You can also <strong>build it yourself</strong>: put 50% in SSO (a 2&times; S&amp;P 500
-          ETF) and 50% in DBMF (a managed futures ETF). That gives you roughly the same exposure as
-          RSST with more control over each piece.
+          The futures contracts need only a fraction of their notional value as collateral. That is
+          what makes the structure capital efficient. It also means the fund has financing, roll,
+          trading, and management costs that a plain unlevered index fund does not have.
         </p>
       </section>
 
       <section className={styles.section} aria-labelledby="s3">
         <h2 id="s3" className={styles.sectionTitle}>
+          Common return stacking structures
+        </h2>
+        <p className={styles.body}>
+          <strong>100/100 funds</strong> target a full core sleeve plus a full second sleeve. For
+          example, <Link href={rsstHref} className={styles.inlineLink}>RSST</Link> combines U.S.
+          stocks with managed futures, while <Link href={rssbHref} className={styles.inlineLink}>RSSB</Link>{' '}
+          combines global stocks with bonds. The extra sleeve is meaningful, but so are its costs and
+          risks.
+        </p>
+        <p className={styles.body}>
+          <strong>Lower-ratio funds</strong> use less leverage. <Link href={ntsxHref} className={styles.inlineLink}>NTSX</Link>{' '}
+          targets roughly 90% U.S. equities with a 60% Treasury futures sleeve. A lower ratio reduces
+          the size of the overlay, which can reduce both its benefit and its drag.
+        </p>
+        <p className={styles.body}>
+          <strong>Do-it-yourself stacks</strong> combine separate funds, such as a leveraged equity
+          ETF and a managed-futures ETF. This gives the investor control over weights, but it also
+          requires tracking total equity exposure, rebalancing, taxes, and the distinct risks of each
+          fund. It is not automatically equivalent to a single return stacked ETF.
+        </p>
+      </section>
+
+      <section className={styles.section} aria-labelledby="s4">
+        <h2 id="s4" className={styles.sectionTitle}>
+          What return stacking costs
+        </h2>
+        <p className={styles.body}>
+          The overlay has to earn more than its all-in drag. That can include the fund expense ratio,
+          futures roll and transaction costs, and the financing embedded in the derivative position.
+          When short-term rates are high, the hurdle for a stacked sleeve can be higher than investors
+          expect.
+        </p>
+        <p className={styles.body}>
+          A simple hypothetical makes the point. If a $10,000 portfolio carries a 100% overlay and
+          that sleeve loses 3% after its costs, it subtracts roughly $300 in addition to the core
+          portfolio&apos;s result. The core may still be positive, but the stacked portfolio can lag it.
+        </p>
+      </section>
+
+      <section className={styles.section} aria-labelledby="s5">
+        <h2 id="s5" className={styles.sectionTitle}>
           When it fails
         </h2>
         <p className={styles.body}>
@@ -70,8 +114,8 @@ export default function ReturnStackingExplainedArticle({ edition }: { edition: '
         </p>
       </section>
 
-      <section className={styles.section} aria-labelledby="s4">
-        <h2 id="s4" className={styles.sectionTitle}>
+      <section className={styles.section} aria-labelledby="s6">
+        <h2 id="s6" className={styles.sectionTitle}>
           Return stacking vs. alpha stacking
         </h2>
         <p className={styles.body}>
@@ -89,6 +133,12 @@ export default function ReturnStackingExplainedArticle({ edition }: { edition: '
           across multiple market cycles. Full participation in bull markets, shallower holes in
           bear markets.
         </p>
+        <p className={styles.body}>
+          <Link href={alphaComparisonHref} className={styles.inlineLink}>
+            Compare return stacking and alpha stacking
+          </Link>{' '}
+          to see how that distinction changes portfolio construction.
+        </p>
       </section>
 
       <div className={styles.ctaRow}>
@@ -96,7 +146,7 @@ export default function ReturnStackingExplainedArticle({ edition }: { edition: '
           Browse model portfolios →
         </Link>
         <Link href={etfHref} className={styles.cta}>
-          Browse ETFs →
+          Explore return stacking ETFs →
         </Link>
       </div>
 

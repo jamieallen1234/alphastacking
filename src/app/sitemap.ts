@@ -2,8 +2,13 @@ import type { MetadataRoute } from 'next'
 import { CA_ETF_DYNAMIC_REGISTRY, US_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
 import { caPortfolioRoutes, usPortfolioRoutes } from '@/lib/portfolioRoutes'
 import { getSiteUrl } from '@/lib/siteUrl'
+import { STRATEGY_LEARN_TOPICS } from '@/lib/strategyLearnTopics'
 
 const SITE = getSiteUrl()
+
+const STRATEGY_LEARN_PATH_PAIRS: ReadonlyArray<readonly [string, string]> = STRATEGY_LEARN_TOPICS.map(
+  (topic) => [`/learn/${topic.slug}`, `/ca/learn/${topic.slug}`],
+)
 
 const PAIRED_STATIC_PATHS: ReadonlyArray<readonly [string, string]> = [
   ['/', '/ca'],
@@ -23,6 +28,7 @@ const PAIRED_STATIC_PATHS: ReadonlyArray<readonly [string, string]> = [
   ['/learn/market-environments', '/ca/learn/market-environments'],
   ['/learn/portfolio-score', '/ca/learn/portfolio-score'],
   ['/learn/return-stacking-explained', '/ca/learn/return-stacking-explained'],
+  ...STRATEGY_LEARN_PATH_PAIRS,
 ]
 
 function abs(path: string): string {
@@ -108,6 +114,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
   for (const slug of Object.keys(CA_ETF_DYNAMIC_REGISTRY)) {
     paths.add(`/ca/etfs/${slug}`)
+  }
+  for (const topic of STRATEGY_LEARN_TOPICS) {
+    paths.add(`/learn/${topic.slug}`)
+    paths.add(`/ca/learn/${topic.slug}`)
   }
 
   for (const r of usPortfolioRoutes) {

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { learnPath } from '@/lib/siteRegion'
+import { learnArticlePath, RETURN_STACKING_EXPLAINED_SLUG } from '@/lib/learnArticles'
 import styles from './HomeLearnSection.module.css'
 
 export interface HomeLearnSectionProps {
@@ -9,6 +10,7 @@ export interface HomeLearnSectionProps {
 export default function HomeLearnSection({ variant = 'us' }: HomeLearnSectionProps) {
   const isCa = variant === 'ca'
   const learnHref = learnPath(isCa)
+  const returnStackingHref = learnArticlePath(isCa, RETURN_STACKING_EXPLAINED_SLUG)
 
   return (
     <section className={styles.section} aria-labelledby="home-learn-heading">
@@ -16,13 +18,20 @@ export default function HomeLearnSection({ variant = 'us' }: HomeLearnSectionPro
         Learn
       </h2>
       <p className={styles.lede}>
-        Learn the strategy behind building an{' '}
+        Start with{' '}
+        <Link href={returnStackingHref} className={styles.ledeLink}>
+          return stacking
+        </Link>
+        , then learn the strategy behind building an{' '}
         <span className={styles.ledeHighlightWhite}>alpha</span>
         <span className={styles.ledeHighlightGold}> stacking</span> portfolio.
       </p>
       <div className={styles.actions}>
         <Link href={learnHref} className={styles.cta}>
           Learn the basics
+        </Link>
+        <Link href={returnStackingHref} className={styles.ctaSecondary}>
+          What is return stacking?
         </Link>
       </div>
     </section>

@@ -14,10 +14,10 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           <span className={styles.eyebrow}>Strategy comparison</span>
           <span className={styles.readTime}>~7 min read</span>
         </div>
-        <h1 className={styles.title}>Why alpha stacking</h1>
+        <h1 className={styles.title}>Return stacking vs. alpha stacking</h1>
         <p className={styles.deck}>
-          Four comparisons: index funds, return stacking, all-weather portfolios, and leveraged ETFs
-          on their own. Each section spells out when that option tends to fit.
+          Return stacking creates capital efficiency. Alpha stacking builds a portfolio on top of it:
+          several independent return sources, deliberate sizing, and a higher bar for every sleeve.
         </p>
       </header>
 
@@ -47,7 +47,7 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
 
       <section className={styles.section} aria-labelledby="s2">
         <h2 id="s2" className={styles.sectionTitle}>
-          vs. return stacking
+          Return stacking is the tool. Alpha stacking is the framework.
         </h2>
         <p className={styles.body}>
           Return stacking is the technique that makes alpha stacking possible: using derivatives
@@ -56,15 +56,16 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           futures for every $1 invested. That&apos;s the mechanism.
         </p>
         <p className={styles.body}>
-          But a single return-stacked fund isn&apos;t the same as an alpha stacking portfolio. Most stack one
+          A single return-stacked fund is not the same as an alpha stacking portfolio. Most stack one
           thing on top of equity beta: usually trend or bonds. If that sleeve goes quiet for a few years
           (managed futures earned nothing from 2012 to 2019), you&apos;re holding a more expensive version of
           SPY. With one stacked sleeve, equity still dominates.
         </p>
         <p className={styles.body}>
-          Alpha stacking uses the same capital-efficiency technique but asks which return sources have
-          independent edges when equity does not earn. It uses multiple sleeves so one quiet stretch does
-          not end the thesis.
+          Alpha stacking starts with the same capital-efficiency technique, then asks a harder question:
+          which return sources have independent edges when equity does not earn? It uses multiple sleeves
+          so one quiet stretch does not end the thesis, and sizes them together so the portfolio does not
+          become a pile of unmeasured leverage.
         </p>
         <div className={styles.compareGrid}>
           <div className={styles.compareCard}>
@@ -88,17 +89,17 @@ export default function WhyAlphaStackingArticle({ edition }: { edition: 'us' | '
           </div>
         </div>
         <p className={styles.body}>
-          Both use return stacking as a tool. Portfolio B is alpha stacking: the sleeves are chosen
-          for independent edges, sized for how they interact, and combined so the portfolio
-          isn&apos;t dependent on any single environment.
+          Both use return stacking as a tool. Portfolio B goes further: the sleeves are chosen for
+          independent edges, sized for how they interact, and combined so the portfolio is not dependent
+          on any single environment.
         </p>
         <p className={styles.body}>
-          <strong>Return stacking wins when</strong> simplicity is the priority and a single
-          stacked fund is a meaningful improvement over holding SPY alone.
+          <strong>Return stacking fits when</strong> simplicity is the priority and a single stacked
+          fund is a meaningful improvement over holding SPY alone.
         </p>
         <p className={styles.body}>
-          <strong>Alpha stacking wins when</strong> you want several independent return sleeves and will
-          run a portfolio with more than one moving part.
+          <strong>Alpha stacking goes further when</strong> you want several independent return sleeves
+          and will run a portfolio with more than one moving part.
         </p>
       </section>
 

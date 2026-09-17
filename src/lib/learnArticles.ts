@@ -1,3 +1,5 @@
+import { STRATEGY_LEARN_TOPICS } from '@/lib/strategyLearnTopics'
+
 /** Slug segments under `/learn/[slug]` and `/ca/learn/[slug]`. */
 export const WHAT_IS_ALPHA_SLUG = 'what-is-alpha-stacking'
 
@@ -39,17 +41,25 @@ export const LEARN_ARTICLES: LearnArticleMeta[] = [
   {
     slug: RETURN_STACKING_EXPLAINED_SLUG,
     eyebrow: 'Concepts',
-    read: '~3 min read',
-    title: 'Return stacking explained',
-    deck: 'Leverage that holds two exposures on the same dollar without selling one to make room. The main ratios, what carry drag actually costs, and when the math breaks down.',
+    read: '~5 min read',
+    title: 'What is return stacking?',
+    deck: 'How return stacking puts two exposures on the same dollar, and why alpha stacking uses that tool to add independent return sources instead of one more beta sleeve.',
     publishedDate: '2026-05-21',
   },
+  ...STRATEGY_LEARN_TOPICS.map((topic) => ({
+    slug: topic.slug,
+    eyebrow: topic.eyebrow,
+    read: topic.read,
+    title: topic.title,
+    deck: topic.deck,
+    publishedDate: topic.publishedDate,
+  })),
   {
     slug: WHY_ALPHA_STACKING_SLUG,
     eyebrow: 'Strategy comparison',
     read: '~7 min read',
-    title: 'Why alpha stacking',
-    deck: 'How alpha stacking compares to index funds, return stacking, all-weather portfolios, and leveraged ETFs, with a plain language read on when each option tends to fit.',
+    title: 'Return stacking vs. alpha stacking',
+    deck: 'Return stacking is the mechanism. Alpha stacking builds a complete portfolio on top of it, using several independent return sleeves instead of a single diversifier.',
     publishedDate: '2026-04-19',
   },
   {

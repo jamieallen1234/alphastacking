@@ -5,9 +5,9 @@ import { RETURN_STACKING_EXPLAINED_SLUG } from '@/lib/learnArticles'
 import { pairedAlternates } from '@/lib/seoAlternates'
 
 export const metadata: Metadata = {
-  title: 'Return stacking explained | Learn | Alpha Stacking (Canadian edition)',
+  title: 'What Is Return Stacking? The Tool Behind Alpha Stacking Canada',
   description:
-    'Return stacking holds two exposures on one dollar of capital using futures as collateral. Learn how the mechanism works, what it costs in different rate environments, and where it breaks down.',
+    'Return stacking layers two investment exposures on one dollar using futures, swaps, or other derivatives. It is the capital-efficiency tool that alpha stacking uses to add independent return sources.',
   alternates: pairedAlternates('/learn/return-stacking-explained', '/ca/learn/return-stacking-explained', 'ca'),
 }
 

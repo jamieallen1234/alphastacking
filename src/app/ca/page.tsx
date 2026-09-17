@@ -3,9 +3,9 @@ import { loadHomePortfolioChartSlots } from '@/lib/loadHomePortfolioCharts'
 import { pairedAlternates } from '@/lib/seoAlternates'
 
 export const metadata = {
-  title: 'Alpha Stacking — Canadian edition',
+  title: 'Alpha Stacking: Beyond Return Stacking | Canada',
   description:
-    'Model portfolios and ETF research for Canadian investors — CAD-listed tickers alongside US-listed funds, with CAD context where it matters.',
+    'Alpha stacking builds on return stacking for Canadian investors. Compare CAD-listed and US-listed ETFs, model portfolios, and live total-return charts.',
   alternates: pairedAlternates('/', '/ca', 'ca'),
 }
 

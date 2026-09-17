@@ -291,6 +291,16 @@
   background: rgba(var(--rgb-text), 0.02);
 }
 
+.compareCardLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.compareCardLink:hover {
+  border-color: var(--color-gold-border);
+  background: var(--color-gold-dim);
+}
+
 .compareCardFeatured {
   border-color: var(--color-gold-border);
   background: var(--color-gold-dim);

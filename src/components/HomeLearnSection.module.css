@@ -33,10 +33,23 @@
   font-weight: 700;
 }
 
+.ledeLink {
+  color: var(--color-text);
+  font-weight: 500;
+  text-decoration-color: rgba(var(--rgb-gold-deep), 0.65);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.ledeLink:hover {
+  color: var(--color-gold-hover);
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  gap: 0.75rem;
 }
 
 .cta {
@@ -57,6 +70,23 @@
 
 .cta:hover {
   background: var(--color-gold-fill-hover);
+}
+
+.ctaSecondary {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  border: 0.5px solid var(--color-border);
+  padding: calc(0.75rem - 0.5px) 1.5rem;
+  text-decoration: none;
+}
+
+.ctaSecondary:hover {
+  color: var(--color-gold-hover);
+  border-color: var(--color-gold-border);
 }
 
 @media (max-width: 768px) {

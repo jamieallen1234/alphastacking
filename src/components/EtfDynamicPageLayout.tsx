@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Link from 'next/link'
 import EtfPageTemplate, { etfPageStyles as styles } from '@/components/EtfPageTemplate'
 import EtfPageDisclaimers from '@/components/EtfPageDisclaimers'
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd'
@@ -19,6 +20,8 @@ import {
 import type { PrimarySimilarityHeadline, SimilarEtfRow } from '@/lib/etfSimilarEtfs'
 import { displayTagLabelsForSlug } from '@/lib/etfSimilarityTags'
 import type { PortfolioEtfMembership } from '@/lib/portfolioEtfMembership'
+import { getStrategyGuideForEtf } from '@/lib/etfStrategyGuide'
+import { learnArticlePath } from '@/lib/learnArticles'
 
 function efficiencyGradeToShow(grade: string | null | undefined): string | null {
   const g = grade?.trim()
@@ -233,6 +236,7 @@ export default function EtfDynamicPageLayout({
   const isCaHub = hubBase.startsWith('/ca')
   const homePath = isCaHub ? '/ca' : '/'
   const hubLabel = hubBase === '/ca/etfs' ? 'CA ETFs' : 'US ETFs'
+  const strategyGuide = slug ? getStrategyGuideForEtf(slug, def.hubCategoryId) : undefined
 
   return (
     <>
@@ -324,6 +328,19 @@ export default function EtfDynamicPageLayout({
           )
         )}
       </div>
+      {strategyGuide ? (
+        <div className={styles.bodySection}>
+          <h2>Learn the strategy</h2>
+          <p>
+            Read the{' '}
+            <Link href={learnArticlePath(isCaHub, strategyGuide.slug)}>
+              {strategyGuide.label} guide
+            </Link>{' '}
+            for the return driver, failure modes, and how this type of sleeve fits in an alpha
+            stacking portfolio.
+          </p>
+        </div>
+      ) : null}
       {similarEtfs != null && similarEtfs.length > 0 ? (
         <div className={styles.bodySection}>
           <h2>Similar ETFs</h2>

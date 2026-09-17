@@ -20,6 +20,7 @@ import {
   CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   CA_GRANDMAS_PORTFOLIO_PRESET_ID,
   CA_INTL_PRESET_ID,
+  CA_LOW_BETA_INCOME_PRESET_ID,
   CA_SIXTY_FORTY_PRESET_ID,
   CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
   CA_USSL_QQQL_HDGE_PRESET_ID,
@@ -84,6 +85,7 @@ const CA_SLUG_TO_PRESET_ID: Record<string, string> = {
   'ca-four-alpha-quadrants': CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
   'ca-grandmas-portfolio': CA_GRANDMAS_PORTFOLIO_PRESET_ID,
   'ca-dividends': CA_DIVIDENDS_PRESET_ID,
+  'ca-low-beta-income': CA_LOW_BETA_INCOME_PRESET_ID,
   'ca-bond-alternative': CA_BOND_ALT_PRESET_ID,
   'ca-sixty-forty': CA_SIXTY_FORTY_PRESET_ID,
 }

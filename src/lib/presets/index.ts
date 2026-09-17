@@ -66,6 +66,7 @@ export const US_SIXTY_FORTY_PRESET_ID = 'us-sixty-forty-v1'
 export const CA_SIXTY_FORTY_PRESET_ID = 'ca-sixty-forty-v1'
 export const CA_GRANDMAS_PORTFOLIO_PRESET_ID = 'ca-grandmas-portfolio-v2'
 export const CA_DIVIDENDS_PRESET_ID = 'ca-dividends-v1'
+export const CA_LOW_BETA_INCOME_PRESET_ID = 'ca-low-beta-income-v1'
 
 // -------------------- Holdings --------------------
 export const usInternationalHoldings: PresetHolding[] = [
@@ -316,6 +317,16 @@ export const caDividendsHoldings: PresetHolding[] = [
   { ticker: 'BAAA.TO', weightPct: 15, beta: 0.02, blurb: 'AAA CLO floating-rate income, with JAAA used for pre-listing chart history.' },
 ]
 
+/** 25 / 15 / 15 / 10 / 10 / 25 buy-and-hold Canadian-listed income portfolio, benchmarked against XBB.TO. AAA CLOs, ultra-short investment-grade credit, and merger arbitrage anchor the defensive book; EIT adds equity income while PFAA offsets part of that added equity beta. The allocation targets a roughly 4.5% distribution yield with modeled equity beta near 0.10. */
+export const caLowBetaIncomeHoldings: PresetHolding[] = [
+  { ticker: 'BAAA.TO', weightPct: 25, beta: 0.02, blurb: 'AAA CLO floating-rate income, the portfolio’s primary stability anchor, with JAAA used for pre-listing chart history.' },
+  { ticker: 'CVD.TO', weightPct: 15, beta: 0.12, blurb: 'Canadian convertible bonds, a smaller income sleeve with short effective duration and some equity optionality.' },
+  { ticker: 'ARB.TO', weightPct: 15, beta: 0.09, blurb: 'Merger and SPAC arbitrage, a low-beta event-driven income diversifier.' },
+  { ticker: 'EIT-UN.TO', weightPct: 10, beta: 0.63, blurb: 'Canoe EIT Income Fund, a Canadian equity-income closed-end fund with monthly distributions.' },
+  { ticker: 'PFAA.TO', weightPct: 10, beta: 0, blurb: 'Multi-strategy alternatives, intended to offset part of EIT’s added equity beta.' },
+  { ticker: 'HFR.TO', weightPct: 25, beta: 0.02, blurb: 'Ultra-short investment-grade corporate bonds with duration generally below one year.' },
+]
+
 // -------------------- Registry --------------------
 export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
@@ -548,6 +559,17 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     estimatedDistributionYieldPct: 4.9,
     distributionYieldAsOf: 'August 28, 2026',
     extraCacheKeyTags: ['buy-hold', 'eit-hpr-cvd-pfaa-arb-mrgr-baaa-jaaa-v1'],
+  },
+  {
+    id: CA_LOW_BETA_INCOME_PRESET_ID,
+    region: 'ca',
+    cadDenominated: false,
+    rebalanceSchedule: 'none',
+    holdings: caLowBetaIncomeHoldings,
+    benchmarkSymbol: 'XBB.TO',
+    estimatedDistributionYieldPct: 4.5,
+    distributionYieldAsOf: 'September 10, 2026',
+    extraCacheKeyTags: ['buy-hold', 'baaa-cvd-arb-eit-pfaa-hfr-low-beta-income-v7'],
   },
 ]
 

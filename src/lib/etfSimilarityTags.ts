@@ -163,6 +163,8 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_CA: Record<string, EtfSimilarityTagBund
   pfmn: bundle(['preferreds_credit'], ['credit'], 'seeded'),
   arb: bundle(['arbitrage'], ['arbitrage'], 'seeded'),
   cvd: bundle([], ['convertible_bonds', 'credit'], 'manual'),
+  /** Ultra-short investment-grade corporate credit with a duration hedge. */
+  hfr: bundle([], ['floating_rate_credit', 'investment_grade_credit', 'short_duration'], 'seeded'),
   /** Pure AAA CLO structured credit; no equity sleeve. Peers with other credit-alpha sleeves. */
   baaa: bundle([], ['aaa_clo', 'floating_rate_credit', 'investment_grade_credit'], 'seeded'),
 }

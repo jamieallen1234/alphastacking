@@ -661,5 +661,11 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       'Canadian convertible bonds: corporate bond income with issuer-specific equity optionality and short broad-rate duration.',
       caPath('cvd')
     ),
+    ca(
+      'hfr',
+      'HFR.TO - Global X Active Ultra-Short Term Investment Grade Bond ETF',
+      'Actively managed Canadian investment-grade corporate bonds with duration generally kept below one year.',
+      caPath('hfr')
+    ),
   ],
 }

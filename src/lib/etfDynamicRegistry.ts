@@ -2345,6 +2345,48 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     },
   },
 
+  hfr: {
+    yahooSymbol: 'HFR.TO',
+    hubCategoryId: 'fixed-income',
+    badge: 'Fixed income',
+    h1Title: 'HFR.TO - Global X Active Ultra-Short Term Investment Grade Bond ETF',
+    displayTicker: 'HFR',
+    issuer: 'Global X Investments Canada Inc.',
+    inception: 'Dec 12, 2010',
+    addedToSite: '2026-09-16',
+    structure: 'Actively managed ultra-short investment-grade corporate bond ETF',
+    mer: '0.49%',
+    aum: '~$663M CAD (Sep. 2026)',
+    pageTitle: 'HFR.TO ETF - Alpha Stacking',
+    description:
+      'Global X Active Ultra-Short Term Investment Grade Bond ETF (HFR.TO): Canadian investment-grade corporate credit with interest-rate risk hedged to a duration below one year.',
+    contentFormat: 'html',
+    chartHeadingLabel: 'total return',
+    lede:
+      'HFR is an <strong>ultra-short investment-grade corporate bond</strong> ETF that uses interest-rate hedges to keep duration generally below one year. It is built for cash-plus income, not for capturing a broad bond-market rally.',
+    strategyParas: [
+      'HFR owns primarily Canadian investment-grade corporate bonds, with a smaller U.S. allocation that is hedged back to Canadian dollars. The manager uses interest-rate swaps to neutralize most rate exposure, so the portfolio earns corporate-credit carry while avoiding the duration profile of a conventional aggregate-bond fund.',
+      'The hedge lowers sensitivity to government-yield moves, but it does not erase risk. Credit spreads can widen, issuer liquidity can deteriorate, and the swaps themselves add counterparty and implementation risk. A duration hedge is not a credit hedge.',
+    ],
+    pedigreeParas: ped(
+      'Global X Investments Canada Inc. manages HFR, which began trading in December 2010. Fiera Capital Corporation is its sub-advisor, bringing an institutional Canadian fixed-income platform to an ETF that has accumulated roughly $663 million in assets as of September 2026.',
+      'The fund is actively managed rather than index-tracking. Its 0.40% management fee and 0.49% reported MER are paid for credit selection and the interest-rate hedge, so its value proposition rests on delivering steadier income and lower rate sensitivity than a broad corporate-bond ETF.'
+    ),
+    outperfParas: [
+      'Outperforms when <strong>short-term credit is stable and rates are volatile</strong>: the corporate coupon accrues while the duration hedge limits losses from rising government yields.',
+      'Underperforms when <strong>short-term credit is stressed and rates are stable</strong>: widening spreads can overwhelm the coupon, while the short duration leaves little participation in a broad bond rally. Favorable tape: stable short-term credit and volatile rates. Hostile tape: stressed short-term credit and stable rates.',
+    ],
+    officialUrl: 'https://www.globalx.ca/product/hfr',
+    officialLabel: 'Global X Canada (HFR)',
+    efficiency: {
+      alpha: {
+        tooltip: alphaEfficiencyUnstackedTooltip(
+          'HFR.TO is a duration-hedged, investment-grade corporate-credit sleeve. The alpha grade evaluates income delivery after fees against its short-duration fixed-income hurdle.'
+        ),
+      },
+    },
+  },
+
   rgbm: {
     yahooSymbol: 'RGBM.TO',
     hubCategoryId: 'return-stacked',

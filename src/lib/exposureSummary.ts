@@ -93,6 +93,7 @@ const EXPOSURE_BY_TICKER: Record<string, ExposureModel> = {
   'PFAA.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   'HPR.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   'CVD.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
+  'HFR.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   MRGR: { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   'ARB.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },
   'BAAA.TO': { longEquityPct: 0, shortEquityPct: 0, alphaPct: 100 },

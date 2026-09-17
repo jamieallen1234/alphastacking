@@ -88,6 +88,7 @@ const ALPHA_FUNDS: Record<string, string> = {
   'BAAA.TO': 'Fixed income',
   'HPR.TO': 'Fixed income',
   'CVD.TO': 'Fixed income',
+  'HFR.TO': 'Fixed income',
   'PFAA.TO': 'Premia/carry',
   ZROZ: 'Fixed income',
   GLD: 'Real assets/gold',

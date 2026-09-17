@@ -79,6 +79,7 @@ export const ETF_CHART_SYMBOLS = [
   'ETHX-B.TO',
   'ARB.TO',
   'CVD.TO',
+  'HFR.TO',
   'JAAA',
   'CLOA',
   'BAAA.TO',

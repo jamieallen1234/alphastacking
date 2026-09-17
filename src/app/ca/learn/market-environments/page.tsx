@@ -4,11 +4,13 @@ import { fetchDailySeries } from '@/lib/yahooFinance'
 import LearnArticleShell from '@/components/learn/LearnArticleShell'
 import MarketEnvironmentsArticle from '@/components/learn/MarketEnvironmentsArticle'
 import { MARKET_ENVIRONMENTS_SLUG } from '@/lib/learnArticles'
+import { pairedAlternates } from '@/lib/seoAlternates'
 
 export const metadata: Metadata = {
   title: 'Five market environments | Learn | Alpha Stacking (Canadian edition)',
   description:
     'What growth, inflation, recession, deflation, and choppy markets look like on a chart, and why a portfolio that only thrives in one of them is a fragile portfolio.',
+  alternates: pairedAlternates('/learn/market-environments', '/ca/learn/market-environments', 'ca'),
 }
 
 const START_OF_2000_SEC = Date.UTC(2000, 0, 1) / 1000

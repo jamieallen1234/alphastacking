@@ -8,6 +8,7 @@ import { CA_ETF_DYNAMIC_REGISTRY } from '@/lib/etfDynamicRegistry'
 import { getCachedEtfChart } from '@/lib/getCachedEtfChart'
 import { buildPrimarySimilarityHeadline, loadSimilarEtfRows } from '@/lib/etfSimilarEtfs'
 import { loadPortfolioEtfMemberships } from '@/lib/portfolioEtfMembership'
+import { singleEditionAlternates } from '@/lib/seoAlternates'
 
 export function generateStaticParams() {
   return Object.keys(CA_ETF_DYNAMIC_REGISTRY).map((slug) => ({ slug }))
@@ -21,7 +22,11 @@ export async function generateMetadata({
   const { slug } = await params
   const def = CA_ETF_DYNAMIC_REGISTRY[slug]
   if (!def) return {}
-  return { title: def.pageTitle, description: def.description }
+  return {
+    title: def.pageTitle,
+    description: def.description,
+    alternates: singleEditionAlternates(`/ca/etfs/${slug}`, 'en-CA'),
+  }
 }
 
 export default async function CaEtfDynamicPage({

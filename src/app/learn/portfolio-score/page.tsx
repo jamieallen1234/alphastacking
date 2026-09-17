@@ -2,11 +2,13 @@ import type { Metadata } from 'next'
 import LearnArticleShell from '@/components/learn/LearnArticleShell'
 import PortfolioScoreArticle from '@/components/learn/PortfolioScoreArticle'
 import { PORTFOLIO_SCORE_SLUG } from '@/lib/learnArticles'
+import { pairedAlternates } from '@/lib/seoAlternates'
 
 export const metadata: Metadata = {
   title: 'How portfolio scores work | Learn | Alpha Stacking',
   description:
     'What the A/B/C grade on each portfolio means, how it is calculated, and what it does not tell you.',
+  alternates: pairedAlternates('/learn/portfolio-score', '/ca/learn/portfolio-score', 'us'),
 }
 
 export default function PortfolioScorePage() {

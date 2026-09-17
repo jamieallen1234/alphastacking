@@ -2,11 +2,13 @@ import type { Metadata } from 'next'
 import LearnArticleShell from '@/components/learn/LearnArticleShell'
 import ReturnStackingExplainedArticle from '@/components/learn/ReturnStackingExplainedArticle'
 import { RETURN_STACKING_EXPLAINED_SLUG } from '@/lib/learnArticles'
+import { pairedAlternates } from '@/lib/seoAlternates'
 
 export const metadata: Metadata = {
   title: 'Return stacking explained | Learn | Alpha Stacking',
   description:
     'Return stacking holds two exposures on one dollar of capital using futures as collateral. Learn how the mechanism works, what it costs in different rate environments, and where it breaks down.',
+  alternates: pairedAlternates('/learn/return-stacking-explained', '/ca/learn/return-stacking-explained', 'us'),
 }
 
 export default function ReturnStackingExplainedPage() {

@@ -17,7 +17,8 @@ export async function GET(req: Request) {
 
   const { searchParams } = new URL(req.url)
   const presetId = searchParams.get('preset') ?? ''
-  if (!getPresetById(presetId)) {
+  const preset = getPresetById(presetId)
+  if (!preset) {
     return NextResponse.json(
       { error: `Unknown preset (use one of: ${PRESET_HINT}).` },
       { status: 400 }

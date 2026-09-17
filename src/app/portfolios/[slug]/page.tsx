@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import PortfolioDetailMain from '@/components/PortfolioDetailMain'
 import { usPortfolioRoutes } from '@/lib/portfolioRoutes'
+import { pairedAlternates } from '@/lib/seoAlternates'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,6 +11,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: def ? `${def.title} — Alpha Stacking` : 'Portfolio',
     description: def?.description,
+    alternates: def
+      ? pairedAlternates(`/portfolios/${slug}`, `/ca/portfolios/${slug}`, 'us')
+      : undefined,
   }
 }
 

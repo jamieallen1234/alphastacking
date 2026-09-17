@@ -2,11 +2,13 @@ import type { Metadata } from 'next'
 import LearnArticleShell from '@/components/learn/LearnArticleShell'
 import EfficiencyGradesArticle from '@/components/learn/EfficiencyGradesArticle'
 import { EFFICIENCY_GRADES_SLUG } from '@/lib/learnArticles'
+import { pairedAlternates } from '@/lib/seoAlternates'
 
 export const metadata: Metadata = {
   title: 'Capital, Alpha, and Stacked Efficiency grades | Learn | Alpha Stacking (Canadian edition)',
   description:
     'What the letter grades on ETF pages measure, how Capital Efficiency and Alpha Efficiency are calculated, and what the grades do not tell you.',
+  alternates: pairedAlternates('/learn/efficiency-grades', '/ca/learn/efficiency-grades', 'ca'),
 }
 
 export default function CaEfficiencyGradesPage() {

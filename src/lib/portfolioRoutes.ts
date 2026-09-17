@@ -375,9 +375,9 @@ export const caPortfolioRoutes: PortfolioRouteDef[] = [
     rebalance: 'none',
     title: 'Dividends',
     badge: 'Retirement',
-    description: 'Canadian income, preferred-share, convertible-bond, arbitrage, and AAA CLO sleeves measured against XBB.',
+    description: 'Canadian equity income, preferred shares, convertible bonds, ultra-short credit, arbitrage, and AAA CLO sleeves measured against XBB.',
     addedAt: '2026-08-30',
-    weightedBeta: 0.249,
+    weightedBeta: 0.252,
     hubOrder: 4,
   },
   {

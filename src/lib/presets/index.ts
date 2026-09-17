@@ -65,7 +65,8 @@ export const CA_BOND_ALT_PRESET_ID = 'ca-bond-alt-v2'
 export const US_SIXTY_FORTY_PRESET_ID = 'us-sixty-forty-v1'
 export const CA_SIXTY_FORTY_PRESET_ID = 'ca-sixty-forty-v1'
 export const CA_GRANDMAS_PORTFOLIO_PRESET_ID = 'ca-grandmas-portfolio-v2'
-export const CA_DIVIDENDS_PRESET_ID = 'ca-dividends-v1'
+// Bump when the holdings change so every range gets a distinct preset-chart cache entry.
+export const CA_DIVIDENDS_PRESET_ID = 'ca-dividends-v2'
 export const CA_LOW_BETA_INCOME_PRESET_ID = 'ca-low-beta-income-v1'
 
 // -------------------- Holdings --------------------
@@ -312,7 +313,7 @@ export const caDividendsHoldings: PresetHolding[] = [
   { ticker: 'EIT-UN.TO', weightPct: 30, beta: 0.63, blurb: 'Canoe EIT Income Fund, the equity-income core.' },
   { ticker: 'HPR.TO', weightPct: 15, beta: 0.23, blurb: 'Active preferred-share income, sized below the equity-income core.' },
   { ticker: 'CVD.TO', weightPct: 10, beta: 0.12, blurb: 'Canadian convertible bonds, income with lower duration than broad bonds.' },
-  { ticker: 'PFAA.TO', weightPct: 20, beta: 0, blurb: 'Multi-strategy alternatives, a low-beta return diversifier.' },
+  { ticker: 'HFR.TO', weightPct: 20, beta: 0.02, blurb: 'Ultra-short investment-grade corporate bonds, a low-duration income sleeve.' },
   { ticker: 'ARB.TO', weightPct: 10, beta: 0.09, blurb: 'Merger arbitrage, a low-beta event-driven return source.' },
   { ticker: 'BAAA.TO', weightPct: 15, beta: 0.02, blurb: 'AAA CLO floating-rate income, with JAAA used for pre-listing chart history.' },
 ]
@@ -557,7 +558,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     benchmarkSymbol: 'XBB.TO',
     estimatedDistributionYieldPct: 4.9,
     distributionYieldAsOf: 'August 28, 2026',
-    extraCacheKeyTags: ['buy-hold', 'eit-hpr-cvd-pfaa-arb-mrgr-baaa-jaaa-v1'],
+    extraCacheKeyTags: ['buy-hold', 'eit-hpr-cvd-hfr-arb-mrgr-baaa-jaaa-v2'],
   },
   {
     id: CA_LOW_BETA_INCOME_PRESET_ID,

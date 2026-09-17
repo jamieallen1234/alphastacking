@@ -21,6 +21,7 @@ const LETF_SYMBOLS = new Set([
   'UPRO',
   'QLD',
   'TQQQ',
+  'WX',
   'HEQL.TO',
   'USSL.TO',
   'QQQL.TO',

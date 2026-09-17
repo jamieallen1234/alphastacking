@@ -710,6 +710,41 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'ProShares (SSO)',
   },
 
+  wx: {
+    yahooSymbol: 'WX',
+    hubCategoryId: 'leveraged-equity',
+    badge: 'Leveraged equity ETFs',
+    h1Title: 'WX: Corgi All World 2x Daily ETF',
+    displayTicker: 'WX',
+    issuer: 'Corgi Strategies, LLC',
+    inception: 'Jun 3, 2026',
+    addedToSite: '2026-09-16',
+    structure: '2x daily global equity leverage',
+    mer: '0.20%',
+    aum: '~$0.4M',
+    pageTitle: 'WX ETF: Alpha Stacking',
+    description:
+      'Corgi All World 2x Daily ETF (WX): 2x daily leverage on Vanguard Total World Stock ETF (VT).',
+    contentFormat: 'html',
+    betaBenchmarkSymbol: 'VT',
+    lede:
+      'WX targets <strong>2× daily global equity exposure</strong> by seeking twice the daily return of the Vanguard Total World Stock ETF (VT), which spans U.S., developed-market, and emerging-market stocks.',
+    strategyParas: [
+      'WX is a daily-reset leveraged fund, not a 2× buy-and-hold version of VT. It uses total return swaps, and may use futures and options, to keep exposure near 200% of net assets at each trading-day rebalance.',
+      'That reset makes the path matter. A steady global advance can compound favorably, while reversals and high realized volatility erode returns even when VT finishes a longer period near where it began. Its low headline expense ratio does not remove swap spreads, financing conditions, or the risk of a small new fund.',
+    ],
+    pedigreeParas: ped(
+      'Corgi Strategies, LLC is a new SEC-registered adviser, founded in July 2025. WX listed on Cboe BZX in June 2026, so its live operating history, assets, and secondary-market liquidity remain limited compared with established leveraged-ETF sponsors.',
+      'The fund’s portfolio is swap-based. Counterparty exposure, collateral management, and daily rebalance execution are central to tracking VT at 2×, especially around global-market gaps when the U.S. listing is open but overseas markets are closed.'
+    ),
+    outperfParas: [
+      'WX can outperform in a <strong>persistent, broad global equity advance</strong>, particularly when U.S., developed, and emerging-market stocks participate and daily volatility stays contained. That is the tape where daily leverage has room to compound rather than repeatedly resize after losses.',
+      'WX is hostile to <strong>high-volatility, reversing global equity markets</strong>, as well as deep bear markets and cross-market gaps. Daily resets magnify losses and volatility drag. <em>Favorable tape:</em> persistent, broad global equity advance with contained realized volatility. <em>Hostile tape:</em> high-volatility, reversing global equity markets with frequent gap moves.',
+    ],
+    officialUrl: 'https://corgiinvest.com/wx',
+    officialLabel: 'Corgi Invest (WX)',
+  },
+
   upro: {
     yahooSymbol: 'UPRO',
     hubCategoryId: 'leveraged-equity',

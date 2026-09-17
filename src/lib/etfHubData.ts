@@ -405,6 +405,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   ],
   'leveraged-equity': [
     us(
+      'wx',
+      'WX: Corgi All World 2x Daily ETF',
+      '2x daily exposure to Vanguard Total World Stock ETF (VT), covering U.S., developed, and emerging-market equities.',
+      usPath('wx')
+    ),
+    us(
       'qld',
       'QLD — ProShares Ultra QQQ',
       '2x daily Nasdaq-100 exposure with daily reset leverage.',

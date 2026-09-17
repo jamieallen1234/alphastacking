@@ -97,6 +97,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
 
   // --- Leveraged beta (equity-only; grouped by `leveragedPeers`, the multiple is display/rank) ---
   sso: bundle(['us', 'large_cap', '2x_leveraged'], [], 'manual'),
+  wx: bundle(['global', 'all_cap', '2x_leveraged'], [], 'manual'),
   upro: bundle(['us', 'large_cap', '3x_leveraged'], [], 'manual'),
   qld: bundle(['us', 'large_cap', 'growth', '2x_leveraged'], [], 'manual'),
   tqqq: bundle(['us', 'large_cap', 'growth', '3x_leveraged'], [], 'manual'),

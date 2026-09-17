@@ -31,6 +31,7 @@ export const ETF_CHART_SYMBOLS = [
   'UPRO',
   'QLD',
   'TQQQ',
+  'WX',
   'SPMO',
   'FMTM',
   'VFLO',

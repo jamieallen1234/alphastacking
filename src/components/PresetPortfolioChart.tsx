@@ -223,7 +223,7 @@ function SyntheticModelingLine({
             <ProxyLink ticker={m.slotSymbol} hubBase={hubBase}>
               {m.slotSymbol}
             </ProxyLink>
-            : methodology lists {legText} as Yahoo proxies for joint history before live listing when
+            : methodology lists {legText}{' '}as Yahoo proxies for joint history before live listing when
             calendar overlap allows. In this chart&apos;s Yahoo range there was no separate pre-listing window to
             splice—line shows the fund&apos;s reported adjusted closes only.
           </p>

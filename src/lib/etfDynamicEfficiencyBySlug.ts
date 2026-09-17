@@ -316,6 +316,13 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  wx: {
+    capital: {
+      tooltip: capitalEfficiencyTooltip(
+        'WX seeks 2x daily exposure to the Vanguard Total World Stock ETF (VT) through swaps and related derivatives. The grade reflects daily-reset compounding against global-equity benchmark exposure.'
+      ),
+    },
+  },
   upro: {
     capital: {
       tooltip: capitalEfficiencyTooltip(

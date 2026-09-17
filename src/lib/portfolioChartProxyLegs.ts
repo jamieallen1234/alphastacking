@@ -53,6 +53,8 @@ export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, ProxyDef> = {
   RSIT: { legs: ['SPDW', 'DBMF'] },
   /** Pre-inception: VT (global equity) + AGG (US bonds) mirrors RSSB's two-sleeve design. */
   RSSB: { legs: ['VT', 'AGG'] },
+  /** Same 2x-daily VT objective; WLDU live returns extend WX from Mar 2026 to its Jun 2026 listing. */
+  WX: { legs: ['WLDU'], grossExposurePct: 100 },
   BTGD: { legs: ['BITO', 'GLD'] },
   OOQB: { legs: ['QQQ', 'BITO'] },
   OOSB: { legs: ['SPY', 'BITO'] },

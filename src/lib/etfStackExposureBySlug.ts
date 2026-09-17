@@ -39,6 +39,15 @@ export type EtfStackExposureConfig = {
  * Keep this updated when adding or changing stacked ETFs.
  */
 export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> = {
+  /** Daily-reset 2x global equity exposure, benchmarked to its actual VT underlying. */
+  wx: {
+    components: [
+      { name: 'Global all-cap equity (VT)', pct: 200, bucket: 'capital', assetClass: 'equity' },
+    ],
+    capitalMarketBenchmarkSymbol: 'VT',
+    coreBenchmarkSymbol: 'VT',
+    allEquityStack: true,
+  },
   mate: {
     components: [
       { name: 'S&P 500 equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
@@ -318,4 +327,3 @@ export function stackExposureLineAvailability(
     hasNonEquitySleeve: split.alpha > 0,
   }
 }
-

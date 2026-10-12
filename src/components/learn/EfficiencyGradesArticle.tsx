@@ -1,11 +1,12 @@
 import Link from 'next/link'
-import { usEtfHubPath, learnPath } from '@/lib/siteRegion'
+import { usEtfHubPath, learnPath, methodologyPath } from '@/lib/siteRegion'
 import styles from './LearnArticle.module.css'
 
 export default function EfficiencyGradesArticle({ edition }: { edition: 'us' | 'ca' }) {
   const isCa = edition === 'ca'
   const etfHref = usEtfHubPath(isCa)
   const learnHref = learnPath(isCa)
+  const methodologyHref = methodologyPath(isCa)
 
   return (
     <article className={styles.article}>
@@ -158,6 +159,13 @@ export default function EfficiencyGradesArticle({ edition }: { edition: 'us' | '
           short to have tested the fund across different market conditions. Grades become standard
           after a full year of history. They&apos;re recalculated each January using data through
           December.
+        </p>
+        <p className={styles.body}>
+          Read the site&apos;s{' '}
+          <Link href={methodologyHref} className={styles.inlineLink}>
+            methodology
+          </Link>{' '}
+          for the chart-data and proxy-history assumptions used across the site.
         </p>
       </section>
 

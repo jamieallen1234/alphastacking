@@ -22,6 +22,7 @@ import { displayTagLabelsForSlug } from '@/lib/etfSimilarityTags'
 import type { PortfolioEtfMembership } from '@/lib/portfolioEtfMembership'
 import { getStrategyGuideForEtf } from '@/lib/etfStrategyGuide'
 import { learnArticlePath } from '@/lib/learnArticles'
+import { methodologyPath } from '@/lib/siteRegion'
 
 function efficiencyGradeToShow(grade: string | null | undefined): string | null {
   const g = grade?.trim()
@@ -237,6 +238,10 @@ export default function EtfDynamicPageLayout({
   const homePath = isCaHub ? '/ca' : '/'
   const hubLabel = hubBase === '/ca/etfs' ? 'CA ETFs' : 'US ETFs'
   const strategyGuide = slug ? getStrategyGuideForEtf(slug, def.hubCategoryId) : undefined
+  const sourceLinks = [
+    { label: def.officialLabel, url: def.officialUrl },
+    ...(def.sources ?? []),
+  ].filter((source, index, list) => list.findIndex((item) => item.url === source.url) === index)
 
   return (
     <>
@@ -404,13 +409,20 @@ export default function EtfDynamicPageLayout({
       ) : null}
 
       <div className={styles.bodySection}>
-        <h2>Official ETF page</h2>
+        <h2>Official sources</h2>
         <p>
-          Read the official ETF page for current NAV, holdings, and documents:{' '}
-          <a href={def.officialUrl} target="_blank" rel="noopener noreferrer">
-            {def.officialLabel}
-          </a>
-          .
+          Use the issuer and regulatory documents below to verify current holdings, fees, exposure,
+          and risk disclosures.
+        </p>
+        {sourceLinks.map((source) => (
+          <p key={source.url}>
+            <a href={source.url} target="_blank" rel="noopener noreferrer">
+              {source.label}
+            </a>
+          </p>
+        ))}
+        <p>
+          <Link href={methodologyPath(isCaHub)}>How Alpha Stacking uses source documents and chart data</Link>
         </p>
         <EtfPageDisclaimers />
       </div>

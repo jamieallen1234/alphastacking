@@ -3,8 +3,10 @@
 import Link from 'next/link'
 import {
   REGION_COOKIE,
+  aboutPath,
   contactPath,
   disclaimersPath,
+  methodologyPath,
   privacyPath,
   type SiteRegion,
 } from '@/lib/siteRegion'
@@ -21,6 +23,8 @@ export default function Footer() {
   const contact = contactPath(isCa)
   const disclaimers = disclaimersPath(isCa)
   const privacy = privacyPath(isCa)
+  const about = aboutPath(isCa)
+  const methodology = methodologyPath(isCa)
 
   return (
     <footer>
@@ -32,6 +36,12 @@ export default function Footer() {
           <div className={styles.stripLinks}>
             <Link href={contact} className={styles.footerContact}>
               Contact
+            </Link>
+            <Link href={about} className={styles.footerContact}>
+              About
+            </Link>
+            <Link href={methodology} className={styles.footerContact}>
+              Methodology
             </Link>
             <Link href={disclaimers} className={styles.footerContact}>
               Disclaimers

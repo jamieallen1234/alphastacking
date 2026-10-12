@@ -46,3 +46,11 @@ export function disclaimersPath(isCa: boolean): string {
 export function privacyPath(isCa: boolean): string {
   return isCa ? '/ca/privacy' : '/privacy'
 }
+
+export function aboutPath(isCa: boolean): string {
+  return isCa ? '/ca/about' : '/about'
+}
+
+export function methodologyPath(isCa: boolean): string {
+  return isCa ? '/ca/methodology' : '/methodology'
+}

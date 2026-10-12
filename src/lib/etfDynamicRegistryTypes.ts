@@ -14,6 +14,12 @@ export type EtfDynamicEfficiencyDef = {
   footnotes?: string[]
 }
 
+/** A direct issuer, regulatory, or index-provider document supporting the page. */
+export type EtfSourceLink = {
+  label: string
+  url: string
+}
+
 export type EtfDynamicDef = {
   yahooSymbol: string
   hubCategoryId: string
@@ -35,6 +41,8 @@ export type EtfDynamicDef = {
   outperfParas: string[]
   officialUrl: string
   officialLabel: string
+  /** Additional direct documents, such as a prospectus, ETF Facts, or index methodology. */
+  sources?: EtfSourceLink[]
   efficiency?: EtfDynamicEfficiencyDef
   issuerRole?: 'issuer' | 'manager'
   /**

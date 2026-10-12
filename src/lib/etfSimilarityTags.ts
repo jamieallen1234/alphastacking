@@ -136,6 +136,7 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
 /** CA hub registry slugs — peers only within Canadian listings. */
 export const ETF_SIMILARITY_TAGS_BY_SLUG_CA: Record<string, EtfSimilarityTagBundle> = {
   rgbm: bundle(['global', 'bonds', 'return_stacked', '2x_leveraged'], ['global_macro'], 'sleeve'),
+  mgeg: bundle(['global', 'large_cap', 'return_stacked', '1.5x_leveraged'], ['gold'], 'sleeve'),
   onec: bundle(['multi_strategy_alternative'], ['multi_strategy_alternative'], 'seeded'),
   pfaa: bundle(['multi_strategy_alternative'], ['multi_strategy_alternative'], 'seeded'),
   pfae: bundle(['canada', 'long_short'], [], 'manual'),

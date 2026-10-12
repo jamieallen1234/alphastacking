@@ -681,6 +681,18 @@ export const CA_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
       ),
     },
   },
+  mgeg: {
+    capital: {
+      tooltip: insufficientHistoryTooltip(
+        'MGEG holds a fully invested global-equity sleeve and launched in October 2026, so there is insufficient live history to grade capital efficiency against a global-equity benchmark.'
+      ),
+    },
+    alpha: {
+      tooltip: insufficientHistoryTooltip(
+        'MGEG adds a 50% notional, CAD-hedged gold-futures overlay to global equity. Launched in October 2026, so there is insufficient live history to grade alpha efficiency.'
+      ),
+    },
+  },
   onec: {
     alpha: {
       tooltip: alphaEfficiencyUnstackedTooltip(

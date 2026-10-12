@@ -83,6 +83,7 @@ export const ETF_CHART_SYMBOLS = [
   'JAAA',
   'CLOA',
   'BAAA.TO',
+  'MGEG.TO',
   'SPBC',
   'FOXY',
   'WTLS',

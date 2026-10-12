@@ -200,6 +200,14 @@ export const ETF_STACK_EXPOSURE_BY_SLUG: Record<string, EtfStackExposureConfig> 
     /** Capital bucket = equity sleeve only (~50% notional); bonds roll into alpha with macro → 50 / 150 bucket split. */
     equityCoreBenchmarkSymbol: 'VEQT.TO',
   },
+  mgeg: {
+    components: [
+      { name: 'Global equity', pct: 100, bucket: 'capital', assetClass: 'equity' },
+      { name: 'Gold futures', pct: 50, bucket: 'alpha', assetClass: 'commodity' },
+    ],
+    capitalMarketBenchmarkSymbol: 'VFV.TO',
+    coreBenchmarkSymbol: 'XWD.TO',
+  },
   asgm: {
     components: [
       { name: 'US equity', pct: 50, bucket: 'capital', assetClass: 'equity' },

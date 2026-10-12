@@ -66,6 +66,11 @@ export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, ProxyDef> = {
   'FCMO.NE': { legs: ['SPMO'] },
   /** Pre-listing: Canadian-listed global technology ETF used for FINN's innovation-heavy global equity sleeve. */
   'FINN.NE': { legs: ['TEC.TO'] },
+  /** Pre-listing: 100% global equity plus a 50% gold-futures overlay. The weighted blend preserves MGEG's 150% gross notional before financing. */
+  'MGEG.TO': {
+    legs: [{ blend: [{ symbol: 'XWD.TO', weight: 1 }, { symbol: 'GLD', weight: 0.5 }] }],
+    grossExposurePct: 150,
+  },
   /** Pre-listing: 90% TIPS + 90% gold futures; TIP extends to 2003, GLD to 2004. Gross = 180%. */
   GDT: { legs: ['TIP', 'GLD'], grossExposurePct: 180 },
   /**

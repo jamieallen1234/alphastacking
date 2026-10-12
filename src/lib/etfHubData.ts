@@ -482,7 +482,14 @@ export const ETF_HUB_CA: Record<EtfHubCategoryId, EtfHubListItem[]> = {
       caPath('rgbm')
     ),
   ],
-  'return-stacked-lt-2x': [],
+  'return-stacked-lt-2x': [
+    ca(
+      'mgeg',
+      'MGEG.TO - Mackenzie Global Equity & Gold Overlay ETF',
+      'Full active global-equity exposure with a strategic 50% gold-futures overlay in one capital-efficient wrapper.',
+      caPath('mgeg')
+    ),
+  ],
   'premia-systematic-alternatives': [
     ca(
       'onec',

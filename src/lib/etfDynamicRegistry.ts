@@ -2422,6 +2422,44 @@ export const CA_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     officialLabel: 'Return Stacked ETFs Canada (RGBM)',
   },
 
+  mgeg: {
+    yahooSymbol: 'MGEG.TO',
+    betaBenchmarkSymbol: 'XWD.TO',
+    hubCategoryId: 'return-stacked',
+    badge: 'Return Stacked - Lower Leverage',
+    h1Title: 'MGEG.TO - Mackenzie Global Equity & Gold Overlay ETF',
+    displayTicker: 'MGEG',
+    issuer: 'Mackenzie Investments',
+    inception: 'Oct 1, 2026',
+    addedToSite: '2026-10-12',
+    structure: 'Active global equity + 50% gold-futures overlay',
+    capitalBucketExposurePct: 100,
+    alphaBucketExposurePct: 50,
+    mer: '1.15% mgmt fee',
+    aum: '~$4M CAD (Oct. 2026)',
+    pageTitle: 'MGEG.TO ETF - Alpha Stacking',
+    description:
+      'Mackenzie Global Equity & Gold Overlay ETF (MGEG.TO): active global equities with a 50% notional gold-futures overlay.',
+    contentFormat: 'html',
+    lede:
+      'MGEG holds a fully invested, actively managed <strong>global equity</strong> portfolio and adds a <strong>50% notional gold-futures overlay</strong>, keeping the equity sleeve intact while adding a measured hard-asset allocation through derivatives.',
+    strategyParas: [
+      'The core is a discretionary global equity portfolio. On top, the fund holds a strategic 50% notional gold-futures overlay, producing roughly 150% gross exposure without selling equities to fund a physical-gold allocation. The overlay follows a CAD-hedged gold-futures reference, so gold return, futures roll, collateral yield, and currency hedge all matter alongside the stock book.',
+      'This is not a balanced fund with a gold allocation carved out of equities. It is a capital-efficient stack, which means the gold sleeve can help when its drivers differ from global equities but can also add losses when both legs struggle. The 1.15% management fee is material beside broad global-equity ETFs, and the fund is new and small, so use limit orders and watch spreads.',
+    ],
+    pedigreeParas: ped(
+      'MGEG is managed by Mackenzie\'s Multi-Asset Strategies Team, led by Nelson Arruda. The 20-person team manages about $48 billion across multi-asset, equity, and alternative mandates, and Arruda previously ran active commodities portfolios at CPP Investments, relevant experience for a gold-futures overlay.',
+      'Mackenzie Investments reported approximately $270 billion in assets under management at Aug. 31, 2026 and sits within the IGM Financial and Power Corporation group. That gives a new $4 million ETF institutional operating support, although secondary-market liquidity will still be determined by MGEG\'s own trading volume and creations.',
+    ),
+    outperfParas: [
+      'Outperforms when global equity returns remain healthy while gold diversifies the portfolio, especially when falling real yields, a softer U.S. dollar, or policy stress support bullion without forcing a broad liquidation of risk assets.',
+      'Underperforms when equities and gold fail together, or when the gold overlay drags through a strong equity tape. Hostile tape: <strong>rising real yields and a stronger U.S. dollar</strong>. Favorable tape: <strong>falling real yields and a weaker U.S. dollar</strong>.',
+    ],
+    officialUrl:
+      'https://www.mackenzieinvestments.com/en/products/etfs/mackenzie-global-equity-gold-overlay-etf-mgeg',
+    officialLabel: 'Mackenzie Investments (MGEG)',
+  },
+
   onec: {
     yahooSymbol: 'ONEC.TO',
     hubCategoryId: 'premia-systematic-alternatives',

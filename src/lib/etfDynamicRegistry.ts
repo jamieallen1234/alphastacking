@@ -1080,7 +1080,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     addedToSite: '2026-08-12',
     structure: 'US large/mid quality-growth-at-a-reasonable-price',
     mer: '0.15%',
-    aum: '~$2.6B',
+    aum: '~$3.6B',
     pageTitle: 'GARP ETF — Alpha Stacking',
     description: 'iShares MSCI USA Quality GARP ETF (GARP): quality growth-at-a-reasonable-price U.S. equity sleeve.',
     contentFormat: 'html',
@@ -1092,11 +1092,11 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     ],
     pedigreeParas: ped(
       `GARP is managed by BlackRock Fund Advisors on the iShares platform, the same index-replication infrastructure BlackRock runs across its core and factor ETF lineup. The MSCI USA Quality GARP Select Index methodology is MSCI's, so index construction, rebalancing, and factor definitions sit outside BlackRock's direct control, which is standard for iShares' factor suite.`,
-      `BlackRock reported approximately $14.0 trillion in total assets under management at Dec. 31, 2025, making it the largest asset manager in the world. That scale gives GARP tight bid/ask spreads and deep primary-market liquidity even though the fund itself, at roughly $2.6B, is a mid-sized name within iShares' broader factor shelf.`,
+      `BlackRock reported approximately $14.0 trillion in total assets under management at Dec. 31, 2025, making it the largest asset manager in the world. That scale gives GARP tight bid/ask spreads and deep primary-market liquidity even though the fund itself, at roughly $3.6B, is a mid-sized name within iShares' broader factor shelf.`,
     ),
     outperfParas: [
       'Outperforms when the market rewards <strong>durable earnings growth at a discount to the most expensive names</strong>, a growth environment where quality and valuation discipline both matter, letting the fund capture upside from technology and communication-services leadership without paying peak multiples for it.',
-      'Underperforms when leadership rotates to small-cap, deep value, or low-volatility names, or when the highest-multiple growth stocks the index deliberately screens out keep outrunning everything else; the favorable backdrop is broad, fundamentals-driven growth leadership rather than a narrow multiple-expansion melt-up.',
+      'Underperforms when leadership rotates to small-cap, deep value, or low-volatility names, or when the highest-multiple growth stocks the index deliberately screens out keep outrunning everything else. Hostile tape: <strong>narrow multiple-expansion melt-up</strong>. Favorable tape: <strong>broad, fundamentals-driven growth leadership</strong>.',
     ],
     officialUrl: 'https://www.ishares.com/us/products/312212/ishares-msci-usa-quality-garp-etf',
     officialLabel: 'iShares (GARP)',

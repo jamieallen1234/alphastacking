@@ -1077,7 +1077,7 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     displayTicker: 'GARP',
     issuer: 'BlackRock iShares',
     inception: 'Jan 14, 2020',
-    addedToSite: '2026-08-12',
+    addedToSite: '2026-10-12',
     structure: 'US large/mid quality-growth-at-a-reasonable-price',
     mer: '0.15%',
     aum: '~$3.6B',

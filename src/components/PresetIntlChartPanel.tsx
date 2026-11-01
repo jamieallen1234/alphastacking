@@ -28,8 +28,14 @@ function toScorecardPayload(p: PortfolioChartPayload): ScorecardPayload {
  * browser reuse an old response for the same preset/range URL after those assumptions change.
  * Server-side `unstable_cache` still deduplicates the expensive chart calculation.
  */
-function fetchPresetChart(presetId: string, range: YahooRange) {
-  return fetch(`/api/preset-chart?${new URLSearchParams({ preset: presetId, range })}`, {
+function fetchPresetChart(
+  presetId: string,
+  range: YahooRange,
+  chartCurrency: NonNullable<PortfolioChartPayload['chartCurrency']>
+) {
+  const params = new URLSearchParams({ preset: presetId, range })
+  if (chartCurrency === 'CAD') params.set('currency', 'CAD')
+  return fetch(`/api/preset-chart?${params}`, {
     cache: 'no-store',
   })
 }
@@ -58,6 +64,7 @@ export default function PresetIntlChartPanel({
   holdings = [],
 }: PresetIntlChartPanelProps) {
   const [payload, setPayload] = useState(initialPayload)
+  const chartCurrency = initialPayload.chartCurrency ?? 'USD'
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   // MAX payload for the blended scorecard (fetched once on mount).
@@ -78,7 +85,7 @@ export default function PresetIntlChartPanel({
   useEffect(() => {
     if (bestInitialRange === initialPayload.range) return
     setLoading(true)
-    void fetchPresetChart(presetId, bestInitialRange)
+    void fetchPresetChart(presetId, bestInitialRange, chartCurrency)
       .then((r) => r.json())
       .then((data: PortfolioChartPayload & { error?: string }) => {
         setPayload(data)
@@ -92,7 +99,7 @@ export default function PresetIntlChartPanel({
   useEffect(() => {
     const initialRange = initialPayload.range
     // MAX first (needed for scorecard blend); stagger others after
-    void fetchPresetChart(presetId, 'max')
+    void fetchPresetChart(presetId, 'max', chartCurrency)
       .then((r) => r.json())
       .then((data: PortfolioChartPayload) => setMaxPayload(data))
       .catch(() => undefined)
@@ -103,7 +110,7 @@ export default function PresetIntlChartPanel({
     const timers = toWarm.map((range, i) =>
       setTimeout(
         () =>
-          void fetchPresetChart(presetId, range).catch(() => undefined),
+          void fetchPresetChart(presetId, range, chartCurrency).catch(() => undefined),
         2000 + i * 3000
       )
     )
@@ -117,7 +124,7 @@ export default function PresetIntlChartPanel({
       setLoading(true)
       setError(null)
       try {
-        const res = await fetchPresetChart(presetId, range)
+        const res = await fetchPresetChart(presetId, range, chartCurrency)
         const data = (await res.json()) as PortfolioChartPayload & { error?: string }
         if (!res.ok) {
           setError(data.error || 'Could not load chart')
@@ -131,7 +138,7 @@ export default function PresetIntlChartPanel({
         setLoading(false)
       }
     },
-    [presetId, activeRange, loading]
+    [presetId, activeRange, loading, chartCurrency]
   )
 
   return (

@@ -1,5 +1,9 @@
 import Link from 'next/link'
 import type { PresetHolding } from '@/lib/presets'
+import {
+  getPortfolioProxyEtfNav,
+  type PortfolioUsEtfHubBase,
+} from '@/lib/portfolioProxyEtfNav'
 import styles from './PresetHoldingsTable.module.css'
 
 interface PresetHoldingsTableProps {
@@ -9,6 +13,8 @@ interface PresetHoldingsTableProps {
   distributionYieldAsOf?: string
   /** When set, shows “Copy portfolio to builder” on the same row as weighted beta, right-aligned. */
   copyBuilderHref?: string
+  /** Keeps US-listed holdings inside the current regional ETF hub. */
+  usEtfHubBase: PortfolioUsEtfHubBase
 }
 
 export default function PresetHoldingsTable({
@@ -17,6 +23,7 @@ export default function PresetHoldingsTable({
   estimatedDistributionYieldPct,
   distributionYieldAsOf,
   copyBuilderHref,
+  usEtfHubBase,
 }: PresetHoldingsTableProps) {
   return (
     <div className={styles.wrap}>
@@ -30,14 +37,34 @@ export default function PresetHoldingsTable({
           </tr>
         </thead>
         <tbody>
-          {holdings.map((h) => (
-            <tr key={h.ticker}>
-              <td className={styles.ticker}>{h.ticker}</td>
-              <td>{h.weightPct}%</td>
-              <td>{h.beta}</td>
-              <td className={styles.blurb}>{h.blurb}</td>
-            </tr>
-          ))}
+          {holdings.map((h) => {
+            const nav = getPortfolioProxyEtfNav(h.ticker, usEtfHubBase)
+            return (
+              <tr key={h.ticker}>
+                <td className={styles.ticker}>
+                  {nav?.external ? (
+                    <a
+                      href={nav.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.tickerLink}
+                    >
+                      {h.ticker}
+                    </a>
+                  ) : nav ? (
+                    <Link href={nav.href} className={styles.tickerLink}>
+                      {h.ticker}
+                    </Link>
+                  ) : (
+                    h.ticker
+                  )}
+                </td>
+                <td>{h.weightPct}%</td>
+                <td>{h.beta}</td>
+                <td className={styles.blurb}>{h.blurb}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
       <div className={styles.summaryRow}>

@@ -47,6 +47,12 @@ export default function MethodologyPage({ edition }: { edition: 'us' | 'ca' }) {
             and a $10,000 starting value. They do not include personal taxes, trading costs, or costs
             that are not explicitly disclosed beside the chart.
           </p>
+          <p>
+            US edition portfolio charts report USD returns. Canadian edition portfolio charts report CAD
+            returns, converting US-listed holdings and US-listed custom benchmarks with the CAD/USD exchange
+            rate. The default Canadian equity benchmark is XSP.TO, an S&amp;P 500 CAD-hedged ETF. Models with
+            a more suitable stated benchmark, such as XBB.TO for bonds, retain that benchmark.
+          </p>
         </div>
 
         <div className={styles.section}>

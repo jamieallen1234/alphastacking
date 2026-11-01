@@ -27,9 +27,10 @@ export async function GET(req: Request) {
 
   const rangeRaw = (searchParams.get('range') || '1y') as YahooRange
   const range = ALLOWED.includes(rangeRaw) ? rangeRaw : '1y'
+  const forceCad = searchParams.get('currency')?.toUpperCase() === 'CAD'
 
   try {
-    const payload = await getCachedPresetChartForRange(presetId, range)
+    const payload = await getCachedPresetChartForRange(presetId, range, { forceCad })
     // The computation itself is cached by getCachedPresetChart. Do not additionally cache this
     // HTTP response in the browser or CDN, otherwise a newly deployed proxy model can leave a
     // range tab displaying an older calculation for up to an hour.

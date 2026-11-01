@@ -12,6 +12,7 @@ import {
 import { HUB_SLUG_TO_PRESET_ID, type PortfolioHubSlugData } from '@/lib/loadPortfolioHubAlpha'
 import { computeBlendedGrade, gradeRank, type PortfolioLetterGrade } from '@/lib/portfolioHubGrade'
 import { getPresetById } from '@/lib/presets'
+import { CAD_SPY_PROXY_SYMBOL, portfolioBenchmarkLabel } from '@/lib/cadUsdConversion'
 import styles from '@/app/portfolios/PortfoliosPage.module.css'
 
 export type PortfoliosHubEdition = 'us' | 'ca'
@@ -49,9 +50,17 @@ function resolveGrade(route: PortfolioRouteDef, data: PortfolioHubSlugData | und
   return computeBlendedGrade(data.payload1y, data.payloadMax, route.weightedBeta)
 }
 
-function benchmarkLabel(route: PortfolioRouteDef): string {
+function benchmarkLabel(
+  route: PortfolioRouteDef,
+  data: PortfolioHubSlugData | undefined,
+  edition: PortfoliosHubEdition
+): string {
+  if (data?.benchmarkLabel) return data.benchmarkLabel
   const presetId = HUB_SLUG_TO_PRESET_ID[route.slug]
-  return (presetId ? getPresetById(presetId)?.benchmarkSymbol : undefined) ?? 'SPY'
+  const presetBenchmark = presetId ? getPresetById(presetId)?.benchmarkSymbol : undefined
+  return portfolioBenchmarkLabel(
+    presetBenchmark ?? (edition === 'ca' ? CAD_SPY_PROXY_SYMBOL : 'SPY')
+  )
 }
 
 function sortByGradeThenDate(
@@ -77,6 +86,7 @@ function portfolioGrid(
   routes: PortfolioRouteDef[],
   hrefFor: (slug: string) => string,
   hubDataBySlug: Record<string, PortfolioHubSlugData>,
+  edition: PortfoliosHubEdition,
 ) {
   return (
     <div className={styles.grid}>
@@ -84,7 +94,7 @@ function portfolioGrid(
         const data = hubDataBySlug[p.slug]
         const alpha = data?.excessAlphaPercent ?? null
         const grade = resolveGrade(p, data)
-        const benchmark = benchmarkLabel(p)
+        const benchmark = benchmarkLabel(p, data, edition)
         return (
           <Link
             key={p.slug}
@@ -105,7 +115,7 @@ function portfolioGrid(
             </div>
             <h2 className={styles.cardTitle}>{p.title}</h2>
             <p className={styles.cardDesc}>{p.description}</p>
-            <div className={styles.cardAlphaRow} aria-label={`One-year alpha versus ${benchmark} total return`}>
+            <div className={styles.cardAlphaRow} aria-label={`One-year excess return versus ${benchmark}`}>
               {alpha != null ? (
                 <>
                   <span
@@ -113,10 +123,10 @@ function portfolioGrid(
                   >
                     {formatHubAlpha(alpha)}
                   </span>
-                  <span className={styles.cardAlphaLab}>1Y alpha vs {benchmark}</span>
+                  <span className={styles.cardAlphaLab}>1Y excess return vs {benchmark}</span>
                 </>
               ) : (
-                <span className={styles.cardAlphaUnavailable}>1Y alpha vs {benchmark}: unavailable</span>
+                <span className={styles.cardAlphaUnavailable}>1Y excess return vs {benchmark}: unavailable</span>
               )}
             </div>
             <div className={styles.cardCta}>View portfolio →</div>
@@ -176,7 +186,7 @@ export default function PortfoliosHub({ edition, hubDataBySlug }: PortfoliosHubP
                       return (
                         <div key={rb} className={styles.rebalanceSubsection}>
                           <h3 className={styles.subsectionHeading}>{REBALANCE_LABEL[rb]}</h3>
-                          {portfolioGrid(group, (slug) => `/portfolios/${slug}`, hubDataBySlug)}
+                          {portfolioGrid(group, (slug) => `/portfolios/${slug}`, hubDataBySlug, edition)}
                         </div>
                       )
                     })}
@@ -192,6 +202,7 @@ export default function PortfoliosHub({ edition, hubDataBySlug }: PortfoliosHubP
                       sortByGradeThenDate(live, hubDataBySlug),
                       (slug) => `/portfolios/${slug}`,
                       hubDataBySlug,
+                      edition,
                     )}
                   </>
                 )}
@@ -248,7 +259,7 @@ export default function PortfoliosHub({ edition, hubDataBySlug }: PortfoliosHubP
                     return (
                       <div key={rb} className={styles.rebalanceSubsection}>
                         <h3 className={styles.subsectionHeading}>{REBALANCE_LABEL[rb]}</h3>
-                        {portfolioGrid(group, (slug) => `/ca/portfolios/${slug}`, hubDataBySlug)}
+                        {portfolioGrid(group, (slug) => `/ca/portfolios/${slug}`, hubDataBySlug, edition)}
                       </div>
                     )
                   })}
@@ -264,6 +275,7 @@ export default function PortfoliosHub({ edition, hubDataBySlug }: PortfoliosHubP
                     sortByGradeThenDate(live, hubDataBySlug),
                     (slug) => `/ca/portfolios/${slug}`,
                     hubDataBySlug,
+                    edition,
                   )}
                 </>
               )}
@@ -305,7 +317,7 @@ export default function PortfoliosHub({ edition, hubDataBySlug }: PortfoliosHubP
                     return (
                       <div key={rb} className={styles.rebalanceSubsection}>
                         <h3 className={styles.subsectionHeading}>{REBALANCE_LABEL[rb]}</h3>
-                        {portfolioGrid(group, (slug) => `/ca/portfolios/${slug}`, hubDataBySlug)}
+                        {portfolioGrid(group, (slug) => `/ca/portfolios/${slug}`, hubDataBySlug, edition)}
                       </div>
                     )
                   })}
@@ -321,6 +333,7 @@ export default function PortfoliosHub({ edition, hubDataBySlug }: PortfoliosHubP
                     sortByGradeThenDate(live, hubDataBySlug),
                     (slug) => `/ca/portfolios/${slug}`,
                     hubDataBySlug,
+                    edition,
                   )}
                 </>
               )}

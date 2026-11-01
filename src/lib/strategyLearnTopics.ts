@@ -173,6 +173,7 @@ export const STRATEGY_LEARN_TOPICS: readonly StrategyLearnTopic[] = [
     etfs: [
       { ticker: 'FLSP', slug: 'flsp', description: 'A systematic style-premia ETF spanning multiple markets.' },
       { ticker: 'IALT', slug: 'ialt', description: 'A multi-strategy systematic-alternatives ETF combining strategic premia with macro and market-neutral sleeves.' },
+      { ticker: 'RSSY', slug: 'rssy', description: 'A return-stacked large-cap equity and cross-asset futures-yield implementation.' },
     ],
   },
   {

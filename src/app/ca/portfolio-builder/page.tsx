@@ -5,7 +5,7 @@ import { pairedAlternates } from '@/lib/seoAlternates'
 export const metadata = {
   title: 'Portfolio Builder — Alpha Stacking (Canadian edition)',
   description:
-    'Build a custom portfolio from Canadian and US-listed ETFs, set weights, and generate a live return chart versus SPY with max drawdown — Canadian edition.',
+    'Build a custom portfolio from Canadian and US-listed ETFs, set weights, and generate a live CAD total-return chart versus the CAD-hedged S&P 500 benchmark.',
   alternates: pairedAlternates('/portfolio-builder', '/ca/portfolio-builder', 'ca'),
 }
 

@@ -43,7 +43,12 @@ import {
 } from '@/lib/presets'
 import { buildExposureSummaryFromPresetHoldings } from '@/lib/exposureSummary'
 import { buildPortfolioBuilderPrefillHref } from '@/lib/portfolioBuilderPrefill'
-import { HOW_TO_BUILD_SLUG, learnArticlePath } from '@/lib/learnArticles'
+import {
+  HOW_TO_BUILD_SLUG,
+  learnArticlePath,
+  RETURN_STACKING_EXPLAINED_SLUG,
+} from '@/lib/learnArticles'
+import { resolvePortfolioBenchmark } from '@/lib/computePortfolioChart'
 import { portfolioBuilderPath } from '@/lib/siteRegion'
 import StrategyPieChart from '@/components/StrategyPieChart'
 import { pieConfigForPreset } from '@/lib/strategyPies'
@@ -54,6 +59,23 @@ function PortfolioLearnCue({ backHref }: { backHref: string }) {
   return (
     <p className={styles.detailLearnCue}>
       <Link href={href}>How to read sleeves and model portfolios →</Link>
+    </p>
+  )
+}
+
+function PortfolioDetailContextualCue({ slug }: { slug: string }) {
+  if (slug !== 'ca-sso-dglm-rgbm-arb' && slug !== 'ca-alpha-stack') return null
+  return (
+    <p className={styles.detailLearnCue}>
+      Related: <Link href={learnArticlePath(true, 'global-macro')}>Global macro</Link>
+      {slug === 'ca-sso-dglm-rgbm-arb' ? (
+        <>
+          {' and '}
+          <Link href={learnArticlePath(true, RETURN_STACKING_EXPLAINED_SLUG)}>
+            Return stacking explained
+          </Link>
+        </>
+      ) : null}
     </p>
   )
 }
@@ -129,19 +151,23 @@ async function LiveLayout({
   const preset = getPresetById(presetId)
   if (!preset) notFound()
 
-  const chartHeading = `Total return (vs ${preset.benchmarkSymbol ?? 'SPY'})`
+  const siteIsCa = backHref.startsWith('/ca/')
 
   let chart = null
   let errorMessage: string | null = null
   try {
-    chart = await getCachedPresetChart1y(presetId)
+    chart = await getCachedPresetChart1y(presetId, { forceCad: siteIsCa })
   } catch (e) {
     errorMessage = e instanceof Error ? e.message : 'Failed to load chart data'
   }
 
+  const fallbackBenchmark = resolvePortfolioBenchmark({
+    benchmarkSymbol: preset.benchmarkSymbol,
+    cadDenominated: preset.cadDenominated || siteIsCa,
+  })
+  const chartHeading = `Total return (vs ${chart?.benchmarkLabel ?? fallbackBenchmark.benchmarkLabel})`
   const wb = weightedBeta(preset.holdings)
   const exposureSummary = buildExposureSummaryFromPresetHoldings(preset.holdings)
-  const siteIsCa = backHref.startsWith('/ca/')
   const builderCopyHref = buildPortfolioBuilderPrefillHref(
     portfolioBuilderPath(siteIsCa),
     preset.holdings
@@ -159,6 +185,7 @@ async function LiveLayout({
         <h1 className={styles.detailTitle}>{def.title}</h1>
         <p className={styles.detailLede}>{def.description}</p>
         <PortfolioLearnCue backHref={backHref} />
+        {siteIsCa ? <PortfolioDetailContextualCue slug={def.slug} /> : null}
 
         <PresetHoldingsTable
           holdings={preset.holdings}
@@ -166,6 +193,7 @@ async function LiveLayout({
           estimatedDistributionYieldPct={preset.estimatedDistributionYieldPct}
           distributionYieldAsOf={preset.distributionYieldAsOf}
           copyBuilderHref={builderCopyHref}
+          usEtfHubBase={siteIsCa ? '/ca/us-etfs' : '/us-etfs'}
         />
 
         <h2 className={styles.chartHeading}>{chartHeading}</h2>

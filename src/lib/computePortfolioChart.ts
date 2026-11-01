@@ -46,8 +46,9 @@ import {
   CAD_SPY_PROXY_SYMBOL,
   CAD_UNHEDGED_NASDAQ_PROXY_SYMBOL,
   CAD_UNHEDGED_SP500_PROXY_SYMBOL,
-  convertUsdPricesToCad,
+  expressListingPricesInCad,
   isCadListedSymbol,
+  portfolioBenchmarkLabel,
   USDCAD_YAHOO_SYMBOL,
 } from '@/lib/cadUsdConversion'
 import {
@@ -89,7 +90,10 @@ export interface PortfolioChartPayload {
   timestamps: number[]
   values: number[]
   totalReturnPercent: number | null
+  /** Yahoo ticker used for the benchmark series. */
   benchmarkSymbol: string
+  /** User-facing benchmark name. */
+  benchmarkLabel: string
   benchmarkValues: number[]
   benchmarkTotalReturnPercent: number | null
   /** Portfolio total return minus benchmark over the charted window (same dates). */
@@ -104,8 +108,8 @@ export interface PortfolioChartPayload {
   /** Synthetic sleeves used in this basket (footnotes; may be outside the selected range window). */
   syntheticModeling: SyntheticModelingNote[]
   /**
-   * When CAD, US-listed legs are converted with USDCAD; benchmark **data** is `CAD_SPY_PROXY_SYMBOL`
-   * (XSP.TO, CAD-hedged S&P 500; `benchmarkSymbol` in the payload stays `SPY` for readability).
+   * When CAD, US-listed legs and US-listed custom benchmarks are converted with USDCAD. The
+   * default benchmark is `CAD_SPY_PROXY_SYMBOL` (XSP.TO, CAD-hedged S&P 500).
    */
   chartCurrency?: 'USD' | 'CAD'
   /**
@@ -123,6 +127,16 @@ export interface PortfolioChartPayload {
 
 const DEFAULT_BENCHMARK = 'SPY'
 const RISK_FREE_RATE_ANNUAL = 0.045
+
+export function resolvePortfolioBenchmark(params: {
+  benchmarkSymbol?: string
+  cadDenominated: boolean
+}): { benchmarkSymbol: string; benchmarkLabel: string } {
+  const benchmarkSymbol = (
+    params.benchmarkSymbol ?? (params.cadDenominated ? CAD_SPY_PROXY_SYMBOL : DEFAULT_BENCHMARK)
+  ).trim().toUpperCase()
+  return { benchmarkSymbol, benchmarkLabel: portfolioBenchmarkLabel(benchmarkSymbol) }
+}
 
 function computeSharpeAndSortino(valueLine: number[]): { sharpe: number | null; sortino: number | null } {
   const n = valueLine.length
@@ -167,18 +181,18 @@ export async function computePortfolioChart(params: {
   range: YahooRange
   /** Yahoo symbol for benchmark prices (default SPY, or `CAD_SPY_PROXY_SYMBOL` when `cadDenominated`). */
   benchmarkSymbol?: string
-  /** US-listed legs → CAD via NY-aligned USDCAD; benchmark fetch defaults to XSP.TO; payload still labels it SPY. */
+  /** US-listed legs → CAD via NY-aligned USDCAD; benchmark fetch defaults to XSP.TO. */
   cadDenominated?: boolean
   rebalanceSchedule?: 'none' | 'quarterly' | 'annual'
 }): Promise<PortfolioChartPayload> {
   const { symbols, weights, range } = params
   const rebalanceSchedule = params.rebalanceSchedule ?? 'none'
   const cadDenominated = params.cadDenominated ?? false
-  const usedDefaultBenchmark = params.benchmarkSymbol == null
-  const benchmarkFetchSymbol =
-    params.benchmarkSymbol ?? (cadDenominated ? CAD_SPY_PROXY_SYMBOL : DEFAULT_BENCHMARK)
-  /** CAD charts pull XSP.TO (hedged) but present the default line as SPY (S&P 500) to match user language. */
-  const benchmarkSymbol = cadDenominated && usedDefaultBenchmark ? 'SPY' : benchmarkFetchSymbol
+  const { benchmarkSymbol, benchmarkLabel } = resolvePortfolioBenchmark({
+    benchmarkSymbol: params.benchmarkSymbol,
+    cadDenominated,
+  })
+  const benchmarkFetchSymbol = benchmarkSymbol
 
   if (symbols.length !== weights.length) {
     throw new Error('Symbol count must match weight count')
@@ -229,7 +243,7 @@ export async function computePortfolioChart(params: {
                     : fetchFirstTradeDateSec(s)
     })
   )
-  let slotFirstTradeSec = [...initialFirstTrades]
+  const slotFirstTradeSec = [...initialFirstTrades]
   const portfolioOverlapStartSec = Math.max(...slotFirstTradeSec)
 
   const needExtraSpy = ntsdIdx >= 0 && benchmarkFetchSymbol.toUpperCase() !== 'SPY'
@@ -255,7 +269,9 @@ export async function computePortfolioChart(params: {
       usslIdx >= 0
         ? fetchDailySeries(CAD_UNHEDGED_SP500_PROXY_SYMBOL, range, maxWindow)
         : Promise.resolve(null),
-    () => (cadDenominated ? fetchDailySeries(USDCAD_YAHOO_SYMBOL, range, maxWindow) : Promise.resolve(null)),
+    // Synthetic proxies can extend a MAX chart earlier than the initial basket overlap. Fetch the
+    // full FX history so the final listing-currency series can be converted over that extension.
+    () => (cadDenominated ? fetchDailySeries(USDCAD_YAHOO_SYMBOL, range) : Promise.resolve(null)),
   ]
   const mergedSeriesResults = await Promise.all(seriesAndBenchTasks.map((fn) => fn()))
   let r = 0
@@ -274,28 +290,26 @@ export async function computePortfolioChart(params: {
   const usdCadSeries = mergedSeriesResults[r++] as PriceSeries | null
 
   let seriesMut = series
-  let efaMut = efaExtra
-  let spyMut = spyExtra
-  let zqqMut = zqqExtra
-  let ialtFlspMut: typeof ialtFlspExtra = ialtFlspExtra
-  let ialtDbmfMut: typeof ialtDbmfExtra = ialtDbmfExtra
-  let dglmDbmfMut: typeof dglmDbmfExtra = dglmDbmfExtra
-  let hfgmAsgmMut: typeof hfgmAsgmExtra = hfgmAsgmExtra
+  const efaMut = efaExtra
+  const spyMut = spyExtra
+  const zqqMut = zqqExtra
+  const ialtFlspMut: typeof ialtFlspExtra = ialtFlspExtra
+  const ialtDbmfMut: typeof ialtDbmfExtra = ialtDbmfExtra
+  const dglmDbmfMut: typeof dglmDbmfExtra = dglmDbmfExtra
+  const hfgmAsgmMut: typeof hfgmAsgmExtra = hfgmAsgmExtra
 
   if (cadDenominated) {
     if (usdCadSeries == null || usdCadSeries.timestamps.length < 2) {
       throw new Error('USDCAD series required for CAD-denominated chart')
     }
-    seriesMut = series.map((s, i) =>
-      isCadListedSymbol(symbols[i]!) ? s : convertUsdPricesToCad(s, usdCadSeries)
-    )
-    if (efaMut != null) efaMut = convertUsdPricesToCad(efaMut, usdCadSeries)
-    if (spyMut != null) spyMut = convertUsdPricesToCad(spyMut, usdCadSeries)
-    // zqqMut is ZQQ.TO (CAD-listed, unhedged) — no USDCAD conversion needed
-    if (ialtFlspMut != null) ialtFlspMut = convertUsdPricesToCad(ialtFlspMut, usdCadSeries)
-    if (ialtDbmfMut != null) ialtDbmfMut = convertUsdPricesToCad(ialtDbmfMut, usdCadSeries)
-    if (dglmDbmfMut != null) dglmDbmfMut = convertUsdPricesToCad(dglmDbmfMut, usdCadSeries)
-    if (hfgmAsgmMut != null) hfgmAsgmMut = convertUsdPricesToCad(hfgmAsgmMut, usdCadSeries)
+  }
+
+  const seriesInCad = (symbol: string, priceSeries: PriceSeries): PriceSeries => {
+    if (isCadListedSymbol(symbol)) return priceSeries
+    if (usdCadSeries == null) {
+      throw new Error(`USDCAD series required to express ${symbol} in CAD`)
+    }
+    return expressListingPricesInCad(symbol, priceSeries, usdCadSeries)
   }
 
   const proxyLegSymsNeeded = new Set<string>()
@@ -310,23 +324,22 @@ export async function computePortfolioChart(params: {
       ? { fromSec: Math.floor(Date.UTC(2005, 0, 1) / 1000), toSec: nowSec }
       : undefined
 
-  let proxyLegBySym = new Map<string, PriceSeries>()
+  const proxyLegBySym = new Map<string, PriceSeries>()
   if (proxyLegList.length > 0) {
     const proxyFetched = await Promise.all(
       proxyLegList.map((sym) => fetchDailySeries(sym, range, proxyHistoryWindow))
     )
     proxyLegList.forEach((sym, i) => proxyLegBySym.set(sym.toUpperCase(), proxyFetched[i]!))
-    if (cadDenominated && usdCadSeries != null) {
-      const next = new Map<string, PriceSeries>()
-      for (const sym of proxyLegList) {
-        let ser = proxyLegBySym.get(sym)!
-        if (!isCadListedSymbol(sym)) {
-          ser = convertUsdPricesToCad(ser, usdCadSeries)
-        }
-        next.set(sym, ser)
-      }
-      proxyLegBySym = next
-    }
+  }
+
+  const proxyMapForTarget = (targetSymbol: string): Map<string, PriceSeries> => {
+    if (!cadDenominated || !isCadListedSymbol(targetSymbol)) return proxyLegBySym
+    return new Map(
+      [...proxyLegBySym].map(([symbol, priceSeries]) => [
+        symbol,
+        seriesInCad(symbol, priceSeries),
+      ])
+    )
   }
 
   // Phase 1: extend chain-proxy tickers in proxyLegBySym before they are used as proxy legs.
@@ -336,7 +349,7 @@ export async function computePortfolioChart(params: {
     if (!chainDef) continue
     const ser = proxyLegBySym.get(sym.toUpperCase())
     if (!ser) continue
-    const legSeries = buildResolvedStackLegs(chainDef, proxyLegBySym)
+    const legSeries = buildResolvedStackLegs(chainDef, proxyMapForTarget(sym))
     if (!legSeries) continue
     const gross = chainDef.grossExposurePct ?? grossExposureForChartProxy(sym, findSlugByYahooSymbol(sym))
     const result = buildPreInceptionProductStackMerge(ser, legSeries, { grossExposurePct: gross })
@@ -349,7 +362,7 @@ export async function computePortfolioChart(params: {
   for (let i = 0; i < symbols.length; i++) {
     const def = resolveProxyDef(symbols[i]!)
     if (!def) continue
-    const legSeries = buildResolvedStackLegs(def, proxyLegBySym)
+    const legSeries = buildResolvedStackLegs(def, proxyMapForTarget(symbols[i]!))
     if (!legSeries) continue
     const slug = findSlugByYahooSymbol(symbols[i]!)
     const gross = def.grossExposurePct ?? grossExposureForChartProxy(symbols[i]!, slug)
@@ -415,7 +428,11 @@ export async function computePortfolioChart(params: {
   }
 
   if (dglmIdx >= 0) {
-    const dglmUnderlying = dbmfIdx >= 0 ? seriesMut[dbmfIdx]! : dglmDbmfMut
+    const dglmUnderlyingRaw = dbmfIdx >= 0 ? seriesMut[dbmfIdx]! : dglmDbmfMut
+    const dglmUnderlying =
+      cadDenominated && dglmUnderlyingRaw != null
+        ? seriesInCad('DBMF', dglmUnderlyingRaw)
+        : dglmUnderlyingRaw
     if (dglmUnderlying != null && dglmUnderlying.timestamps.length >= 2) {
       const { series: mergedDglm, modeling } = buildLeveredUnderlyingMergeSeries(
         seriesMut[dglmIdx]!,
@@ -488,7 +505,7 @@ export async function computePortfolioChart(params: {
       // USSL.TO modeled as 1.25x VFV.TO (CAD S&P 500), used in its listing currency.
       pushCad125(usslIdx, usslVfvExtra, USSL_FIRST_REAL_NY_DAY, 'VFV.TO')
     } else {
-      pushCad125(usslIdx, benchSeries, USSL_FIRST_REAL_NY_DAY, 'SPY')
+      throw new Error('USSL.TO requires VFV.TO to model its unhedged 1.25x S&P 500 sleeve.')
     }
   }
 
@@ -504,12 +521,25 @@ export async function computePortfolioChart(params: {
     pushCad125(heqlIdx, heqtExtra, HEQL_FIRST_REAL_NY_DAY, 'HEQT.TO')
   }
 
+  // Build every synthetic series in the product's listing currency, then convert each final
+  // USD-listed holding once. Converting stacked proxy legs first would multiply the FX return by
+  // gross notional (for example, two 100% sleeves would accidentally create 2x CAD/USD exposure).
+  if (cadDenominated) {
+    seriesMut = seriesMut.map((priceSeries, i) =>
+      seriesInCad(symbols[i]!, priceSeries)
+    )
+  }
+  const benchmarkSeriesForChart =
+    cadDenominated && !isCadListedSymbol(benchmarkFetchSymbol)
+      ? seriesInCad(benchmarkFetchSymbol, benchSeries)
+      : benchSeries
+
   const effectiveStartSec = Math.max(...slotFirstTradeSec)
   const limitingIdx = slotFirstTradeSec.indexOf(effectiveStartSec)
   const limitingSymbol = symbols[limitingIdx]!
 
   const clipped = seriesMut.map((s) => clipSeriesFromTime(s, effectiveStartSec))
-  const benchClipped = clipSeriesFromTime(benchSeries, effectiveStartSec)
+  const benchClipped = clipSeriesFromTime(benchmarkSeriesForChart, effectiveStartSec)
 
   if (clipped.some((s) => s.timestamps.length < 2)) {
     throw new Error('Not enough history after the newest holding’s listing date for this range.')
@@ -559,6 +589,7 @@ export async function computePortfolioChart(params: {
     values: valueLine,
     totalReturnPercent: tr,
     benchmarkSymbol,
+    benchmarkLabel,
     benchmarkValues: benchLine,
     benchmarkTotalReturnPercent,
     excessAlphaPercent,
@@ -581,6 +612,7 @@ export async function computePortfolioChart(params: {
 }
 
 export function emptyPortfolioChartPayload(chartCurrency: 'USD' | 'CAD'): PortfolioChartPayload {
+  const benchmark = resolvePortfolioBenchmark({ cadDenominated: chartCurrency === 'CAD' })
   return {
     symbols: [],
     weights: [],
@@ -588,7 +620,8 @@ export function emptyPortfolioChartPayload(chartCurrency: 'USD' | 'CAD'): Portfo
     timestamps: [],
     values: [],
     totalReturnPercent: null,
-    benchmarkSymbol: 'SPY',
+    benchmarkSymbol: benchmark.benchmarkSymbol,
+    benchmarkLabel: benchmark.benchmarkLabel,
     benchmarkValues: [],
     benchmarkTotalReturnPercent: null,
     excessAlphaPercent: null,

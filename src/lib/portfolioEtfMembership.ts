@@ -35,7 +35,7 @@ function categoryLabel(route: PortfolioRouteDef): string {
     ?? route.hubSection
 }
 
-async function loadRating(route: PortfolioRouteDef): Promise<{
+async function loadRating(route: PortfolioRouteDef, forceCad: boolean): Promise<{
   grade: PortfolioLetterGrade | null
   ratingScore: number | null
 }> {
@@ -44,8 +44,8 @@ async function loadRating(route: PortfolioRouteDef): Promise<{
 
   try {
     const [payload1y, payloadMax] = await Promise.all([
-      getCachedPresetChart1y(presetId),
-      getCachedPresetChartMax(presetId),
+      getCachedPresetChart1y(presetId, { forceCad }),
+      getCachedPresetChartMax(presetId, { forceCad }),
     ])
     return {
       grade: computeBlendedGrade(payload1y, payloadMax, route.weightedBeta),
@@ -63,6 +63,7 @@ async function loadRating(route: PortfolioRouteDef): Promise<{
 export async function loadPortfolioEtfMemberships(
   ticker: string,
   region: PortfolioEtfMembershipRegion,
+  options?: { forceCad?: boolean },
 ): Promise<PortfolioEtfMembership[]> {
   const normalizedTicker = ticker.trim().toUpperCase()
   const matching = portfolioHubRoutes(routesForRegion(region)).flatMap((route) => {
@@ -76,7 +77,7 @@ export async function loadPortfolioEtfMemberships(
   if (matching.length === 0) return []
 
   const memberships = await Promise.all(matching.map(async ({ route, weightPct }) => {
-    const rating = await loadRating(route)
+    const rating = await loadRating(route, options?.forceCad === true)
     return {
       slug: route.slug,
       title: route.title,

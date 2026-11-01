@@ -39,8 +39,8 @@ export default async function PortfolioBuilderPage({
         </div>
         <h1 className={styles.heading}>Portfolio builder</h1>
         <p className={styles.lede}>
-          Pick tickers, set weights to 100%, and generate a return chart. The chart shows total return
-          versus SPY and max drawdown for any date range with available history.
+          Pick tickers, set weights to 100%, and generate a return chart. The chart shows {isCa ? 'CAD' : 'USD'} total return
+          versus {isCa ? 'XSP.TO (S&P 500 CAD-hedged)' : 'SPY'} and max drawdown for any date range with available history.
         </p>
         <PortfolioBuilderTool edition={edition} options={options} initialPrefill={initialPrefill ?? null} />
         <div className={styles.builderPostToolDivider} aria-hidden />
@@ -60,4 +60,3 @@ export default async function PortfolioBuilderPage({
     </main>
   )
 }
-

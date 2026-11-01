@@ -49,8 +49,8 @@ export default async function CaUsEtfDynamicPage({
   const primarySimilarityHeadline =
     similarEtfs.length > 0 ? buildPrimarySimilarityHeadline(def) : undefined
   const [portfolioMemberships, canadianPortfolioMemberships] = await Promise.all([
-    loadPortfolioEtfMemberships(def.yahooSymbol, 'us'),
-    loadPortfolioEtfMemberships(def.yahooSymbol, 'ca'),
+    loadPortfolioEtfMemberships(def.yahooSymbol, 'us', { forceCad: true }),
+    loadPortfolioEtfMemberships(def.yahooSymbol, 'ca', { forceCad: true }),
   ])
   return (
     <EtfDynamicPageLayout

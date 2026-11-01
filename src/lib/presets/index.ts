@@ -77,7 +77,7 @@ export const usInternationalHoldings: PresetHolding[] = [
   { ticker: 'NTSD', weightPct: 15, beta: 1.6, blurb: '90/60 U.S. large-cap + EAFE-style intl (capital-efficient core sleeve).' },
   { ticker: 'CLSE', weightPct: 10, beta: 0.6, blurb: 'US long/short equity.' },
   { ticker: 'MATE', weightPct: 10, beta: 1, blurb: 'Managed futures sleeve (charts may proxy pre-history with RSST).' },
-  { ticker: 'RSSY', weightPct: 10, beta: 1, blurb: 'Futures yield sleeve.' },
+  { ticker: 'RSSY', weightPct: 10, beta: 1, blurb: 'Systematic futures yield (carry) sleeve.' },
 ]
 
 export const usAdvancedHoldings: PresetHolding[] = [
@@ -85,7 +85,7 @@ export const usAdvancedHoldings: PresetHolding[] = [
   { ticker: 'UPRO', weightPct: 7.5, beta: 3, blurb: '3× daily S&P 500 (reset path risk).' },
   { ticker: 'SSO', weightPct: 12.5, beta: 2, blurb: '2× S&P 500 — leveraged core beta.' },
   { ticker: 'MATE', weightPct: 12.5, beta: 1, blurb: 'Managed futures sleeve (charts may proxy pre-history with RSST).' },
-  { ticker: 'RSSY', weightPct: 5, beta: 1, blurb: 'Futures yield sleeve.' },
+  { ticker: 'RSSY', weightPct: 5, beta: 1, blurb: 'Systematic futures yield (carry) sleeve.' },
   { ticker: 'ORR', weightPct: 20, beta: 0.5, blurb: 'Lower-beta diversifier.' },
   { ticker: 'CLSE', weightPct: 7.5, beta: 0.6, blurb: 'U.S. long/short equity.' },
   { ticker: 'FLSP', weightPct: 12.5, beta: 0, blurb: 'Risk premia sleeve.' },
@@ -149,7 +149,7 @@ export const usAlphaStackHoldings: PresetHolding[] = [
   { ticker: 'IALT', weightPct: 15, beta: 0.35, blurb: 'Systematic multi-strategy alternatives sleeve.' },
   { ticker: 'SSO', weightPct: 10, beta: 2, blurb: '2x S&P 500 — leveraged beta sleeve.' },
   { ticker: 'VFLO', weightPct: 10, beta: 0.75, blurb: 'Large-cap free-cash-flow quality tilt.' },
-  { ticker: 'RSSY', weightPct: 10, beta: 1, blurb: 'Return-stacked equity + systematic futures yield sleeve.' },
+  { ticker: 'RSSY', weightPct: 10, beta: 1, blurb: 'Return-stacked equity + systematic futures yield (carry) sleeve.' },
   { ticker: 'CLSE', weightPct: 10, beta: 0.6, blurb: 'US long/short equity drawdown buffer.' },
 ]
 
@@ -216,7 +216,7 @@ export const usRiskParityHoldings: PresetHolding[] = [
 
 export const caSsoDglmRgbmArbHoldings: PresetHolding[] = [
   { ticker: 'SSO', weightPct: 35, beta: 2, blurb: '2x daily S&P 500 exposure for high-conviction U.S. beta.' },
-  { ticker: 'RSSY', weightPct: 10, beta: 1, blurb: 'Return-stacked equity + managed futures sleeve.' },
+  { ticker: 'RSSY', weightPct: 10, beta: 1, blurb: 'Return-stacked equity + systematic futures yield (carry) sleeve.' },
   { ticker: 'MATE', weightPct: 10, beta: 1.6, blurb: 'Return-stacked 100% S&P 500 + 100% managed futures.' },
   { ticker: 'DGLM.TO', weightPct: 10, beta: 0.35, blurb: 'Systematic global macro alternatives sleeve.' },
   { ticker: 'RGBM.TO', weightPct: 10, beta: 0.85, blurb: 'Return-stacked global balanced + macro sleeve.' },
@@ -380,7 +380,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_INTL_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'annual',
     holdings: caInternationalHoldings,
     extraCacheKeyTags: [
@@ -394,7 +394,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_CORE_BH_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'none',
     holdings: caCoreBuyHoldHoldings,
     extraCacheKeyTags: [
@@ -408,7 +408,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_FACTOR_FCMO_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'none',
     holdings: caFactorFcmoHoldings,
     extraCacheKeyTags: ['buy-hold', 'finn-fcmo-ne-qqql-zlb-vflo-v2'],
@@ -416,7 +416,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_USSL_QQQL_HDGE_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'none',
     holdings: caUsslQqqlHdgeHoldings,
     extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'buy-hold', 'ussl-qqql-hdge-60-15-25'],
@@ -432,7 +432,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_ALPHA_STACK_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'annual',
     holdings: caAlphaStackHoldings,
     extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'annual-rebal', 'ussl-qqql-finn-dglm-pfmn-v1'],
@@ -472,7 +472,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_SSO_DGLM_RGBM_ARB_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'annual',
     holdings: caSsoDglmRgbmArbHoldings,
     extraCacheKeyTags: [
@@ -493,7 +493,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_FOUR_ALPHA_QUADRANTS_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'annual',
     holdings: caFourAlphaQuadrantsHoldings,
     extraCacheKeyTags: [
@@ -516,7 +516,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_BOND_ALT_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'none',
     holdings: caBondAltHoldings,
     benchmarkSymbol: 'XBB.TO',
@@ -534,7 +534,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_SIXTY_FORTY_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'none',
     holdings: caSixtyFortyHoldings,
     benchmarkSymbol: 'VBAL.TO',
@@ -543,7 +543,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_GRANDMAS_PORTFOLIO_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'none',
     holdings: caGrandmasPortfolioHoldings,
     benchmarkSymbol: 'VGRO.TO',
@@ -552,7 +552,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_DIVIDENDS_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'none',
     holdings: caDividendsHoldings,
     benchmarkSymbol: 'XBB.TO',
@@ -563,7 +563,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
   {
     id: CA_LOW_BETA_INCOME_PRESET_ID,
     region: 'ca',
-    cadDenominated: false,
+    cadDenominated: true,
     rebalanceSchedule: 'none',
     holdings: caLowBetaIncomeHoldings,
     benchmarkSymbol: 'XBB.TO',

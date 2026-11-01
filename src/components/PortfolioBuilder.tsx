@@ -41,6 +41,7 @@ export default function PortfolioBuilder() {
   const [limitingSymbol, setLimitingSymbol] = useState<string | null>(null)
   const [limitingFirstTradeDate, setLimitingFirstTradeDate] = useState<string | null>(null)
   const [benchmarkSymbol, setBenchmarkSymbol] = useState<string>('SPY')
+  const [benchmarkLabel, setBenchmarkLabel] = useState<string>('SPY')
   const [syntheticModeling, setSyntheticModeling] = useState<
     PortfolioChartPayload['syntheticModeling']
   >([])
@@ -79,6 +80,7 @@ export default function PortfolioBuilder() {
         maxDrawdownPortfolioPercent?: number | null
         maxDrawdownBenchmarkPercent?: number | null
         benchmarkSymbol?: string
+        benchmarkLabel?: string
         chartStartDate?: string | null
         limitingSymbol?: string | null
         limitingFirstTradeDate?: string | null
@@ -102,6 +104,7 @@ export default function PortfolioBuilder() {
         setLimitingSymbol(null)
         setLimitingFirstTradeDate(null)
         setBenchmarkSymbol('SPY')
+        setBenchmarkLabel('SPY')
         setSyntheticModeling([])
         setChartCurrency('USD')
         setResolved(null)
@@ -109,6 +112,7 @@ export default function PortfolioBuilder() {
         return
       }
       setBenchmarkSymbol(data.benchmarkSymbol ?? 'SPY')
+      setBenchmarkLabel(data.benchmarkLabel ?? data.benchmarkSymbol ?? 'SPY')
       setValues(data.values ?? null)
       setBenchmarkValues(data.benchmarkValues ?? null)
       setChartTimestamps(data.timestamps ?? null)
@@ -141,6 +145,7 @@ export default function PortfolioBuilder() {
       setLimitingSymbol(null)
       setLimitingFirstTradeDate(null)
       setBenchmarkSymbol('SPY')
+      setBenchmarkLabel('SPY')
       setSyntheticModeling([])
       setChartCurrency('USD')
       setResolved(null)
@@ -173,6 +178,7 @@ export default function PortfolioBuilder() {
           values,
           totalReturnPercent: totalReturn,
           benchmarkSymbol,
+          benchmarkLabel,
           benchmarkValues,
           benchmarkTotalReturnPercent: benchmarkReturn,
           excessAlphaPercent:

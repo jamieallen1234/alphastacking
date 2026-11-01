@@ -27,6 +27,8 @@ const GUIDE_BY_ETF_SLUG: Readonly<Record<string, StrategyGuide>> = {
   mate: { slug: 'managed-futures', label: 'managed futures' },
   rsbt: { slug: 'managed-futures', label: 'managed futures' },
   rsst: { slug: 'managed-futures', label: 'managed futures' },
+  rssy: { slug: 'risk-premia', label: 'risk premia' },
+  rgbm: { slug: 'global-macro', label: 'global macro' },
 }
 
 export function getStrategyGuideForEtf(

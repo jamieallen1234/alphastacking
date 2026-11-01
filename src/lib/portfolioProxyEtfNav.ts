@@ -13,10 +13,16 @@ const OFFICIAL_ETF_HOME: Record<string, string> = {
   SPDW: 'https://www.ssga.com/us/en/intermediary/etfs/funds/spdr-portfolio-developed-world-ex-us-etf-spdw',
   QQQ: 'https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Individual&ticker=QQQ',
   'VFV.TO': 'https://www.vanguard.ca/en/product/etf/series/vanguard-sp-500-index-etf',
-  'XSP.TO': 'https://www.ishares.com/ca/en/products/239729/ishares-core-sp-500-index-etf',
+  'XSP.TO': 'https://www.blackrock.com/ca/investors/en/products/239727/ishares-sp-500-index-etf-cadhedged-fund',
   'XIU.TO': 'https://www.ishares.com/ca/products/239832/ishares-sptsx-60-index-etf',
   'TEC.TO': 'https://www.td.com/ca/en/asset-management/funds/solutions/etfs/fundcard?fundId=7113',
   'HEQT.TO': 'https://www.globalx.ca/product/heqt',
+  'HPR.TO': 'https://www.globalx.ca/product/hpr',
+}
+
+/** Current TSX symbol for the BetaPro Nasdaq-100 2x Daily Bull ETF. */
+const TICKER_ALIASES: Readonly<Record<string, string>> = {
+  'HQU.TO': 'QQU.TO',
 }
 
 function slugFromUsRegistry(tickerUpper: string): string | null {
@@ -40,7 +46,8 @@ export function getPortfolioProxyEtfNav(
   ticker: string,
   hubBaseUs: PortfolioUsEtfHubBase
 ): { href: string; external: boolean } | null {
-  const t = ticker.trim().toUpperCase()
+  const requestedTicker = ticker.trim().toUpperCase()
+  const t = TICKER_ALIASES[requestedTicker] ?? requestedTicker
 
   const usSlug = slugFromUsRegistry(t)
   if (usSlug) return { href: `${hubBaseUs}/${usSlug}`, external: false }

@@ -31,6 +31,7 @@ import type { ScorecardPayload } from '@/lib/portfolioHubGrade'
 
 export interface PortfolioHubSlugData {
   excessAlphaPercent: number | null
+  benchmarkLabel: string
   payload1y: ScorecardPayload
   payloadMax: ScorecardPayload
 }
@@ -85,16 +86,19 @@ function toScorecardPayload(p: {
  * One preset's Yahoo fetch failing (rate limiting, a transient outage) must not fail the whole
  * hub page's static prerender — skip that slug's card rather than rejecting the entire batch.
  */
-export async function loadPortfolioHubAlphaBySlug(): Promise<Record<string, PortfolioHubSlugData>> {
+export async function loadPortfolioHubAlphaBySlug(
+  edition: 'us' | 'ca' = 'us'
+): Promise<Record<string, PortfolioHubSlugData>> {
   const entries = await Promise.all(
     Object.entries(HUB_SLUG_TO_PRESET_ID).map(async ([slug, presetId]) => {
       try {
         const [p1y, pMax] = await Promise.all([
-          getCachedPresetChart1y(presetId),
-          getCachedPresetChartMax(presetId),
+          getCachedPresetChart1y(presetId, { forceCad: edition === 'ca' }),
+          getCachedPresetChartMax(presetId, { forceCad: edition === 'ca' }),
         ])
         const data: PortfolioHubSlugData = {
           excessAlphaPercent: p1y.excessAlphaPercent ?? null,
+          benchmarkLabel: p1y.benchmarkLabel,
           payload1y: toScorecardPayload(p1y),
           payloadMax: toScorecardPayload(pMax),
         }

@@ -248,7 +248,7 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
     },
     alpha: {
       tooltip: insufficientHistoryTooltip(
-        'The alpha sleeve is trend-following managed futures across rates, FX, commodities, and equity indices, identical in design to the RSST/RSSY family. Launched May 2026; insufficient live history to grade alpha efficiency.'
+        'The alpha sleeve is trend-following managed futures across rates, FX, commodities, and equity indices, identical in design to RSST. Launched May 2026; insufficient live history to grade alpha efficiency.'
       ),
     },
   },

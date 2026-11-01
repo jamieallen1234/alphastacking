@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:cad-currency": "tsx --test tests/cadPortfolioCurrency.test.ts",
+    "test:portfolio-links": "node --import tsx --test tests/portfolioLinks.test.ts"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

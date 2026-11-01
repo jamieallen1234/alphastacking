@@ -257,7 +257,7 @@ interface PresetPortfolioChartProps {
   showMaxDrawdown?: boolean
   /** Optional weighted portfolio beta for scoring blocks (e.g. builder output). */
   weightedBeta?: number | null
-  /** Show weighted letter scorecard (SPY baseline = B). */
+  /** Show weighted letter scorecard (the payload benchmark is the B baseline). */
   showScorecard?: boolean
   /** Optional modeled gross exposure summary shown under scorecard. */
   exposureSummary?: {
@@ -302,7 +302,7 @@ function downgradeOneLetter(grade: LetterGrade): LetterGrade {
  * Relative return versus benchmark in percent:
  *   ((portfolioTR / benchmarkTR) - 1) * 100
  * Positive => earned more than benchmark; negative => earned less.
- * SPY baseline B around 0%, with A+ at +50% or better.
+ * Benchmark baseline B around 0%, with A+ at +50% or better.
  */
 function alphaPoints(alphaVsBenchmarkPct: number): number {
   if (alphaVsBenchmarkPct >= 50) return 5
@@ -317,7 +317,7 @@ function alphaPoints(alphaVsBenchmarkPct: number): number {
  * Relative max-drawdown versus benchmark in percent:
  *   ((|portfolioDD| / |benchmarkDD|) - 1) * 100
  * Positive => worse drawdown than benchmark; negative => better.
- * SPY baseline B around 0%, with D at +40% or worse.
+ * Benchmark baseline B around 0%, with D at +40% or worse.
  */
 function drawdownPoints(drawdownVsBenchmarkPct: number): number {
   if (drawdownVsBenchmarkPct <= -40) return 5
@@ -369,6 +369,7 @@ function PortfolioMetricsAndScorecard({
     maxDrawdownPortfolioPercent = null,
     maxDrawdownBenchmarkPercent = null,
     benchmarkSymbol,
+    benchmarkLabel = benchmarkSymbol,
     limitingFirstTradeDate,
     sharpeRatio: payloadSharpeRatio = null,
     sortinoRatio: payloadSortinoRatio = null,
@@ -499,7 +500,7 @@ function PortfolioMetricsAndScorecard({
               ? `${benchmarkTotalReturnPercent >= 0 ? '+' : ''}${benchmarkTotalReturnPercent.toFixed(2)}%`
               : '—'}
           </div>
-          <div className={styles.metricSub}>{benchmarkSymbol} (benchmark)</div>
+          <div className={styles.metricSub}>{benchmarkLabel} (benchmark)</div>
         </div>
         <div>
           <div className={`${styles.metricBig} ${alphaClass}`}>
@@ -507,7 +508,7 @@ function PortfolioMetricsAndScorecard({
               ? `${excessAlphaPercent >= 0 ? '+' : ''}${excessAlphaPercent.toFixed(2)}%`
               : '—'}
           </div>
-          <div className={styles.metricSub}>Excess α vs {benchmarkSymbol}</div>
+          <div className={styles.metricSub}>Excess return vs {benchmarkLabel}</div>
         </div>
         {showMaxDrawdown ? (
           <>
@@ -525,7 +526,7 @@ function PortfolioMetricsAndScorecard({
                   ? `${maxDrawdownBenchmarkPercent.toFixed(2)}%`
                   : '—'}
               </div>
-              <div className={styles.metricSub}>{benchmarkSymbol} max DD</div>
+              <div className={styles.metricSub}>{benchmarkLabel} max DD</div>
             </div>
           </>
         ) : null}
@@ -562,7 +563,7 @@ function PortfolioMetricsAndScorecard({
                 </p>
               ) : null}
               <p className={styles.scorecardLine}>
-                <strong>Alpha score:</strong> {alphaGrade ?? '—'}
+                <strong>Excess return score:</strong> {alphaGrade ?? 'N/A'}
               </p>
               <p className={styles.scorecardLine}>
                 <strong>Max DD score:</strong> {drawdownGrade ?? '—'}
@@ -659,6 +660,7 @@ export default function PresetPortfolioChart({
     benchmarkValues,
     timestamps,
     benchmarkSymbol,
+    benchmarkLabel = benchmarkSymbol,
     chartStartDate,
     limitingSymbol,
     limitingFirstTradeDate,
@@ -687,7 +689,7 @@ export default function PresetPortfolioChart({
           {
             values: benchmarkValues,
             color: 'var(--color-blue)',
-            label: benchmarkSymbol,
+            label: benchmarkLabel,
           },
         ]
       : null
@@ -733,7 +735,7 @@ export default function PresetPortfolioChart({
           ) : null}
           <span className={styles.legendItem}>
             <span className={styles.legendSwatch} style={{ background: 'var(--color-blue)' }} />
-            {benchmarkSymbol}
+            {benchmarkLabel}
           </span>
         </div>
         <ReturnLineChart
@@ -758,34 +760,44 @@ export default function PresetPortfolioChart({
           />
         </div>
       ) : null}
-      {footnote !== 'none' ? (
+      {chartCurrency === 'CAD' || footnote !== 'none' ? (
         <div className={styles.chartFootnotes}>
           <div className={styles.chartDisclaimerRow}>
             <span className={styles.footnoteMark} aria-hidden="true">
               *
             </span>
             <div className={styles.footnoteBody}>
-              {footnote === 'minimal' ? (
+              {chartCurrency === 'CAD' ? (
                 <p className={styles.disclaimerLead}>
-                  <strong>Total return</strong> series: Yahoo Finance <strong>adjusted close</strong> (cash
-                  distributions and splits reflected per Yahoo’s methodology), common U.S. sessions, $10k at
-                  first overlap—not fund NAV, not tax-adjusted. Educational only — not investment advice.
-                  Past performance does not predict future results.
+                  Returns are shown in CAD, including exchange-rate changes on USD holdings. A hedged
+                  benchmark does not hedge the portfolio.
                 </p>
-              ) : (
-                <p className={styles.disclaimerLead}>
-                  Educational model only — not investment advice. Portfolio betas in the holdings table are
-                  weighted to the listed names and weights.
-                </p>
-              )}
-              {syntheticModeling.map((m) => (
-                <SyntheticModelingLine
-                  key={`${m.kind}-${m.slotSymbol}-${m.firstRealNyDay}`}
-                  m={m}
-                  hubBase={hubBase}
-                />
-              ))}
-              <p className={styles.disclaimerDetail}>{limitingFootnote}</p>
+              ) : null}
+              {footnote !== 'none' ? (
+                <>
+                  {footnote === 'minimal' ? (
+                    <p className={styles.disclaimerLead}>
+                      <strong>Total return</strong> series: Yahoo Finance <strong>adjusted close</strong> (cash
+                      distributions and splits reflected per Yahoo’s methodology), common U.S. sessions, $10k at
+                      first overlap, not fund NAV, not tax-adjusted. Educational only. Not investment advice.
+                      Past performance does not predict future results.
+                    </p>
+                  ) : (
+                    <p className={styles.disclaimerLead}>
+                      Educational model only. Not investment advice. Portfolio betas in the holdings table are
+                      weighted to the listed names and weights.
+                    </p>
+                  )}
+                  {syntheticModeling.map((m) => (
+                    <SyntheticModelingLine
+                      key={`${m.kind}-${m.slotSymbol}-${m.firstRealNyDay}`}
+                      m={m}
+                      hubBase={hubBase}
+                    />
+                  ))}
+                  <p className={styles.disclaimerDetail}>{limitingFootnote}</p>
+                </>
+              ) : null}
             </div>
           </div>
         </div>

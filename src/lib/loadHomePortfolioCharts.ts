@@ -82,7 +82,7 @@ export async function loadHomePortfolioChartSlots(
         href: `/portfolios/${gdeBlendDef.slug}`,
         title: gdeBlendDef.title,
         description: gdeBlendDef.description,
-        chartHeading: 'Total return vs S&P 500 index — all history',
+        chartHeading: `Total return vs ${gdeBlendPayload.benchmarkLabel}: all history`,
         payload: gdeBlendPayload,
       },
     ]
@@ -103,7 +103,7 @@ export async function loadHomePortfolioChartSlots(
       href: `/ca/portfolios/${globalLsDef.slug}`,
       title: globalLsDef.title,
       description: globalLsDef.description,
-      chartHeading: 'Total return vs S&P 500 index — all history (CAD)',
+      chartHeading: `CAD total return vs ${globalLsPayload.benchmarkLabel}: all history`,
       payload: globalLsPayload,
     },
   ]

@@ -21,7 +21,7 @@ import type { PrimarySimilarityHeadline, SimilarEtfRow } from '@/lib/etfSimilarE
 import { displayTagLabelsForSlug } from '@/lib/etfSimilarityTags'
 import type { PortfolioEtfMembership } from '@/lib/portfolioEtfMembership'
 import { getStrategyGuideForEtf } from '@/lib/etfStrategyGuide'
-import { learnArticlePath } from '@/lib/learnArticles'
+import { learnArticlePath, RETURN_STACKING_EXPLAINED_SLUG } from '@/lib/learnArticles'
 import { methodologyPath } from '@/lib/siteRegion'
 
 function efficiencyGradeToShow(grade: string | null | undefined): string | null {
@@ -238,6 +238,7 @@ export default function EtfDynamicPageLayout({
   const homePath = isCaHub ? '/ca' : '/'
   const hubLabel = hubBase === '/ca/etfs' ? 'CA ETFs' : 'US ETFs'
   const strategyGuide = slug ? getStrategyGuideForEtf(slug, def.hubCategoryId) : undefined
+  const hasReturnStackingGuide = slug === 'rgbm'
   const sourceLinks = [
     { label: def.officialLabel, url: def.officialUrl },
     ...(def.sources ?? []),
@@ -344,6 +345,14 @@ export default function EtfDynamicPageLayout({
             for the return driver, failure modes, and how this type of sleeve fits in an alpha
             stacking portfolio.
           </p>
+          {hasReturnStackingGuide ? (
+            <p>
+              For the capital-efficient structure, read{' '}
+              <Link href={learnArticlePath(isCaHub, RETURN_STACKING_EXPLAINED_SLUG)}>
+                What is return stacking?
+              </Link>
+            </p>
+          ) : null}
         </div>
       ) : null}
       {similarEtfs != null && similarEtfs.length > 0 ? (

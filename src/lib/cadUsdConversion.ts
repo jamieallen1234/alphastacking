@@ -7,6 +7,9 @@ export const USDCAD_YAHOO_SYMBOL = 'USDCAD=X'
 /** CAD-listed, CAD-hedged S&P 500 ETF — benchmark line only for Canadian-denominated portfolio charts. */
 export const CAD_SPY_PROXY_SYMBOL = 'XSP.TO'
 
+/** User-facing description of the Canadian equity benchmark used by default. */
+export const CAD_SPY_PROXY_LABEL = 'XSP.TO (S&P 500 CAD-hedged)'
+
 /** Unhedged CAD-listed S&P 500 ETF — USSL 1.25× synthetic and related modeling (not the chart benchmark). */
 export const CAD_UNHEDGED_SP500_PROXY_SYMBOL = 'VFV.TO'
 
@@ -14,7 +17,24 @@ export const CAD_UNHEDGED_SP500_PROXY_SYMBOL = 'VFV.TO'
 export const CAD_UNHEDGED_NASDAQ_PROXY_SYMBOL = 'ZQQ.TO'
 
 export function isCadListedSymbol(symbol: string): boolean {
-  return symbol.trim().toUpperCase().endsWith('.TO')
+  return /\.(?:TO|NE|V|CN)$/i.test(symbol.trim())
+}
+
+export function portfolioBenchmarkLabel(symbol: string): string {
+  return symbol.trim().toUpperCase() === CAD_SPY_PROXY_SYMBOL
+    ? CAD_SPY_PROXY_LABEL
+    : symbol.trim().toUpperCase()
+}
+
+/** Express one listing-price series in CAD without adding FX to an already CAD-listed fund. */
+export function expressListingPricesInCad(
+  symbol: string,
+  priceSeries: PriceSeries,
+  usdCad: PriceSeries
+): PriceSeries {
+  return isCadListedSymbol(symbol)
+    ? priceSeries
+    : convertUsdPricesToCad(priceSeries, usdCad)
 }
 
 /** Last NY day in `fxDaysSorted` with key ≤ `day` (ISO YYYY-MM-DD lex order = chronological). */

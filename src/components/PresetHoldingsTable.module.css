@@ -34,6 +34,18 @@
   color: var(--color-text);
 }
 
+.tickerLink {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--rgb-text), 0.35);
+  text-underline-offset: 0.18em;
+}
+
+.tickerLink:hover {
+  color: var(--color-gold);
+  text-decoration-color: currentColor;
+}
+
 .blurb {
   color: rgba(var(--rgb-text), 0.5);
   max-width: 22rem;

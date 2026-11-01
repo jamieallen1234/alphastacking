@@ -62,6 +62,7 @@ export async function GET(req: Request) {
 
   const rangeRaw = (searchParams.get('range') || '1y') as YahooRange
   const range = ALLOWED_RANGES.includes(rangeRaw) ? rangeRaw : '1y'
+  const cadDenominated = searchParams.get('edition')?.toLowerCase() === 'ca'
 
   const weights = parseWeights(searchParams.get('weights'), symbols.length)
   if (!weights) {
@@ -75,7 +76,12 @@ export async function GET(req: Request) {
   }
 
   try {
-    const payload = await getCachedPortfolioBuilderChart({ symbols, weights, range, cadDenominated: false })
+    const payload = await getCachedPortfolioBuilderChart({
+      symbols,
+      weights,
+      range,
+      cadDenominated,
+    })
     return chartJsonResponse(payload, 'public-1h')
   } catch (e) {
     return chartErrorResponse(e, 'Failed to load market data')

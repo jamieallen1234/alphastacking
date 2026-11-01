@@ -412,7 +412,9 @@ function PortfolioBuilderFollowUpHints({
       ? 'Add more rows with + if you need several holdings.'
       : activeHint === 'alpha-sleeve'
         ? 'Use Alpha efficiency on this row when you want a diversifying sleeve, then pick funds here (alternatives, managed futures, long/short, etc.) to complement your equity sleeve.'
-        : 'When allocations are valid, Generate loads total return vs SPY, drawdowns, and range controls for your mix.'
+        : edition === 'ca'
+          ? 'When allocations are valid, Generate loads CAD total return vs XSP.TO (S&P 500 CAD-hedged), drawdowns, and range controls for your mix.'
+          : 'When allocations are valid, Generate loads USD total return vs SPY, drawdowns, and range controls for your mix.'
 
   const overlay = (
     <div className={styles.tourMount} style={{ minHeight: Math.max(coverHeight, documentCoverHeight()) || '100vh' }}>

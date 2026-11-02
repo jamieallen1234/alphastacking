@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server'
 
-type CacheControlMode = 'no-store' | 'public-1h'
+type CacheControlMode = 'no-store' | 'public-1h' | 'public-day'
 
 const CACHE_CONTROL: Record<CacheControlMode, string> = {
   'no-store': 'private, no-store',
   'public-1h': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
+  // Browsers revalidate, while Vercel's CDN serves the versioned response for a day.
+  'public-day': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800',
 }
 
 /** Wrap chart payloads with the standard `Cache-Control` header for chart API routes. */

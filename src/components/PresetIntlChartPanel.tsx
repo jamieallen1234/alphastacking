@@ -11,6 +11,7 @@ import {
 } from '@/lib/presetChartRanges'
 import type { ScorecardPayload } from '@/lib/portfolioHubGrade'
 import type { YahooRange } from '@/lib/yahooFinance'
+import { PRESET_CHART_CACHE_VERSION } from '@/lib/presetChartCacheVersion'
 import styles from './PresetIntlChartPanel.module.css'
 
 function toScorecardPayload(p: PortfolioChartPayload): ScorecardPayload {
@@ -33,11 +34,13 @@ function fetchPresetChart(
   range: YahooRange,
   chartCurrency: NonNullable<PortfolioChartPayload['chartCurrency']>
 ) {
-  const params = new URLSearchParams({ preset: presetId, range })
-  if (chartCurrency === 'CAD') params.set('currency', 'CAD')
-  return fetch(`/api/preset-chart?${params}`, {
-    cache: 'no-store',
+  const params = new URLSearchParams({
+    preset: presetId,
+    range,
+    version: PRESET_CHART_CACHE_VERSION,
   })
+  if (chartCurrency === 'CAD') params.set('currency', 'CAD')
+  return fetch(`/api/preset-chart?${params}`)
 }
 
 interface PresetIntlChartPanelProps {

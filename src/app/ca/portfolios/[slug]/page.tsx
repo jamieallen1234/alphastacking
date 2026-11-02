@@ -3,7 +3,15 @@ import PortfolioDetailMain from '@/components/PortfolioDetailMain'
 import { caPortfolioRoutes, usPortfolioRoutes } from '@/lib/portfolioRoutes'
 import { pairedAlternates, singleEditionAlternates } from '@/lib/seoAlternates'
 
-export const dynamic = 'force-dynamic'
+// Generate each portfolio on its first request, then serve the cached page while a fresh version
+// regenerates in the background at most once per day. Returning no build-time params avoids a
+// burst of Yahoo requests during every deployment.
+export const dynamic = 'force-static'
+export const revalidate = 86400
+
+export function generateStaticParams() {
+  return []
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params

@@ -31,10 +31,9 @@ export async function GET(req: Request) {
 
   try {
     const payload = await getCachedPresetChartForRange(presetId, range, { forceCad })
-    // The computation itself is cached by getCachedPresetChart. Do not additionally cache this
-    // HTTP response in the browser or CDN, otherwise a newly deployed proxy model can leave a
-    // range tab displaying an older calculation for up to an hour.
-    return chartJsonResponse(payload)
+    // The URL includes the shared chart-model version, so repeat requests can be served by the
+    // CDN without allowing an older model response to leak into a newer cache namespace.
+    return chartJsonResponse(payload, 'public-day')
   } catch (e) {
     return chartErrorResponse(e, 'Failed to load preset chart')
   }

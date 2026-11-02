@@ -2,6 +2,7 @@ import { unstable_cache } from 'next/cache'
 import { computePortfolioChart } from '@/lib/computePortfolioChart'
 import { getPresetById, presetSymbols, presetWeights, type PresetDefinition } from '@/lib/presets'
 import type { YahooRange } from '@/lib/yahooFinance'
+import { PRESET_CHART_CACHE_VERSION } from '@/lib/presetChartCacheVersion'
 
 const DAY = 86400
 
@@ -45,7 +46,7 @@ const _cachedPresetChart = unstable_cache(
     const preset = mustPreset(presetId)
     return computePresetChart(preset, range, cadDenominated)
   },
-  ['preset-chart', 'chart-proxy-v23-cad-total-return'],
+  ['preset-chart', PRESET_CHART_CACHE_VERSION],
   { revalidate: DAY }
 )
 

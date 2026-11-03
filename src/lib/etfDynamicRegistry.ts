@@ -2145,6 +2145,47 @@ export const US_ETF_DYNAMIC_REGISTRY: Record<string, EtfDynamicDef> = {
     },
   },
 
+  ils: {
+    yahooSymbol: 'ILS',
+    hubCategoryId: 'fixed-income',
+    badge: 'Fixed income',
+    h1Title: 'ILS - Brookmont Catastrophic Bond ETF',
+    displayTicker: 'ILS',
+    issuer: 'Brookmont Capital Management',
+    inception: 'Apr 1, 2025',
+    addedToSite: '2026-11-02',
+    structure: 'Actively managed catastrophe bonds and insurance-linked securities',
+    mer: '1.58% net (2.65% gross)',
+    aum: '~$151M',
+    pageTitle: 'ILS ETF - Alpha Stacking',
+    description:
+      'Brookmont Catastrophic Bond ETF (ILS): actively managed catastrophe bonds and insurance-linked securities.',
+    contentFormat: 'html',
+    chartHeadingLabel: 'total return',
+    lede:
+      'ILS holds <strong>catastrophe bonds and insurance-linked securities</strong>, seeking income from assuming defined natural-disaster risk rather than taking conventional interest-rate or corporate-credit exposure.',
+    strategyParas: [
+      'Catastrophe bonds transfer specified insurance losses from insurers and reinsurers to capital-market investors. ILS buys a diversified book of event-linked bonds and related insurance-linked securities, typically issued through special-purpose vehicles. Investors collect coupon income while covered events stay below the contract trigger, but can lose principal when a qualifying loss breaches it.',
+      'The central bet is <strong>event risk, not duration risk</strong>. Hurricanes, earthquakes, wildfires, floods, and other insured perils drive outcomes more directly than Treasury yields or corporate earnings. The underlying market trades over the counter and individual securities can be difficult to value in stressed periods, so daily ETF liquidity does not eliminate liquidity, model, trigger, or mark-to-market risk.',
+    ],
+    pedigreeParas: ped(
+      'Brookmont Capital Management is the adviser to ILS, with King Ridge Capital Advisors serving as sub-adviser for the insurance-linked-securities book. That division matters: catastrophe-bond underwriting depends on peril modeling, attachment points, collateral terms, and reinsurer-specific deal selection rather than a standard corporate-bond research process.',
+      'ILS launched in April 2025 and had about $151 million in net assets as of October 27, 2026. Its stated 2.65% gross expense ratio is currently reduced to <strong>1.58% net</strong> by a 1.07% waiver and expense reimbursement. The expense limitation runs through April 30, 2027 and can be reevaluated after that date, so investors should not treat the current net figure as permanent. The fund is still young, so its public track record has not yet covered a full range of major-loss seasons.',
+    ),
+    outperfParas: [
+      'ILS can outperform when <strong>insurance pricing is firm and covered losses stay contained</strong>: premiums reset higher after constrained reinsurance capacity, while diversified exposures avoid large trigger events. That creates a source of carry with a return path that can remain independent from equity and duration shocks.',
+      'ILS can underperform after <strong>large correlated catastrophe losses</strong>, particularly when one season produces multiple hurricanes, earthquakes, or wildfires that impair several holdings at once. <em>Favorable tape:</em> firm insurance pricing with limited covered-loss activity. <em>Hostile tape:</em> large correlated catastrophe losses that breach bond triggers and force marks lower.',
+    ],
+    officialUrl: 'https://ilsetf.com/ils',
+    officialLabel: 'Brookmont Capital (ILS)',
+    sources: [
+      {
+        label: 'SEC semi-annual shareholder report (ILS)',
+        url: 'https://www.sec.gov/Archives/edgar/data/1771146/000199937126020092/ils-ncsrs_063026.htm',
+      },
+    ],
+  },
+
   jaaa: {
     yahooSymbol: 'JAAA',
     hubCategoryId: 'fixed-income',

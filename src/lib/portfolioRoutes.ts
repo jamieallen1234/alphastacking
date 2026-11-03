@@ -140,7 +140,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     badge: 'Advanced',
     description: '3x S&P 500 core paired with systematic long/short equity and EM currency carry premia.',
     addedAt: '2026-05-23',
-    weightedBeta: 1.037,
+    weightedBeta: 1.038,
   },
   {
     slug: '5-4-3-2-1',
@@ -219,7 +219,7 @@ export const usPortfolioRoutes: PortfolioRouteDef[] = [
     title: 'Bond Alternative',
     description: 'Five low-beta, non-equity-directional strategies built to outrun the aggregate bond index without equity-level risk.',
     addedAt: '2026-08-14',
-    weightedBeta: 0.088,
+    weightedBeta: 0.093,
   },
   {
     slug: 'us-sixty-forty',

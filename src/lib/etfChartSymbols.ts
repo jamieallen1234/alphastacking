@@ -80,6 +80,7 @@ export const ETF_CHART_SYMBOLS = [
   'ARB.TO',
   'CVD.TO',
   'HFR.TO',
+  'ILS',
   'JAAA',
   'CLOA',
   'BAAA.TO',

@@ -127,6 +127,8 @@ export const ETF_SIMILARITY_TAGS_BY_SLUG_US: Record<string, EtfSimilarityTagBund
   virt: bundle([], [], 'manual'),
 
   // --- Fixed income / structured credit ---
+  /** Event-risk insurance-linked securities, intentionally distinct from corporate and CLO credit. */
+  ils: bundle([], ['catastrophe_bonds'], 'manual'),
   /** Pure AAA CLO fund: no equity sleeve; alpha is carry spread above SOFR. */
   jaaa: bundle([], ['aaa_clo', 'floating_rate_credit', 'investment_grade_credit'], 'seeded'),
   /** iShares AAA CLO fund; same peer group as JAAA — same structure, different sponsor. */
@@ -241,6 +243,7 @@ export const ETF_TAG_DISPLAY_LABELS: Record<string, string> = {
   investment_grade_credit: 'Investment-grade credit',
   floating_rate_credit: 'Floating-rate credit',
   aaa_clo: 'AAA CLO',
+  catastrophe_bonds: 'Catastrophe bonds',
   preferreds_credit: 'Preferred shares',
   // Real assets / commodities
   gold: 'Gold',
@@ -280,7 +283,7 @@ const TAG_DISPLAY_GROUPS: readonly (readonly string[])[] = [
     'gold', 'silver', 'bitcoin', 'ethereum', 'gold_miners', 'metals_miners', 'base_metals',
     'commodities', 'commodity_energy', 'treasuries', 'bonds', 'inflation_linked_bonds',
     'short_duration', 'medium_duration', 'long_duration', 'aaa_clo', 'floating_rate_credit',
-    'investment_grade_credit', 'preferreds_credit', 'credit',
+    'investment_grade_credit', 'catastrophe_bonds', 'preferreds_credit', 'credit',
   ],
   // Strategy / overlay
   [

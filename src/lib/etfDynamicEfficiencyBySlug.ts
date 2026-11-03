@@ -652,6 +652,13 @@ export const US_ETF_DYNAMIC_EFFICIENCY: Record<string, EtfDynamicEfficiencyDef> 
   },
 
   // --- Fixed income / structured credit ---
+  ils: {
+    alpha: {
+      tooltip: alphaEfficiencyUnstackedTooltip(
+        'ILS is an actively managed catastrophe-bond and insurance-linked-securities sleeve. Its return source is insurance risk premium, not rate duration or corporate-credit carry; the alpha grade measures return above the risk-free hurdle against its realized event risk.'
+      ),
+    },
+  },
   jaaa: {
     alpha: {
       tooltip: alphaEfficiencyUnstackedTooltip(

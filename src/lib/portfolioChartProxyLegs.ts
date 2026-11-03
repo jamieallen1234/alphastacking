@@ -95,6 +95,8 @@ export const CHART_STACK_PRODUCT_PROXY_LEGS: Record<string, ProxyDef> = {
   'ARB.TO': { legs: ['MRGR'] },
   /** Pre-listing: US-listed AAA CLO ETF, used to extend BAAA.TO's floating-rate credit sleeve. */
   'BAAA.TO': { legs: ['JAAA'] },
+  /** Pre-listing: Victory Pioneer CAT Bond Fund Class Y, a dedicated catastrophe-bond mutual fund. */
+  ILS: { legs: ['CBYYX'], grossExposurePct: 100 },
   /** Pre-listing: 50% Convergence long/short + 50% international small-cap value, net of a 25% small-cap-beta short (IWM) to approximate ORR's long/short net exposure; extends joint history before ORR's inception. */
   ORR: {
     legs: [{ blend: [{ symbol: 'CLSE', weight: 0.5 }, { symbol: 'AVDV', weight: 0.5 }, { symbol: 'IWM', weight: -0.25 }] }],

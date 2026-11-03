@@ -18,6 +18,7 @@ const OFFICIAL_ETF_HOME: Record<string, string> = {
   'TEC.TO': 'https://www.td.com/ca/en/asset-management/funds/solutions/etfs/fundcard?fundId=7113',
   'HEQT.TO': 'https://www.globalx.ca/product/heqt',
   'HPR.TO': 'https://www.globalx.ca/product/hpr',
+  CBYYX: 'https://www.sec.gov/Archives/edgar/data/2042316/000119312526082581/f44286d1.htm',
 }
 
 /** Current TSX symbol for the BetaPro Nasdaq-100 2x Daily Bull ETF. */

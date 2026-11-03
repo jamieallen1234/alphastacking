@@ -458,6 +458,12 @@ export const ETF_HUB_US: Record<EtfHubCategoryId, EtfHubListItem[]> = {
   crypto: CRYPTO_HUB_LIST,
   'fixed-income': [
     us(
+      'ils',
+      'ILS - Brookmont Catastrophic Bond ETF',
+      'Actively managed catastrophe bonds and insurance-linked securities, with returns tied to insured-event risk rather than rate duration or corporate credit.',
+      usPath('ils')
+    ),
+    us(
       'cloa',
       'CLOA — iShares AAA CLO Active ETF',
       'BlackRock iShares actively managed fund investing in USD-denominated AAA-rated CLO tranches for floating-rate structured credit income.',

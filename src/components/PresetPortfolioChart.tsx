@@ -199,6 +199,21 @@ function SyntheticModelingLine({
       )
     case 'stacked_product_proxy':
     case 'stacked_product_proxy_preinception': {
+      if (m.slotSymbol.toUpperCase() === 'ILS') {
+        return (
+          <p key={`ils-${m.firstRealNyDay}`} className={styles.disclaimerDetail}>
+            <ProxyLink ticker="ILS" hubBase={hubBase}>
+              ILS
+            </ProxyLink>
+            : before {when}, portfolio charts use{' '}
+            <ProxyLink ticker="CBYYX" hubBase={hubBase}>
+              CBYYX
+            </ProxyLink>{' '}
+            (Victory Pioneer CAT Bond Fund Class Y) daily total returns as a catastrophe-bond proxy. The line
+            resumes ILS reported adjusted closes on {when}.
+          </p>
+        )
+      }
       const legs = resolveChartProxyLegs(m.slotSymbol) ?? []
       const legText = legs.length ? legs.join(' × ') : 'listed proxies'
       const slug = findSlugByYahooSymbol(m.slotSymbol)

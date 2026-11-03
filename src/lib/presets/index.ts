@@ -42,7 +42,7 @@ export function presetWeights(p: PresetDefinition): number[] {
 
 // -------------------- Preset IDs --------------------
 export const US_5_4_3_2_1_PRESET_ID = 'us-5-4-3-2-1-v6'
-export const US_UPRO_PREMIA_STACK_PRESET_ID = 'us-upro-premia-stack-v1'
+export const US_UPRO_PREMIA_STACK_PRESET_ID = 'us-upro-premia-stack-v2'
 export const US_INTL_PRESET_ID = 'us-intl-v2'
 export const US_ADVANCED_PRESET_ID = 'us-advanced-v1'
 export const US_CORE_BH_PRESET_ID = 'us-core-bh-v4'
@@ -59,10 +59,10 @@ export const US_LONG_SHORT_EQUITY_PRESET_ID = 'us-long-short-equity-v1'
 export const US_LETF_STACK_2X_PRESET_ID = 'us-letf-stack-2x-v1'
 export const US_LETF_STACK_3X_PRESET_ID = 'us-letf-stack-3x-v1'
 export const US_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'us-four-alpha-quadrants-v1'
-export const CA_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'ca-four-alpha-quadrants-v1'
-export const US_BOND_ALT_PRESET_ID = 'us-bond-alt-v1'
+export const CA_FOUR_ALPHA_QUADRANTS_PRESET_ID = 'ca-four-alpha-quadrants-v2'
+export const US_BOND_ALT_PRESET_ID = 'us-bond-alt-v2'
 export const CA_BOND_ALT_PRESET_ID = 'ca-bond-alt-v2'
-export const US_SIXTY_FORTY_PRESET_ID = 'us-sixty-forty-v1'
+export const US_SIXTY_FORTY_PRESET_ID = 'us-sixty-forty-v2'
 export const CA_SIXTY_FORTY_PRESET_ID = 'ca-sixty-forty-v1'
 export const CA_GRANDMAS_PORTFOLIO_PRESET_ID = 'ca-grandmas-portfolio-v2'
 // Bump when the holdings change so every range gets a distinct preset-chart cache entry.
@@ -153,11 +153,12 @@ export const usAlphaStackHoldings: PresetHolding[] = [
   { ticker: 'CLSE', weightPct: 10, beta: 0.6, blurb: 'US long/short equity drawdown buffer.' },
 ]
 
-/** 34 / 33 / 33 annual-rebalance: 3x S&P core offset by systematic long/short and EM carry premia sleeves. */
+/** 34 / 30.5 / 30.5 / 5 annual-rebalance: 3x S&P core offset by systematic long/short, EM carry premia, and a catastrophe-bond sleeve. */
 export const uproPremaStackHoldings: PresetHolding[] = [
   { ticker: 'UPRO', weightPct: 34, beta: 3, blurb: '3x daily S&P 500 — high-conviction leveraged core.' },
-  { ticker: 'FLSP', weightPct: 33, beta: 0, blurb: 'Systematic long/short equity and style premia sleeve.' },
-  { ticker: 'FOXY', weightPct: 33, beta: 0.05, blurb: 'Systematic EM carry + G10 mean-reversion currency sleeve.' },
+  { ticker: 'FLSP', weightPct: 30.5, beta: 0, blurb: 'Systematic long/short equity and style premia sleeve.' },
+  { ticker: 'FOXY', weightPct: 30.5, beta: 0.05, blurb: 'Systematic EM carry + G10 mean-reversion currency sleeve.' },
+  { ticker: 'ILS', weightPct: 5, beta: 0.05, blurb: 'Catastrophe-bond and insurance-linked-securities sleeve, introducing insured-event risk separate from macro assets.' },
 ]
 
 /** 35 / 20 / 15 / 20 / 10 annual-rebalance: USSL + QQQL leveraged core, FINN concentrated momentum, managed futures, market-neutral. Weighted beta ~1.00. */
@@ -190,8 +191,8 @@ export const usLetfStack2xHoldings: PresetHolding[] = [
 export const usLetfStack3xHoldings: PresetHolding[] = [
   { ticker: 'UPRO', weightPct: 40, beta: 3, blurb: '3x daily S&P 500 — the high-conviction leveraged equity core.' },
   { ticker: 'ZROZ', weightPct: 20, beta: -0.35, blurb: '25+ year zero-coupon Treasuries — long-duration counterweight that spikes in drawdowns and deflation.' },
-  { ticker: 'DBMF', weightPct: 20, beta: 0.05, blurb: 'iMGP managed futures — trend-following CTA that tends flat-to-positive in sustained equity drawdowns.' },
-  { ticker: 'GLD', weightPct: 20, beta: 0.05, blurb: 'SPDR Gold Shares — inflation and real-asset hedge with near-zero equity correlation.' },
+  { ticker: 'DBMF', weightPct: 20, beta: 0.05, blurb: 'iMGP managed futures, a trend-following CTA that tends flat-to-positive in sustained equity drawdowns.' },
+  { ticker: 'GLD', weightPct: 20, beta: 0.05, blurb: 'SPDR Gold Shares, an inflation and real-asset hedge with near-zero equity correlation.' },
 ]
 
 /** 25 / 25 / 20 / 15 / 5 / 5 / 5 buy-and-hold: net-long L/S equity core with capital-efficient international equity overlay and cross-asset diversifiers. Weighted beta ~0.82. */
@@ -241,7 +242,7 @@ export const usFourAlphaQuadrantsHoldings: PresetHolding[] = [
 /**
  * 4 Alpha Quadrants (Canada), annual rebalance, CAD-denominated: four 25% sleeves using
  * Canadian-listed funds for momentum, plus US-listed long/short, value, and leveraged sleeves
- * converted to CAD. Weighted beta ~0.99.
+ * converted to CAD, with a catastrophe-bond sleeve. Weighted beta ~0.99.
  */
 export const caFourAlphaQuadrantsHoldings: PresetHolding[] = [
   { ticker: 'CLSE', weightPct: 16, beta: 0.6, blurb: '[Alpha] US long/short equity, security selection and dispersion, low-net-correlation drawdown buffer.' },
@@ -250,17 +251,19 @@ export const caFourAlphaQuadrantsHoldings: PresetHolding[] = [
   { ticker: 'VFLO', weightPct: 7, beta: 0.75, blurb: '[Alpha] Large-cap free-cash-flow value tilt, factor-premia alpha alongside momentum.' },
   { ticker: 'UPRO', weightPct: 7.5, beta: 3, blurb: '[Growth] 3x S&P 500, high-conviction leveraged beta paired with the systematic premia sleeves.' },
   { ticker: 'FLSP', weightPct: 9, beta: 0, blurb: '[Alpha] Systematic long/short equity and style premia sleeve.' },
-  { ticker: 'PFMN.TO', weightPct: 8.5, beta: 0.12, blurb: '[Alpha] Market-neutral long/short equity, beta-neutral premia complement to FLSP.' },
+  { ticker: 'PFMN.TO', weightPct: 3.5, beta: 0.12, blurb: '[Alpha] Market-neutral long/short equity, beta-neutral premia complement to FLSP.' },
+  { ticker: 'ILS', weightPct: 5, beta: 0.05, blurb: '[Alpha] Catastrophe-bond and insurance-linked-securities sleeve, introducing insured-event risk separate from macro assets.' },
   { ticker: 'MATE', weightPct: 25, beta: 1, blurb: '[Growth + Alpha] Return-stacked 100% S&P 500 + 100% managed futures, growth core and trend-following alpha in one fund.' },
 ]
 
-/** 10 / 10 / 25 / 20 / 35 buy-and-hold: five non-equity-directional strategies, benchmarked against AGG (US Total Bond Market) instead of SPY. DBMF and FLSP anchor the trend/premia thesis but are held small since each carries a ~19% standalone drawdown; MRGR, IALT, and JAAA are sized to counteract that risk and keep the portfolio-level drawdown under 4%. Weighted beta ~0.09, max drawdown ~3.8%. */
+/** 10 / 10 / 25 / 20 / 25 / 10 buy-and-hold: non-equity-directional strategies, benchmarked against AGG (US Total Bond Market) instead of SPY. DBMF and FLSP anchor trend and premia while merger arbitrage, alternatives, AAA CLOs, and catastrophe bonds diversify their return sources. Weighted beta ~0.09. */
 export const usBondAltHoldings: PresetHolding[] = [
   { ticker: 'DBMF', weightPct: 10, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
   { ticker: 'FLSP', weightPct: 10, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
   { ticker: 'MRGR', weightPct: 25, beta: 0.05, blurb: 'Merger arbitrage, a shallow-drawdown event-driven diversifier with a long track record since 2013.' },
   { ticker: 'IALT', weightPct: 20, beta: 0.35, blurb: 'Systematic multi-strategy alternatives sleeve blending trend and premia with a shallower realized drawdown.' },
-  { ticker: 'JAAA', weightPct: 35, beta: 0, blurb: 'AAA-rated CLO floating-rate credit, bond-like income with minimal duration or equity risk.' },
+  { ticker: 'JAAA', weightPct: 25, beta: 0, blurb: 'AAA-rated CLO floating-rate credit, bond-like income with minimal duration or equity risk.' },
+  { ticker: 'ILS', weightPct: 10, beta: 0.05, blurb: 'Catastrophe-bond and insurance-linked-securities sleeve, introducing insured-event risk separate from macro assets.' },
 ]
 
 /** 15 / 15 / 30 / 15 / 10 / 15 buy-and-hold: low-beta return sources and Canadian convertible bonds, benchmarked against XBB.TO. FOXY and VAMO were excluded for carrying outsized historical drawdowns at meaningful weight. CVD.TO replaces half of the prior ARB.TO allocation while preserving a sub-0.15 model beta and a shallow historical drawdown. */
@@ -273,7 +276,7 @@ export const caBondAltHoldings: PresetHolding[] = [
   { ticker: 'CVD.TO', weightPct: 15, beta: 0.12, blurb: 'Canadian convertible bonds, an income sleeve with lower duration than broad bond funds.' },
 ]
 
-/** 20 / 15 / 15 / 15 / 10 / 10 / 15 buy-and-hold, benchmarked against AOR. No leveraged equity; MATE anchors the growth sleeve, VFLO adds value-factor equity, CLSE/ORR add long/short, DBMF/FLSP/MRGR round out the Bond Alternative-style diversifiers. Weighted beta ~0.50, max drawdown ~12.5% (beats AOR's ~17.8%). */
+/** 20 / 15 / 15 / 15 / 10 / 10 / 10 / 5 buy-and-hold, benchmarked against AOR. No leveraged equity; MATE anchors the growth sleeve, VFLO adds value-factor equity, CLSE/ORR add long/short, and low-beta alternatives include a catastrophe-bond sleeve. Weighted beta ~0.50. */
 export const usSixtyFortyHoldings: PresetHolding[] = [
   { ticker: 'MATE', weightPct: 20, beta: 1.0, blurb: 'Return-stacked 100% S&P 500 + 100% managed futures, the growth engine and trend-following alpha in one fund.' },
   { ticker: 'VFLO', weightPct: 15, beta: 0.75, blurb: 'Large-cap free-cash-flow value tilt, an unleveraged equity growth sleeve with a shallower drawdown than pure momentum or deep-value funds.' },
@@ -281,7 +284,8 @@ export const usSixtyFortyHoldings: PresetHolding[] = [
   { ticker: 'ORR', weightPct: 15, beta: 0.55, blurb: 'Militia global long/short equity, fundamental stock selection across regions.' },
   { ticker: 'DBMF', weightPct: 10, beta: 0.05, blurb: 'iMGP diversified trend-following managed futures, flat-to-positive in sustained equity drawdowns.' },
   { ticker: 'FLSP', weightPct: 10, beta: 0, blurb: 'Systematic long/short equity and style premia, value, carry, and momentum harvested market-neutral.' },
-  { ticker: 'MRGR', weightPct: 15, beta: 0.05, blurb: 'Merger arbitrage, a shallow-drawdown event-driven diversifier with a long track record since 2013.' },
+  { ticker: 'MRGR', weightPct: 10, beta: 0.05, blurb: 'Merger arbitrage, a shallow-drawdown event-driven diversifier with a long track record since 2013.' },
+  { ticker: 'ILS', weightPct: 5, beta: 0.05, blurb: 'Catastrophe-bond and insurance-linked-securities sleeve, introducing insured-event risk separate from macro assets.' },
 ]
 
 /** 20 / 15 / 15 / 10 / 10 / 10 / 10 / 10 buy-and-hold, benchmarked against VBAL. No leveraged equity; MATE anchors the growth sleeve, VFLO adds value-factor equity, ORR (long/short) and PFLS.TO/ARB.TO/PFMN.TO (Canadian-listed diversifiers) stand in for the traditional bond sleeve. Weighted beta ~0.47, max drawdown ~11.4% (beats VBAL's ~12.3%). */
@@ -343,7 +347,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     cadDenominated: false,
     rebalanceSchedule: 'annual',
     holdings: uproPremaStackHoldings,
-    extraCacheKeyTags: ['annual-rebal', 'upro-flsp-foxy-v1'],
+    extraCacheKeyTags: ['annual-rebal', 'upro-flsp-foxy-ils-v3'],
   },
   {
     id: US_INTL_PRESET_ID,
@@ -435,7 +439,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     cadDenominated: true,
     rebalanceSchedule: 'annual',
     holdings: caAlphaStackHoldings,
-    extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'annual-rebal', 'ussl-qqql-finn-dglm-pfmn-v1'],
+    extraCacheKeyTags: ['cad-xsp-bench-vfv-ussl-proxy', 'annual-rebal', 'ussl-qqql-finn-dglm-pfmn-ils-v2'],
   },
   {
     id: US_LETF_STACK_2X_PRESET_ID,
@@ -511,7 +515,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     rebalanceSchedule: 'none',
     holdings: usBondAltHoldings,
     benchmarkSymbol: 'AGG',
-    extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-mrgr-ialt-jaaa-v4'],
+    extraCacheKeyTags: ['buy-hold', 'dbmf-flsp-mrgr-ialt-jaaa-ils-v5'],
   },
   {
     id: CA_BOND_ALT_PRESET_ID,
@@ -529,7 +533,7 @@ export const PRESET_DEFINITIONS: PresetDefinition[] = [
     rebalanceSchedule: 'none',
     holdings: usSixtyFortyHoldings,
     benchmarkSymbol: 'AOR',
-    extraCacheKeyTags: ['buy-hold', 'mate-cowz-clse-orr-dbmf-flsp-mrgr-v1'],
+    extraCacheKeyTags: ['buy-hold', 'mate-vflo-clse-orr-dbmf-flsp-mrgr-ils-v2'],
   },
   {
     id: CA_SIXTY_FORTY_PRESET_ID,
